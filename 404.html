@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | Pedro Gomes</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <style>
+        :root {
+            --sf-pro: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            --mono: 'SF Mono', 'Fira Code', 'Monaco', 'Menlo', monospace;
+            --bg-black: #000000;
+            --text: #ffffff;
+            --text-80: #e5e5e5;
+            --text-60: #999999;
+            --text-40: #666666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--sf-pro);
+            background: var(--bg-black);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            position: relative;
+        }
+
+        .error-code {
+            font-family: var(--sf-pro);
+            font-size: clamp(120px, 25vw, 280px);
+            font-weight: 200;
+            line-height: 1;
+            color: rgba(255, 255, 255, 0.08);
+            letter-spacing: -0.02em;
+            user-select: none;
+        }
+
+        .error-headline {
+            font-family: var(--sf-pro);
+            font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+            font-weight: 400;
+            color: var(--text);
+            margin-top: -8px;
+            letter-spacing: -0.01em;
+        }
+
+        .error-subtitle {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            margin-top: 16px;
+            text-align: center;
+            max-width: 440px;
+            line-height: 1.6;
+        }
+
+        .error-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--text);
+            text-decoration: none;
+            padding: 14px 28px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 999px;
+            background: transparent;
+            margin-top: 40px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .error-cta:hover {
+            background: var(--text);
+            color: var(--bg-black);
+        }
+
+        .footer-copyright {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <h1 class="error-headline">Page not found</h1>
+        <p class="error-subtitle">The page you're looking for doesn't exist or has been moved.</p>
+        <a href="/" class="error-cta">Back to Portfolio &rarr;</a>
+    </div>
+    <span class="footer-copyright">PEDROGOMES &copy; 2026</span>
+</body>
+</html>

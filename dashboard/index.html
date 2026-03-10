@@ -87,14 +87,10 @@
         }
 
         .dashboard {
-            display: grid;
-            grid-template-columns: 260px 1fr;
+            display: block;
             min-height: 100vh;
-            transition: grid-template-columns var(--transition-normal);
-        }
-
-        .dashboard.collapsed {
-            grid-template-columns: 72px 1fr;
+            position: relative;
+            overflow-x: hidden;
         }
 
         .sidebar {
@@ -125,18 +121,12 @@
         .logo {
             width: 36px;
             height: 36px;
-            background: linear-gradient(135deg, var(--accent-violet), var(--accent-cyan));
-            border-radius: var(--radius-md);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-        }
-
-        .logo svg {
-            width: 20px;
-            height: 20px;
-            color: white;
+            overflow: hidden;
         }
 
         .logo-text {
@@ -223,21 +213,33 @@
 
         .sidebar-footer {
             margin-top: auto;
-            padding-top: 24px;
+            padding-top: 16px;
             border-top: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .sidebar-footer .nav-item {
+            font-size: 13px;
+            padding: 10px 12px;
+            color: var(--text-muted);
+        }
+
+        .sidebar-footer .nav-item:hover {
+            color: var(--text-primary);
         }
 
         .collapse-btn {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 12px;
-            padding: 12px;
+            padding: 10px 12px;
             border-radius: var(--radius-md);
             color: var(--text-muted);
             background: transparent;
             border: none;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             cursor: pointer;
             width: 100%;
@@ -250,8 +252,9 @@
         }
 
         .collapse-btn svg {
-            width: 20: 20pxpx;
-            height;
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
             transition: transform var(--transition-normal);
         }
 
@@ -260,13 +263,22 @@
         }
 
         .dashboard.collapsed .collapse-btn span {
-            display: none;
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
         }
 
         .main {
-            grid-column: 2;
+            margin-left: 260px;
             padding: 32px 40px;
             min-height: 100vh;
+            width: calc(100% - 260px);
+            transition: margin-left var(--transition-normal), width var(--transition-normal);
+        }
+
+        .dashboard.collapsed .main {
+            margin-left: 72px;
+            width: calc(100% - 72px);
         }
 
         .main-header {
@@ -794,16 +806,293 @@
         @media (max-width: 1400px) {
             .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
             .widget-large, .widget-wide { grid-column: span 2; }
+            .section-title { grid-column: span 2; }
+        }
+
+        @media (max-width: 1024px) {
+            .main { padding: 24px 28px; }
+            .page-title { font-size: 26px; }
+            .metric-value { font-size: 28px; }
+            .audience-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 900px) {
             .dashboard { grid-template-columns: 1fr; }
-            .sidebar { transform: translateX(-100%); }
-            .dashboard.collapsed .sidebar { transform: translateX(0); width: 72px; }
-            .main { grid-column: 1; padding: 24px; }
-            .dashboard-grid { grid-template-columns: 1fr; }
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                z-index: 1000;
+                box-shadow: var(--shadow-lg);
+            }
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            .dashboard.collapsed .sidebar {
+                transform: translateX(-100%);
+                width: 260px;
+            }
+            .dashboard.collapsed .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            .mobile-overlay {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 999;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity var(--transition-normal);
+            }
+            .mobile-overlay.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+            .mobile-menu-btn {
+                display: flex !important;
+            }
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px 16px;
+            }
+            .dashboard.collapsed .main {
+                margin-left: 0;
+                width: 100%;
+            }
+            .main-header {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            .page-title { font-size: 24px; }
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
             .widget-large, .widget-wide { grid-column: span 1; }
+            .section-title { grid-column: span 1; }
             .conversion-grid { grid-template-columns: repeat(2, 1fr); }
+            .audience-grid { grid-template-columns: 1fr; }
+            .preview-card-value { font-size: 22px; }
+            .project-bar-container { width: 80px; }
+        }
+
+        @media (max-width: 600px) {
+            .main { padding: 16px 12px; }
+            .page-title { font-size: 20px; }
+            .header-actions { gap: 8px; }
+            .time-filter { padding: 8px 12px; font-size: 13px; }
+            .widget { padding: 16px; }
+            .metric-value { font-size: 24px; }
+            .chart-container { height: 200px; }
+            .conversion-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .project-item { padding: 10px 8px; gap: 10px; }
+            .project-thumb { width: 40px; height: 30px; }
+            .project-bar-container { width: 60px; }
+            .live-item { padding: 10px; gap: 10px; }
+            .settings-item { flex-direction: column; align-items: flex-start; gap: 12px; }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+        }
+        .mobile-menu-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+        .mobile-menu-btn svg { width: 20px; height: 20px; }
+
+        .mobile-overlay { display: none; }
+
+        /* Trend indicators */
+        .metric-change {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+        .metric-change.up { color: var(--accent-emerald); }
+        .metric-change.down { color: var(--accent-rose); }
+        .metric-change.neutral { color: var(--text-muted); }
+        .metric-change svg { width: 14px; height: 14px; }
+
+        /* Bounce rate card */
+        .widget.bounce-widget .metric-value { color: var(--accent-rose); }
+
+        /* Funnel */
+        .funnel-container { padding: 16px 0; }
+        .funnel-step {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 0;
+            position: relative;
+        }
+        .funnel-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 20px;
+            bottom: -4px;
+            width: 2px;
+            height: 16px;
+            background: var(--border-subtle);
+        }
+        .funnel-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .funnel-icon svg { width: 20px; height: 20px; }
+        .funnel-info { flex: 1; }
+        .funnel-label { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+        .funnel-count { font-size: 13px; color: var(--text-secondary); }
+        .funnel-bar-wrap { flex: 1; max-width: 200px; }
+        .funnel-bar-bg {
+            height: 8px;
+            background: var(--bg-hover);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .funnel-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        .funnel-pct {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            min-width: 45px;
+            text-align: right;
+        }
+
+        /* Hourly chart */
+        .hourly-chart { padding: 8px 0; }
+        .hourly-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 100px;
+        }
+        .hourly-bar {
+            flex: 1;
+            background: var(--accent-violet);
+            border-radius: 2px 2px 0 0;
+            min-height: 2px;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        .hourly-bar:hover { opacity: 1; }
+        .hourly-labels {
+            display: flex;
+            gap: 2px;
+            margin-top: 6px;
+        }
+        .hourly-labels span {
+            flex: 1;
+            text-align: center;
+            font-size: 9px;
+            color: var(--text-muted);
+        }
+
+        /* Referrer list */
+        .referrer-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .referrer-item:last-child { border-bottom: none; }
+        .referrer-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .referrer-name { font-size: 14px; font-weight: 500; color: var(--text-primary); flex: 1; }
+        .referrer-count { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+        .referrer-bar { width: 60px; height: 4px; background: var(--bg-hover); border-radius: 2px; overflow: hidden; }
+        .referrer-bar-fill { height: 100%; background: var(--accent-violet); border-radius: 2px; }
+
+        /* Time per page */
+        .time-page-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .time-page-item:last-child { border-bottom: none; }
+        .time-page-name { font-size: 14px; font-weight: 500; color: var(--text-primary); flex: 1; }
+        .time-page-duration { font-size: 14px; font-weight: 600; color: var(--accent-cyan); }
+        .time-page-views { font-size: 12px; color: var(--text-muted); min-width: 60px; text-align: right; }
+
+        /* Export button */
+        .export-btn {
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all var(--transition-fast);
+        }
+        .export-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .export-btn svg { width: 14px; height: 14px; }
+
+        /* Custom date range */
+        .date-range-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .date-input {
+            padding: 8px 10px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            width: 130px;
+        }
+        .date-input:focus { border-color: var(--accent-violet); }
+
+        @media (max-width: 600px) {
+            .date-range-group { display: none; }
+            .export-btn span { display: none; }
         }
     </style>
 </head>
@@ -843,16 +1132,13 @@
     </script>
 
     <div class="dashboard" id="dashboard">
-        <aside class="sidebar">
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div class="logo">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                        <path d="M2 17l10 5 10-5"/>
-                        <path d="M2 12l10 5 10-5"/>
-                    </svg>
+                <div class="logo" style="background:none;border-radius:50%;overflow:hidden;padding:0;">
+                    <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1772425940/Layer_21_qw0mad.png" alt="Pedro Gomes" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
                 </div>
-                <span class="logo-text">Portfolio Intel</span>
+                <span class="logo-text">Pedro Gomes</span>
             </div>
             
             <nav class="nav-section">
@@ -904,16 +1190,6 @@
                     </svg>
                     <span>Live</span>
                 </button>
-            </nav>
-            
-            <div class="sidebar-footer">
-                <a href="/" class="nav-item" style="text-decoration:none;color:inherit;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="15 18 9 12 15 6"/>
-                        <line x1="9" y1="12" x2="21" y2="12"/>
-                    </svg>
-                    <span>Portfolio</span>
-                </a>
                 <button class="nav-item" data-page="settings">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="3"/>
@@ -921,6 +1197,17 @@
                     </svg>
                     <span>Settings</span>
                 </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="/" class="nav-item" style="text-decoration:none;color:inherit;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                        <polyline points="10 17 15 12 10 7"/>
+                        <line x1="15" y1="12" x2="3" y2="12"/>
+                    </svg>
+                    <span>Back to Site</span>
+                </a>
                 <button class="collapse-btn" id="collapseBtn">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="15 18 9 12 15 6"/>
@@ -932,7 +1219,16 @@
 
         <main class="main">
             <header class="main-header">
-                <h1 class="page-title" id="pageTitle">Overview</h1>
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" title="Menu">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <line x1="3" y1="12" x2="21" y2="12"/>
+                            <line x1="3" y1="18" x2="21" y2="18"/>
+                        </svg>
+                    </button>
+                    <h1 class="page-title" id="pageTitle">Overview</h1>
+                </div>
                 <div class="header-actions">
                     <button class="theme-toggle" id="themeToggle" title="Toggle theme">
                         <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -951,7 +1247,17 @@
                         <option value="7">Last 7 days</option>
                         <option value="30">Last 30 days</option>
                         <option value="90">Last 90 days</option>
+                        <option value="custom">Custom range</option>
                     </select>
+                    <div class="date-range-group" id="dateRangeGroup" style="display:none;">
+                        <input type="date" class="date-input" id="dateFrom">
+                        <span style="color:var(--text-muted);font-size:12px;">to</span>
+                        <input type="date" class="date-input" id="dateTo">
+                    </div>
+                    <button class="export-btn" id="exportBtn" title="Export CSV">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <span>Export</span>
+                    </button>
                 </div>
             </header>
 
@@ -1014,8 +1320,21 @@
                         </div>
                         <div class="metric-value" id="metricContact">--</div>
                         <div class="metric-change" id="metricContactChange"></div>
-                        </div>
                         <div class="sparkline"><canvas id="sparkline4"></canvas></div>
+                    </div>
+
+                    <div class="widget bounce-widget">
+                        <div class="widget-header">
+                            <span class="widget-title">Bounce Rate</span>
+                            <div class="widget-icon" style="background:rgba(251,113,133,0.15);color:var(--accent-rose);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                                    <polyline points="17 6 23 6 23 12"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="metric-value" id="metricBounce">--</div>
+                        <div class="metric-change" id="metricBounceChange"></div>
                     </div>
 
                     <div class="widget widget-large">
@@ -1027,7 +1346,7 @@
                         </div>
                     </div>
 
-                    <div class="widget">
+                    <div class="widget live-section">
                         <div class="widget-header">
                             <span class="widget-title">Live Activity</span>
                             <div class="widget-icon emerald">
@@ -1070,8 +1389,8 @@
                                 <polyline points="9 18 15 12 9 6"/>
                             </svg>
                         </div>
-                        <div class="preview-card-value">US</div>
-                        <div class="preview-card-subtitle">1,247 visitors</div>
+                        <div class="preview-card-value" id="previewRegion">--</div>
+                        <div class="preview-card-subtitle" id="previewRegionSub">top region</div>
                     </div>
 
                     <div class="preview-card" data-page="engagement">
@@ -1081,8 +1400,8 @@
                                 <polyline points="9 18 15 12 9 6"/>
                             </svg>
                         </div>
-                        <div class="preview-card-value">68%</div>
-                        <div class="preview-card-subtitle">pages viewed</div>
+                        <div class="preview-card-value" id="previewScroll">--</div>
+                        <div class="preview-card-subtitle">avg scroll depth</div>
                     </div>
                 </div>
             </div>
@@ -1093,116 +1412,9 @@
                     <div class="widget widget-wide">
                         <div class="widget-header">
                             <span class="widget-title">Project Performance</span>
-                            <div class="widget-icon violet">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-                                    <polyline points="2 17 12 22 22 17"/>
-                                    <polyline points="2 12 12 17 22 12"/>
-                                </svg>
-                            </div>
                         </div>
-                        <div class="project-list">
-                            <div class="project-item">
-                                <div class="project-rank top-3">1</div>
-                                <div class="project-thumb" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
-                                <div class="project-info">
-                                    <div class="project-name">Brand Identity System</div>
-                                    <div class="project-meta">2,341 views • 4:32 avg time</div>
-                                </div>
-                                <div class="project-bar-container">
-                                    <div class="project-bar-bg"><div class="project-bar" style="width: 92%;"></div></div>
-                                </div>
-                            </div>
-                            <div class="project-item">
-                                <div class="project-rank top-3">2</div>
-                                <div class="project-thumb" style="background: linear-gradient(135deg, #f093fb, #f5576c);"></div>
-                                <div class="project-info">
-                                    <div class="project-name">E-Commerce Redesign</div>
-                                    <div class="project-meta">1,892 views • 3:18 avg time</div>
-                                </div>
-                                <div class="project-bar-container">
-                                    <div class="project-bar-bg"><div class="project-bar" style="width: 78%;"></div></div>
-                                </div>
-                            </div>
-                            <div class="project-item">
-                                <div class="project-rank top-3">3</div>
-                                <div class="project-thumb" style="background: linear-gradient(135deg, #4facfe, #00f2fe);"></div>
-                                <div class="project-info">
-                                    <div class="project-name">Mobile App Design</div>
-                                    <div class="project-meta">1,654 views • 5:42 avg time</div>
-                                </div>
-                                <div class="project-bar-container">
-                                    <div class="project-bar-bg"><div class="project-bar" style="width: 65%;"></div></div>
-                                </div>
-                            </div>
-                            <div class="project-item">
-                                <div class="project-rank">4</div>
-                                <div class="project-thumb" style="background: linear-gradient(135deg, #43e97b, #38f9d7);"></div>
-                                <div class="project-info">
-                                    <div class="project-name">Website Launch</div>
-                                    <div class="project-meta">1,203 views • 2:45 avg time</div>
-                                </div>
-                                <div class="project-bar-container">
-                                    <div class="project-bar-bg"><div class="project-bar" style="width: 52%;"></div></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="widget widget-wide">
-                        <div class="widget-header">
-                            <span class="widget-title">Creative Impact Score</span>
-                            <div class="widget-icon emerald">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="project-list">
-                            <div class="project-item">
-                                <div class="project-rank top-3">1</div>
-                                <div class="project-thumb" style="background: linear-gradient(135deg, #f093fb, #f5576c);"></div>
-                                <div class="project-info">
-                                    <div class="project-name">Brand Identity System</div>
-                                    <div class="project-meta">views 2,341 + time 4:32 + scroll 87% + clicks 34</div>
-                                </div>
-                                <div class="project-bar-container">
-                                    <div class="project-score">92</div>
-                                </div>
-                            </div>
-                            <div class="project-item">
-                                <div class="project-rank top-3">2</div>
-                                <div class="project-thumb" style="background: linear-gradient(135deg, #4facfe, #00f2fe);"></div>
-                                <div class="project-info">
-                                    <div class="project-name">Mobile App Design</div>
-                                    <div class="project-meta">views 1,654 + time 5:42 + scroll 92% + clicks 28</div>
-                                </div>
-                                <div class="project-bar-container">
-                                    <div class="project-score">84</div>
-                                </div>
-                            </div>
-                            <div class="project-item">
-                                <div class="project-rank top-3">3</div>
-                                <div class="project-thumb" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
-                                <div class="project-info">
-                                    <div class="project-name">E-Commerce Redesign</div>
-                                    <div class="project-meta">views 1,892 + time 3:18 + scroll 71% + clicks 21</div>
-                                </div>
-                                <div class="project-bar-container">
-                                    <div class="project-score">76</div>
-                                </div>
-                            </div>
-                            <div class="project-item">
-                                <div class="project-rank">4</div>
-                                <div class="project-thumb" style="background: linear-gradient(135deg, #43e97b, #38f9d7);"></div>
-                                <div class="project-info">
-                                    <div class="project-name">Website Launch</div>
-                                    <div class="project-meta">views 1,203 + time 2:45 + scroll 58% + clicks 12</div>
-                                </div>
-                                <div class="project-bar-container">
-                                    <div class="project-score">61</div>
-                                </div>
-                            </div>
+                        <div class="project-list" id="projectList">
+                            <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading project data...</div>
                         </div>
                     </div>
                 </div>
@@ -1211,7 +1423,7 @@
                 <div class="dashboard-grid">
                     <div class="widget widget-large">
                         <div class="widget-header">
-                            <span class="widget-title">Portfolio Performance</span>
+                            <span class="widget-title">Page Views Over Time</span>
                         </div>
                         <div class="chart-container">
                             <canvas id="engagementChart"></canvas>
@@ -1220,140 +1432,44 @@
 
                     <div class="widget widget-large">
                         <div class="widget-header">
-                            <span class="widget-title">Visitor Journey</span>
-                            <div class="widget-icon gold">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <polyline points="12 6 12 12 16 14"/>
-                                </svg>
-                            </div>
+                            <span class="widget-title">Top Pages</span>
                         </div>
-                        <div class="flow-container">
-                            <div class="flow-step">
-                                <div class="flow-circle" style="background: var(--accent-violet-dim); color: var(--accent-violet);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                                    </svg>
-                                </div>
-                                <span class="flow-circle-label">Landing</span>
-                                <span class="flow-circle-count">2,847</span>
-                            </div>
-                            <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-                            <div class="flow-step">
-                                <div class="flow-circle" style="background: var(--accent-cyan-dim); color: var(--accent-cyan);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="3" y="3" width="18" height="18" rx="2"/>
-                                    </svg>
-                                </div>
-                                <span class="flow-circle-label">Project</span>
-                                <span class="flow-circle-count">1,923</span>
-                            </div>
-                            <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-                            <div class="flow-step">
-                                <div class="flow-circle" style="background: var(--accent-gold-dim); color: var(--accent-gold);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                        <circle cx="12" cy="7" r="4"/>
-                                    </svg>
-                                </div>
-                                <span class="flow-circle-label">About</span>
-                                <span class="flow-circle-count">892</span>
-                            </div>
-                            <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-                            <div class="flow-step">
-                                <div class="flow-circle" style="background: rgba(52, 211, 153, 0.15); color: var(--accent-emerald);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2"/>
-                                    </svg>
-                                </div>
-                                <span class="flow-circle-label">Contact</span>
-                                <span class="flow-circle-count">127</span>
-                            </div>
+                        <div class="project-list" id="topPagesList">
+                            <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading...</div>
                         </div>
                     </div>
 
                     <div class="widget widget-large">
                         <div class="widget-header">
-                            <span class="widget-title">Top Entry Pages</span>
-                            <div class="widget-icon violet">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                    <polyline points="14 2 14 8 20 8"/>
-                                    <line x1="12" y1="18" x2="12" y2="12"/>
-                                    <line x1="9" y1="15" x2="15" y2="15"/>
-                                </svg>
-                            </div>
+                            <span class="widget-title">Scroll Depth</span>
                         </div>
-                        <div class="project-list">
-                            <div class="project-item">
-                                <div class="project-rank top-3">1</div>
-                                <div class="project-thumb" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
-                                <div class="project-info">
-                                    <div class="project-name">Mobile App Project</div>
-                                    <div class="project-meta">892 direct entries • 31.3% of traffic</div>
-                                </div>
-                                <div class="project-bar-container">
-                                    <div class="project-bar-bg"><div class="project-bar" style="width: 100%;"></div></div>
-                                </div>
-                            </div>
-                            <div class="project-item">
-                                <div class="project-rank top-3">2</div>
-                                <div class="project-thumb" style="background: linear-gradient(135deg, #f093fb, #f5576c);"></div>
-                                <div class="project-info">
-                                    <div class="project-name">Brand Identity System</div>
-                                    <div class="project-meta">647 direct entries • 22.7% of traffic</div>
-                                </div>
-                                <div class="project-bar-container">
-                                    <div class="project-bar-bg"><div class="project-bar" style="width: 73%;"></div></div>
-                                </div>
-                            </div>
-                            <div class="project-item">
-                                <div class="project-rank top-3">3</div>
-                                <div class="project-thumb" style="background: linear-gradient(135deg, #43e97b, #38f9d7);"></div>
-                                <div class="project-info">
-                                    <div class="project-name">Case Study: Tech Startup</div>
-                                    <div class="project-meta">423 direct entries • 14.9% of traffic</div>
-                                </div>
-                                <div class="project-bar-container">
-                                    <div class="project-bar-bg"><div class="project-bar" style="width: 47%;"></div></div>
-                                </div>
-                            </div>
-                            <div class="project-item">
-                                <div class="project-rank">4</div>
-                                <div class="project-thumb" style="background: linear-gradient(135deg, #4facfe, #00f2fe);"></div>
-                                <div class="project-info">
-                                    <div class="project-name">E-Commerce Redesign</div>
-                                    <div class="project-meta">312 direct entries • 11.0% of traffic</div>
-                                </div>
-                                <div class="project-bar-container">
-                                    <div class="project-bar-bg"><div class="project-bar" style="width: 35%;"></div></div>
-                                </div>
-                            </div>
-                            <div class="project-item">
-                                <div class="project-rank">5</div>
-                                <div class="project-thumb" style="background: linear-gradient(135deg, #fa709a, #fee140);"></div>
-                                <div class="project-info">
-                                    <div class="project-name">About Page</div>
-                                    <div class="project-meta">198 direct entries • 7.0% of traffic</div>
-                                </div>
-                                <div class="project-bar-container">
-                                    <div class="project-bar-bg"><div class="project-bar" style="width: 22%;"></div></div>
-                                </div>
-                            </div>
+                        <div id="scrollDepthWidget" style="padding:16px;color:var(--text-muted);text-align:center;">Loading...</div>
+                    </div>
+
+                    <div class="widget widget-large">
+                        <div class="widget-header">
+                            <span class="widget-title">Event Breakdown</span>
+                        </div>
+                        <div class="project-list" id="eventBreakdownList">
+                            <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading...</div>
                         </div>
                     </div>
 
-                    <div class="widget widget-wide">
+                    <div class="widget widget-large">
                         <div class="widget-header">
-                            <span class="widget-title">Click Heatmap</span>
-                            <div class="widget-icon cyan">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-                                </svg>
-                            </div>
+                            <span class="widget-title">Peak Hours</span>
                         </div>
-                        <div class="heatmap-placeholder">
-                            Heatmap visualization would appear here with real data
+                        <div class="hourly-chart" id="hourlyChart">
+                            <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading...</div>
+                        </div>
+                    </div>
+
+                    <div class="widget widget-large">
+                        <div class="widget-header">
+                            <span class="widget-title">Avg. Time Per Page</span>
+                        </div>
+                        <div id="timePerPageList">
+                            <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading...</div>
                         </div>
                     </div>
                 </div>
@@ -1364,75 +1480,19 @@
                 <div class="dashboard-grid">
                     <div class="widget widget-wide">
                         <div class="widget-header">
-                            <span class="widget-title">Conversion Intelligence</span>
-                            <div class="widget-icon violet">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                                </svg>
-                            </div>
+                            <span class="widget-title">Conversion Breakdown</span>
                         </div>
-                        <div class="conversion-grid">
-                            <div class="conversion-item">
-                                <div class="conversion-icon" style="background: var(--accent-violet-dim); color: var(--accent-violet);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                                        <polyline points="22,6 12,13 2,6"/>
-                                    </svg>
-                                </div>
-                                <div class="conversion-value">127</div>
-                                <div class="conversion-label">Contact Clicks</div>
-                            </div>
-                            <div class="conversion-item">
-                                <div class="conversion-icon" style="background: var(--accent-cyan-dim); color: var(--accent-cyan);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2"/>
-                                    </svg>
-                                </div>
-                                <div class="conversion-value">89</div>
-                                <div class="conversion-label">Email Links</div>
-                            </div>
-                            <div class="conversion-item">
-                                <div class="conversion-icon" style="background: var(--accent-gold-dim); color: var(--accent-gold);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="2" y="2" width="20" height="20" rx="5"/>
-                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                                    </svg>
-                                </div>
-                                <div class="conversion-value">234</div>
-                                <div class="conversion-label">Instagram</div>
-                            </div>
-                            <div class="conversion-item">
-                                <div class="conversion-icon" style="background: rgba(52, 211, 153, 0.15); color: var(--accent-emerald);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <polygon points="23 7 16 12 23 17 23 7"/>
-                                        <rect x="1" y="5" width="15" height="14"/>
-                                    </svg>
-                                </div>
-                                <div class="conversion-value">156</div>
-                                <div class="conversion-label">YouTube</div>
-                            </div>
-                            <div class="conversion-item">
-                                <div class="conversion-icon" style="background: rgba(251, 113, 133, 0.15); color: var(--accent-rose);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M9 18V5l12-2v13"/>
-                                        <circle cx="6" cy="18" r="3"/>
-                                        <circle cx="18" cy="16" r="3"/>
-                                    </svg>
-                                </div>
-                                <div class="conversion-value">78</div>
-                                <div class="conversion-label">Spotify</div>
-                            </div>
-                            <div class="conversion-item">
-                                <div class="conversion-icon" style="background: rgba(167, 139, 250, 0.15); color: var(--accent-violet);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                                        <polyline points="7 10 12 15 17 10"/>
-                                        <line x1="12" y1="15" x2="12" y2="3"/>
-                                    </svg>
-                                </div>
-                                <div class="conversion-value">45</div>
-                                <div class="conversion-label">Downloads</div>
-                            </div>
+                        <div class="conversion-grid" id="conversionGrid">
+                            <div style="color:var(--text-muted);padding:16px;text-align:center;grid-column:span 3;">Loading conversion data...</div>
+                        </div>
+                    </div>
+
+                    <div class="widget widget-wide">
+                        <div class="widget-header">
+                            <span class="widget-title">Conversion Funnel</span>
+                        </div>
+                        <div class="funnel-container" id="funnelContainer">
+                            <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading funnel...</div>
                         </div>
                     </div>
                 </div>
@@ -1444,62 +1504,45 @@
                     <div class="widget widget-large">
                         <div class="widget-header">
                             <span class="widget-title">Top Regions</span>
-                            <div class="widget-icon cyan">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <line x1="2" y1="12" x2="22" y2="12"/>
-                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/>
-                                </svg>
-                            </div>
                         </div>
-                        <div class="audience-grid">
-                            <div class="audience-item">
-                                <span class="country-flag">🇺🇸</span>
-                                <div class="audience-info">
-                                    <div class="audience-country">United States</div>
-                                    <div class="audience-visitors">1,247 visitors</div>
-                                </div>
-                                <div class="audience-bar"><div class="audience-bar-fill" style="width: 65%;"></div></div>
-                            </div>
-                            <div class="audience-item">
-                                <span class="country-flag">🇬🇧</span>
-                                <div class="audience-info">
-                                    <div class="audience-country">United Kingdom</div>
-                                    <div class="audience-visitors">523 visitors</div>
-                                </div>
-                                <div class="audience-bar"><div class="audience-bar-fill" style="width: 32%;"></div></div>
-                            </div>
-                            <div class="audience-item">
-                                <span class="country-flag">🇩🇪</span>
-                                <div class="audience-info">
-                                    <div class="audience-country">Germany</div>
-                                    <div class="audience-visitors">312 visitors</div>
-                                </div>
-                                <div class="audience-bar"><div class="audience-bar-fill" style="width: 18%;"></div></div>
-                            </div>
-                            <div class="audience-item">
-                                <span class="country-flag">🇫🇷</span>
-                                <div class="audience-info">
-                                    <div class="audience-country">France</div>
-                                    <div class="audience-visitors">198 visitors</div>
-                                </div>
-                                <div class="audience-bar"><div class="audience-bar-fill" style="width: 12%;"></div></div>
-                            </div>
+                        <div class="audience-grid" id="audienceGrid">
+                            <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading...</div>
                         </div>
                     </div>
 
                     <div class="widget widget-large">
                         <div class="widget-header">
                             <span class="widget-title">Visitor Type</span>
-                            <div class="widget-icon emerald">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                                    <circle cx="9" cy="7" r="4"/>
-                                </svg>
-                            </div>
                         </div>
                         <div class="chart-container">
                             <canvas id="visitorTypeChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="widget widget-large">
+                        <div class="widget-header">
+                            <span class="widget-title">Traffic Sources</span>
+                        </div>
+                        <div id="referrerList">
+                            <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading...</div>
+                        </div>
+                    </div>
+
+                    <div class="widget">
+                        <div class="widget-header">
+                            <span class="widget-title">Devices</span>
+                        </div>
+                        <div class="chart-container" style="height:200px;">
+                            <canvas id="deviceChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="widget">
+                        <div class="widget-header">
+                            <span class="widget-title">Browsers</span>
+                        </div>
+                        <div class="chart-container" style="height:200px;">
+                            <canvas id="browserChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -1511,76 +1554,9 @@
                     <div class="widget widget-wide">
                         <div class="widget-header">
                             <span class="widget-title">Live Activity</span>
-                            <div class="widget-icon emerald">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                                </svg>
-                            </div>
                         </div>
-                        <div class="live-activity" style="max-height: none;">
-                            <div class="live-item">
-                                <div class="live-dot"></div>
-                                <div class="live-info">
-                                    <div class="live-location">San Francisco, US</div>
-                                    <div class="live-page">Brand Identity System</div>
-                                    <div class="live-ip">192.168.1.142</div>
-                                </div>
-                                <div class="live-time">Just now</div>
-                            </div>
-                            <div class="live-item">
-                                <div class="live-dot"></div>
-                                <div class="live-info">
-                                    <div class="live-location">London, UK</div>
-                                    <div class="live-page">Portfolio Home</div>
-                                    <div class="live-ip">10.0.0.87</div>
-                                </div>
-                                <div class="live-time">2m ago</div>
-                            </div>
-                            <div class="live-item">
-                                <div class="live-dot"></div>
-                                <div class="live-info">
-                                    <div class="live-location">Berlin, DE</div>
-                                    <div class="live-page">Mobile App Design</div>
-                                    <div class="live-ip">172.16.0.53</div>
-                                </div>
-                                <div class="live-time">3m ago</div>
-                            </div>
-                            <div class="live-item">
-                                <div class="live-dot"></div>
-                                <div class="live-info">
-                                    <div class="live-location">Paris, FR</div>
-                                    <div class="live-page">About Page</div>
-                                    <div class="live-ip">192.168.2.101</div>
-                                </div>
-                                <div class="live-time">5m ago</div>
-                            </div>
-                            <div class="live-item">
-                                <div class="live-dot"></div>
-                                <div class="live-info">
-                                    <div class="live-location">New York, US</div>
-                                    <div class="live-page">Contact Page</div>
-                                    <div class="live-ip">10.10.1.45</div>
-                                </div>
-                                <div class="live-time">7m ago</div>
-                            </div>
-                            <div class="live-item">
-                                <div class="live-dot"></div>
-                                <div class="live-info">
-                                    <div class="live-location">Tokyo, JP</div>
-                                    <div class="live-page">E-Commerce Redesign</div>
-                                    <div class="live-ip">172.20.0.88</div>
-                                </div>
-                                <div class="live-time">8m ago</div>
-                            </div>
-                            <div class="live-item">
-                                <div class="live-dot"></div>
-                                <div class="live-info">
-                                    <div class="live-location">Toronto, CA</div>
-                                    <div class="live-page">Portfolio Home</div>
-                                    <div class="live-ip">192.168.3.67</div>
-                                </div>
-                                <div class="live-time">10m ago</div>
-                            </div>
+                        <div class="live-activity" id="liveActivityFull" style="max-height: none;">
+                            <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading live data...</div>
                         </div>
                     </div>
                 </div>
@@ -1631,7 +1607,7 @@
                             <div class="settings-item">
                                 <div>
                                     <div class="settings-item-label">Email Notifications</div>
-                                    <div class="settings-item-desc">Receive weekly analytics summaries</div>
+                                    <div class="settings-item-desc">Weekly analytics summaries (coming soon)</div>
                                 </div>
                                 <div class="toggle" id="emailNotifToggle"></div>
                             </div>
@@ -1649,13 +1625,35 @@
         let isDark = true;
 
         themeToggle.addEventListener('click', () => {
-            isDark = !isDark;
+            settings.darkMode = !settings.darkMode;
+            saveSettings(settings);
+            isDark = settings.darkMode;
             document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            syncToggle('darkModeToggle', settings.darkMode);
             updateChartTheme();
         });
 
         const collapseBtn = document.getElementById('collapseBtn');
         collapseBtn.addEventListener('click', () => dashboard.classList.toggle('collapsed'));
+
+        // Mobile menu
+        const sidebar = document.getElementById('sidebar');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+
+        function openMobileMenu() {
+            sidebar.classList.add('mobile-open');
+            mobileOverlay.classList.add('active');
+        }
+        function closeMobileMenu() {
+            sidebar.classList.remove('mobile-open');
+            mobileOverlay.classList.remove('active');
+        }
+        mobileMenuBtn.addEventListener('click', () => {
+            if (sidebar.classList.contains('mobile-open')) closeMobileMenu();
+            else openMobileMenu();
+        });
+        mobileOverlay.addEventListener('click', closeMobileMenu);
 
         // Navigation
         const navItems = document.querySelectorAll('.nav-item[data-page]');
@@ -1671,6 +1669,7 @@
             if (tn) tn.classList.add('active');
             const titles = { overview:'Overview', projects:'Projects', engagement:'Engagement', conversions:'Conversions', audience:'Audience', live:'Live Activity', settings:'Settings' };
             pageTitle.textContent = titles[pageName] || 'Overview';
+            closeMobileMenu();
         }
 
         navItems.forEach(item => item.addEventListener('click', () => {
@@ -1682,8 +1681,74 @@
             card.addEventListener('click', () => showPage(card.getAttribute('data-page')));
         });
 
-        document.querySelectorAll('.toggle').forEach(toggle => {
-            toggle.addEventListener('click', () => toggle.classList.toggle('active'));
+        // ========== Settings Logic ==========
+        const SETTINGS_KEY = '_pi_settings';
+        function loadSettings() {
+            try { return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {}; } catch { return {}; }
+        }
+        function saveSettings(s) { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); }
+        const settings = Object.assign({ darkMode: true, compactSidebar: true, autoRefresh: true, showLive: true, emailNotif: false }, loadSettings());
+
+        function applySettings() {
+            // Dark mode
+            isDark = settings.darkMode;
+            document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            syncToggle('darkModeToggle', settings.darkMode);
+
+            // Compact sidebar
+            if (settings.compactSidebar) dashboard.classList.add('collapsed');
+            else dashboard.classList.remove('collapsed');
+            syncToggle('compactSidebarToggle', settings.compactSidebar);
+
+            // Auto refresh
+            syncToggle('autoRefreshToggle', settings.autoRefresh);
+            manageAutoRefresh();
+
+            // Live activity visibility
+            syncToggle('liveActivityToggle', settings.showLive);
+            document.querySelectorAll('.live-section').forEach(el => el.style.display = settings.showLive ? '' : 'none');
+
+            // Email notif
+            syncToggle('emailNotifToggle', settings.emailNotif);
+        }
+
+        function syncToggle(id, active) {
+            const t = document.getElementById(id);
+            if (t) { if (active) t.classList.add('active'); else t.classList.remove('active'); }
+        }
+
+        let refreshInterval = null;
+        function manageAutoRefresh() {
+            if (refreshInterval) { clearInterval(refreshInterval); refreshInterval = null; }
+            if (settings.autoRefresh) { refreshInterval = setInterval(loadDashboard, 30000); }
+        }
+
+        // Wire up each toggle
+        document.getElementById('darkModeToggle').addEventListener('click', () => {
+            settings.darkMode = !settings.darkMode;
+            saveSettings(settings);
+            applySettings();
+            updateChartTheme();
+        });
+        document.getElementById('compactSidebarToggle').addEventListener('click', () => {
+            settings.compactSidebar = !settings.compactSidebar;
+            saveSettings(settings);
+            applySettings();
+        });
+        document.getElementById('autoRefreshToggle').addEventListener('click', () => {
+            settings.autoRefresh = !settings.autoRefresh;
+            saveSettings(settings);
+            applySettings();
+        });
+        document.getElementById('liveActivityToggle').addEventListener('click', () => {
+            settings.showLive = !settings.showLive;
+            saveSettings(settings);
+            applySettings();
+        });
+        document.getElementById('emailNotifToggle').addEventListener('click', () => {
+            settings.emailNotif = !settings.emailNotif;
+            saveSettings(settings);
+            syncToggle('emailNotifToggle', settings.emailNotif);
         });
 
         // ========== Chart Setup ==========
@@ -1691,7 +1756,7 @@
         Chart.defaults.borderColor = '#2a2a32';
         Chart.defaults.font.family = "'DM Sans', sans-serif";
 
-        let mainChart, engChart, visitorChart;
+        let mainChart, engChart, visitorChart, deviceChart, browserChart;
 
         function createSparkline(canvasId, data, color) {
             const ctx = document.getElementById(canvasId);
@@ -1746,12 +1811,40 @@
             });
         }
 
+        function initDeviceChart(data) {
+            const ctx = document.getElementById('deviceChart');
+            if (!ctx) return;
+            if (deviceChart) deviceChart.destroy();
+            const labels = Object.keys(data);
+            const values = Object.values(data);
+            const colors = ['#a78bfa', '#22d3ee', '#fbbf24', '#34d399'];
+            deviceChart = new Chart(ctx.getContext('2d'), {
+                type: 'doughnut',
+                data: { labels, datasets: [{ data: values, backgroundColor: colors.slice(0, labels.length), borderWidth: 0 }] },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle', padding: 16, font: { size: 12 } } } } }
+            });
+        }
+
+        function initBrowserChart(data) {
+            const ctx = document.getElementById('browserChart');
+            if (!ctx) return;
+            if (browserChart) browserChart.destroy();
+            const labels = Object.keys(data);
+            const values = Object.values(data);
+            const colors = ['#a78bfa', '#22d3ee', '#fbbf24', '#34d399', '#fb7185'];
+            browserChart = new Chart(ctx.getContext('2d'), {
+                type: 'doughnut',
+                data: { labels, datasets: [{ data: values, backgroundColor: colors.slice(0, labels.length), borderWidth: 0 }] },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle', padding: 16, font: { size: 12 } } } } }
+            });
+        }
+
         function updateChartTheme() {
             const textColor = isDark ? '#9a9aa8' : '#5c5c6c';
             const gridColor = isDark ? '#2a2a32' : '#e4e4e8';
             Chart.defaults.color = textColor;
             Chart.defaults.borderColor = gridColor;
-            [mainChart, engChart, visitorChart].forEach(c => { if (c) c.update(); });
+            [mainChart, engChart, visitorChart, deviceChart, browserChart].forEach(c => { if (c) c.update(); });
         }
 
         // ========== Helpers ==========
@@ -1770,6 +1863,70 @@
             return Math.floor(diff / 86400) + 'd ago';
         }
 
+        // ========== Trend Helper ==========
+        function renderTrend(elId, pct, invert) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            if (pct === 0) { el.innerHTML = '<span class="neutral">No change</span>'; el.className = 'metric-change neutral'; return; }
+            const isGood = invert ? pct < 0 : pct > 0;
+            const arrow = pct > 0
+                ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>'
+                : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>';
+            el.className = 'metric-change ' + (isGood ? 'up' : 'down');
+            el.innerHTML = arrow + Math.abs(pct) + '% vs prev period';
+        }
+
+        // ========== Export CSV ==========
+        let lastData = null;
+        function exportCSV() {
+            if (!lastData) return;
+            const rows = [['Date','Page Views','Unique Visitors']];
+            const labels = lastData.chart.labels || [];
+            const views = lastData.chart.views || [];
+            const unique = lastData.chart.unique || [];
+            labels.forEach((d, i) => rows.push([d, views[i] || 0, unique[i] || 0]));
+            const csv = rows.map(r => r.join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'analytics_export.csv'; a.click();
+            URL.revokeObjectURL(url);
+        }
+        document.getElementById('exportBtn').addEventListener('click', exportCSV);
+
+        // ========== Custom Date Range ==========
+        const timeFilter = document.getElementById('timeFilter');
+        const dateRangeGroup = document.getElementById('dateRangeGroup');
+        const dateFrom = document.getElementById('dateFrom');
+        const dateTo = document.getElementById('dateTo');
+
+        timeFilter.addEventListener('change', () => {
+            if (timeFilter.value === 'custom') {
+                dateRangeGroup.style.display = 'flex';
+                const now = new Date();
+                dateTo.value = now.toISOString().split('T')[0];
+                const from = new Date(); from.setDate(from.getDate() - 14);
+                dateFrom.value = from.toISOString().split('T')[0];
+            } else {
+                dateRangeGroup.style.display = 'none';
+                currentRange = parseInt(timeFilter.value);
+                loadDashboard();
+            }
+        });
+
+        function applyCustomRange() {
+            if (!dateFrom.value || !dateTo.value) return;
+            const from = new Date(dateFrom.value);
+            const to = new Date(dateTo.value);
+            const days = Math.ceil((to - from) / (1000 * 60 * 60 * 24));
+            if (days > 0 && days <= 365) {
+                currentRange = days;
+                loadDashboard();
+            }
+        }
+        dateFrom.addEventListener('change', applyCustomRange);
+        dateTo.addEventListener('change', applyCustomRange);
+
         // ========== Fetch & Render ==========
         let currentRange = 7;
 
@@ -1778,22 +1935,35 @@
                 const res = await fetch('/api/analytics?range=' + currentRange);
                 const data = await res.json();
                 if (data.error) { console.error('API error:', data.error); return; }
+                lastData = data;
 
-                // Overview metrics
                 const el = id => document.getElementById(id);
+
+                // ===== OVERVIEW METRICS =====
                 el('metricVisitors').textContent = fmt(data.overview.total_views);
                 el('metricUnique').textContent = fmt(data.overview.unique_visitors);
                 el('metricSession').textContent = fmtDuration(data.overview.avg_session_duration);
                 el('metricContact').textContent = data.overview.contact_rate + '%';
+                el('metricBounce').textContent = data.overview.bounce_rate + '%';
 
-                // Sparklines (use daily chart data)
+                // Trend indicators
+                if (data.trends) {
+                    renderTrend('metricVisitorsChange', data.trends.views, false);
+                    renderTrend('metricUniqueChange', data.trends.unique, false);
+                    renderTrend('metricSessionChange', data.trends.duration, false);
+                    renderTrend('metricContactChange', data.trends.contact_rate, false);
+                    renderTrend('metricBounceChange', data.trends.bounce_rate, true);
+                }
+
+                // Sparklines (real per-day data)
                 const cv = data.chart.views;
                 const cu = data.chart.unique;
+                const cd = data.chart.duration || cv;
+                const ccr = data.chart.contact_rate || cu;
                 createSparkline('sparkline1', cv.length ? cv : [0], '#a78bfa');
                 createSparkline('sparkline2', cu.length ? cu : [0], '#22d3ee');
-                // Session sparkline: reuse views as proxy
-                createSparkline('sparkline3', cv.length ? cv : [0], '#fbbf24');
-                createSparkline('sparkline4', cu.length ? cu : [0], '#34d399');
+                createSparkline('sparkline3', cd.length ? cd : [0], '#fbbf24');
+                createSparkline('sparkline4', ccr.length ? ccr : [0], '#34d399');
 
                 // Main chart
                 const shortLabels = data.chart.labels.map(d => {
@@ -1828,11 +1998,233 @@
                 const convCount = Object.values(data.conversions || {}).reduce((a, b) => a + b, 0);
                 el('previewProjects').textContent = projCount || '0';
                 el('previewConversions').textContent = fmt(convCount);
+                if (data.regions && data.regions.length > 0) {
+                    el('previewRegion').textContent = data.regions[0].country;
+                    el('previewRegionSub').textContent = fmt(data.regions[0].count) + ' visitors';
+                }
+                el('previewScroll').textContent = (data.overview.avg_scroll_depth || 0) + '%';
 
-                // Top regions preview
-                const topRegionEl = document.querySelector('[data-page="audience"] .preview-card-value');
-                if (topRegionEl && data.regions.length > 0) {
-                    topRegionEl.textContent = data.regions[0].country;
+                // ===== PROJECTS PAGE =====
+                const gradients = ['linear-gradient(135deg,#667eea,#764ba2)','linear-gradient(135deg,#f093fb,#f5576c)','linear-gradient(135deg,#4facfe,#00f2fe)','linear-gradient(135deg,#43e97b,#38f9d7)','linear-gradient(135deg,#fa709a,#fee140)','linear-gradient(135deg,#a78bfa,#6366f1)'];
+                const projEntries = Object.entries(data.projects || {}).sort((a,b) => b[1].views - a[1].views);
+                const projEl = el('projectList');
+                if (projEntries.length > 0) {
+                    const maxV = projEntries[0][1].views || 1;
+                    projEl.innerHTML = projEntries.map(([name, d], i) => `
+                        <div class="project-item">
+                            <div class="project-rank ${i < 3 ? 'top-3' : ''}">${i+1}</div>
+                            <div class="project-thumb" style="background:${gradients[i % gradients.length]}"></div>
+                            <div class="project-info">
+                                <div class="project-name">${name}</div>
+                                <div class="project-meta">${fmt(d.views)} views</div>
+                            </div>
+                            <div class="project-bar-container">
+                                <div class="project-bar-bg"><div class="project-bar" style="width:${Math.round(d.views/maxV*100)}%"></div></div>
+                            </div>
+                        </div>`).join('');
+                } else {
+                    projEl.innerHTML = '<div style="color:var(--text-muted);padding:24px;text-align:center;">No project views yet. Visit your portfolio to generate data.</div>';
+                }
+
+                // ===== ENGAGEMENT PAGE =====
+                const topPagesEl = el('topPagesList');
+                if (data.top_pages && data.top_pages.length > 0) {
+                    const maxPV = data.top_pages[0].views || 1;
+                    topPagesEl.innerHTML = data.top_pages.map((p, i) => `
+                        <div class="project-item">
+                            <div class="project-rank ${i < 3 ? 'top-3' : ''}">${i+1}</div>
+                            <div class="project-thumb" style="background:${gradients[i % gradients.length]}"></div>
+                            <div class="project-info">
+                                <div class="project-name">${p.page}</div>
+                                <div class="project-meta">${fmt(p.views)} views</div>
+                            </div>
+                            <div class="project-bar-container">
+                                <div class="project-bar-bg"><div class="project-bar" style="width:${Math.round(p.views/maxPV*100)}%"></div></div>
+                            </div>
+                        </div>`).join('');
+                } else {
+                    topPagesEl.innerHTML = '<div style="color:var(--text-muted);padding:24px;text-align:center;">No page data yet.</div>';
+                }
+
+                // Scroll depth widget
+                const scrollEl = el('scrollDepthWidget');
+                const avgS = data.overview.avg_scroll_depth || 0;
+                scrollEl.innerHTML = `
+                    <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:16px;">
+                        <div style="position:relative;width:120px;height:120px;">
+                            <svg viewBox="0 0 36 36" style="width:120px;height:120px;transform:rotate(-90deg);">
+                                <path d="M18 2.0845a15.9155 15.9155 0 0 1 0 31.831a15.9155 15.9155 0 0 1 0-31.831" fill="none" stroke="var(--border-subtle)" stroke-width="3"/>
+                                <path d="M18 2.0845a15.9155 15.9155 0 0 1 0 31.831a15.9155 15.9155 0 0 1 0-31.831" fill="none" stroke="var(--accent-violet)" stroke-width="3" stroke-dasharray="${avgS},100"/>
+                            </svg>
+                            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:var(--text-primary);">${avgS}%</div>
+                        </div>
+                        <div style="text-align:left;">
+                            <div style="font-size:14px;color:var(--text-primary);font-weight:600;">Average Scroll Depth</div>
+                            <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">How far visitors scroll down your portfolio</div>
+                        </div>
+                    </div>`;
+
+                // Event breakdown
+                const evtEl = el('eventBreakdownList');
+                const evtEntries = Object.entries(data.conversions || {});
+                const evtLabels = {scroll_depth:'Scroll Events',contact_click:'Contact Clicks',email_click:'Email Clicks',social_click:'Social Clicks',project_view:'Project Views'};
+                const evtColors = {scroll_depth:'var(--accent-violet)',contact_click:'var(--accent-emerald)',email_click:'var(--accent-cyan)',social_click:'var(--accent-gold)',project_view:'var(--accent-violet)'};
+                if (evtEntries.length > 0) {
+                    const maxE = Math.max(...evtEntries.map(e=>e[1])) || 1;
+                    evtEl.innerHTML = evtEntries.sort((a,b)=>b[1]-a[1]).map(([type, count], i) => `
+                        <div class="project-item">
+                            <div class="project-rank ${i < 3 ? 'top-3' : ''}">${i+1}</div>
+                            <div class="project-info">
+                                <div class="project-name">${evtLabels[type] || type}</div>
+                                <div class="project-meta">${fmt(count)} events</div>
+                            </div>
+                            <div class="project-bar-container">
+                                <div class="project-bar-bg"><div class="project-bar" style="width:${Math.round(count/maxE*100)}%;background:${evtColors[type]||'var(--accent-violet)'}"></div></div>
+                            </div>
+                        </div>`).join('');
+                } else {
+                    evtEl.innerHTML = '<div style="color:var(--text-muted);padding:24px;text-align:center;">No events yet.</div>';
+                }
+
+                // Peak hours chart
+                const hourlyEl = el('hourlyChart');
+                if (data.hourly && data.hourly.some(v => v > 0)) {
+                    const maxH = Math.max(...data.hourly) || 1;
+                    hourlyEl.innerHTML = `
+                        <div class="hourly-bars">
+                            ${data.hourly.map((v, i) => `<div class="hourly-bar" style="height:${Math.max(2, (v/maxH)*100)}%;" title="${i}:00 - ${v} views"></div>`).join('')}
+                        </div>
+                        <div class="hourly-labels">
+                            ${data.hourly.map((_, i) => `<span>${i % 3 === 0 ? i + 'h' : ''}</span>`).join('')}
+                        </div>
+                        <div style="text-align:center;margin-top:8px;font-size:12px;color:var(--text-muted);">Hours shown in UTC</div>`;
+                } else {
+                    hourlyEl.innerHTML = '<div style="color:var(--text-muted);padding:16px;text-align:center;">Not enough data yet.</div>';
+                }
+
+                // Avg time per page
+                const tppEl = el('timePerPageList');
+                if (data.time_per_page && data.time_per_page.length > 0) {
+                    tppEl.innerHTML = data.time_per_page.slice(0, 10).map(p => `
+                        <div class="time-page-item">
+                            <div class="time-page-name">${p.page}</div>
+                            <div class="time-page-duration">${fmtDuration(p.avg_time)}</div>
+                            <div class="time-page-views">${fmt(p.views)} views</div>
+                        </div>`).join('');
+                } else {
+                    tppEl.innerHTML = '<div style="color:var(--text-muted);padding:16px;text-align:center;">Not enough data yet.</div>';
+                }
+
+                // ===== CONVERSIONS PAGE =====
+                const convEl = el('conversionGrid');
+                const convIcons = {
+                    contact_click: {icon:'<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>',bg:'var(--accent-violet-dim)',color:'var(--accent-violet)',label:'Contact Clicks'},
+                    email_click: {icon:'<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>',bg:'var(--accent-cyan-dim)',color:'var(--accent-cyan)',label:'Email Clicks'},
+                    social_click: {icon:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>',bg:'var(--accent-gold-dim)',color:'var(--accent-gold)',label:'Social Clicks'},
+                    project_view: {icon:'<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>',bg:'rgba(52,211,153,0.15)',color:'var(--accent-emerald)',label:'Project Views'},
+                    scroll_depth: {icon:'<polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/>',bg:'rgba(251,113,133,0.15)',color:'var(--accent-rose,#fb7185)',label:'Scroll Events'}
+                };
+                if (evtEntries.length > 0) {
+                    convEl.innerHTML = evtEntries.sort((a,b)=>b[1]-a[1]).map(([type, count]) => {
+                        const c = convIcons[type] || {icon:'<circle cx="12" cy="12" r="10"/>',bg:'var(--accent-violet-dim)',color:'var(--accent-violet)',label:type};
+                        return `<div class="conversion-item">
+                            <div class="conversion-icon" style="background:${c.bg};color:${c.color};">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${c.icon}</svg>
+                            </div>
+                            <div class="conversion-value">${fmt(count)}</div>
+                            <div class="conversion-label">${c.label}</div>
+                        </div>`;
+                    }).join('');
+                } else {
+                    convEl.innerHTML = '<div style="color:var(--text-muted);padding:24px;text-align:center;grid-column:span 3;">No conversion data yet.</div>';
+                }
+
+                // Conversion funnel
+                const funnelEl = el('funnelContainer');
+                if (data.funnel) {
+                    const f = data.funnel;
+                    const maxF = f.visits || 1;
+                    const steps = [
+                        { label: 'Total Visits', count: f.visits, color: 'var(--accent-violet)', bg: 'var(--accent-violet-dim)', icon: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>' },
+                        { label: 'Scrolled Content', count: f.scrolled, color: 'var(--accent-cyan)', bg: 'var(--accent-cyan-dim)', icon: '<polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/>' },
+                        { label: 'Viewed Project', count: f.project_views, color: 'var(--accent-gold)', bg: 'var(--accent-gold-dim)', icon: '<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>' },
+                        { label: 'Made Contact', count: f.contacted, color: 'var(--accent-emerald)', bg: 'rgba(52,211,153,0.15)', icon: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/>' }
+                    ];
+                    funnelEl.innerHTML = steps.map(s => {
+                        const pct = maxF > 0 ? Math.round((s.count / maxF) * 100) : 0;
+                        return `<div class="funnel-step">
+                            <div class="funnel-icon" style="background:${s.bg};color:${s.color};">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${s.icon}</svg>
+                            </div>
+                            <div class="funnel-info">
+                                <div class="funnel-label">${s.label}</div>
+                                <div class="funnel-count">${fmt(s.count)} sessions</div>
+                            </div>
+                            <div class="funnel-bar-wrap">
+                                <div class="funnel-bar-bg"><div class="funnel-bar-fill" style="width:${pct}%;background:${s.color};"></div></div>
+                            </div>
+                            <div class="funnel-pct">${pct}%</div>
+                        </div>`;
+                    }).join('');
+                }
+
+                // ===== AUDIENCE PAGE =====
+                const audEl = el('audienceGrid');
+                if (data.regions && data.regions.length > 0) {
+                    const maxR = data.regions[0].count || 1;
+                    audEl.innerHTML = data.regions.map(r => `
+                        <div class="audience-item">
+                            <span class="country-flag" style="font-size:24px;">🌍</span>
+                            <div class="audience-info">
+                                <div class="audience-country">${r.country}</div>
+                                <div class="audience-visitors">${fmt(r.count)} visitors</div>
+                            </div>
+                            <div class="audience-bar"><div class="audience-bar-fill" style="width:${Math.round(r.count/maxR*100)}%"></div></div>
+                        </div>`).join('');
+                } else {
+                    audEl.innerHTML = '<div style="color:var(--text-muted);padding:24px;text-align:center;">No geographic data yet.</div>';
+                }
+
+                // Traffic sources / referrers
+                const refEl = el('referrerList');
+                if (data.referrers && data.referrers.length > 0) {
+                    const maxRef = data.referrers[0].count || 1;
+                    const refIcons = { 'Direct': '🔗', 'google.com': '🔍', 'linkedin.com': '💼', 'instagram.com': '📷', 'twitter.com': '🐦', 'facebook.com': '📘', 'github.com': '🐙' };
+                    refEl.innerHTML = data.referrers.map(r => `
+                        <div class="referrer-item">
+                            <div class="referrer-icon">${refIcons[r.source] || '🌐'}</div>
+                            <div class="referrer-name">${r.source}</div>
+                            <div class="referrer-bar"><div class="referrer-bar-fill" style="width:${Math.round(r.count/maxRef*100)}%"></div></div>
+                            <div class="referrer-count">${fmt(r.count)}</div>
+                        </div>`).join('');
+                } else {
+                    refEl.innerHTML = '<div style="color:var(--text-muted);padding:16px;text-align:center;">No referrer data yet.</div>';
+                }
+
+                // Device breakdown
+                if (data.devices && Object.keys(data.devices).length > 0) {
+                    initDeviceChart(data.devices);
+                }
+
+                // Browser breakdown
+                if (data.browsers && Object.keys(data.browsers).length > 0) {
+                    initBrowserChart(data.browsers);
+                }
+
+                // ===== LIVE ACTIVITY (full page) =====
+                const liveFullEl = el('liveActivityFull');
+                if (data.live_activity && data.live_activity.length > 0) {
+                    liveFullEl.innerHTML = data.live_activity.map(a => `
+                        <div class="live-item">
+                            <div class="live-dot"></div>
+                            <div class="live-info">
+                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''}</div>
+                                <div class="live-page">${a.page || 'home'}</div>
+                            </div>
+                            <div class="live-time">${timeAgo(a.time)}</div>
+                        </div>`).join('');
+                } else {
+                    liveFullEl.innerHTML = '<div style="color:var(--text-muted);padding:24px;text-align:center;">No recent activity. Visit your portfolio to see live data here.</div>';
                 }
 
             } catch (err) {
@@ -1840,18 +2232,9 @@
             }
         }
 
-        // Time filter
-        const timeFilter = document.getElementById('timeFilter');
-        if (timeFilter) {
-            timeFilter.addEventListener('change', () => {
-                currentRange = parseInt(timeFilter.value);
-                loadDashboard();
-            });
-        }
-
-        // Initial load + auto-refresh every 30s
+        // Initial load + apply saved settings
+        applySettings();
         loadDashboard();
-        setInterval(loadDashboard, 30000);
     </script>
 </body>
 </html>

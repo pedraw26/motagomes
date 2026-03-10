@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project — Pedro Gomes</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <style>
+        :root {
+            --sf-pro: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            --mono: 'SF Mono', 'Fira Code', 'Monaco', 'Menlo', monospace;
+            --bg-black: #000000;
+            --text: #ffffff;
+            --text-80: #e5e5e5;
+            --text-60: #999999;
+            --text-40: #666666;
+            --border-light: rgba(255, 255, 255, 0.25);
+            --border-subtle: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--sf-pro);
+            background: var(--bg-black);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ========================================
+           HEADER
+           ======================================== */
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+        }
+
+        .header.hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        .header-content {
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            padding: 20px 80px;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+        }
+
+        .header-logo {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .header-center {
+            justify-self: center;
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            color: var(--text-40);
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            justify-self: end;
+            gap: 16px;
+        }
+
+        .menu-icon {
+            width: 29px;
+            height: 29px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-icon span {
+            display: block;
+            background: #fff;
+            height: 1.5px;
+            border-radius: 1px;
+            position: absolute;
+            left: 3.5px;
+            width: 22px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-icon span:nth-child(1) {
+            top: 9px;
+        }
+
+        .menu-icon span:nth-child(2) {
+            top: 17px;
+        }
+
+        .menu-icon:hover span:nth-child(2) {
+            width: 14px;
+        }
+
+        /* ========================================
+           MENU OVERLAY
+           ======================================== */
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .menu-overlay-items {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+            text-align: center;
+        }
+
+        .menu-overlay-link {
+            font-family: var(--sf-pro);
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            color: var(--text-60);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .menu-overlay-link:hover {
+            color: var(--text);
+            transform: scale(1.05);
+        }
+
+        .menu-overlay-cta {
+            margin-top: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--sf-pro);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            color: var(--text);
+            text-decoration: none;
+            padding: 9px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.34);
+            border-radius: 999px;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .menu-overlay-cta:hover {
+            background: var(--text);
+            border-color: var(--text);
+            color: var(--bg-black);
+        }
+
+        .menu-overlay-footer {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            gap: 40px;
+        }
+
+        .menu-overlay-footer a {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            color: var(--text-40);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .menu-overlay-footer a:hover {
+            color: var(--text);
+        }
+
+        /* ========================================
+           GRADIENT BACKGROUNDS
+           ======================================== */
+
+        .gradient-obsidian {
+            background: linear-gradient(135deg, #070b34 0%, #2f6bff 46%, #8fd3ff 100%);
+        }
+
+        .gradient-velvet {
+            background: linear-gradient(135deg, #1b0033 0%, #7a1fff 45%, #ff4fcf 100%);
+        }
+
+        .gradient-midnight {
+            background: linear-gradient(135deg, #001a14 0%, #00a86b 44%, #9effc8 100%);
+        }
+
+        .gradient-ocean {
+            background: linear-gradient(135deg, #001b2e 0%, #0077ff 44%, #00d1ff 100%);
+        }
+
+        .gradient-sunset {
+            background: linear-gradient(135deg, #2f0f00 0%, #ff5e00 40%, #ffcc00 100%);
+        }
+
+        .gradient-emerald {
+            background: linear-gradient(135deg, #2a0a00 0%, #ff4d00 46%, #ffd166 100%);
+        }
+
+        .gradient-forest {
+            background: linear-gradient(135deg, #051f10 0%, #10b85a 42%, #b4ff4a 100%);
+        }
+
+        .gradient-crimson {
+            background: linear-gradient(135deg, #2b000f 0%, #ff2d55 46%, #ff9a3c 100%);
+        }
+
+        /* ========================================
+           PROJECT HERO
+           ======================================== */
+
+        .project-hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 80px 80px;
+            overflow: hidden;
+        }
+
+        .project-hero-gradient {
+            position: absolute;
+            inset: 0;
+            opacity: 0.35;
+            z-index: 0;
+        }
+
+        .project-hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.4) 100%);
+            z-index: 1;
+        }
+
+        .project-hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .project-hero-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-60);
+            margin-bottom: 24px;
+        }
+
+        .project-hero-title {
+            font-family: var(--sf-pro);
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            color: var(--text);
+            margin-bottom: 32px;
+        }
+
+        .project-hero-url {
+            font-family: var(--mono);
+            font-size: 12px;
+            letter-spacing: 0.05em;
+            color: var(--text-40);
+        }
+
+        .project-hero-url a {
+            color: var(--text-40);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .project-hero-url a:hover {
+            color: var(--text);
+        }
+
+        /* ========================================
+           SECTION SHARED
+           ======================================== */
+
+        .section {
+            padding: 120px 80px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .section-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            margin-bottom: 40px;
+        }
+
+        /* ========================================
+           OVERVIEW SECTION
+           ======================================== */
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+        }
+
+        .overview-description {
+            font-family: var(--sf-pro);
+            font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+            font-weight: 300;
+            line-height: 1.65;
+            color: var(--text-80);
+            letter-spacing: -0.01em;
+        }
+
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px 60px;
+        }
+
+        .metadata-item-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            margin-bottom: 10px;
+        }
+
+        .metadata-item-value {
+            font-family: var(--sf-pro);
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--text-80);
+            line-height: 1.5;
+        }
+
+        /* ========================================
+           CHALLENGE & SOLUTION
+           ======================================== */
+
+        .text-block {
+            max-width: 720px;
+        }
+
+        .text-block-heading {
+            font-family: var(--sf-pro);
+            font-size: clamp(1.5rem, 2.5vw, 2rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            color: var(--text);
+            margin-bottom: 28px;
+        }
+
+        .text-block-body {
+            font-family: var(--sf-pro);
+            font-size: clamp(1rem, 1.2vw, 1.15rem);
+            font-weight: 300;
+            line-height: 1.7;
+            color: var(--text-60);
+            letter-spacing: -0.005em;
+        }
+
+        /* ========================================
+           RESULTS / METRICS
+           ======================================== */
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+
+        .metric-card {
+            padding: 40px 0;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .metric-value {
+            font-family: var(--sf-pro);
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 200;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+
+        .metric-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-40);
+        }
+
+        /* ========================================
+           FOOTER NAVIGATION
+           ======================================== */
+
+        .footer-nav {
+            position: relative;
+            border-top: 1px solid var(--border-subtle);
+            background: var(--bg-black);
+            z-index: 100;
+        }
+
+        .footer-nav-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            min-height: 72px;
+        }
+
+        .footer-nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 20px;
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-right: 1px solid var(--border-subtle);
+            white-space: nowrap;
+        }
+
+        .footer-nav-link:last-child {
+            border-right: none;
+        }
+
+        .footer-nav-link:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .footer-nav-link span.arrow {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-nav-link:hover span.arrow-left {
+            transform: translateX(-4px);
+        }
+
+        .footer-nav-link:hover span.arrow-right {
+            transform: translateX(4px);
+        }
+
+        /* ========================================
+           PAGE TRANSITIONS
+           ======================================== */
+
+        .page-content {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .section.visible {
+            animation: sectionReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes sectionReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========================================
+           404 / NOT FOUND STATE
+           ======================================== */
+
+        .not-found {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            text-align: center;
+            padding: 80px;
+        }
+
+        .not-found-code {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-40);
+        }
+
+        .not-found-title {
+            font-family: var(--sf-pro);
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            color: var(--text);
+        }
+
+        .not-found-link {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            text-decoration: none;
+            padding: 12px 24px;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+            margin-top: 16px;
+        }
+
+        .not-found-link:hover {
+            background: var(--text);
+            color: var(--bg-black);
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+
+        @media (max-width: 1024px) {
+            .header-content {
+                padding: 18px 40px;
+            }
+
+            .project-hero {
+                padding: 0 40px 60px;
+            }
+
+            .section {
+                padding: 80px 40px;
+            }
+
+            .overview-grid {
+                gap: 60px;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 16px 24px;
+            }
+
+            .project-hero {
+                padding: 0 24px 48px;
+            }
+
+            .section {
+                padding: 64px 24px;
+            }
+
+            .overview-grid {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .metadata-grid {
+                gap: 32px 40px;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0;
+            }
+
+            .metric-card {
+                padding: 28px 0;
+            }
+
+            .footer-nav-inner {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-nav-link {
+                font-size: 9px;
+                padding: 18px 12px;
+            }
+
+            .footer-nav-link:nth-child(2) {
+                border-right: none;
+            }
+
+            .footer-nav-link:nth-child(3) {
+                border-top: 1px solid var(--border-subtle);
+            }
+
+            .footer-nav-link:nth-child(4) {
+                border-top: 1px solid var(--border-subtle);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .project-hero {
+                padding: 0 20px 40px;
+            }
+
+            .section {
+                padding: 48px 20px;
+            }
+
+            .metadata-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-nav-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-nav-link {
+                border-right: none;
+                border-bottom: 1px solid var(--border-subtle);
+            }
+
+            .footer-nav-link:last-child {
+                border-bottom: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========================================
+         NAVIGATION HEADER
+         ======================================== -->
+    <header class="header" id="header">
+        <div class="header-content">
+            <a href="/" class="header-logo">PG</a>
+            <div class="header-center" id="gmtTime">GMT 00:00</div>
+            <div class="header-right">
+                <div class="menu-icon" id="hamburger">
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hidden Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay">
+        <div class="menu-overlay-items">
+            <a href="/#work" class="menu-overlay-link">Work</a>
+            <a href="/#research" class="menu-overlay-link">Research</a>
+            <a href="/#about" class="menu-overlay-link">About</a>
+            <a href="/dashboard/" class="menu-overlay-link">Dashboard</a>
+            <a href="mailto:hi@motagomes.com" class="menu-overlay-cta">Let's Talk</a>
+        </div>
+        <div class="menu-overlay-footer">
+            <a href="mailto:hi@motagomes.com">Email</a>
+            <a href="https://linkedin.com/in/pedraw" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+    </div>
+
+    <!-- ========================================
+         PAGE CONTENT (populated by JS)
+         ======================================== -->
+    <main id="projectPage"></main>
+
+    <script>
+    /* ========================================
+       PROJECT DATA
+       ======================================== */
+
+    const PROJECTS = {
+        'one1x': {
+            title: 'One1x',
+            category: 'Rebrand',
+            client: 'One1x',
+            url: 'one1x.com',
+            year: '2024',
+            services: 'Rebrand, Brand Identity, Visual System',
+            gradient: 'gradient-obsidian',
+            description: 'A complete rebrand for One1x, transforming an outdated identity into a sharp, contemporary brand system built for scale.',
+            challenge: 'The existing brand lacked cohesion and failed to communicate the company\'s evolved positioning in a competitive market.',
+            solution: 'We stripped the brand back to its core and rebuilt from zero. A new visual identity system, typographic hierarchy, and colour language that feels both confident and adaptable across every touchpoint.',
+            metrics: [
+                { value: '100%', label: 'Brand refresh' },
+                { value: '40+', label: 'Assets delivered' },
+                { value: '3', label: 'Brand tiers' },
+                { value: '12', label: 'Touchpoints' }
+            ]
+        },
+        'aura': {
+            title: 'Aura',
+            category: 'Product Design',
+            client: 'Aura',
+            url: 'aura.com',
+            year: '2024',
+            services: 'Product Design, UX/UI, Prototyping',
+            gradient: 'gradient-velvet',
+            description: 'End-to-end product design for Aura, shaping the user experience from concept through to a polished, production-ready interface.',
+            challenge: 'A complex product with powerful capabilities that needed to feel intuitive and approachable without sacrificing depth.',
+            solution: 'We designed a layered interface that reveals complexity progressively. Clean defaults for new users, deep customisation for power users. Every interaction was prototyped and tested before development.',
+            metrics: [
+                { value: '4.8', label: 'User satisfaction' },
+                { value: '60%', label: 'Onboarding time cut' },
+                { value: '35+', label: 'Screens designed' },
+                { value: '8', label: 'User flows' }
+            ]
+        },
+        'galp': {
+            title: 'Galp',
+            category: 'Ad Campaign',
+            client: 'Galp',
+            url: 'galp.com',
+            year: '2025',
+            services: 'Campaign Design, Art Direction, Motion',
+            gradient: 'gradient-midnight',
+            description: 'A bold advertising campaign for Galp, bringing energy and purpose to life through striking visual storytelling across digital and print.',
+            challenge: 'Communicating complex energy transition messaging in a way that resonates emotionally with a broad, diverse audience.',
+            solution: 'We developed a campaign visual language that balances urgency with optimism. Large-scale typography, dynamic compositions, and a colour system that shifts from warm to cool to mirror the energy transition narrative.',
+            metrics: [
+                { value: '12M+', label: 'Impressions' },
+                { value: '3.4x', label: 'Engagement lift' },
+                { value: '8', label: 'Campaign formats' },
+                { value: '24', label: 'Deliverables' }
+            ]
+        },
+        'ulaw': {
+            title: 'ULaw',
+            category: 'Campaign',
+            client: 'University of Law',
+            url: 'ulaw.ac.uk',
+            year: '2025',
+            services: 'Campaign Design, Digital Ads, Print',
+            gradient: 'gradient-ocean',
+            description: 'A recruitment campaign for the University of Law, designed to attract the next generation of legal professionals with clarity and ambition.',
+            challenge: 'Standing out in a crowded higher education market where every institution promises the same outcomes with generic creative.',
+            solution: 'We crafted a campaign identity rooted in confidence and aspiration. Bold statements, editorial photography, and a modular system that scales from social ads to campus banners while maintaining consistency.',
+            metrics: [
+                { value: '280%', label: 'Application increase' },
+                { value: '45%', label: 'Click-through rate lift' },
+                { value: '6', label: 'Campaign channels' },
+                { value: '30+', label: 'Ad variations' }
+            ]
+        },
+        'moope': {
+            title: 'Moope',
+            category: 'UX Design',
+            client: 'Moope',
+            url: 'moope.com',
+            year: '2024',
+            services: 'UX Design, Research, Interaction Design',
+            gradient: 'gradient-sunset',
+            description: 'UX design for Moope, rethinking the entire user experience through research-led design and rigorous usability testing.',
+            challenge: 'Users were dropping off at critical conversion points. The existing experience was functional but lacked the flow and delight that builds retention.',
+            solution: 'We ran a full UX audit, mapped pain points, and redesigned the core user journeys. Every decision was backed by research. The result is an experience that feels effortless and keeps users coming back.',
+            metrics: [
+                { value: '72%', label: 'Retention improvement' },
+                { value: '3.1x', label: 'Task completion speed' },
+                { value: '90%', label: 'Usability score' },
+                { value: '5', label: 'Core journeys redesigned' }
+            ]
+        },
+        'standard-bank': {
+            title: 'Standard Bank',
+            category: 'Ad Campaign',
+            client: 'Standard Bank',
+            url: 'standardbank.com',
+            year: '2025',
+            services: 'Campaign Design, Art Direction, Digital',
+            gradient: 'gradient-emerald',
+            description: 'A multi-channel advertising campaign for Standard Bank, bringing financial services to life with bold, human-centred creative.',
+            challenge: 'Banking campaigns tend to look and feel the same. The brief was to break through the noise without losing institutional trust.',
+            solution: 'We designed a campaign system that leads with real stories and human moments. The visual identity uses unexpected colour combinations and bold typography to create distinction while the message stays grounded and trustworthy.',
+            metrics: [
+                { value: '18M+', label: 'Campaign reach' },
+                { value: '4.2x', label: 'Brand recall' },
+                { value: '12', label: 'Campaign formats' },
+                { value: '3', label: 'Markets launched' }
+            ]
+        },
+        'seasonal-kitchen': {
+            title: 'Farm to Table, Reimagined',
+            category: 'Food & Bev',
+            client: 'Seasonal Kitchen',
+            url: 'seasonal.kitchen',
+            year: '2024',
+            services: 'Brand Identity, Web Design, Photography Direction',
+            gradient: 'gradient-forest',
+            description: 'Complete brand identity and digital presence for a farm-to-table restaurant concept with rotating seasonal menus.',
+            challenge: 'The brand needed to feel premium and artisanal without being pretentious or exclusive. Accessibility was key.',
+            solution: 'We created a warm, earthy brand system with natural textures and hand-drawn elements. The website features a dynamic menu that updates seasonally, with photography direction that makes the food the hero.',
+            metrics: [
+                { value: '220%', label: 'Online reservations' },
+                { value: '45%', label: 'Return visitors' },
+                { value: '4.9', label: 'Google reviews' },
+                { value: '4', label: 'Seasonal themes' }
+            ]
+        },
+        'k-clinic': {
+            title: 'The Future of Diagnostics',
+            category: 'HealthTech',
+            client: 'K-Clinic Health',
+            url: 'k-clinic.health',
+            year: '2025',
+            services: 'Product Design, Brand System, Accessibility',
+            gradient: 'gradient-crimson',
+            description: 'Accessible product design and brand system for a health technology platform democratizing diagnostic tools.',
+            challenge: 'Health tech demands absolute trust and clarity. The platform serves diverse demographics with varying digital literacy.',
+            solution: 'We prioritized accessibility at every level \u2014 WCAG AAA compliance, plain language, culturally considered design. The brand system uses warm reds for trust and urgency, balanced with plenty of white space for clarity.',
+            metrics: [
+                { value: 'AAA', label: 'WCAG compliance' },
+                { value: '95%', label: 'Task success rate' },
+                { value: '50%', label: 'Support tickets down' },
+                { value: '12', label: 'Languages supported' }
+            ]
+        }
+    };
+
+    const PROJECT_ORDER = [
+        'one1x',
+        'aura',
+        'galp',
+        'ulaw',
+        'moope',
+        'standard-bank',
+        'seasonal-kitchen',
+        'k-clinic'
+    ];
+
+    /* ========================================
+       INIT
+       ======================================== */
+
+    function getSlug() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('p');
+    }
+
+    function renderProject(slug) {
+        const project = PROJECTS[slug];
+        const page = document.getElementById('projectPage');
+
+        if (!project) {
+            document.title = 'Project Not Found \u2014 Pedro Gomes';
+            page.innerHTML = `
+                <div class="not-found">
+                    <div class="not-found-code">404 \u2014 Project not found</div>
+                    <h1 class="not-found-title">This project doesn't exist.</h1>
+                    <a href="/" class="not-found-link">Back to Portfolio</a>
+                </div>
+            `;
+            return;
+        }
+
+        // Update page title
+        document.title = `${project.title} \u2014 Pedro Gomes`;
+
+        // Prev / Next
+        const currentIndex = PROJECT_ORDER.indexOf(slug);
+        const prevIndex = (currentIndex - 1 + PROJECT_ORDER.length) % PROJECT_ORDER.length;
+        const nextIndex = (currentIndex + 1) % PROJECT_ORDER.length;
+        const prevSlug = PROJECT_ORDER[prevIndex];
+        const nextSlug = PROJECT_ORDER[nextIndex];
+        const prevProject = PROJECTS[prevSlug];
+        const nextProject = PROJECTS[nextSlug];
+
+        page.innerHTML = `
+            <div class="page-content">
+                <!-- PROJECT HERO -->
+                <section class="project-hero">
+                    <div class="project-hero-gradient ${project.gradient}"></div>
+                    <div class="project-hero-overlay"></div>
+                    <div class="project-hero-content">
+                        <div class="project-hero-label">${project.category}</div>
+                        <h1 class="project-hero-title">${project.title}</h1>
+                        <div class="project-hero-url"><a href="https://${project.url}" target="_blank" rel="noopener">${project.url}</a></div>
+                    </div>
+                </section>
+
+                <!-- OVERVIEW -->
+                <section class="section" data-reveal>
+                    <div class="overview-grid">
+                        <div>
+                            <div class="section-label">Overview</div>
+                            <p class="overview-description">${project.description}</p>
+                        </div>
+                        <div>
+                            <div class="metadata-grid">
+                                <div>
+                                    <div class="metadata-item-label">Client</div>
+                                    <div class="metadata-item-value">${project.client}</div>
+                                </div>
+                                <div>
+                                    <div class="metadata-item-label">Industry</div>
+                                    <div class="metadata-item-value">${project.category}</div>
+                                </div>
+                                <div>
+                                    <div class="metadata-item-label">Year</div>
+                                    <div class="metadata-item-value">${project.year}</div>
+                                </div>
+                                <div>
+                                    <div class="metadata-item-label">Services</div>
+                                    <div class="metadata-item-value">${project.services}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CHALLENGE -->
+                <section class="section" data-reveal>
+                    <div class="text-block">
+                        <div class="section-label">Challenge</div>
+                        <p class="text-block-body">${project.challenge}</p>
+                    </div>
+                </section>
+
+                <!-- SOLUTION -->
+                <section class="section" data-reveal>
+                    <div class="text-block">
+                        <div class="section-label">Solution</div>
+                        <p class="text-block-body">${project.solution}</p>
+                    </div>
+                </section>
+
+                <!-- RESULTS -->
+                <section class="section" data-reveal>
+                    <div class="section-label">Results</div>
+                    <div class="metrics-grid">
+                        ${project.metrics.map(m => `
+                            <div class="metric-card">
+                                <div class="metric-value">${m.value}</div>
+                                <div class="metric-label">${m.label}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+
+                <!-- FOOTER NAVIGATION -->
+                <nav class="footer-nav">
+                    <div class="footer-nav-inner">
+                        <a href="/#work" class="footer-nav-link">
+                            <span class="arrow arrow-left">&larr;</span>&nbsp;&nbsp;Back
+                        </a>
+                        <a href="project.html?p=${prevSlug}" class="footer-nav-link">
+                            <span class="arrow arrow-left">&larr;</span>&nbsp;&nbsp;${prevProject.client}
+                        </a>
+                        <a href="project.html?p=${nextSlug}" class="footer-nav-link">
+                            ${nextProject.client}&nbsp;&nbsp;<span class="arrow arrow-right">&rarr;</span>
+                        </a>
+                        <a href="/" class="footer-nav-link">
+                            Main Menu
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        `;
+
+        // Observe sections for reveal animation
+        initRevealObserver();
+    }
+
+    /* ========================================
+       SECTION REVEAL ON SCROLL
+       ======================================== */
+
+    function initRevealObserver() {
+        const sections = document.querySelectorAll('[data-reveal]');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = `${i * 0.08}s`;
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.12,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        sections.forEach(s => observer.observe(s));
+    }
+
+    /* ========================================
+       HEADER SCROLL BEHAVIOR
+       ======================================== */
+
+    let lastScrollY = 0;
+    let headerHidden = false;
+
+    window.addEventListener('scroll', () => {
+        const currentY = window.scrollY;
+        if (currentY > 120 && currentY > lastScrollY && !headerHidden) {
+            document.getElementById('header').classList.add('hidden');
+            headerHidden = true;
+        } else if (currentY < lastScrollY && headerHidden) {
+            document.getElementById('header').classList.remove('hidden');
+            headerHidden = false;
+        }
+        lastScrollY = currentY;
+    }, { passive: true });
+
+    /* ========================================
+       GMT CLOCK
+       ======================================== */
+
+    function updateGMT() {
+        const now = new Date();
+        const h = String(now.getUTCHours()).padStart(2, '0');
+        const m = String(now.getUTCMinutes()).padStart(2, '0');
+        const el = document.getElementById('gmtTime');
+        if (el) el.textContent = `GMT ${h}:${m}`;
+    }
+
+    updateGMT();
+    setInterval(updateGMT, 10000);
+
+    /* ========================================
+       HAMBURGER MENU
+       ======================================== */
+
+    const hamburger = document.getElementById('hamburger');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const menuLinks = document.querySelectorAll('.menu-overlay-link, .menu-overlay-cta');
+
+    hamburger.addEventListener('click', () => {
+        menuOverlay.classList.toggle('active');
+    });
+
+    menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            menuOverlay.classList.remove('active');
+        });
+    });
+
+    // Close menu on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menuOverlay.classList.contains('active')) {
+            menuOverlay.classList.remove('active');
+        }
+    });
+
+    /* ========================================
+       RENDER
+       ======================================== */
+
+    const slug = getSlug();
+    renderProject(slug);
+
+    </script>
+</body>
+</html>

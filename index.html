@@ -962,6 +962,17 @@
             transition: all 0.3s ease;
             letter-spacing: -0.01em;
         }
+
+        .gallery-stacked-type {
+            font-family: var(--sf-pro);
+            font-size: 10px;
+            font-weight: 400;
+            color: var(--text-40);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-top: 6px;
+            transition: all 0.3s ease;
+        }
         
         /* Right side - scroll progress bar */
         .gallery-stacked-progress {
@@ -1049,20 +1060,137 @@
             margin-bottom: 60px;
         }
         
-        /* About Block (inside research section) */
-        .about-block {
-            padding: 69px 0 0;
+        /* ========================================
+           ABOUT SECTION (standalone)
+           ======================================== */
+        .about-section {
+            min-height: 100vh;
+            background: var(--bg-black);
+            padding: 120px 80px 60px;
         }
-        
-        .about-block-inner {
-            padding: 0 80px;
+
+        .about-hero {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 60px;
+            margin-bottom: 80px;
         }
-        
-        .about-block .about-title {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 400;
-            letter-spacing: -0.02em;
+
+        .about-photo-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 3/4;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .about-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .about-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            margin-bottom: 16px;
+        }
+
+        .about-headline {
+            font-size: clamp(2.2rem, 4vw, 3.6rem);
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        .about-role {
+            font-family: var(--mono);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            color: var(--text-40);
+            margin-bottom: 40px;
+        }
+
+        .about-bio p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-80);
+            font-weight: 300;
+            margin-bottom: 20px;
+            max-width: 560px;
+        }
+
+        .about-bio p:last-child {
+            margin-bottom: 0;
+        }
+
+        .about-details {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            padding-top: 60px;
+            border-top: 1px solid var(--border-subtle);
             margin-bottom: 60px;
+        }
+
+        .about-col-title {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .about-col-list {
+            list-style: none;
+        }
+
+        .about-col-list li {
+            font-size: 0.9rem;
+            color: var(--text-80);
+            font-weight: 300;
+            line-height: 2;
+        }
+
+        .about-col-testimonial {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .about-quote {
+            border-left: 1px solid var(--border-subtle);
+            padding-left: 20px;
+        }
+
+        .about-quote p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-80);
+            font-weight: 300;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .about-quote cite {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            color: var(--text-40);
+            font-style: normal;
+        }
+
+        .about-widgets-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(8px, 1.5vw, 24px);
+            padding-top: 40px;
         }
         
         .research-label {
@@ -1763,169 +1891,171 @@ margin-top: 3px;
         
         .footer-swiss {
             min-height: 100vh;
-            background: var(--bg-black);
-            padding: 140px 80px 60px;
+            background: #f5f5f0;
+            border-radius: 16px;
+            display: grid;
+            grid-template-rows: 1fr auto;
+            padding: 0 80px 48px;
         }
-        
-        .swiss-content {
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-        
-        .swiss-top {
+
+        .swiss-center {
             display: flex;
-            justify-content: space-between;
-            align-items: baseline;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .swiss-content {
+            text-align: center;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .swiss-content > * {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .swiss-content.is-visible > * {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .swiss-content > *:nth-child(1) { transition-delay: 0ms; }
+        .swiss-content > *:nth-child(2) { transition-delay: 120ms; }
+        .swiss-content > *:nth-child(3) { transition-delay: 240ms; }
+
+        .swiss-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(0,0,0,0.32);
+            margin-bottom: 28px;
+        }
+
+        .swiss-cta h3 {
+            font-size: clamp(2.2rem, 5vw, 4.2rem);
+            font-weight: 300;
+            line-height: 1.12;
+            letter-spacing: -0.03em;
+            color: #111;
             margin-bottom: 40px;
         }
-        
-        .swiss-logo {
-            font-size: 14px;
-            font-weight: 300;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-        }
-        
-        .swiss-tagline-inline {
-            margin-bottom: 60px;
-        }
-        
-        .swiss-tagline-inline p {
-            font-size: 1rem;
-            line-height: 1.5;
-            color: var(--text-60);
-            font-weight: 400;
-        }
-        
-        .swiss-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-            padding: 40px 0;
-        }
-        
-        .swiss-column h5 {
-            font-family: var(--mono);
-            font-size: 8px;
-            font-weight: 400;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: var(--text-40);
-            margin-bottom: 20px;
-        }
-        
-        .swiss-column ul {
-            list-style: none;
-        }
-        
-        .swiss-column li {
-            margin-bottom: 14px;
-        }
-        
-        .swiss-column a {
-            font-size: 0.875rem;
-            color: var(--text-80);
+
+        .swiss-cta-email {
+            display: block;
+            font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+            color: rgba(0,0,0,0.4);
             text-decoration: none;
-            font-weight: 400;
+            margin-bottom: 32px;
+            letter-spacing: 0.02em;
             transition: color 0.2s ease;
         }
-        
-        .swiss-column a:hover {
-            color: var(--text);
+
+        .swiss-cta-email:hover {
+            color: #111;
         }
-        
-        .swiss-cta {
-            margin-top: 60px;
-        }
-        
-        .swiss-cta h3 {
-            font-size: clamp(1.8rem, 4vw, 3.5rem);
-            font-weight: 300;
-            line-height: 1.15;
-            letter-spacing: -0.03em;
-            margin-bottom: 32px;
-            max-width: 800px;
-        }
-        
+
         .swiss-cta-link {
             display: inline-flex;
             align-items: center;
-            gap: 14px;
-            font-family: var(--mono);
-            font-size: 10px;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--text);
+            gap: 12px;
+            font-family: var(--sf-pro);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            color: #0c0c0c;
             text-decoration: none;
-            padding: 18px 28px;
-            border: 1px solid var(--border-light);
+            padding: 16px 28px;
+            border: 1px solid rgba(0,0,0,0.22);
+            border-radius: 999px;
+            background: transparent;
             transition: all 0.3s ease;
         }
-        
+
         .swiss-cta-link:hover {
-            background: var(--text);
-            color: var(--bg-black);
+            background: #111;
+            color: #f5f5f0;
         }
-        
+
         .swiss-cta-link:hover svg {
-            stroke: var(--bg-black);
+            stroke: #f5f5f0;
         }
-        
+
         .swiss-cta-link svg {
             width: 14px;
             height: 14px;
             transition: stroke 0.3s ease;
         }
-        
-        .swiss-bottom {
+
+        .swiss-foot {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 60px;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            padding-top: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
-        
+
+        .swiss-content .swiss-foot-links {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+
+        .swiss-content .swiss-foot-links a {
+            font-size: 13px;
+            color: rgba(0,0,0,0.38);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .swiss-content .swiss-foot-links a:hover {
+            color: #111;
+        }
+
         .swiss-copyright {
             font-family: var(--mono);
             font-size: 9px;
             letter-spacing: 0.12em;
-            color: var(--text-40);
+            color: rgba(0,0,0,0.3);
         }
-        
+
         .swiss-backtop {
             font-family: var(--mono);
             font-size: 9px;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: var(--text-40);
+            color: rgba(0,0,0,0.3);
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             transition: color 0.3s ease;
             cursor: pointer;
         }
-        
+
         .swiss-backtop:hover {
-            color: var(--text);
+            color: #111;
         }
-        
+
         .swiss-backtop svg {
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             animation: bounceUp 2s ease-in-out infinite;
         }
-        
+
         @keyframes bounceUp {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
+            50% { transform: translateY(-3px); }
         }
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .swiss-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
             .gallery-1-item {
                 width: 420px;
             }
@@ -1950,42 +2080,36 @@ margin-top: 3px;
                 display: none;
             }
             
-            .hero, .gallery-1, .footer-swiss, .research, .blog-magazine {
+            .hero, .gallery-1, .research, .blog-magazine {
                 padding: 100px 24px 48px;
             }
-            
+
+            .footer-swiss {
+                padding: 0 24px 32px;
+            }
+
+            .swiss-foot {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .swiss-foot-links {
+                gap: 16px;
+            }
+
             .philosophy {
                 min-height: 56vh;
                 padding: 0 24px;
             }
-            
+
             .gallery-1-header, .gallery-1-track, .gallery-1-nav {
                 padding-left: 24px;
                 padding-right: 24px;
             }
-            
+
             .magazine-content {
                 grid-template-columns: 1fr;
-            }
-            
-            .swiss-top {
-                flex-direction: column;
-                gap: 24px;
-            }
-            
-            .swiss-tagline {
-                text-align: left;
-            }
-            
-            .swiss-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-            
-            .swiss-bottom {
-                flex-direction: column;
-                gap: 20px;
-                align-items: flex-start;
             }
             
             .gallery-1-item {
@@ -2000,12 +2124,27 @@ margin-top: 3px;
                 padding: 0 24px;
             }
             
-            .about-block-inner {
-                padding: 0 24px;
+            .about-section {
+                padding: 80px 24px 40px;
             }
-            
-            .about-widgets {
-                padding: 0 24px 40px;
+
+            .about-hero {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .about-photo-wrap {
+                max-width: 280px;
+                aspect-ratio: 1/1;
+            }
+
+            .about-details {
+                grid-template-columns: 1fr 1fr;
+                gap: 32px;
+            }
+
+            .about-widgets-row {
+                grid-template-columns: 1fr;
             }
             
             .research-item {
@@ -2126,6 +2265,47 @@ margin-top: 3px;
             visibility: visible;
         }
         
+        .menu-overlay-close {
+            position: absolute;
+            top: 20px;
+            right: 80px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-60);
+            transition: all 0.3s ease;
+            z-index: 10;
+            opacity: 0;
+            transform: rotate(-90deg) scale(0.5);
+        }
+
+        .menu-overlay.active .menu-overlay-close {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
+                        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
+                        border-color 0.3s ease,
+                        color 0.3s ease;
+        }
+
+        .menu-overlay-close:hover {
+            border-color: var(--text);
+            color: var(--text);
+            transform: rotate(90deg) scale(1);
+        }
+
+        @media (max-width: 768px) {
+            .menu-overlay-close {
+                right: 24px;
+            }
+        }
+
         .menu-overlay-items {
             display: flex;
             flex-direction: column;
@@ -2155,28 +2335,58 @@ margin-top: 3px;
             align-items: center;
             justify-content: center;
             align-self: center;
+            gap: 10px;
             font-family: var(--sf-pro);
-            font-size: 11px;
-            font-weight: 500;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 400;
             letter-spacing: 0.01em;
             text-transform: none;
             color: var(--text);
             text-decoration: none;
             width: fit-content;
             min-width: 0;
-            padding: 9px 14px;
+            padding: 16px 36px;
             border: 1px solid rgba(255,255,255,0.34);
             border-radius: 999px;
             background: transparent;
             transition: all 0.3s ease;
         }
-        
+
         .menu-overlay-cta:hover {
             background: var(--text);
             border-color: var(--text);
             color: var(--bg-black);
         }
-        
+
+        .menu-overlay-cv {
+            margin-top: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            align-self: center;
+            gap: 8px;
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .menu-overlay-cv:hover {
+            color: var(--text);
+        }
+
+        .menu-overlay-cv svg {
+            transition: transform 0.3s ease;
+        }
+
+        .menu-overlay-cv:hover svg {
+            transform: translateY(2px);
+        }
+
         .menu-overlay-footer {
             position: absolute;
             bottom: 40px;
@@ -2222,7 +2432,7 @@ margin-top: 3px;
          ======================================== -->
     <header class="header" id="header">
         <div class="header-content">
-            <a href="#" class="header-logo">PG</a>
+            <a href="javascript:void(0)" class="header-logo" onclick="scrollToTop()">PG</a>
             <div class="header-center">GMT 21:24</div>
             
             <div class="header-right">
@@ -2236,16 +2446,25 @@ margin-top: 3px;
     
     <!-- Hidden Menu Overlay -->
     <div class="menu-overlay" id="menuOverlay">
+        <button class="menu-overlay-close" id="menuClose" aria-label="Close menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
         <div class="menu-overlay-items">
             <a href="#work" class="menu-overlay-link">Work</a>
             <a href="#research" class="menu-overlay-link">Research</a>
             <a href="#about" class="menu-overlay-link">About</a>
-            <a href="/dashboard/" class="menu-overlay-link">Dashboard</a>
-            <a href="mailto:hello@pedraw.co.uk" class="menu-overlay-cta">Let's Talk</a>
-        </div>
-        <div class="menu-overlay-footer">
-            <a href="#">Email</a>
-            <a href="#">LinkedIn</a>
+            <a href="mailto:hi@motagomes.com" class="menu-overlay-cta">Let's Talk</a>
+            <a href="/cv.pdf" download class="menu-overlay-cv">
+                Curriculum
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+            </a>
         </div>
     </div>
 
@@ -2316,8 +2535,8 @@ margin-top: 3px;
             
             <!-- Side indicators -->
             <div class="gallery-stacked-side gallery-stacked-side-left">
-                <div class="gallery-stacked-index" id="galleryIndex">01</div>
-                <div class="gallery-stacked-category" id="galleryCategory">Manufacturing</div>
+                <div class="gallery-stacked-category" id="galleryCategory">One1x</div>
+                <div class="gallery-stacked-type" id="galleryType">Rebrand</div>
             </div>
             <div class="gallery-stacked-side gallery-stacked-side-right">
                 <div class="gallery-stacked-scroll-label"></div>
@@ -2334,18 +2553,18 @@ margin-top: 3px;
                             <div class="gallery-stacked-dot"></div>
                             <div class="gallery-stacked-dot"></div>
                             <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-url">precisioncnc.com</div>
+                            <div class="gallery-stacked-url">one1x.com</div>
                             <div class="gallery-stacked-nav">
-                                <span>Products</span>
-                                <span>Materials</span>
-                                <span>Pricing</span>
+                                <span>Brand</span>
+                                <span>Identity</span>
+                                <span>Strategy</span>
                             </div>
                         </div>
                         <div class="gallery-stacked-hero gradient-obsidian">
                             <div class="gallery-stacked-info">
-                                <div class="gallery-stacked-label">Manufacturing</div>
-                                <div class="gallery-stacked-project-title">Precision CNC Parts<br>Shipped Fast</div>
-                                <a href="#" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
+                                <div class="gallery-stacked-label">Rebrand</div>
+                                <div class="gallery-stacked-project-title">One1x</div>
+                                <a href="/project.html?p=one1x" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
                             </div>
                             <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
                         </div>
@@ -2359,18 +2578,18 @@ margin-top: 3px;
                             <div class="gallery-stacked-dot"></div>
                             <div class="gallery-stacked-dot"></div>
                             <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-url">ember.audio</div>
+                            <div class="gallery-stacked-url">aura.com</div>
                             <div class="gallery-stacked-nav">
-                                <span>Shop</span>
-                                <span>Studio</span>
-                                <span>Artists</span>
+                                <span>Product</span>
+                                <span>Features</span>
+                                <span>About</span>
                             </div>
                         </div>
                         <div class="gallery-stacked-hero gradient-velvet">
                             <div class="gallery-stacked-info">
-                                <div class="gallery-stacked-label">Startups</div>
-                                <div class="gallery-stacked-project-title">Modular Sound,<br>Bold Design</div>
-                                <a href="#" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
+                                <div class="gallery-stacked-label">Product Design</div>
+                                <div class="gallery-stacked-project-title">Aura</div>
+                                <a href="/project.html?p=aura" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
                             </div>
                             <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
                         </div>
@@ -2384,18 +2603,18 @@ margin-top: 3px;
                             <div class="gallery-stacked-dot"></div>
                             <div class="gallery-stacked-dot"></div>
                             <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-url">tse-semi.com</div>
+                            <div class="gallery-stacked-url">galp.com</div>
                             <div class="gallery-stacked-nav">
-                                <span>Technology</span>
-                                <span>Research</span>
-                                <span>Careers</span>
+                                <span>Energy</span>
+                                <span>Campaign</span>
+                                <span>Impact</span>
                             </div>
                         </div>
                         <div class="gallery-stacked-hero gradient-midnight">
                             <div class="gallery-stacked-info">
-                                <div class="gallery-stacked-label">Deep Tech</div>
-                                <div class="gallery-stacked-project-title">Scaling Chips<br>15x Faster</div>
-                                <a href="#" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
+                                <div class="gallery-stacked-label">Ad Campaign</div>
+                                <div class="gallery-stacked-project-title">Galp</div>
+                                <a href="/project.html?p=galp" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
                             </div>
                             <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
                         </div>
@@ -2409,18 +2628,18 @@ margin-top: 3px;
                             <div class="gallery-stacked-dot"></div>
                             <div class="gallery-stacked-dot"></div>
                             <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-url">hive.systems</div>
+                            <div class="gallery-stacked-url">ulaw.ac.uk</div>
                             <div class="gallery-stacked-nav">
-                                <span>Platform</span>
-                                <span>Solutions</span>
-                                <span>Benefits</span>
+                                <span>Courses</span>
+                                <span>Campaign</span>
+                                <span>Apply</span>
                             </div>
                         </div>
                         <div class="gallery-stacked-hero gradient-ocean">
                             <div class="gallery-stacked-info">
-                                <div class="gallery-stacked-label">Enterprise</div>
-                                <div class="gallery-stacked-project-title">AI-Powered<br>Interoperability</div>
-                                <a href="#" class="gallery-stacked-btn gallery-stacked-btn-fill">View Case</a>
+                                <div class="gallery-stacked-label">Campaign</div>
+                                <div class="gallery-stacked-project-title">ULaw</div>
+                                <a href="/project.html?p=ulaw" class="gallery-stacked-btn gallery-stacked-btn-fill">View Case</a>
                             </div>
                             <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
                         </div>
@@ -2434,18 +2653,18 @@ margin-top: 3px;
                             <div class="gallery-stacked-dot"></div>
                             <div class="gallery-stacked-dot"></div>
                             <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-url">archon.dev</div>
+                            <div class="gallery-stacked-url">moope.com</div>
                             <div class="gallery-stacked-nav">
-                                <span>Features</span>
-                                <span>Integrations</span>
+                                <span>Product</span>
+                                <span>Experience</span>
                                 <span>About</span>
                             </div>
                         </div>
                         <div class="gallery-stacked-hero gradient-sunset">
                             <div class="gallery-stacked-info">
-                                <div class="gallery-stacked-label">SaaS</div>
-                                <div class="gallery-stacked-project-title">Sell Software<br>To Startups</div>
-                                <a href="#" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
+                                <div class="gallery-stacked-label">UX Design</div>
+                                <div class="gallery-stacked-project-title">Moope</div>
+                                <a href="/project.html?p=moope" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
                             </div>
                             <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
                         </div>
@@ -2459,18 +2678,18 @@ margin-top: 3px;
                             <div class="gallery-stacked-dot"></div>
                             <div class="gallery-stacked-dot"></div>
                             <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-url">flowcraft.ai</div>
+                            <div class="gallery-stacked-url">standardbank.com</div>
                             <div class="gallery-stacked-nav">
-                                <span>Features</span>
-                                <span>Pricing</span>
-                                <span>Docs</span>
+                                <span>Banking</span>
+                                <span>Campaign</span>
+                                <span>Impact</span>
                             </div>
                         </div>
                         <div class="gallery-stacked-hero gradient-emerald">
                             <div class="gallery-stacked-info">
-                                <div class="gallery-stacked-label">Design Tools</div>
-                                <div class="gallery-stacked-project-title">AI-Powered<br>Design Workflow</div>
-                                <a href="#" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
+                                <div class="gallery-stacked-label">Ad Campaign</div>
+                                <div class="gallery-stacked-project-title">Standard Bank</div>
+                                <a href="/project.html?p=standard-bank" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
                             </div>
                             <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
                         </div>
@@ -2495,7 +2714,7 @@ margin-top: 3px;
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-label">Food &amp; Bev</div>
                                 <div class="gallery-stacked-project-title">Farm to Table<br>Reimagined</div>
-                                <a href="#" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
+                                <a href="/project.html?p=seasonal-kitchen" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
                             </div>
                             <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
                         </div>
@@ -2520,7 +2739,7 @@ margin-top: 3px;
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-label">HealthTech</div>
                                 <div class="gallery-stacked-project-title">The Future of<br>Diagnostics</div>
-                                <a href="#" class="gallery-stacked-btn gallery-stacked-btn-fill">View Case</a>
+                                <a href="/project.html?p=k-clinic" class="gallery-stacked-btn gallery-stacked-btn-fill">View Case</a>
                             </div>
                             <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
                         </div>
@@ -2545,32 +2764,32 @@ margin-top: 3px;
                     </div>
                     
                     <div class="research-list">
-                        <a href="#" class="research-item" data-image="1">
+                        <a href="/research.html?r=procedural-terrain" class="research-item" data-image="1">
                             <span class="research-name">Procedural Terrain Generation</span>
                             <span class="research-tech">WebGL / Three.js</span>
                             <span class="research-year">2025</span>
                         </a>
-                        <a href="#" class="research-item" data-image="2">
+                        <a href="/research.html?r=neural-network-viz" class="research-item" data-image="2">
                             <span class="research-name">Neural Network Visualization</span>
                             <span class="research-tech">D3.js / Python</span>
                             <span class="research-year">2025</span>
                         </a>
-                        <a href="#" class="research-item" data-image="3">
+                        <a href="/research.html?r=audio-reactive-shaders" class="research-item" data-image="3">
                             <span class="research-name">Audio Reactive Shaders</span>
                             <span class="research-tech">GLSL / WebGL</span>
                             <span class="research-year">2024</span>
                         </a>
-                        <a href="#" class="research-item" data-image="4">
+                        <a href="/research.html?r=raymarching" class="research-item" data-image="4">
                             <span class="research-name">Raymarching Experiments</span>
                             <span class="research-tech">Pure CSS / HTML</span>
                             <span class="research-year">2024</span>
                         </a>
-                        <a href="#" class="research-item" data-image="5">
+                        <a href="/research.html?r=generative-typography" class="research-item" data-image="5">
                             <span class="research-name">Generative Typography</span>
                             <span class="research-tech">Canvas / JavaScript</span>
                             <span class="research-year">2024</span>
                         </a>
-                        <a href="#" class="research-item" data-image="6">
+                        <a href="/research.html?r=fluid-simulations" class="research-item" data-image="6">
                             <span class="research-name">Fluid Simulations</span>
                             <span class="research-tech">WebGL / GLSL</span>
                             <span class="research-year">2023</span>
@@ -2579,80 +2798,141 @@ margin-top: 3px;
                 </div>
             </div>
             
-            <!-- ABOUT + WIDGETS -->
-            <div class="about-block" id="about">
-                <div class="about-block-inner">
-                    <h2 class="about-title">About Me</h2>
+        </section>
+
+        <!-- SECTION: ABOUT -->
+        <section class="snap-section about-section" id="about">
+            <div class="about-hero">
+                <div class="about-hero-left">
+                    <div class="about-photo-wrap" id="glassesPlayWidget">
+                        <img class="about-photo" src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1772426168/hf_20260301_214454_187f349f-7937-44a6-be8f-aab1a2322ca4_bu9k9l.jpg" alt="Pedro Gomes">
+                        <div class="widget-glasses-play" id="widgetGlassesPlay" aria-hidden="true">
+                            <img id="widgetGlasses" class="widget-glasses" src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1772493140/glasses_xrdgxu.png" alt="" draggable="false">
+                        </div>
+                    </div>
+                </div>
+                <div class="about-hero-right">
+                    <p class="about-label">About</p>
+                    <h2 class="about-headline">Pedro Gomes</h2>
+                    <p class="about-role">Multidisciplinary Designer — London, UK</p>
+                    <div class="about-bio">
+                        <p>I’m a research-led visual designer building thoughtful, contemporary work for brands and digital products. With over a decade of experience spanning startups, enterprise, and deep tech, I bring a strong conceptual foundation to every project before moving into execution.</p>
+                        <p>My work sits at the intersection of design systems, brand identity, and product thinking. I care deeply about composition, typography, and detail — the invisible scaffolding that makes design feel intentional rather than decorative.</p>
+                        <p>I’ve led design across full product lifecycles: from early-stage identity and positioning, through interface design and prototyping, to production-ready systems that scale. Every engagement starts with research and ends with something that ships.</p>
+                    </div>
                 </div>
             </div>
-            
-            <div class="about-widgets">
-                <div class="widgets-carousel" id="widgetsCarousel">
-                    
-                    <!-- Page 1 -->
-                    <div class="widgets-page">
-                        <div class="widgets-panel" id="glassesPlayWidget">
-                            <img class="widget-image" src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1772426168/hf_20260301_214454_187f349f-7937-44a6-be8f-aab1a2322ca4_bu9k9l.jpg" alt="">
-                            <div class="widget-glasses-play" id="widgetGlassesPlay" aria-hidden="true">
-                                <img
-                                    id="widgetGlasses"
-                                    class="widget-glasses"
-                                    src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1772493140/glasses_xrdgxu.png"
-                                    alt=""
-                                    draggable="false"
-                                >
-                            </div>
-                        </div>
-                        
-                        <div class="widgets-panel widget-color-neon">
-                            <div class="widget-copy-overlay">
-                                <div class="widget-copy-name">Pedro Gomes</div>
-                                <div class="widget-copy-year">©2026</div>
-                                <p class="widget-copy-left">I’m a multidisciplinary visual designer focused on building thoughtful, contemporary work for brands and digital products. I care deeply about composition, typography, and detail.</p>
-                                <p class="widget-copy-right">and I care deeply about composition, typography, and detail, and I approach each project with a strong conceptual foundation before moving into execution.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Page 2 -->
-                    <div class="widgets-page">
-                        <div class="widgets-panel widget-london">
-                            <div class="content">
-                                <div class="top-label">
-                                    <span id="widgetDayDate">Local Time - MONDAY 2 MAR 2026</span>
-                                </div>
-                                <div class="clock-wrap">
-                                    <canvas id="londonClock"></canvas>
-                                </div>
-                                <div class="bot">
-                                    <div>
-                                        <div class="bot-loc">London, United Kingdom</div>
-                                        <div class="bot-coords">51.5074° N, 0.1278° W</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="widgets-panel widget-cap-v3">
-                            <div class="widget-cap-v3-stage">
-                                <div class="widget-cap-v3-line active">Creative Strategy</div>
-                                <div class="widget-cap-v3-line">Design Leadership</div>
-                                <div class="widget-cap-v3-line">Brand Systems</div>
-                                <div class="widget-cap-v3-line">Product Thinking</div>
-                                <div class="widget-cap-v3-line">UX/UI</div>
-                                <div class="widget-cap-v3-line">Typography</div>
-                                <div class="widget-cap-v3-line">Motion Design</div>
-                                <div class="widget-cap-v3-line">Gen AI</div>
-                                <div class="widget-cap-v3-line">Conversion Design</div>
-                                <div class="widget-cap-v3-line">Illustration</div>
-                                <div class="widget-cap-v3-line">Retouching</div>
-                                <div class="widget-cap-v3-line">Video Editing</div>
-                            </div>
-                        </div>
-                    </div>
-                    
+
+            <div class="about-details">
+                <!-- Capabilities -->
+                <div class="about-col">
+                    <h3 class="about-col-title">Capabilities</h3>
+                    <ul class="about-col-list">
+                        <li>Creative Strategy</li>
+                        <li>Design Leadership</li>
+                        <li>Brand Systems</li>
+                        <li>Product Thinking</li>
+                        <li>UX / UI Design</li>
+                        <li>Typography</li>
+                        <li>Motion Design</li>
+                        <li>Generative AI</li>
+                        <li>Conversion Design</li>
+                        <li>Illustration</li>
+                    </ul>
                 </div>
-                
+
+                <!-- Selected Clients -->
+                <div class="about-col">
+                    <h3 class="about-col-title">Selected Clients</h3>
+                    <ul class="about-col-list">
+                        <li>Precision CNC</li>
+                        <li>Ember Audio</li>
+                        <li>TSE Semiconductor</li>
+                        <li>Hive Systems</li>
+                        <li>Archon Dev</li>
+                        <li>FlowCraft AI</li>
+                        <li>Seasonal Kitchen</li>
+                        <li>K-Clinic Health</li>
+                    </ul>
+                </div>
+
+                <!-- Credentials -->
+                <div class="about-col">
+                    <h3 class="about-col-title">Recognition</h3>
+                    <ul class="about-col-list">
+                        <li>10+ years in design</li>
+                        <li>30+ brands built</li>
+                        <li>Cross-industry experience</li>
+                        <li>Startup to enterprise</li>
+                        <li>Full product lifecycles</li>
+                        <li>Research-driven process</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Widgets row -->
+            <div class="about-widgets-row">
+                <div class="widgets-panel widget-london">
+                    <div class="content">
+                        <div class="top-label">
+                            <span id="widgetDayDate">Local Time - MONDAY 2 MAR 2026</span>
+                        </div>
+                        <div class="clock-wrap">
+                            <canvas id="londonClock"></canvas>
+                        </div>
+                        <div class="bot">
+                            <div>
+                                <div class="bot-loc">London, United Kingdom</div>
+                                <div class="bot-coords">51.5074° N, 0.1278° W</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widgets-panel widget-cap-v3">
+                    <div class="widget-cap-v3-stage">
+                        <div class="widget-cap-v3-line active">Creative Strategy</div>
+                        <div class="widget-cap-v3-line">Design Leadership</div>
+                        <div class="widget-cap-v3-line">Brand Systems</div>
+                        <div class="widget-cap-v3-line">Product Thinking</div>
+                        <div class="widget-cap-v3-line">UX/UI</div>
+                        <div class="widget-cap-v3-line">Typography</div>
+                        <div class="widget-cap-v3-line">Motion Design</div>
+                        <div class="widget-cap-v3-line">Gen AI</div>
+                        <div class="widget-cap-v3-line">Conversion Design</div>
+                        <div class="widget-cap-v3-line">Illustration</div>
+                        <div class="widget-cap-v3-line">Retouching</div>
+                        <div class="widget-cap-v3-line">Video Editing</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <section class="snap-section footer-swiss" id="contact">
+            <div class="swiss-center">
+                <div class="swiss-content" id="footerContent">
+                    <div class="swiss-cta">
+                        <h3>Let's build something<br>clear and unforgettable.</h3>
+                        <a href="mailto:hi@motagomes.com" class="swiss-cta-link">
+                            Let's Talk
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiss-foot">
+                <span class="swiss-copyright">PEDROGOMES © 2026</span>
+                <a class="swiss-backtop" onclick="scrollToTop()">
+                    Back to top
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 19V5M5 12l7-7 7 7"></path>
+                    </svg>
+                </a>
             </div>
         </section>
 
@@ -2791,7 +3071,25 @@ margin-top: 3px;
 
             heroObserver.observe(heroSection);
         }
-        
+
+        // ========================================
+        // FOOTER SCROLL REVEAL (same as hero)
+        // ========================================
+        const footerContent = document.getElementById('footerContent');
+        const footerSection = document.getElementById('contact');
+        if (footerContent && footerSection) {
+            const footerObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        footerContent.classList.add('is-visible');
+                        footerObserver.unobserve(footerSection);
+                    }
+                });
+            }, { threshold: 0.25 });
+
+            footerObserver.observe(footerSection);
+        }
+
         // ========================================
         // SCROLL - Hide Header on Scroll
         // ========================================
@@ -2883,11 +3181,18 @@ margin-top: 3px;
         // ========================================
         const hamburger = document.getElementById('hamburger');
         const menuOverlay = document.getElementById('menuOverlay');
-        const menuLinks = document.querySelectorAll('.menu-overlay-link, .menu-overlay-cta');
+        const menuLinks = document.querySelectorAll('.menu-overlay-link, .menu-overlay-cta, .menu-overlay-cv');
         
+        const menuClose = document.getElementById('menuClose');
+
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             menuOverlay.classList.toggle('active');
+        });
+
+        menuClose.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            menuOverlay.classList.remove('active');
         });
         
         menuLinks.forEach(link => {
@@ -2898,19 +3203,37 @@ margin-top: 3px;
         });
         
         // ========================================
+        // MAKE ENTIRE CARD CLICKABLE
+        // ========================================
+        document.querySelectorAll('.gallery-stacked-card').forEach(card => {
+            const btn = card.querySelector('.gallery-stacked-btn');
+            if (btn && btn.href) {
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('a')) return; // let actual links work normally
+                    window.location.href = btn.href;
+                });
+            }
+        });
+
+        // ========================================
         // STACKED GALLERY SCROLL TRACKING
         // ========================================
         const galleryCards = document.querySelectorAll('.gallery-stacked-card');
         const galleryCardInners = document.querySelectorAll('.gallery-stacked-card-inner');
         const galleryIndex = document.getElementById('galleryIndex');
         const galleryCategory = document.getElementById('galleryCategory');
+        const galleryType = document.getElementById('galleryType');
         const gallerySection = document.getElementById('work');
         const gallerySides = document.querySelectorAll('.gallery-stacked-side');
         const galleryProgressFill = document.getElementById('galleryProgressFill');
         
+        const galleryBrands = [
+            'One1x', 'Aura', 'Galp', 'ULaw',
+            'Moope', 'Standard Bank', 'Seasonal Kitchen', 'K-Clinic'
+        ];
         const galleryProjects = [
-            'Manufacturing', 'Startups', 'Deep Tech', 'Enterprise',
-            'SaaS', 'Design Tools', 'Food & Bev', 'HealthTech'
+            'Rebrand', 'Product Design', 'Ad Campaign', 'Campaign',
+            'UX Design', 'Ad Campaign', 'Food & Bev', 'HealthTech'
         ];
         
         function updateActiveGalleryCard() {
@@ -2952,7 +3275,8 @@ margin-top: 3px;
             
             const num = String(active + 1).padStart(2, '0');
             if (galleryIndex) galleryIndex.textContent = num;
-            if (galleryCategory) galleryCategory.textContent = galleryProjects[active];
+            if (galleryCategory) galleryCategory.textContent = galleryBrands[active];
+            if (galleryType) galleryType.textContent = galleryProjects[active];
             
             // Progress bar
             if (galleryProgressFill) {
