@@ -830,7 +830,7 @@
         function checkAuth(){
             const hash=async s=>{const e=new TextEncoder().encode(s);const h=await crypto.subtle.digest('SHA-256',e);return Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,'0')).join('');};
             hash(document.getElementById('authInput').value).then(h=>{
-                if(h==='5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'){
+                if(h==='d9b928313f612717c1126b5ffcf6c33d5dbabb50ff4b76ae74abaab0368fe92a'){
                     document.getElementById('authGate').style.display='none';
                     sessionStorage.setItem('dash_auth','1');
                 }else{
