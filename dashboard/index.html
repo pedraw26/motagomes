@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Intelligence</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-base: #0f0f12;
+            --bg-surface: #18181c;
+            --bg-elevated: #222228;
+            --bg-hover: #2a2a32;
+            
+            --text-primary: #f4f4f6;
+            --text-secondary: #9a9aa8;
+            --text-muted: #5c5c6c;
+            
+            --border-subtle: #2a2a32;
+            --border-default: #3a3a44;
+            
+            --accent-violet: #a78bfa;
+            --accent-violet-dim: rgba(167, 139, 250, 0.15);
+            --accent-cyan: #22d3ee;
+            --accent-cyan-dim: rgba(34, 211, 238, 0.15);
+            --accent-gold: #fbbf24;
+            --accent-gold-dim: rgba(251, 191, 36, 0.15);
+            --accent-emerald: #34d399;
+            --accent-rose: #fb7185;
+            
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            
+            --transition-fast: 150ms ease;
+            --transition-normal: 250ms ease;
+            --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-base: #fafafa;
+            --bg-surface: #ffffff;
+            --bg-elevated: #ffffff;
+            --bg-hover: #f4f4f6;
+            
+            --text-primary: #18181c;
+            --text-secondary: #5c5c6c;
+            --text-muted: #9a9aa8;
+            
+            --border-subtle: #e4e4e8;
+            --border-default: #d4d4d8;
+            
+            --accent-violet: #7c3aed;
+            --accent-violet-dim: rgba(124, 58, 237, 0.1);
+            --accent-cyan: #0891b2;
+            --accent-cyan-dim: rgba(8, 145, 178, 0.1);
+            --accent-gold: #d97706;
+            --accent-gold-dim: rgba(217, 119, 6, 0.1);
+            
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: 100vh;
+            transition: grid-template-columns var(--transition-normal);
+        }
+
+        .dashboard.collapsed {
+            grid-template-columns: 72px 1fr;
+        }
+
+        .sidebar {
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border-subtle);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            width: 260px;
+            height: 100vh;
+            transition: width var(--transition-normal);
+            z-index: 100;
+        }
+
+        .dashboard.collapsed .sidebar {
+            width: 72px;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 8px;
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-violet), var(--accent-cyan));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .logo svg {
+            width: 20px;
+            height: 20px;
+            color: white;
+        }
+
+        .logo-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: 22px;
+            font-weight: 400;
+            color: var(--text-primary);
+            white-space: nowrap;
+            opacity: 1;
+            transition: opacity var(--transition-fast);
+        }
+
+        .dashboard.collapsed .logo-text {
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            padding: 0 12px;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .dashboard.collapsed .nav-label {
+            opacity: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all var(--transition-fast);
+            cursor: pointer;
+            white-space: nowrap;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: var(--accent-violet-dim);
+            color: var(--accent-violet);
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .nav-item span {
+            opacity: 1;
+            transition: opacity var(--transition-fast);
+        }
+
+        .dashboard.collapsed .nav-item span {
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .collapse-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: var(--radius-md);
+            color: var(--text-muted);
+            background: transparent;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: all var(--transition-fast);
+        }
+
+        .collapse-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .collapse-btn svg {
+            width: 20: 20pxpx;
+            height;
+            transition: transform var(--transition-normal);
+        }
+
+        .dashboard.collapsed .collapse-btn svg {
+            transform: rotate(180deg);
+        }
+
+        .dashboard.collapsed .collapse-btn span {
+            display: none;
+        }
+
+        .main {
+            grid-column: 2;
+            padding: 32px 40px;
+            min-height: 100vh;
+        }
+
+        .main-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 32px;
+            font-weight: 400;
+            color: var(--text-primary);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border-color: var(--border-default);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .time-filter {
+            padding: 10px 16px;
+            border-radius: var(--radius-md);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .time-filter:hover {
+            border-color: var(--border-default);
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .widget {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            transition: all var(--transition-normal);
+        }
+
+        .widget:hover {
+            border-color: var(--border-default);
+            box-shadow: var(--shadow-md);
+        }
+
+        .widget-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .widget-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .widget-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .widget-icon.violet { background: var(--accent-violet-dim); color: var(--accent-violet); }
+        .widget-icon.cyan { background: var(--accent-cyan-dim); color: var(--accent-cyan); }
+        .widget-icon.gold { background: var(--accent-gold-dim); color: var(--accent-gold); }
+        .widget-icon.emerald { background: rgba(52, 211, 153, 0.15); color: var(--accent-emerald); }
+
+        .widget-icon svg { width: 18px; height: 18px; }
+
+        .metric-value {
+            font-size: 36px;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.2;
+            margin-bottom: 8px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .metric-change {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .metric-change.positive { color: var(--accent-emerald); }
+        .metric-change.negative { color: var(--accent-rose); }
+
+        .metric-change svg { width: 14px; height: 14px; }
+
+        .sparkline { height: 40px; margin-top: 12px; }
+
+        .widget-large { grid-column: span 2; }
+        .widget-wide { grid-column: span 4; }
+
+        .chart-container {
+            position: relative;
+            height: 240px;
+            margin-top: 16px;
+        }
+
+        .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 24px;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            grid-column: span 4;
+        }
+
+        .preview-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .preview-card:hover {
+            border-color: var(--accent-violet);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .preview-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .preview-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .preview-card-arrow {
+            width: 20px;
+            height: 20px;
+            color: var(--text-muted);
+        }
+
+        .preview-card-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .preview-card-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .project-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px;
+            border-radius: var(--radius-md);
+            transition: background var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .project-item:hover { background: var(--bg-hover); }
+
+        .project-rank {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .project-rank.top-3 {
+            background: var(--accent-violet-dim);
+            color: var(--accent-violet);
+        }
+
+        .project-thumb {
+            width: 48px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            flex-shrink: 0;
+        }
+
+        .project-info { flex: 1; min-width: 0; }
+
+        .project-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .project-meta { font-size: 12px; color: var(--text-muted); }
+
+        .project-bar-container { width: 120px; flex-shrink: 0; }
+
+        .project-bar-bg {
+            height: 6px;
+            background: var(--bg-elevated);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .project-bar {
+            height: 100%;
+            border-radius: 3px;
+            background: linear-gradient(90deg, var(--accent-violet), var(--accent-cyan));
+        }
+
+        .project-score {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-violet);
+            min-width: 40px;
+            text-align: right;
+        }
+
+        .conversion-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .conversion-item {
+            padding: 16px;
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+
+        .conversion-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .conversion-icon svg { width: 20px; height: 20px; }
+
+        .conversion-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .conversion-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+        }
+
+        .flow-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .flow-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flow-circle svg { width: 22px; height: 22px; }
+
+        .flow-circle-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .flow-circle-count { font-size: 11px; color: var(--text-muted); }
+
+        .flow-arrow { color: var(--text-muted); flex-shrink: 0; }
+        .flow-arrow svg { width: 24px; height: 24px; }
+
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .audience-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+        }
+
+        .country-flag { font-size: 24px; line-height: 1; }
+        .audience-info { flex: 1; }
+        .audience-country { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+        .audience-visitors { font-size: 12px; color: var(--text-muted); }
+
+        .audience-bar {
+            width: 60px;
+            height: 6px;
+            background: var(--bg-base);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .audience-bar-fill {
+            height: 100%;
+            background: var(--accent-cyan);
+            border-radius: 3px;
+        }
+
+        .live-activity {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .live-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-emerald);
+            flex-shrink: 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .live-info { flex: 1; min-width: 0; }
+        .live-location { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+        .live-page { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .live-time { font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
+
+        .live-ip { font-size: 11px; color: var(--text-muted); font-family: monospace; margin-top: 2px; }
+
+        .settings-section {
+            margin-bottom: 32px;
+        }
+
+        .settings-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+        }
+
+        .settings-item-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .settings-item-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .toggle {
+            width: 48px;
+            height: 26px;
+            background: var(--bg-elevated);
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: background var(--transition-fast);
+        }
+
+        .toggle.active { background: var(--accent-violet); }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: transform var(--transition-fast);
+        }
+
+        .toggle.active::after { transform: translateX(22px); }
+
+        .heatmap-placeholder {
+            height: 200px;
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 16px;
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        @media (max-width: 1400px) {
+            .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+            .widget-large, .widget-wide { grid-column: span 2; }
+        }
+
+        @media (max-width: 900px) {
+            .dashboard { grid-template-columns: 1fr; }
+            .sidebar { transform: translateX(-100%); }
+            .dashboard.collapsed .sidebar { transform: translateX(0); width: 72px; }
+            .main { grid-column: 1; padding: 24px; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .widget-large, .widget-wide { grid-column: span 1; }
+            .conversion-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Gate -->
+    <div id="authGate" style="position:fixed;inset:0;background:var(--bg-base);z-index:9999;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;">
+        <div style="text-align:center;max-width:320px;width:100%;padding:0 24px;">
+            <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent-violet),var(--accent-cyan));margin:0 auto 24px;display:flex;align-items:center;justify-content:center;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="24" height="24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h2 style="color:var(--text-primary);margin-bottom:8px;font-size:20px;font-weight:600;">Portfolio Intelligence</h2>
+            <p style="color:var(--text-secondary);margin-bottom:24px;font-size:14px;">Enter password to access your dashboard</p>
+            <input id="authInput" type="password" placeholder="Password" autofocus
+                style="width:100%;padding:12px 16px;border-radius:10px;border:1px solid var(--border-default);background:var(--bg-surface);color:var(--text-primary);font-size:14px;outline:none;margin-bottom:12px;font-family:inherit;"
+                onkeydown="if(event.key==='Enter')document.getElementById('authBtn').click()">
+            <button id="authBtn" onclick="checkAuth()"
+                style="width:100%;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--accent-violet),var(--accent-cyan));color:white;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">
+                Unlock
+            </button>
+            <p id="authError" style="color:#f5576c;margin-top:12px;font-size:13px;display:none;">Incorrect password</p>
+        </div>
+    </div>
+    <script>
+        function checkAuth(){
+            const hash=async s=>{const e=new TextEncoder().encode(s);const h=await crypto.subtle.digest('SHA-256',e);return Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,'0')).join('');};
+            hash(document.getElementById('authInput').value).then(h=>{
+                if(h==='5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'){
+                    document.getElementById('authGate').style.display='none';
+                    sessionStorage.setItem('dash_auth','1');
+                }else{
+                    document.getElementById('authError').style.display='block';
+                    document.getElementById('authInput').value='';
+                }
+            });
+        }
+        if(sessionStorage.getItem('dash_auth')==='1')document.getElementById('authGate').style.display='none';
+    </script>
+
+    <div class="dashboard" id="dashboard">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <span class="logo-text">Portfolio Intel</span>
+            </div>
+            
+            <nav class="nav-section">
+                <div class="nav-label">Overview</div>
+                <button class="nav-item active" data-page="overview">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1"/>
+                        <rect x="14" y="3" width="7" height="7" rx="1"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1"/>
+                        <rect x="14" y="14" width="7" height="7" rx="1"/>
+                    </svg>
+                    <span>Overview</span>
+                </button>
+                <button class="nav-item" data-page="projects">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    <span>Projects</span>
+                </button>
+                <button class="nav-item" data-page="engagement">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                    <span>Engagement</span>
+                </button>
+            </nav>
+            
+            <nav class="nav-section">
+                <div class="nav-label">Intelligence</div>
+                <button class="nav-item" data-page="conversions">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                    <span>Conversions</span>
+                </button>
+                <button class="nav-item" data-page="audience">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <span>Audience</span>
+                </button>
+                <button class="nav-item" data-page="live">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <span>Live</span>
+                </button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="/" class="nav-item" style="text-decoration:none;color:inherit;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"/>
+                        <line x1="9" y1="12" x2="21" y2="12"/>
+                    </svg>
+                    <span>Portfolio</span>
+                </a>
+                <button class="nav-item" data-page="settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                    </svg>
+                    <span>Settings</span>
+                </button>
+                <button class="collapse-btn" id="collapseBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>Collapse</span>
+                </button>
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="main-header">
+                <h1 class="page-title" id="pageTitle">Overview</h1>
+                <div class="header-actions">
+                    <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"/>
+                            <line x1="12" y1="1" x2="12" y2="3"/>
+                            <line x1="12" y1="21" x2="12" y2="23"/>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                            <line x1="1" y1="12" x2="3" y2="12"/>
+                            <line x1="21" y1="12" x2="23" y2="12"/>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                        </svg>
+                    </button>
+                    <select class="time-filter" id="timeFilter">
+                        <option value="7">Last 7 days</option>
+                        <option value="30">Last 30 days</option>
+                        <option value="90">Last 90 days</option>
+                    </select>
+                </div>
+            </header>
+
+            <!-- OVERVIEW PAGE -->
+            <div class="page active" id="page-overview">
+                <div class="dashboard-grid">
+                    <div class="widget">
+                        <div class="widget-header">
+                            <span class="widget-title">Visitors Today</span>
+                            <div class="widget-icon violet">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="metric-value" id="metricVisitors">--</div>
+                        <div class="metric-change" id="metricVisitorsChange"></div>
+                        <div class="sparkline"><canvas id="sparkline1"></canvas></div>
+                    </div>
+
+                    <div class="widget">
+                        <div class="widget-header">
+                            <span class="widget-title">Unique Visitors</span>
+                            <div class="widget-icon cyan">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="metric-value" id="metricUnique">--</div>
+                        <div class="metric-change" id="metricUniqueChange"></div>
+                        <div class="sparkline"><canvas id="sparkline2"></canvas></div>
+                    </div>
+
+                    <div class="widget">
+                        <div class="widget-header">
+                            <span class="widget-title">Avg. Session</span>
+                            <div class="widget-icon gold">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="metric-value" id="metricSession">--</div>
+                        <div class="metric-change" id="metricSessionChange"></div>
+                        <div class="sparkline"><canvas id="sparkline3"></canvas></div>
+                    </div>
+
+                    <div class="widget">
+                        <div class="widget-header">
+                            <span class="widget-title">Contact Rate</span>
+                            <div class="widget-icon emerald">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="metric-value" id="metricContact">--</div>
+                        <div class="metric-change" id="metricContactChange"></div>
+                        </div>
+                        <div class="sparkline"><canvas id="sparkline4"></canvas></div>
+                    </div>
+
+                    <div class="widget widget-large">
+                        <div class="widget-header">
+                            <span class="widget-title">Portfolio Performance</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="mainChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="widget">
+                        <div class="widget-header">
+                            <span class="widget-title">Live Activity</span>
+                            <div class="widget-icon emerald">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="live-activity" id="liveActivity">
+                            <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading live data...</div>
+                        </div>
+                    </div>
+
+                    <div class="preview-card" data-page="projects">
+                        <div class="preview-card-header">
+                            <span class="preview-card-title">Top Projects</span>
+                            <svg class="preview-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </div>
+                        <div class="preview-card-value" id="previewProjects">--</div>
+                        <div class="preview-card-subtitle">projects tracked</div>
+                    </div>
+
+                    <div class="preview-card" data-page="conversions">
+                        <div class="preview-card-header">
+                            <span class="preview-card-title">Conversions</span>
+                            <svg class="preview-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </div>
+                        <div class="preview-card-value" id="previewConversions">--</div>
+                        <div class="preview-card-subtitle">total actions</div>
+                    </div>
+
+                    <div class="preview-card" data-page="audience">
+                        <div class="preview-card-header">
+                            <span class="preview-card-title">Top Region</span>
+                            <svg class="preview-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </div>
+                        <div class="preview-card-value">US</div>
+                        <div class="preview-card-subtitle">1,247 visitors</div>
+                    </div>
+
+                    <div class="preview-card" data-page="engagement">
+                        <div class="preview-card-header">
+                            <span class="preview-card-title">Avg. Scroll Depth</span>
+                            <svg class="preview-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </div>
+                        <div class="preview-card-value">68%</div>
+                        <div class="preview-card-subtitle">pages viewed</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJECTS PAGE -->
+            <div class="page" id="page-projects">
+                <div class="dashboard-grid">
+                    <div class="widget widget-wide">
+                        <div class="widget-header">
+                            <span class="widget-title">Project Performance</span>
+                            <div class="widget-icon violet">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                                    <polyline points="2 17 12 22 22 17"/>
+                                    <polyline points="2 12 12 17 22 12"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="project-list">
+                            <div class="project-item">
+                                <div class="project-rank top-3">1</div>
+                                <div class="project-thumb" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
+                                <div class="project-info">
+                                    <div class="project-name">Brand Identity System</div>
+                                    <div class="project-meta">2,341 views • 4:32 avg time</div>
+                                </div>
+                                <div class="project-bar-container">
+                                    <div class="project-bar-bg"><div class="project-bar" style="width: 92%;"></div></div>
+                                </div>
+                            </div>
+                            <div class="project-item">
+                                <div class="project-rank top-3">2</div>
+                                <div class="project-thumb" style="background: linear-gradient(135deg, #f093fb, #f5576c);"></div>
+                                <div class="project-info">
+                                    <div class="project-name">E-Commerce Redesign</div>
+                                    <div class="project-meta">1,892 views • 3:18 avg time</div>
+                                </div>
+                                <div class="project-bar-container">
+                                    <div class="project-bar-bg"><div class="project-bar" style="width: 78%;"></div></div>
+                                </div>
+                            </div>
+                            <div class="project-item">
+                                <div class="project-rank top-3">3</div>
+                                <div class="project-thumb" style="background: linear-gradient(135deg, #4facfe, #00f2fe);"></div>
+                                <div class="project-info">
+                                    <div class="project-name">Mobile App Design</div>
+                                    <div class="project-meta">1,654 views • 5:42 avg time</div>
+                                </div>
+                                <div class="project-bar-container">
+                                    <div class="project-bar-bg"><div class="project-bar" style="width: 65%;"></div></div>
+                                </div>
+                            </div>
+                            <div class="project-item">
+                                <div class="project-rank">4</div>
+                                <div class="project-thumb" style="background: linear-gradient(135deg, #43e97b, #38f9d7);"></div>
+                                <div class="project-info">
+                                    <div class="project-name">Website Launch</div>
+                                    <div class="project-meta">1,203 views • 2:45 avg time</div>
+                                </div>
+                                <div class="project-bar-container">
+                                    <div class="project-bar-bg"><div class="project-bar" style="width: 52%;"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget widget-wide">
+                        <div class="widget-header">
+                            <span class="widget-title">Creative Impact Score</span>
+                            <div class="widget-icon emerald">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="project-list">
+                            <div class="project-item">
+                                <div class="project-rank top-3">1</div>
+                                <div class="project-thumb" style="background: linear-gradient(135deg, #f093fb, #f5576c);"></div>
+                                <div class="project-info">
+                                    <div class="project-name">Brand Identity System</div>
+                                    <div class="project-meta">views 2,341 + time 4:32 + scroll 87% + clicks 34</div>
+                                </div>
+                                <div class="project-bar-container">
+                                    <div class="project-score">92</div>
+                                </div>
+                            </div>
+                            <div class="project-item">
+                                <div class="project-rank top-3">2</div>
+                                <div class="project-thumb" style="background: linear-gradient(135deg, #4facfe, #00f2fe);"></div>
+                                <div class="project-info">
+                                    <div class="project-name">Mobile App Design</div>
+                                    <div class="project-meta">views 1,654 + time 5:42 + scroll 92% + clicks 28</div>
+                                </div>
+                                <div class="project-bar-container">
+                                    <div class="project-score">84</div>
+                                </div>
+                            </div>
+                            <div class="project-item">
+                                <div class="project-rank top-3">3</div>
+                                <div class="project-thumb" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
+                                <div class="project-info">
+                                    <div class="project-name">E-Commerce Redesign</div>
+                                    <div class="project-meta">views 1,892 + time 3:18 + scroll 71% + clicks 21</div>
+                                </div>
+                                <div class="project-bar-container">
+                                    <div class="project-score">76</div>
+                                </div>
+                            </div>
+                            <div class="project-item">
+                                <div class="project-rank">4</div>
+                                <div class="project-thumb" style="background: linear-gradient(135deg, #43e97b, #38f9d7);"></div>
+                                <div class="project-info">
+                                    <div class="project-name">Website Launch</div>
+                                    <div class="project-meta">views 1,203 + time 2:45 + scroll 58% + clicks 12</div>
+                                </div>
+                                <div class="project-bar-container">
+                                    <div class="project-score">61</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page" id="page-engagement">
+                <div class="dashboard-grid">
+                    <div class="widget widget-large">
+                        <div class="widget-header">
+                            <span class="widget-title">Portfolio Performance</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="engagementChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="widget widget-large">
+                        <div class="widget-header">
+                            <span class="widget-title">Visitor Journey</span>
+                            <div class="widget-icon gold">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flow-container">
+                            <div class="flow-step">
+                                <div class="flow-circle" style="background: var(--accent-violet-dim); color: var(--accent-violet);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                    </svg>
+                                </div>
+                                <span class="flow-circle-label">Landing</span>
+                                <span class="flow-circle-count">2,847</span>
+                            </div>
+                            <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+                            <div class="flow-step">
+                                <div class="flow-circle" style="background: var(--accent-cyan-dim); color: var(--accent-cyan);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                    </svg>
+                                </div>
+                                <span class="flow-circle-label">Project</span>
+                                <span class="flow-circle-count">1,923</span>
+                            </div>
+                            <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+                            <div class="flow-step">
+                                <div class="flow-circle" style="background: var(--accent-gold-dim); color: var(--accent-gold);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="12" cy="7" r="4"/>
+                                    </svg>
+                                </div>
+                                <span class="flow-circle-label">About</span>
+                                <span class="flow-circle-count">892</span>
+                            </div>
+                            <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+                            <div class="flow-step">
+                                <div class="flow-circle" style="background: rgba(52, 211, 153, 0.15); color: var(--accent-emerald);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2"/>
+                                    </svg>
+                                </div>
+                                <span class="flow-circle-label">Contact</span>
+                                <span class="flow-circle-count">127</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget widget-large">
+                        <div class="widget-header">
+                            <span class="widget-title">Top Entry Pages</span>
+                            <div class="widget-icon violet">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                    <line x1="12" y1="18" x2="12" y2="12"/>
+                                    <line x1="9" y1="15" x2="15" y2="15"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="project-list">
+                            <div class="project-item">
+                                <div class="project-rank top-3">1</div>
+                                <div class="project-thumb" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
+                                <div class="project-info">
+                                    <div class="project-name">Mobile App Project</div>
+                                    <div class="project-meta">892 direct entries • 31.3% of traffic</div>
+                                </div>
+                                <div class="project-bar-container">
+                                    <div class="project-bar-bg"><div class="project-bar" style="width: 100%;"></div></div>
+                                </div>
+                            </div>
+                            <div class="project-item">
+                                <div class="project-rank top-3">2</div>
+                                <div class="project-thumb" style="background: linear-gradient(135deg, #f093fb, #f5576c);"></div>
+                                <div class="project-info">
+                                    <div class="project-name">Brand Identity System</div>
+                                    <div class="project-meta">647 direct entries • 22.7% of traffic</div>
+                                </div>
+                                <div class="project-bar-container">
+                                    <div class="project-bar-bg"><div class="project-bar" style="width: 73%;"></div></div>
+                                </div>
+                            </div>
+                            <div class="project-item">
+                                <div class="project-rank top-3">3</div>
+                                <div class="project-thumb" style="background: linear-gradient(135deg, #43e97b, #38f9d7);"></div>
+                                <div class="project-info">
+                                    <div class="project-name">Case Study: Tech Startup</div>
+                                    <div class="project-meta">423 direct entries • 14.9% of traffic</div>
+                                </div>
+                                <div class="project-bar-container">
+                                    <div class="project-bar-bg"><div class="project-bar" style="width: 47%;"></div></div>
+                                </div>
+                            </div>
+                            <div class="project-item">
+                                <div class="project-rank">4</div>
+                                <div class="project-thumb" style="background: linear-gradient(135deg, #4facfe, #00f2fe);"></div>
+                                <div class="project-info">
+                                    <div class="project-name">E-Commerce Redesign</div>
+                                    <div class="project-meta">312 direct entries • 11.0% of traffic</div>
+                                </div>
+                                <div class="project-bar-container">
+                                    <div class="project-bar-bg"><div class="project-bar" style="width: 35%;"></div></div>
+                                </div>
+                            </div>
+                            <div class="project-item">
+                                <div class="project-rank">5</div>
+                                <div class="project-thumb" style="background: linear-gradient(135deg, #fa709a, #fee140);"></div>
+                                <div class="project-info">
+                                    <div class="project-name">About Page</div>
+                                    <div class="project-meta">198 direct entries • 7.0% of traffic</div>
+                                </div>
+                                <div class="project-bar-container">
+                                    <div class="project-bar-bg"><div class="project-bar" style="width: 22%;"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget widget-wide">
+                        <div class="widget-header">
+                            <span class="widget-title">Click Heatmap</span>
+                            <div class="widget-icon cyan">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="heatmap-placeholder">
+                            Heatmap visualization would appear here with real data
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONVERSIONS PAGE -->
+            <div class="page" id="page-conversions">
+                <div class="dashboard-grid">
+                    <div class="widget widget-wide">
+                        <div class="widget-header">
+                            <span class="widget-title">Conversion Intelligence</span>
+                            <div class="widget-icon violet">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="conversion-grid">
+                            <div class="conversion-item">
+                                <div class="conversion-icon" style="background: var(--accent-violet-dim); color: var(--accent-violet);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                        <polyline points="22,6 12,13 2,6"/>
+                                    </svg>
+                                </div>
+                                <div class="conversion-value">127</div>
+                                <div class="conversion-label">Contact Clicks</div>
+                            </div>
+                            <div class="conversion-item">
+                                <div class="conversion-icon" style="background: var(--accent-cyan-dim); color: var(--accent-cyan);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2"/>
+                                    </svg>
+                                </div>
+                                <div class="conversion-value">89</div>
+                                <div class="conversion-label">Email Links</div>
+                            </div>
+                            <div class="conversion-item">
+                                <div class="conversion-icon" style="background: var(--accent-gold-dim); color: var(--accent-gold);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="2" width="20" height="20" rx="5"/>
+                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                    </svg>
+                                </div>
+                                <div class="conversion-value">234</div>
+                                <div class="conversion-label">Instagram</div>
+                            </div>
+                            <div class="conversion-item">
+                                <div class="conversion-icon" style="background: rgba(52, 211, 153, 0.15); color: var(--accent-emerald);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polygon points="23 7 16 12 23 17 23 7"/>
+                                        <rect x="1" y="5" width="15" height="14"/>
+                                    </svg>
+                                </div>
+                                <div class="conversion-value">156</div>
+                                <div class="conversion-label">YouTube</div>
+                            </div>
+                            <div class="conversion-item">
+                                <div class="conversion-icon" style="background: rgba(251, 113, 133, 0.15); color: var(--accent-rose);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 18V5l12-2v13"/>
+                                        <circle cx="6" cy="18" r="3"/>
+                                        <circle cx="18" cy="16" r="3"/>
+                                    </svg>
+                                </div>
+                                <div class="conversion-value">78</div>
+                                <div class="conversion-label">Spotify</div>
+                            </div>
+                            <div class="conversion-item">
+                                <div class="conversion-icon" style="background: rgba(167, 139, 250, 0.15); color: var(--accent-violet);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                        <polyline points="7 10 12 15 17 10"/>
+                                        <line x1="12" y1="15" x2="12" y2="3"/>
+                                    </svg>
+                                </div>
+                                <div class="conversion-value">45</div>
+                                <div class="conversion-label">Downloads</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AUDIENCE PAGE -->
+            <div class="page" id="page-audience">
+                <div class="dashboard-grid">
+                    <div class="widget widget-large">
+                        <div class="widget-header">
+                            <span class="widget-title">Top Regions</span>
+                            <div class="widget-icon cyan">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <line x1="2" y1="12" x2="22" y2="12"/>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="audience-grid">
+                            <div class="audience-item">
+                                <span class="country-flag">🇺🇸</span>
+                                <div class="audience-info">
+                                    <div class="audience-country">United States</div>
+                                    <div class="audience-visitors">1,247 visitors</div>
+                                </div>
+                                <div class="audience-bar"><div class="audience-bar-fill" style="width: 65%;"></div></div>
+                            </div>
+                            <div class="audience-item">
+                                <span class="country-flag">🇬🇧</span>
+                                <div class="audience-info">
+                                    <div class="audience-country">United Kingdom</div>
+                                    <div class="audience-visitors">523 visitors</div>
+                                </div>
+                                <div class="audience-bar"><div class="audience-bar-fill" style="width: 32%;"></div></div>
+                            </div>
+                            <div class="audience-item">
+                                <span class="country-flag">🇩🇪</span>
+                                <div class="audience-info">
+                                    <div class="audience-country">Germany</div>
+                                    <div class="audience-visitors">312 visitors</div>
+                                </div>
+                                <div class="audience-bar"><div class="audience-bar-fill" style="width: 18%;"></div></div>
+                            </div>
+                            <div class="audience-item">
+                                <span class="country-flag">🇫🇷</span>
+                                <div class="audience-info">
+                                    <div class="audience-country">France</div>
+                                    <div class="audience-visitors">198 visitors</div>
+                                </div>
+                                <div class="audience-bar"><div class="audience-bar-fill" style="width: 12%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget widget-large">
+                        <div class="widget-header">
+                            <span class="widget-title">Visitor Type</span>
+                            <div class="widget-icon emerald">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="visitorTypeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LIVE PAGE -->
+            <div class="page" id="page-live">
+                <div class="dashboard-grid">
+                    <div class="widget widget-wide">
+                        <div class="widget-header">
+                            <span class="widget-title">Live Activity</span>
+                            <div class="widget-icon emerald">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="live-activity" style="max-height: none;">
+                            <div class="live-item">
+                                <div class="live-dot"></div>
+                                <div class="live-info">
+                                    <div class="live-location">San Francisco, US</div>
+                                    <div class="live-page">Brand Identity System</div>
+                                    <div class="live-ip">192.168.1.142</div>
+                                </div>
+                                <div class="live-time">Just now</div>
+                            </div>
+                            <div class="live-item">
+                                <div class="live-dot"></div>
+                                <div class="live-info">
+                                    <div class="live-location">London, UK</div>
+                                    <div class="live-page">Portfolio Home</div>
+                                    <div class="live-ip">10.0.0.87</div>
+                                </div>
+                                <div class="live-time">2m ago</div>
+                            </div>
+                            <div class="live-item">
+                                <div class="live-dot"></div>
+                                <div class="live-info">
+                                    <div class="live-location">Berlin, DE</div>
+                                    <div class="live-page">Mobile App Design</div>
+                                    <div class="live-ip">172.16.0.53</div>
+                                </div>
+                                <div class="live-time">3m ago</div>
+                            </div>
+                            <div class="live-item">
+                                <div class="live-dot"></div>
+                                <div class="live-info">
+                                    <div class="live-location">Paris, FR</div>
+                                    <div class="live-page">About Page</div>
+                                    <div class="live-ip">192.168.2.101</div>
+                                </div>
+                                <div class="live-time">5m ago</div>
+                            </div>
+                            <div class="live-item">
+                                <div class="live-dot"></div>
+                                <div class="live-info">
+                                    <div class="live-location">New York, US</div>
+                                    <div class="live-page">Contact Page</div>
+                                    <div class="live-ip">10.10.1.45</div>
+                                </div>
+                                <div class="live-time">7m ago</div>
+                            </div>
+                            <div class="live-item">
+                                <div class="live-dot"></div>
+                                <div class="live-info">
+                                    <div class="live-location">Tokyo, JP</div>
+                                    <div class="live-page">E-Commerce Redesign</div>
+                                    <div class="live-ip">172.20.0.88</div>
+                                </div>
+                                <div class="live-time">8m ago</div>
+                            </div>
+                            <div class="live-item">
+                                <div class="live-dot"></div>
+                                <div class="live-info">
+                                    <div class="live-location">Toronto, CA</div>
+                                    <div class="live-page">Portfolio Home</div>
+                                    <div class="live-ip">192.168.3.67</div>
+                                </div>
+                                <div class="live-time">10m ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SETTINGS PAGE -->
+            <div class="page" id="page-settings">
+                <div class="dashboard-grid">
+                    <div class="widget widget-wide">
+                        <div class="settings-section">
+                            <div class="settings-title">Appearance</div>
+                            <div class="settings-item">
+                                <div>
+                                    <div class="settings-item-label">Dark Mode</div>
+                                    <div class="settings-item-desc">Use dark theme for the dashboard</div>
+                                </div>
+                                <div class="toggle active" id="darkModeToggle"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div>
+                                    <div class="settings-item-label">Compact Sidebar</div>
+                                    <div class="settings-item-desc">Start with collapsed sidebar</div>
+                                </div>
+                                <div class="toggle" id="compactSidebarToggle"></div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <div class="settings-title">Data</div>
+                            <div class="settings-item">
+                                <div>
+                                    <div class="settings-item-label">Auto Refresh</div>
+                                    <div class="settings-item-desc">Automatically refresh data every 5 minutes</div>
+                                </div>
+                                <div class="toggle active" id="autoRefreshToggle"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div>
+                                    <div class="settings-item-label">Show Live Activity</div>
+                                    <div class="settings-item-desc">Display real-time visitor activity</div>
+                                </div>
+                                <div class="toggle active" id="liveActivityToggle"></div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <div class="settings-title">Notifications</div>
+                            <div class="settings-item">
+                                <div>
+                                    <div class="settings-item-label">Email Notifications</div>
+                                    <div class="settings-item-desc">Receive weekly analytics summaries</div>
+                                </div>
+                                <div class="toggle" id="emailNotifToggle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ========== UI Controls ==========
+        const themeToggle = document.getElementById('themeToggle');
+        const dashboard = document.getElementById('dashboard');
+        let isDark = true;
+
+        themeToggle.addEventListener('click', () => {
+            isDark = !isDark;
+            document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            updateChartTheme();
+        });
+
+        const collapseBtn = document.getElementById('collapseBtn');
+        collapseBtn.addEventListener('click', () => dashboard.classList.toggle('collapsed'));
+
+        // Navigation
+        const navItems = document.querySelectorAll('.nav-item[data-page]');
+        const pages = document.querySelectorAll('.page');
+        const pageTitle = document.getElementById('pageTitle');
+
+        function showPage(pageName) {
+            pages.forEach(p => p.classList.remove('active'));
+            navItems.forEach(n => n.classList.remove('active'));
+            const tp = document.getElementById('page-' + pageName);
+            const tn = document.querySelector('[data-page="' + pageName + '"]');
+            if (tp) tp.classList.add('active');
+            if (tn) tn.classList.add('active');
+            const titles = { overview:'Overview', projects:'Projects', engagement:'Engagement', conversions:'Conversions', audience:'Audience', live:'Live Activity', settings:'Settings' };
+            pageTitle.textContent = titles[pageName] || 'Overview';
+        }
+
+        navItems.forEach(item => item.addEventListener('click', () => {
+            const page = item.getAttribute('data-page');
+            if (page) showPage(page);
+        }));
+
+        document.querySelectorAll('.preview-card').forEach(card => {
+            card.addEventListener('click', () => showPage(card.getAttribute('data-page')));
+        });
+
+        document.querySelectorAll('.toggle').forEach(toggle => {
+            toggle.addEventListener('click', () => toggle.classList.toggle('active'));
+        });
+
+        // ========== Chart Setup ==========
+        Chart.defaults.color = '#9a9aa8';
+        Chart.defaults.borderColor = '#2a2a32';
+        Chart.defaults.font.family = "'DM Sans', sans-serif";
+
+        let mainChart, engChart, visitorChart;
+
+        function createSparkline(canvasId, data, color) {
+            const ctx = document.getElementById(canvasId);
+            if (!ctx) return;
+            new Chart(ctx.getContext('2d'), {
+                type: 'line',
+                data: { labels: data.map((_, i) => i), datasets: [{ data, borderColor: color, borderWidth: 2, fill: true, backgroundColor: color + '20', tension: 0.4, pointRadius: 0 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } }, interaction: { enabled: false } }
+            });
+        }
+
+        function initMainChart(labels, views, unique) {
+            const ctx = document.getElementById('mainChart');
+            if (!ctx) return;
+            if (mainChart) mainChart.destroy();
+            mainChart = new Chart(ctx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [
+                        { label: 'Page Views', data: views, borderColor: '#a78bfa', backgroundColor: 'rgba(167,139,250,0.1)', fill: true, tension: 0.4, borderWidth: 2 },
+                        { label: 'Unique Visitors', data: unique, borderColor: '#22d3ee', backgroundColor: 'rgba(34,211,238,0.1)', fill: true, tension: 0.4, borderWidth: 2 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top', align: 'end', labels: { usePointStyle: true, pointStyle: 'circle', padding: 20 } } },
+                    scales: { x: { grid: { display: false } }, y: { grid: { color: '#2a2a32' }, beginAtZero: true } }
+                }
+            });
+        }
+
+        function initEngChart(labels, data) {
+            const ctx = document.getElementById('engagementChart');
+            if (!ctx) return;
+            if (engChart) engChart.destroy();
+            engChart = new Chart(ctx.getContext('2d'), {
+                type: 'bar',
+                data: { labels, datasets: [{ label: 'Page Views', data, backgroundColor: 'rgba(167,139,250,0.8)', borderRadius: 6 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: '#2a2a32' }, beginAtZero: true } } }
+            });
+        }
+
+        function initVisitorChart(newV, retV) {
+            const ctx = document.getElementById('visitorTypeChart');
+            if (!ctx) return;
+            if (visitorChart) visitorChart.destroy();
+            visitorChart = new Chart(ctx.getContext('2d'), {
+                type: 'doughnut',
+                data: { labels: ['New Visitors', 'Returning'], datasets: [{ data: [newV, retV], backgroundColor: ['#a78bfa', '#22d3ee'], borderWidth: 0 }] },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle', padding: 20 } } } }
+            });
+        }
+
+        function updateChartTheme() {
+            const textColor = isDark ? '#9a9aa8' : '#5c5c6c';
+            const gridColor = isDark ? '#2a2a32' : '#e4e4e8';
+            Chart.defaults.color = textColor;
+            Chart.defaults.borderColor = gridColor;
+            [mainChart, engChart, visitorChart].forEach(c => { if (c) c.update(); });
+        }
+
+        // ========== Helpers ==========
+        function fmt(n) { return n >= 1000 ? n.toLocaleString() : String(n); }
+        function fmtDuration(secs) {
+            if (secs < 60) return secs + 's';
+            const m = Math.floor(secs / 60);
+            const s = secs % 60;
+            return m + 'm ' + s + 's';
+        }
+        function timeAgo(iso) {
+            const diff = Math.round((Date.now() - new Date(iso).getTime()) / 1000);
+            if (diff < 60) return 'Just now';
+            if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+            if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+            return Math.floor(diff / 86400) + 'd ago';
+        }
+
+        // ========== Fetch & Render ==========
+        let currentRange = 7;
+
+        async function loadDashboard() {
+            try {
+                const res = await fetch('/api/analytics?range=' + currentRange);
+                const data = await res.json();
+                if (data.error) { console.error('API error:', data.error); return; }
+
+                // Overview metrics
+                const el = id => document.getElementById(id);
+                el('metricVisitors').textContent = fmt(data.overview.total_views);
+                el('metricUnique').textContent = fmt(data.overview.unique_visitors);
+                el('metricSession').textContent = fmtDuration(data.overview.avg_session_duration);
+                el('metricContact').textContent = data.overview.contact_rate + '%';
+
+                // Sparklines (use daily chart data)
+                const cv = data.chart.views;
+                const cu = data.chart.unique;
+                createSparkline('sparkline1', cv.length ? cv : [0], '#a78bfa');
+                createSparkline('sparkline2', cu.length ? cu : [0], '#22d3ee');
+                // Session sparkline: reuse views as proxy
+                createSparkline('sparkline3', cv.length ? cv : [0], '#fbbf24');
+                createSparkline('sparkline4', cu.length ? cu : [0], '#34d399');
+
+                // Main chart
+                const shortLabels = data.chart.labels.map(d => {
+                    const dt = new Date(d);
+                    return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dt.getDay()];
+                });
+                initMainChart(shortLabels, cv, cu);
+                initEngChart(shortLabels, cv);
+
+                // Visitor type
+                initVisitorChart(data.visitors.new || 0, data.visitors.returning || 0);
+
+                // Live activity
+                const liveEl = el('liveActivity');
+                if (data.live_activity && data.live_activity.length > 0) {
+                    liveEl.innerHTML = data.live_activity.map(a => `
+                        <div class="live-item">
+                            <div class="live-dot"></div>
+                            <div class="live-info">
+                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''}</div>
+                                <div class="live-page">${a.page || 'home'}</div>
+                            </div>
+                            <div class="live-time">${timeAgo(a.time)}</div>
+                        </div>
+                    `).join('');
+                } else {
+                    liveEl.innerHTML = '<div style="color:var(--text-muted);padding:16px;text-align:center;">No recent activity</div>';
+                }
+
+                // Preview cards
+                const projCount = Object.keys(data.projects || {}).length;
+                const convCount = Object.values(data.conversions || {}).reduce((a, b) => a + b, 0);
+                el('previewProjects').textContent = projCount || '0';
+                el('previewConversions').textContent = fmt(convCount);
+
+                // Top regions preview
+                const topRegionEl = document.querySelector('[data-page="audience"] .preview-card-value');
+                if (topRegionEl && data.regions.length > 0) {
+                    topRegionEl.textContent = data.regions[0].country;
+                }
+
+            } catch (err) {
+                console.error('Failed to load analytics:', err);
+            }
+        }
+
+        // Time filter
+        const timeFilter = document.getElementById('timeFilter');
+        if (timeFilter) {
+            timeFilter.addEventListener('change', () => {
+                currentRange = parseInt(timeFilter.value);
+                loadDashboard();
+            });
+        }
+
+        // Initial load + auto-refresh every 30s
+        loadDashboard();
+        setInterval(loadDashboard, 30000);
+    </script>
+</body>
+</html>
