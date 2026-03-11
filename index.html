@@ -1343,44 +1343,6 @@
             display: block;
         }
 
-        .widget-glasses-play {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 4;
-        }
-
-        .widget-glasses {
-            position: absolute;
-            top: var(--glasses-y, 42%);
-            left: var(--glasses-x, 50%);
-            width: clamp(98px, 22%, 165px);
-            max-width: 32%;
-            transform: translate(-50%, -50%);
-            opacity: 0;
-            pointer-events: none;
-            user-select: none;
-            -webkit-user-drag: none;
-            cursor: grab;
-            transition: opacity 0.24s ease;
-        }
-
-        .widget-glasses-play.active,
-        .widget-glasses-play.active .widget-glasses {
-            pointer-events: auto;
-        }
-
-        .widget-glasses-play.active .widget-glasses {
-            opacity: 1;
-        }
-
-        .widget-glasses.is-dragging {
-            cursor: grabbing;
-            transition: none;
-        }
 
         .widget-copy-overlay {
             position: absolute;
@@ -2804,11 +2766,8 @@ margin-top: 3px;
         <section class="snap-section about-section" id="about">
             <div class="about-hero">
                 <div class="about-hero-left">
-                    <div class="about-photo-wrap" id="glassesPlayWidget">
-                        <img class="about-photo" src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1772426168/hf_20260301_214454_187f349f-7937-44a6-be8f-aab1a2322ca4_bu9k9l.jpg" alt="Pedro Gomes">
-                        <div class="widget-glasses-play" id="widgetGlassesPlay" aria-hidden="true">
-                            <img id="widgetGlasses" class="widget-glasses" src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1772493140/glasses_xrdgxu.png" alt="" draggable="false">
-                        </div>
+                    <div class="about-photo-wrap">
+                        <img class="about-photo" src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1772426168/hf_20260301_214454_187f349f-7937-44a6-be8f-aab1a2322ca4_bu9k9l.jpg" alt="Mota Gomes">
                     </div>
                 </div>
                 <div class="about-hero-right">
@@ -3293,71 +3252,6 @@ margin-top: 3px;
         // ========================================
         const widgetsCarousel = document.getElementById('widgetsCarousel');
 
-        // ========================================
-        // FIRST WIDGET GLASSES PLAY
-        // ========================================
-        const glassesPlayWidget = document.getElementById('glassesPlayWidget');
-        const widgetGlassesPlay = document.getElementById('widgetGlassesPlay');
-        const widgetGlasses = document.getElementById('widgetGlasses');
-        let glassesHideTimer = null;
-        let glassesDragging = false;
-
-        if (glassesPlayWidget && widgetGlassesPlay && widgetGlasses) {
-            function clamp(v, min, max) {
-                return Math.min(max, Math.max(min, v));
-            }
-
-            function setGlassesPositionFromClient(clientX, clientY) {
-                const rect = glassesPlayWidget.getBoundingClientRect();
-                const xPct = ((clientX - rect.left) / rect.width) * 100;
-                const yPct = ((clientY - rect.top) / rect.height) * 100;
-                glassesPlayWidget.style.setProperty('--glasses-x', `${clamp(xPct, 10, 90)}%`);
-                glassesPlayWidget.style.setProperty('--glasses-y', `${clamp(yPct, 15, 85)}%`);
-            }
-
-            function showGlasses() {
-                widgetGlassesPlay.classList.add('active');
-                if (glassesHideTimer) clearTimeout(glassesHideTimer);
-                glassesHideTimer = setTimeout(() => {
-                    widgetGlassesPlay.classList.remove('active');
-                    widgetGlasses.classList.remove('is-dragging');
-                    glassesDragging = false;
-                }, 10000);
-            }
-
-            glassesPlayWidget.addEventListener('mouseenter', showGlasses);
-            glassesPlayWidget.addEventListener('mousemove', () => {
-                if (!widgetGlassesPlay.classList.contains('active')) showGlasses();
-            });
-
-            widgetGlasses.addEventListener('pointerdown', (e) => {
-                showGlasses();
-                glassesDragging = true;
-                widgetGlasses.classList.add('is-dragging');
-                e.preventDefault();
-                e.stopPropagation();
-                if (widgetGlasses.setPointerCapture) widgetGlasses.setPointerCapture(e.pointerId);
-                setGlassesPositionFromClient(e.clientX, e.clientY);
-            });
-
-            widgetGlasses.addEventListener('pointermove', (e) => {
-                if (!glassesDragging) return;
-                setGlassesPositionFromClient(e.clientX, e.clientY);
-            });
-
-            function stopGlassesDragging(e) {
-                if (!glassesDragging) return;
-                glassesDragging = false;
-                widgetGlasses.classList.remove('is-dragging');
-                if (e && widgetGlasses.releasePointerCapture) {
-                    try { widgetGlasses.releasePointerCapture(e.pointerId); } catch (_) {}
-                }
-            }
-
-            widgetGlasses.addEventListener('pointerup', stopGlassesDragging);
-            widgetGlasses.addEventListener('pointercancel', stopGlassesDragging);
-            glassesPlayWidget.addEventListener('mouseleave', stopGlassesDragging);
-        }
 
         // ========================================
         // HERO INLINE CIRCLES - SCROLL CLOSER EFFECT
