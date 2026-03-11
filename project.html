@@ -495,15 +495,12 @@
         .showcase-gallery {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 40px;
+            gap: 0;
+            width: 100%;
         }
 
         .showcase-item {
             position: relative;
-            border-radius: 12px;
             overflow: hidden;
             aspect-ratio: 16 / 9;
         }
@@ -541,7 +538,6 @@
         @media (max-width: 768px) {
             .showcase-gallery {
                 grid-template-columns: 1fr;
-                padding: 0 20px;
             }
             .showcase-item.half {
                 grid-column: 1 / -1;
@@ -1141,7 +1137,7 @@
 
                 <!-- SHOWCASE -->
                 ${project.images ? `
-                <section class="section" data-reveal style="border-top:none;">
+                <section class="section section--showcase" data-reveal style="border-top:none; padding:0;">
                     <div class="showcase-gallery">
                         ${project.images.map(img => `
                             <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}">
