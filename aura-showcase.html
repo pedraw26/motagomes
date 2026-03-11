@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logo Construction Grid — Soft Hybrid Spacing</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #e3e3e3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 80px 60px;
+    font-family: 'DM Mono', monospace;
+  }
+  .wrap { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+  .title { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: #2a2840; }
+  .sub   { font-size: 8px; letter-spacing: 0.12em; color: #1e1d2e; margin-top: 5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!--
+    SOFT HYBRID POSITIONS (k=0.08):
+      A1:  0        → 137.07    w=137.07  (unchanged)
+      gap1: 103.6389
+      U:   240.7089 → 366.2589  w=125.55  (shift −9.7511)
+      gap2: 111.93  (reference, unchanged)
+      R:   478.1889 → 589.1989  w=111.01  (shift −9.7511)
+      gap3: 96.4914
+      A2:  685.6903 → 822.7603  w=137.07  (shift −18.4597)
+      Total W: 822.76
+      H=141.55, x=14.155, clearspace=28.31
+      Canvas: −28.31 to 851.07, −28.31 to 169.86
+  -->
+
+  <svg xmlns="http://www.w3.org/2000/svg"
+       width="1020" height="310"
+       viewBox="-80 -50 1020 310"
+       style="display:block;">
+
+    <rect x="-80" y="-50" width="1020" height="310" fill="#e3e3e3"/>
+
+    <!-- ── GRID (step=14.155) ── -->
+    <g>
+      <!-- HORIZONTAL -->
+      <line x1="-28.31" y1="-28.31"  x2="851.07" y2="-28.31"  stroke="#8f8f8f" stroke-width="0.5" opacity="0.65"/>
+      <line x1="-28.31" y1="-14.155" x2="851.07" y2="-14.155" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="-28.31" y1="0"       x2="851.07" y2="0"       stroke="#8f8f8f" stroke-width="0.6" opacity="0.65"/>
+      <line x1="-28.31" y1="14.155"  x2="851.07" y2="14.155"  stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="-28.31" y1="28.31"   x2="851.07" y2="28.31"   stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="-28.31" y1="42.465"  x2="851.07" y2="42.465"  stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="-28.31" y1="56.62"   x2="851.07" y2="56.62"   stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="-28.31" y1="70.775"  x2="851.07" y2="70.775"  stroke="#8f8f8f" stroke-width="0.4" opacity="0.35"/>
+      <line x1="-28.31" y1="84.93"   x2="851.07" y2="84.93"   stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="-28.31" y1="99.085"  x2="851.07" y2="99.085"  stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="-28.31" y1="113.24"  x2="851.07" y2="113.24"  stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="-28.31" y1="127.395" x2="851.07" y2="127.395" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="-28.31" y1="141.55"  x2="851.07" y2="141.55"  stroke="#8f8f8f" stroke-width="0.6" opacity="0.65"/>
+      <line x1="-28.31" y1="155.705" x2="851.07" y2="155.705" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="-28.31" y1="169.86"  x2="851.07" y2="169.86"  stroke="#8f8f8f" stroke-width="0.5" opacity="0.65"/>
+
+      <!-- VERTICAL -->
+      <line x1="-28.31"  y1="-28.31" x2="-28.31"  y2="169.86" stroke="#8f8f8f" stroke-width="0.5" opacity="0.65"/>
+      <line x1="-14.155" y1="-28.31" x2="-14.155" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="0"       y1="-28.31" x2="0"       y2="169.86" stroke="#8f8f8f" stroke-width="0.6" opacity="0.65"/>
+      <line x1="14.155"  y1="-28.31" x2="14.155"  y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="28.31"   y1="-28.31" x2="28.31"   y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="42.465"  y1="-28.31" x2="42.465"  y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="56.62"   y1="-28.31" x2="56.62"   y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="70.775"  y1="-28.31" x2="70.775"  y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="84.93"   y1="-28.31" x2="84.93"   y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="99.085"  y1="-28.31" x2="99.085"  y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="113.24"  y1="-28.31" x2="113.24"  y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="127.395" y1="-28.31" x2="127.395" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="137.07"  y1="-28.31" x2="137.07"  y2="169.86" stroke="#8f8f8f" stroke-width="0.7" opacity="0.55"/>
+      <line x1="141.55"  y1="-28.31" x2="141.55"  y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="155.705" y1="-28.31" x2="155.705" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="169.86"  y1="-28.31" x2="169.86"  y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="184.015" y1="-28.31" x2="184.015" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="198.17"  y1="-28.31" x2="198.17"  y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="212.325" y1="-28.31" x2="212.325" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="226.48"  y1="-28.31" x2="226.48"  y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="240.709" y1="-28.31" x2="240.709" y2="169.86" stroke="#8f8f8f" stroke-width="0.7" opacity="0.55"/>
+      <line x1="254.864" y1="-28.31" x2="254.864" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="269.019" y1="-28.31" x2="269.019" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="283.174" y1="-28.31" x2="283.174" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="297.329" y1="-28.31" x2="297.329" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="311.484" y1="-28.31" x2="311.484" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="325.639" y1="-28.31" x2="325.639" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="339.794" y1="-28.31" x2="339.794" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="353.949" y1="-28.31" x2="353.949" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="366.259" y1="-28.31" x2="366.259" y2="169.86" stroke="#8f8f8f" stroke-width="0.7" opacity="0.55"/>
+      <line x1="380.414" y1="-28.31" x2="380.414" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="394.569" y1="-28.31" x2="394.569" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="408.724" y1="-28.31" x2="408.724" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="422.879" y1="-28.31" x2="422.879" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="437.034" y1="-28.31" x2="437.034" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="451.189" y1="-28.31" x2="451.189" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="465.344" y1="-28.31" x2="465.344" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="478.189" y1="-28.31" x2="478.189" y2="169.86" stroke="#8f8f8f" stroke-width="0.7" opacity="0.55"/>
+      <line x1="492.344" y1="-28.31" x2="492.344" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="506.499" y1="-28.31" x2="506.499" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="520.654" y1="-28.31" x2="520.654" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="534.809" y1="-28.31" x2="534.809" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="548.964" y1="-28.31" x2="548.964" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="563.119" y1="-28.31" x2="563.119" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="577.274" y1="-28.31" x2="577.274" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="589.199" y1="-28.31" x2="589.199" y2="169.86" stroke="#8f8f8f" stroke-width="0.7" opacity="0.55"/>
+      <line x1="603.354" y1="-28.31" x2="603.354" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="617.509" y1="-28.31" x2="617.509" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="631.664" y1="-28.31" x2="631.664" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="645.819" y1="-28.31" x2="645.819" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="659.974" y1="-28.31" x2="659.974" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="674.129" y1="-28.31" x2="674.129" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="685.690" y1="-28.31" x2="685.690" y2="169.86" stroke="#8f8f8f" stroke-width="0.7" opacity="0.55"/>
+      <line x1="699.845" y1="-28.31" x2="699.845" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="714.0"   y1="-28.31" x2="714.0"   y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="728.155" y1="-28.31" x2="728.155" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="742.31"  y1="-28.31" x2="742.31"  y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="756.465" y1="-28.31" x2="756.465" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="770.62"  y1="-28.31" x2="770.62"  y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="784.775" y1="-28.31" x2="784.775" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="798.93"  y1="-28.31" x2="798.93"  y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="813.085" y1="-28.31" x2="813.085" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="822.760" y1="-28.31" x2="822.760" y2="169.86" stroke="#8f8f8f" stroke-width="0.6" opacity="0.65"/>
+      <line x1="836.915" y1="-28.31" x2="836.915" y2="169.86" stroke="#8f8f8f" stroke-width="0.3" opacity="0.2"/>
+      <line x1="851.07"  y1="-28.31" x2="851.07"  y2="169.86" stroke="#8f8f8f" stroke-width="0.5" opacity="0.65"/>
+    </g>
+
+    <!-- CLEARSPACE BOX -->
+    <rect x="-28.31" y="-28.31" width="879.38" height="198.17"
+          fill="none" stroke="#8f8f8f" stroke-width="0.6" opacity="0.9"/>
+
+    <!-- LOGO BOUNDING BOX -->
+    <rect x="0" y="0" width="822.76" height="141.55"
+          fill="none" stroke="#8f8f8f" stroke-width="0.6" opacity="0.9"/>
+
+    <!-- LOGO BACKGROUND -->
+    <rect x="0" y="0" width="822.76" height="141.55" fill="#b8b8b8"/>
+
+    <!-- U OVERSHOOT -->
+    <rect x="240.709" y="141.55" width="125.55" height="2.45"
+          fill="rgba(0,0,0,0.04)" stroke="#a0a0a0" stroke-width="0.5"
+          stroke-dasharray="2 2" opacity="0.35"/>
+
+    <!-- THE LOGO — soft hybrid positions -->
+    <g fill="#0a0a0a">
+      <path d="M137.07,141.55H0L68.09,0l68.98,141.55ZM17.59,130.5h101.79L68.15,25.38l-50.56,105.12Z"/>
+    </g>
+    <g fill="#0a0a0a" transform="translate(-9.7511,0)">
+      <path d="M313.23,143.99c-35.2,0-62.77-26.36-62.77-60.01V.56h11.06v83.43c0,27.91,22.23,48.95,51.71,48.95s51.72-21.04,51.72-48.95V.56h11.06v83.43c0,33.65-27.57,60.01-62.77,60.01Z"/>
+    </g>
+    <g fill="#0a0a0a" transform="translate(-9.7511,0)">
+      <path d="M585.07,141.74l-54.56-68.49h24.89c17.04,0,30.9-13.86,30.9-30.9s-13.86-30.9-30.9-30.9h-56.4v130.26h-11.06V.39h67.46c23.14,0,41.96,18.82,41.96,41.96s-18.82,41.96-41.96,41.96h-.61l44.16,57.43h-13.87Z"/>
+    </g>
+    <g fill="#0a0a0a" transform="translate(-18.4597,0)">
+      <path d="M841.22,141.55h-137.07L772.24,0l68.98,141.55ZM721.74,130.5h101.79l-51.23-105.12-50.56,105.12Z"/>
+    </g>
+
+    <!-- DOTS: clearspace corners -->
+    <circle cx="-28.31"  cy="-28.31" r="3"   fill="#8f8f8f"/>
+    <circle cx="851.07"  cy="-28.31" r="3"   fill="#8f8f8f"/>
+    <circle cx="-28.31"  cy="169.86" r="3"   fill="#8f8f8f"/>
+    <circle cx="851.07"  cy="169.86" r="3"   fill="#8f8f8f"/>
+
+    <!-- DOTS: logo corners -->
+    <circle cx="0"       cy="0"      r="3.5" fill="#a0a0a0"/>
+    <circle cx="822.76"  cy="0"      r="3.5" fill="#a0a0a0"/>
+    <circle cx="0"       cy="141.55" r="3.5" fill="#a0a0a0"/>
+    <circle cx="822.76"  cy="141.55" r="3.5" fill="#a0a0a0"/>
+
+    <!-- DOTS: glyph edges on clearspace top -->
+    <circle cx="0"       cy="-28.31" r="2.5" fill="#8f8f8f"/>
+    <circle cx="137.07"  cy="-28.31" r="2.5" fill="#8f8f8f"/>
+    <circle cx="240.709" cy="-28.31" r="2.5" fill="#8f8f8f"/>
+    <circle cx="366.259" cy="-28.31" r="2.5" fill="#8f8f8f"/>
+    <circle cx="478.189" cy="-28.31" r="2.5" fill="#8f8f8f"/>
+    <circle cx="589.199" cy="-28.31" r="2.5" fill="#8f8f8f"/>
+    <circle cx="685.690" cy="-28.31" r="2.5" fill="#8f8f8f"/>
+    <circle cx="822.760" cy="-28.31" r="2.5" fill="#8f8f8f"/>
+
+    <!-- DOTS: glyph edges on clearspace bottom -->
+    <circle cx="0"       cy="169.86" r="2.5" fill="#8f8f8f"/>
+    <circle cx="137.07"  cy="169.86" r="2.5" fill="#8f8f8f"/>
+    <circle cx="240.709" cy="169.86" r="2.5" fill="#8f8f8f"/>
+    <circle cx="366.259" cy="169.86" r="2.5" fill="#8f8f8f"/>
+    <circle cx="478.189" cy="169.86" r="2.5" fill="#8f8f8f"/>
+    <circle cx="589.199" cy="169.86" r="2.5" fill="#8f8f8f"/>
+    <circle cx="685.690" cy="169.86" r="2.5" fill="#8f8f8f"/>
+    <circle cx="822.760" cy="169.86" r="2.5" fill="#8f8f8f"/>
+
+    <!-- DOTS: left/right clearspace midpoints -->
+    <circle cx="-28.31" cy="0"      r="3" fill="#a0a0a0"/>
+    <circle cx="-28.31" cy="70.775" r="3" fill="#a0a0a0"/>
+    <circle cx="-28.31" cy="141.55" r="3" fill="#a0a0a0"/>
+    <circle cx="851.07" cy="0"      r="3" fill="#a0a0a0"/>
+    <circle cx="851.07" cy="70.775" r="3" fill="#a0a0a0"/>
+    <circle cx="851.07" cy="141.55" r="3" fill="#a0a0a0"/>
+
+    <!-- VERTICAL BOUNDARY LINES -->
+    <g stroke="#a0a0a0" stroke-width="1.2" opacity="0.85">
+      <line x1="0"       y1="-28.31" x2="0"       y2="169.86"/>
+      <line x1="137.07"  y1="-28.31" x2="137.07"  y2="169.86"/>
+      <line x1="240.709" y1="-28.31" x2="240.709" y2="169.86"/>
+      <line x1="366.259" y1="-28.31" x2="366.259" y2="169.86"/>
+      <line x1="478.189" y1="-28.31" x2="478.189" y2="169.86"/>
+      <line x1="589.199" y1="-28.31" x2="589.199" y2="169.86"/>
+      <line x1="685.690" y1="-28.31" x2="685.690" y2="169.86"/>
+      <line x1="822.760" y1="-28.31" x2="822.760" y2="169.86"/>
+    </g>
+    <!-- Ticks top -->
+    <g stroke="#a0a0a0" stroke-width="1.5">
+      <line x1="-4"      y1="-28.31" x2="4"       y2="-28.31"/>
+      <line x1="133.07"  y1="-28.31" x2="141.07"  y2="-28.31"/>
+      <line x1="236.709" y1="-28.31" x2="244.709" y2="-28.31"/>
+      <line x1="362.259" y1="-28.31" x2="370.259" y2="-28.31"/>
+      <line x1="474.189" y1="-28.31" x2="482.189" y2="-28.31"/>
+      <line x1="585.199" y1="-28.31" x2="593.199" y2="-28.31"/>
+      <line x1="681.690" y1="-28.31" x2="689.690" y2="-28.31"/>
+      <line x1="818.760" y1="-28.31" x2="826.760" y2="-28.31"/>
+    </g>
+    <!-- Ticks bottom -->
+    <g stroke="#a0a0a0" stroke-width="1.5">
+      <line x1="-4"      y1="169.86" x2="4"       y2="169.86"/>
+      <line x1="133.07"  y1="169.86" x2="141.07"  y2="169.86"/>
+      <line x1="236.709" y1="169.86" x2="244.709" y2="169.86"/>
+      <line x1="362.259" y1="169.86" x2="370.259" y2="169.86"/>
+      <line x1="474.189" y1="169.86" x2="482.189" y2="169.86"/>
+      <line x1="585.199" y1="169.86" x2="593.199" y2="169.86"/>
+      <line x1="681.690" y1="169.86" x2="689.690" y2="169.86"/>
+      <line x1="818.760" y1="169.86" x2="826.760" y2="169.86"/>
+    </g>
+
+    <!-- MIDLINE -->
+    <line x1="-28.31" y1="70.775" x2="851.07" y2="70.775"
+          stroke="#a0a0a0" stroke-width="0.4" opacity="0.2" stroke-dasharray="4 4"/>
+
+    <!-- LEFT ANNOTATIONS -->
+    <line x1="-52" y1="-28.31" x2="-52" y2="0"      stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="-55" y1="-28.31" x2="-49" y2="-28.31" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="-55" y1="0"      x2="-49" y2="0"      stroke="#a0a0a0" stroke-width="0.8"/>
+    <text x="-57" y="-10"  font-family="DM Mono,monospace" font-size="7.5" fill="#a0a0a0" text-anchor="end">2x</text>
+
+    <line x1="-52" y1="0"      x2="-52" y2="141.55" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="-55" y1="0"      x2="-49" y2="0"      stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="-55" y1="141.55" x2="-49" y2="141.55" stroke="#a0a0a0" stroke-width="0.8"/>
+    <text x="-57" y="75"   font-family="DM Mono,monospace" font-size="7.5" fill="#a0a0a0" text-anchor="end">10x</text>
+
+    <line x1="-52" y1="141.55" x2="-52" y2="169.86" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="-55" y1="141.55" x2="-49" y2="141.55" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="-55" y1="169.86" x2="-49" y2="169.86" stroke="#a0a0a0" stroke-width="0.8"/>
+    <text x="-57" y="159"  font-family="DM Mono,monospace" font-size="7.5" fill="#a0a0a0" text-anchor="end">2x</text>
+
+    <!-- RIGHT ANNOTATIONS -->
+    <line x1="866" y1="0"      x2="866" y2="70.775" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="863" y1="0"      x2="869" y2="0"      stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="863" y1="70.775" x2="869" y2="70.775" stroke="#a0a0a0" stroke-width="0.8"/>
+    <text x="872" y="39"   font-family="DM Mono,monospace" font-size="7.5" fill="#a0a0a0">5x</text>
+
+    <line x1="866" y1="70.775" x2="866" y2="141.55" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="863" y1="70.775" x2="869" y2="70.775" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="863" y1="141.55" x2="869" y2="141.55" stroke="#a0a0a0" stroke-width="0.8"/>
+    <text x="872" y="110"  font-family="DM Mono,monospace" font-size="7.5" fill="#a0a0a0">5x</text>
+
+    <!-- BOTTOM ANNOTATIONS -->
+    <!-- 2x clearspace left -->
+    <line x1="-28.31" y1="193" x2="0"       y2="193" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="-28.31" y1="190" x2="-28.31"  y2="196" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="0"      y1="190" x2="0"        y2="196" stroke="#a0a0a0" stroke-width="0.8"/>
+    <text x="-14.15"  y="205" font-family="DM Mono,monospace" font-size="7.5" fill="#a0a0a0" text-anchor="middle">2x</text>
+
+    <!-- A1 -->
+    <line x1="0"      y1="193" x2="137.07"  y2="193" stroke="#8f8f8f" stroke-width="0.8"/>
+    <line x1="0"      y1="190" x2="0"       y2="196" stroke="#8f8f8f" stroke-width="0.8"/>
+    <line x1="137.07" y1="190" x2="137.07"  y2="196" stroke="#8f8f8f" stroke-width="0.8"/>
+    <text x="68.54"   y="205" font-family="DM Mono,monospace" font-size="7.5" fill="#8f8f8f" text-anchor="middle">137.07</text>
+
+    <!-- gap1 -->
+    <line x1="137.07"  y1="193" x2="240.709" y2="193" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="137.07"  y1="190" x2="137.07"  y2="196" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="240.709" y1="190" x2="240.709" y2="196" stroke="#a0a0a0" stroke-width="0.8"/>
+    <text x="188.889"  y="205" font-family="DM Mono,monospace" font-size="7.5" fill="#a0a0a0" text-anchor="middle">103.64</text>
+
+    <!-- U -->
+    <line x1="240.709" y1="193" x2="366.259" y2="193" stroke="#8f8f8f" stroke-width="0.8"/>
+    <line x1="240.709" y1="190" x2="240.709" y2="196" stroke="#8f8f8f" stroke-width="0.8"/>
+    <line x1="366.259" y1="190" x2="366.259" y2="196" stroke="#8f8f8f" stroke-width="0.8"/>
+    <text x="303.484"  y="205" font-family="DM Mono,monospace" font-size="7.5" fill="#8f8f8f" text-anchor="middle">125.55</text>
+
+    <!-- gap2 ref -->
+    <line x1="366.259" y1="193" x2="478.189" y2="193" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="366.259" y1="190" x2="366.259" y2="196" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="478.189" y1="190" x2="478.189" y2="196" stroke="#a0a0a0" stroke-width="0.8"/>
+    <text x="422.224"  y="205" font-family="DM Mono,monospace" font-size="7.5" fill="#a0a0a0" text-anchor="middle">111.93</text>
+
+    <!-- R -->
+    <line x1="478.189" y1="193" x2="589.199" y2="193" stroke="#8f8f8f" stroke-width="0.8"/>
+    <line x1="478.189" y1="190" x2="478.189" y2="196" stroke="#8f8f8f" stroke-width="0.8"/>
+    <line x1="589.199" y1="190" x2="589.199" y2="196" stroke="#8f8f8f" stroke-width="0.8"/>
+    <text x="533.694"  y="205" font-family="DM Mono,monospace" font-size="7.5" fill="#8f8f8f" text-anchor="middle">111.01</text>
+
+    <!-- gap3 -->
+    <line x1="589.199" y1="193" x2="685.690" y2="193" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="589.199" y1="190" x2="589.199" y2="196" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="685.690" y1="190" x2="685.690" y2="196" stroke="#a0a0a0" stroke-width="0.8"/>
+    <text x="637.444"  y="205" font-family="DM Mono,monospace" font-size="7.5" fill="#a0a0a0" text-anchor="middle">96.49</text>
+
+    <!-- A2 -->
+    <line x1="685.690" y1="193" x2="822.760" y2="193" stroke="#8f8f8f" stroke-width="0.8"/>
+    <line x1="685.690" y1="190" x2="685.690" y2="196" stroke="#8f8f8f" stroke-width="0.8"/>
+    <line x1="822.760" y1="190" x2="822.760" y2="196" stroke="#8f8f8f" stroke-width="0.8"/>
+    <text x="754.225"  y="205" font-family="DM Mono,monospace" font-size="7.5" fill="#8f8f8f" text-anchor="middle">137.07</text>
+
+    <!-- 2x clearspace right -->
+    <line x1="822.760" y1="193" x2="851.07"  y2="193" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="822.760" y1="190" x2="822.760"  y2="196" stroke="#a0a0a0" stroke-width="0.8"/>
+    <line x1="851.07"  y1="190" x2="851.07"   y2="196" stroke="#a0a0a0" stroke-width="0.8"/>
+    <text x="836.915"  y="205" font-family="DM Mono,monospace" font-size="7.5" fill="#a0a0a0" text-anchor="middle">2x</text>
+
+    <!-- TOP x-unit labels -->
+    <g font-family="DM Mono,monospace" font-size="7.5" fill="#8f8f8f" text-anchor="middle">
+      <text x="68.535"  y="-34">9.68x</text>
+      <text x="188.889" y="-34">7.32x</text>
+      <text x="303.484" y="-34">8.87x</text>
+      <text x="422.224" y="-34">7.91x</text>
+      <text x="533.694" y="-34">7.84x</text>
+      <text x="637.444" y="-34">6.82x</text>
+      <text x="754.225" y="-34">9.68x</text>
+    </g>
+
+    <!-- STROKE THICKNESS — U stem, bracket inside glyph body -->
+    <line x1="240.709" y1="20" x2="251.769" y2="20" stroke="#ffea94" stroke-width="0.7"/>
+    <line x1="240.709" y1="17" x2="240.709" y2="23" stroke="#ffea94" stroke-width="0.7"/>
+    <line x1="251.769" y1="17" x2="251.769" y2="23" stroke="#ffea94" stroke-width="0.7"/>
+    <text x="254.5" y="22.5" font-family="DM Mono,monospace" font-size="6" fill="#ffea94" text-anchor="start">11.06</text>
+
+    <!-- STROKE THICKNESS — R stem, bracket inside glyph body -->
+    <line x1="478.189" y1="20" x2="489.249" y2="20" stroke="#ffea94" stroke-width="0.7"/>
+    <line x1="478.189" y1="17" x2="478.189" y2="23" stroke="#ffea94" stroke-width="0.7"/>
+    <line x1="489.249" y1="17" x2="489.249" y2="23" stroke="#ffea94" stroke-width="0.7"/>
+    <text x="491.5" y="22.5" font-family="DM Mono,monospace" font-size="6" fill="#ffea94" text-anchor="start">11.06</text>
+
+  </svg>
+</div>
+<script>
+  (function () {
+    var svg = document.querySelector("svg");
+    if (!svg) return;
+
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) return;
+
+    var allLines = Array.from(svg.querySelectorAll("line"));
+    var strokeRects = Array.from(svg.querySelectorAll("rect[stroke]"));
+    var circles = Array.from(svg.querySelectorAll("circle"));
+    var texts = Array.from(svg.querySelectorAll("text"));
+    var logoGroups = Array.from(svg.querySelectorAll('g[fill="#0a0a0a"]'));
+    var counterTimeouts = [];
+    var counterRafs = [];
+    var strokeTimeouts = [];
+
+    function hex(v) {
+      return (v || "").trim().toLowerCase();
+    }
+
+    var yellowLines = allLines.filter(function (el) {
+      return hex(el.getAttribute("stroke")) === "#ffea94";
+    });
+    var yellowTexts = texts.filter(function (el) {
+      return hex(el.getAttribute("fill")) === "#ffea94";
+    });
+
+    var baseLines = allLines.filter(function (el) {
+      return hex(el.getAttribute("stroke")) !== "#ffea94";
+    });
+    var baseTexts = texts.filter(function (el) {
+      return hex(el.getAttribute("fill")) !== "#ffea94";
+    });
+    var baseStrokeRects = strokeRects.filter(function (el) {
+      return hex(el.getAttribute("stroke")) !== "#ffea94";
+    });
+    var verticalKeylineXs = [-28.31, 0, 137.07, 240.709, 366.259, 478.189, 589.199, 685.69, 822.76, 851.07];
+    var numericTextMeta = texts
+      .map(function (el) {
+        var raw = (el.textContent || "").trim();
+        var m = raw.match(/^(-?\d+(?:\.\d+)?)(.*)$/);
+        if (!m) return null;
+        return {
+          el: el,
+          value: parseFloat(m[1]),
+          decimals: (m[1].split(".")[1] || "").length,
+          suffix: m[2] || ""
+        };
+      })
+      .filter(Boolean);
+
+    function opacityOf(el) {
+      var o = parseFloat(el.getAttribute("opacity"));
+      return Number.isFinite(o) ? o : 1;
+    }
+
+    function lineLength(line) {
+      var x1 = parseFloat(line.getAttribute("x1")) || 0;
+      var y1 = parseFloat(line.getAttribute("y1")) || 0;
+      var x2 = parseFloat(line.getAttribute("x2")) || 0;
+      var y2 = parseFloat(line.getAttribute("y2")) || 0;
+      return Math.hypot(x2 - x1, y2 - y1);
+    }
+
+    function rectPerimeter(rect) {
+      var w = parseFloat(rect.getAttribute("width")) || 0;
+      var h = parseFloat(rect.getAttribute("height")) || 0;
+      return 2 * (w + h);
+    }
+
+    function isVerticalKeyline(line) {
+      var x1 = parseFloat(line.getAttribute("x1"));
+      var x2 = parseFloat(line.getAttribute("x2"));
+      var y1 = parseFloat(line.getAttribute("y1"));
+      var y2 = parseFloat(line.getAttribute("y2"));
+      if (!Number.isFinite(x1) || !Number.isFinite(x2) || !Number.isFinite(y1) || !Number.isFinite(y2)) return false;
+      if (Math.abs(x1 - x2) > 0.001) return false;
+      if (Math.abs(y1 + 28.31) > 0.01 || Math.abs(y2 - 169.86) > 0.01) return false;
+      return verticalKeylineXs.some(function (vx) { return Math.abs(vx - x1) < 0.01; });
+    }
+
+    function prepStroke(el, len) {
+      el.style.transition = "none";
+      el.style.strokeDasharray = String(len);
+      el.style.strokeDashoffset = String(len);
+      el.setAttribute("stroke-dasharray", String(len));
+      el.setAttribute("stroke-dashoffset", String(len));
+      el.style.opacity = String(opacityOf(el));
+    }
+
+    function animateStroke(el, len, delay, duration, easing) {
+      var timeoutId = window.setTimeout(function () {
+        var curve = easing || "cubic-bezier(0.18, 0.82, 0.22, 1)";
+        el.style.transition = "stroke-dashoffset " + duration + "ms " + curve;
+        // Force layout so transition starts from the hidden state.
+        void el.getBoundingClientRect();
+        el.style.strokeDashoffset = "0";
+        el.setAttribute("stroke-dashoffset", "0");
+      }, delay);
+      strokeTimeouts.push(timeoutId);
+    }
+
+    function resetElement(el) {
+      el.getAnimations().forEach(function (a) { a.cancel(); });
+    }
+
+    function formatNumber(value, decimals) {
+      if (!Number.isFinite(value)) return "0";
+      if (decimals <= 0) return String(Math.round(value));
+      return value.toFixed(decimals);
+    }
+
+    function counterEase(t) {
+      if (t < 0.45) {
+        var p1 = t / 0.45;
+        return 0.78 * (1 - Math.pow(1 - p1, 2));
+      }
+      if (t < 0.75) {
+        var p2 = (t - 0.45) / 0.30;
+        return 0.78 + 0.16 * (1 - Math.pow(1 - p2, 3));
+      }
+      if (t < 0.92) {
+        var p3 = (t - 0.75) / 0.17;
+        return 0.94 + 0.05 * (1 - Math.pow(1 - p3, 4));
+      }
+      var p4 = (t - 0.92) / 0.08;
+      return 0.99 + 0.01 * (1 - Math.pow(1 - p4, 6));
+    }
+
+    function animateNumericLabel(meta, delay, duration) {
+      meta.el.textContent = formatNumber(0, meta.decimals) + meta.suffix;
+      var startTs = 0;
+      var timeoutId = window.setTimeout(function () {
+        function tick(ts) {
+          if (!startTs) startTs = ts;
+          var p = Math.min(1, (ts - startTs) / duration);
+          var eased = counterEase(p);
+          var current = meta.value * eased;
+          meta.el.textContent = formatNumber(current, meta.decimals) + meta.suffix;
+          if (p < 1) {
+            counterRafs.push(window.requestAnimationFrame(tick));
+          } else {
+            meta.el.textContent = formatNumber(meta.value, meta.decimals) + meta.suffix;
+          }
+        }
+        counterRafs.push(window.requestAnimationFrame(tick));
+      }, delay);
+      counterTimeouts.push(timeoutId);
+    }
+
+    function runSequence() {
+      var verticalKeylinesAll = baseLines
+        .filter(isVerticalKeyline)
+        .sort(function (a, b) {
+          return (parseFloat(a.getAttribute("x1")) || 0) - (parseFloat(b.getAttribute("x1")) || 0);
+        });
+      var anchorXs = [-28.31, 851.07];
+      var coreKeylineXs = [0, 137.07, 240.709, 366.259, 478.189, 589.199, 685.69, 822.76];
+      var verticalAnchors = verticalKeylinesAll.filter(function (el) {
+        var x = parseFloat(el.getAttribute("x1")) || 0;
+        return anchorXs.some(function (vx) { return Math.abs(vx - x) < 0.01; });
+      });
+      var verticalKeylines = verticalKeylinesAll.filter(function (el) {
+        var x = parseFloat(el.getAttribute("x1")) || 0;
+        return coreKeylineXs.some(function (vx) { return Math.abs(vx - x) < 0.01; });
+      });
+      var capBaselineLines = baseLines.filter(function (el) {
+        if (isVerticalKeyline(el)) return false;
+        var y1 = parseFloat(el.getAttribute("y1")) || 0;
+        var y2 = parseFloat(el.getAttribute("y2")) || 0;
+        var x1 = parseFloat(el.getAttribute("x1")) || 0;
+        var x2 = parseFloat(el.getAttribute("x2")) || 0;
+        var horizontal = Math.abs(y1 - y2) < 0.001;
+        var fullSpan = Math.abs(x1 + 28.31) < 0.01 && Math.abs(x2 - 851.07) < 0.01;
+        var isCapOrBase = Math.abs(y1 - 0) < 0.01 || Math.abs(y1 - 141.55) < 0.01;
+        return horizontal && fullSpan && isCapOrBase;
+      });
+      var tickLines = baseLines.filter(function (el) {
+        if (isVerticalKeyline(el)) return false;
+        if (capBaselineLines.indexOf(el) !== -1) return false;
+        return lineLength(el) <= 20;
+      });
+      var subdivisionLines = baseLines.filter(function (el) {
+        return !isVerticalKeyline(el) && capBaselineLines.indexOf(el) === -1 && tickLines.indexOf(el) === -1;
+      });
+      var allBaseStrokes = verticalAnchors
+        .concat(baseStrokeRects)
+        .concat(capBaselineLines)
+        .concat(verticalKeylines)
+        .concat(subdivisionLines)
+        .concat(tickLines);
+      var yellowStrokeSet = yellowLines;
+      var t0 = 0;
+      var anchorStagger = 180;
+      var anchorDuration = 500;
+      var outlineStart = 120;
+      var outlineStagger = 180;
+      var outlineDuration = 900;
+      var capBaseStart = 700;
+      var capBaseStagger = 180;
+      var capBaseDuration = 700;
+      var keylineStart = 900;
+      var keylineStagger = 110;
+      var keylineDuration = 330;
+      var keylineEnd = keylineStart + Math.max(0, verticalKeylines.length - 1) * keylineStagger + keylineDuration;
+      var subdivStart = keylineEnd + 150;
+      var subdivStagger = 8;
+      var subdivDuration = 680;
+      var subdivEnd = subdivStart + Math.max(0, subdivisionLines.length - 1) * subdivStagger + subdivDuration;
+      var ticksStart = subdivEnd + 120;
+      var ticksStagger = 24;
+      var ticksDuration = 380;
+      var ticksEnd = ticksStart + Math.max(0, tickLines.length - 1) * ticksStagger + ticksDuration;
+      var baseTextDelay = ticksEnd + 90;
+      var baseTextStagger = 0;
+      var logoStart = keylineEnd + 120;
+      var yellowStrokeStart = logoStart + 1400;
+      var yellowTextDelay = yellowStrokeStart + 160;
+      var yellowTextStagger = 0;
+
+      counterTimeouts.forEach(function (id) { window.clearTimeout(id); });
+      counterRafs.forEach(function (id) { window.cancelAnimationFrame(id); });
+      strokeTimeouts.forEach(function (id) { window.clearTimeout(id); });
+      counterTimeouts = [];
+      counterRafs = [];
+      strokeTimeouts = [];
+
+      allBaseStrokes.forEach(function (el) {
+        resetElement(el);
+        var len = el.tagName.toLowerCase() === "line" ? lineLength(el) : rectPerimeter(el);
+        prepStroke(el, len);
+      });
+
+      yellowStrokeSet.forEach(function (el) {
+        resetElement(el);
+        var len = lineLength(el);
+        prepStroke(el, len);
+      });
+
+      circles.forEach(function (el) {
+        resetElement(el);
+        el.style.opacity = "0";
+      });
+
+      baseTexts.forEach(function (el) {
+        resetElement(el);
+        el.style.opacity = "0";
+      });
+
+      yellowTexts.forEach(function (el) {
+        resetElement(el);
+        el.style.opacity = "0";
+        el.style.filter = "drop-shadow(0 0 0 rgba(255,224,102,0))";
+      });
+
+      numericTextMeta.forEach(function (meta) {
+        meta.el.textContent = formatNumber(0, meta.decimals) + meta.suffix;
+      });
+
+      logoGroups.forEach(function (el) {
+        resetElement(el);
+        el.style.opacity = "0";
+        el.style.filter = "none";
+      });
+
+      verticalAnchors.forEach(function (el, i) {
+        var len = lineLength(el);
+        animateStroke(el, len, t0 + i * anchorStagger, anchorDuration, "cubic-bezier(0.18, 0.82, 0.22, 1)");
+      });
+
+      baseStrokeRects.forEach(function (el, i) {
+        var len = rectPerimeter(el);
+        animateStroke(el, len, outlineStart + i * outlineStagger, outlineDuration, "cubic-bezier(0.18, 0.82, 0.22, 1)");
+      });
+
+      capBaselineLines.forEach(function (el, i) {
+        var len = lineLength(el);
+        animateStroke(el, len, capBaseStart + i * capBaseStagger, capBaseDuration, "cubic-bezier(0.18, 0.82, 0.22, 1)");
+      });
+
+      verticalKeylines.forEach(function (el, i) {
+        var len = lineLength(el);
+        animateStroke(el, len, keylineStart + i * keylineStagger, keylineDuration, "cubic-bezier(0.18, 0.82, 0.22, 1)");
+      });
+
+      subdivisionLines.forEach(function (el, i) {
+        var len = lineLength(el);
+        animateStroke(el, len, subdivStart + i * subdivStagger, subdivDuration, "cubic-bezier(0.18, 0.82, 0.22, 1)");
+      });
+
+      tickLines.forEach(function (el, i) {
+        var len = lineLength(el);
+        animateStroke(el, len, ticksStart + i * ticksStagger, ticksDuration, "cubic-bezier(0.18, 0.82, 0.22, 1)");
+      });
+
+      circles.forEach(function (el, i) {
+        el.animate(
+          [
+            { opacity: 0 },
+            { opacity: opacityOf(el) }
+          ],
+          {
+            duration: 420,
+            delay: baseTextDelay - 140 + i * 8,
+            easing: "cubic-bezier(0.2, 0.8, 0.2, 1)",
+            fill: "forwards"
+          }
+        );
+      });
+
+      baseTexts.forEach(function (el, i) {
+        el.animate(
+          [
+            { opacity: 0 },
+            { opacity: opacityOf(el) }
+          ],
+          {
+            duration: 420,
+            delay: baseTextDelay + i * baseTextStagger,
+            easing: "cubic-bezier(0.2, 0.8, 0.2, 1)",
+            fill: "forwards"
+          }
+        );
+      });
+
+      baseTexts.forEach(function (el, i) {
+        var meta = numericTextMeta.find(function (item) { return item.el === el; });
+        if (!meta) return;
+        animateNumericLabel(meta, baseTextDelay + i * baseTextStagger, 1450);
+      });
+
+      logoGroups.forEach(function (el, i) {
+        el.animate(
+          [
+            { opacity: 0, filter: "none" },
+            { opacity: 1, filter: "none" }
+          ],
+          {
+            duration: 1600,
+            delay: logoStart + i * 180,
+            easing: "cubic-bezier(0.16, 0.9, 0.2, 1)",
+            fill: "forwards"
+          }
+        );
+      });
+
+      yellowStrokeSet.forEach(function (el, i) {
+        var len = lineLength(el);
+        animateStroke(el, len, yellowStrokeStart + i * 90, 620, "cubic-bezier(0.18, 0.82, 0.22, 1)");
+      });
+
+      yellowTexts.forEach(function (el, i) {
+        el.animate(
+          [
+            { opacity: 0, filter: "drop-shadow(0 0 0 rgba(255,224,102,0))" },
+            { opacity: 1, filter: "drop-shadow(0 0 7px rgba(255,224,102,0.8))" },
+            { opacity: 1, filter: "drop-shadow(0 0 3px rgba(255,224,102,0.45))" }
+          ],
+          {
+            duration: 700,
+            delay: yellowTextDelay + i * yellowTextStagger,
+            easing: "cubic-bezier(0.2, 0.85, 0.2, 1)",
+            fill: "forwards"
+          }
+        );
+      });
+
+      yellowTexts.forEach(function (el, i) {
+        var meta = numericTextMeta.find(function (item) { return item.el === el; });
+        if (!meta) return;
+        animateNumericLabel(meta, yellowTextDelay + i * yellowTextStagger, 1200);
+      });
+
+      var settleDelay = yellowTextDelay + yellowTexts.length * yellowTextStagger + 600;
+      var settleDuration = 2400;
+      allBaseStrokes.forEach(function (el) {
+        var base = opacityOf(el);
+        el.animate(
+          [
+            { opacity: base },
+            { opacity: Math.max(0.18, base * 0.8) },
+            { opacity: base }
+          ],
+          {
+            duration: settleDuration,
+            delay: settleDelay,
+            iterations: 1,
+            easing: "ease-in-out",
+            fill: "forwards"
+          }
+        );
+      });
+
+      window.setTimeout(runSequence, 11600);
+    }
+
+    runSequence();
+  })();
+</script>
+</body>
+</html>
