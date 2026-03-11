@@ -483,6 +483,13 @@
             transform: scale(1.03);
         }
 
+        .showcase-item iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
         /* ========================================
            OVERVIEW ACCORDION
            ======================================== */
@@ -1024,7 +1031,7 @@
             challenge: 'Aura Studio needed a website that reflected their creative caliber while remaining functional and conversion-focused.',
             solution: 'We designed a visually immersive site with bold imagery, fluid transitions, and intentional whitespace. Every detail reinforces the studio\'s premium positioning while guiding visitors naturally toward engagement.',
             images: [
-                { src: 'https://images.unsplash.com/photo-1561015314-6bd8c1e875ee?w=1400&h=800&fit=crop&q=80', caption: 'Brand identity — business cards and collateral', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/raw/upload/v1773236185/final_version_aura_text_animated_sed5bj.html', caption: 'Aura Studio — animated brand showcase', layout: 'full', type: 'html' },
                 { src: 'https://images.unsplash.com/photo-1542837336-d14bdf342f9b?w=1400&h=800&fit=crop&q=80', caption: 'Ecommerce website — desktop UI design', layout: 'half' },
                 { src: 'https://images.unsplash.com/photo-1705155733083-7e2b6ad63ddc?w=1400&h=800&fit=crop&q=80', caption: 'Product packaging — premium cosmetics line', layout: 'half' },
                 { src: 'https://images.unsplash.com/photo-1658825473738-a56b08976bbd?w=1400&h=800&fit=crop&q=80', caption: 'Mobile shopping — app interface design', layout: 'full' }
@@ -1159,7 +1166,9 @@
                     <div class="showcase-gallery">
                         ${project.images.map(img => `
                             <div class="showcase-item ${img.layout}">
-                                <img src="${img.src}" alt="${img.caption}" loading="lazy">
+                                ${img.type === 'html'
+                                    ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}"></iframe>`
+                                    : `<img src="${img.src}" alt="${img.caption}" loading="lazy">`}
                             </div>
                         `).join('')}
                     </div>
