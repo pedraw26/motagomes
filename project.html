@@ -448,6 +448,65 @@
         }
 
         /* ========================================
+           SHOWCASE GALLERY
+           ======================================== */
+
+        .showcase-gallery {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .showcase-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+        }
+
+        .showcase-item.full {
+            grid-column: 1 / -1;
+        }
+
+        .showcase-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .showcase-item:hover img {
+            transform: scale(1.03);
+        }
+
+        .showcase-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 24px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            font-family: var(--sf-pro);
+            font-size: 13px;
+            color: var(--text-80);
+            letter-spacing: 0.01em;
+        }
+
+        @media (max-width: 768px) {
+            .showcase-gallery {
+                grid-template-columns: 1fr;
+                padding: 0 20px;
+            }
+            .showcase-item.half {
+                grid-column: 1 / -1;
+            }
+        }
+
+        /* ========================================
            FOOTER NAVIGATION
            ======================================== */
 
@@ -760,20 +819,26 @@
         },
         'aura': {
             title: 'Aura',
-            category: 'Product Design',
+            category: 'Brand & Ecommerce Design',
             client: 'Aura',
             url: 'aura.com',
             year: '2024',
-            services: 'Product Design, UX/UI, Prototyping',
+            services: 'Brand Identity, Ecommerce Design, Art Direction, Packaging',
             gradient: 'gradient-velvet',
-            description: 'End-to-end product design for Aura, shaping the user experience from concept through to a polished, production-ready interface.',
-            challenge: 'A complex product with powerful capabilities that needed to feel intuitive and approachable without sacrificing depth.',
-            solution: 'We designed a layered interface that reveals complexity progressively. Clean defaults for new users, deep customisation for power users. Every interaction was prototyped and tested before development.',
+            description: 'Complete brand identity and ecommerce platform for Aura — a premium lifestyle brand. From logo and visual system to a fully designed online store experience.',
+            challenge: 'Aura needed a cohesive brand world that translated seamlessly from physical touchpoints to a high-converting ecommerce experience. The brand had to feel premium yet accessible, standing out in a saturated DTC market.',
+            solution: 'We built a refined visual identity anchored by a minimal wordmark, a muted-yet-bold colour palette, and bespoke typography pairings. The ecommerce platform was designed mobile-first with editorial product pages, smooth checkout flows, and lifestyle imagery that reinforces the brand narrative at every scroll.',
+            images: [
+                { src: 'https://images.unsplash.com/photo-1586202690666-e1f32e218afe?w=1400&h=800&fit=crop&q=80', caption: 'Ecommerce storefront — desktop experience', layout: 'full' },
+                { src: 'https://images.unsplash.com/photo-1633533452148-a9657d2c9a5f?w=1400&h=800&fit=crop&q=80', caption: 'Brand identity — stationery and collateral', layout: 'half' },
+                { src: 'https://images.unsplash.com/photo-1565268875251-e811c79f4541?w=1400&h=800&fit=crop&q=80', caption: 'Mobile-first shopping experience', layout: 'half' },
+                { src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1400&h=800&fit=crop&q=80', caption: 'Analytics dashboard — merchant admin panel', layout: 'full' }
+            ],
             metrics: [
-                { value: '4.8', label: 'User satisfaction' },
-                { value: '60%', label: 'Onboarding time cut' },
-                { value: '35+', label: 'Screens designed' },
-                { value: '8', label: 'User flows' }
+                { value: '3.2x', label: 'Conversion uplift' },
+                { value: '60%', label: 'Bounce rate reduced' },
+                { value: '45+', label: 'Pages designed' },
+                { value: '98%', label: 'Brand consistency score' }
             ]
         },
         'galp': {
@@ -992,6 +1057,21 @@
                         <p class="text-block-body">${project.solution}</p>
                     </div>
                 </section>
+
+                <!-- SHOWCASE -->
+                ${project.images ? `
+                <section class="section" data-reveal>
+                    <div class="section-label" style="max-width:1200px;margin:0 auto 40px;padding:0 40px;">Showcase</div>
+                    <div class="showcase-gallery">
+                        ${project.images.map(img => `
+                            <div class="showcase-item ${img.layout}">
+                                <img src="${img.src}" alt="${img.caption}" loading="lazy">
+                                <div class="showcase-caption">${img.caption}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+                ` : ''}
 
                 <!-- RESULTS -->
                 <section class="section" data-reveal>
