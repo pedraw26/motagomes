@@ -441,7 +441,7 @@
 
         .overview__narrative-block--solution {
             grid-column: 3 / 4;
-            padding-top: 48px;
+            padding-top: 0;
         }
 
         .overview__narrative-text {
@@ -1151,7 +1151,7 @@
                     <div class="overview__metrics" data-reveal-child>
                         ${project.metrics.map((m, i) => `
                             <div class="overview__metric" style="transition-delay: ${i * 80}ms">
-                                <div class="overview__metric-value">${m.value}</div>
+                                <div class="overview__metric-value">${m.value.replace(/0/g, 'O')}</div>
                                 <div class="overview__metric-label">${m.label}</div>
                             </div>
                         `).join('')}
