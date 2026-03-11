@@ -12,9 +12,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    padding: 80px 60px;
+    height: 100vh;
+    padding: 20px;
     font-family: 'DM Mono', monospace;
+    overflow: hidden;
   }
   .wrap { display: flex; flex-direction: column; align-items: center; gap: 24px; }
   .title { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: #2a2840; }
@@ -38,9 +39,8 @@
   -->
 
   <svg xmlns="http://www.w3.org/2000/svg"
-       width="1020" height="310"
        viewBox="-80 -50 1020 310"
-       style="display:block;">
+       style="display:block; width:100%; max-width:1020px; height:auto;">
 
     <rect x="-80" y="-50" width="1020" height="310" fill="#e3e3e3"/>
 

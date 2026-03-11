@@ -488,6 +488,7 @@
             height: 100%;
             border: none;
             display: block;
+            overflow: hidden;
         }
 
         /* ========================================
@@ -1161,12 +1162,12 @@
 
                 <!-- SHOWCASE -->
                 ${project.images ? `
-                <section class="section" data-reveal>
+                <section class="section" data-reveal style="border-top:none;">
                     <div class="showcase-gallery">
                         ${project.images.map(img => `
                             <div class="showcase-item ${img.layout}">
                                 ${img.type === 'html'
-                                    ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}"></iframe>`
+                                    ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}" scrolling="no"></iframe>`
                                     : `<img src="${img.src}" alt="${img.caption}" loading="lazy">`}
                             </div>
                         `).join('')}
