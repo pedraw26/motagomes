@@ -483,6 +483,11 @@
             transform: scale(1.03);
         }
 
+        .showcase-item.has-iframe {
+            aspect-ratio: auto;
+            height: 80vh;
+        }
+
         .showcase-item iframe {
             width: 100%;
             height: 100%;
@@ -1165,7 +1170,7 @@
                 <section class="section" data-reveal style="border-top:none;">
                     <div class="showcase-gallery">
                         ${project.images.map(img => `
-                            <div class="showcase-item ${img.layout}">
+                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}">
                                 ${img.type === 'html'
                                     ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}" scrolling="no"></iframe>`
                                     : `<img src="${img.src}" alt="${img.caption}" loading="lazy">`}
