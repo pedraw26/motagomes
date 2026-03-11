@@ -3250,8 +3250,8 @@ margin-top: 3px;
             
             // First card top has reached center
             firstCardReachedCenter = firstRect.top < center;
-            // Last card top has gone above center (all cards scrolled past)
-            lastCardPassedCenter = lastRect.top + lastRect.height * 0.3 < center - vh * 0.1;
+            // Last card disappears only when its frame begins going over center
+            lastCardPassedCenter = lastRect.bottom < center;
             
             const galleryVisible = firstCardReachedCenter && !lastCardPassedCenter;
 
