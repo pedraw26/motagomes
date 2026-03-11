@@ -483,17 +483,96 @@
             transform: scale(1.03);
         }
 
-        .showcase-caption {
+        /* ========================================
+           OVERVIEW ACCORDION
+           ======================================== */
+
+        .overview-accordion {
+            max-width: 720px;
+        }
+
+        .accordion-item {
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .accordion-item:last-child {
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .accordion-trigger {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-60);
+            transition: color 0.3s ease;
+        }
+
+        .accordion-trigger:hover {
+            color: var(--text);
+        }
+
+        .accordion-icon {
+            width: 16px;
+            height: 16px;
+            position: relative;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .accordion-icon::before,
+        .accordion-icon::after {
+            content: '';
             position: absolute;
-            bottom: 0;
+            background: var(--text-40);
+            transition: background 0.3s ease;
+        }
+
+        .accordion-trigger:hover .accordion-icon::before,
+        .accordion-trigger:hover .accordion-icon::after {
+            background: var(--text);
+        }
+
+        .accordion-icon::before {
+            top: 50%;
             left: 0;
             right: 0;
-            padding: 20px 24px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.7));
-            font-family: var(--sf-pro);
-            font-size: 13px;
-            color: var(--text-80);
-            letter-spacing: 0.01em;
+            height: 1px;
+            transform: translateY(-50%);
+        }
+
+        .accordion-icon::after {
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            transform: translateX(-50%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+        }
+
+        .accordion-item.open .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-item.open .accordion-icon::after {
+            transform: translateX(-50%) scaleY(0);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .accordion-content-inner {
+            padding-bottom: 32px;
         }
 
         @media (max-width: 768px) {
@@ -1042,19 +1121,32 @@
                     </div>
                 </section>
 
-                <!-- CHALLENGE -->
+                <!-- OVERVIEW (Challenge & Solution accordion) -->
                 <section class="section" data-reveal>
-                    <div class="text-block">
-                        <div class="section-label">Challenge</div>
-                        <p class="text-block-body">${project.challenge}</p>
-                    </div>
-                </section>
-
-                <!-- SOLUTION -->
-                <section class="section" data-reveal>
-                    <div class="text-block">
-                        <div class="section-label">Solution</div>
-                        <p class="text-block-body">${project.solution}</p>
+                    <div class="section-label">Overview</div>
+                    <div class="overview-accordion">
+                        <div class="accordion-item">
+                            <button class="accordion-trigger" onclick="this.parentElement.classList.toggle('open'); const c = this.nextElementSibling; c.style.maxHeight = c.style.maxHeight ? null : c.scrollHeight + 'px';">
+                                Challenge
+                                <span class="accordion-icon"></span>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="accordion-content-inner">
+                                    <p class="text-block-body">${project.challenge}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-trigger" onclick="this.parentElement.classList.toggle('open'); const c = this.nextElementSibling; c.style.maxHeight = c.style.maxHeight ? null : c.scrollHeight + 'px';">
+                                Solution
+                                <span class="accordion-icon"></span>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="accordion-content-inner">
+                                    <p class="text-block-body">${project.solution}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -1066,7 +1158,6 @@
                         ${project.images.map(img => `
                             <div class="showcase-item ${img.layout}">
                                 <img src="${img.src}" alt="${img.caption}" loading="lazy">
-                                <div class="showcase-caption">${img.caption}</div>
                             </div>
                         `).join('')}
                     </div>
