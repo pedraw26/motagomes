@@ -1090,13 +1090,11 @@
             object-fit: cover;
         }
 
-        .about-label {
-            font-family: var(--sf-pro);
-            font-size: 10px;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: var(--text-40);
-            margin-bottom: 16px;
+        .about-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            margin-bottom: 48px;
         }
 
         .about-headline {
@@ -2739,6 +2737,7 @@ margin-top: 3px;
 
         <!-- SECTION: ABOUT -->
         <section class="snap-section about-section" id="about">
+            <h2 class="about-title">About</h2>
             <div class="about-hero">
                 <div class="about-hero-left">
                     <div class="about-photo-wrap">
@@ -2746,8 +2745,7 @@ margin-top: 3px;
                     </div>
                 </div>
                 <div class="about-hero-right">
-                    <p class="about-label">About</p>
-                    <h2 class="about-headline">Pedro Gomes</h2>
+                    <h2 class="about-headline">Mota Gomes</h2>
                     <p class="about-role">Multidisciplinary Designer — London, UK</p>
                     <div class="about-bio">
                         <p>I’m a research-led visual designer building thoughtful, contemporary work for brands and digital products. With over a decade of experience spanning startups, enterprise, and deep tech, I bring a strong conceptual foundation to every project before moving into execution.</p>
