@@ -1056,6 +1056,14 @@
                         </div>
                     </div>
                     ` : ''}
+                    <div class="metrics-grid" style="padding-top: 60px;">
+                        ${project.metrics.map(m => `
+                            <div class="metric-card">
+                                <div class="metric-value">${m.value}</div>
+                                <div class="metric-label">${m.label}</div>
+                            </div>
+                        `).join('')}
+                    </div>
                 </section>
 
                 <!-- SHOWCASE -->
@@ -1072,19 +1080,6 @@
                     </div>
                 </section>
                 ` : ''}
-
-                <!-- RESULTS -->
-                <section class="section" data-reveal style="border-top:none;">
-                    <div class="section-label">Results</div>
-                    <div class="metrics-grid">
-                        ${project.metrics.map(m => `
-                            <div class="metric-card">
-                                <div class="metric-value">${m.value}</div>
-                                <div class="metric-label">${m.label}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </section>
 
                 <!-- FOOTER NAVIGATION -->
                 <nav class="footer-nav">
