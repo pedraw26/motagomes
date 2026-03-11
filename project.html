@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project — Pedro Gomes</title>
+    <title>Project — Mota Gomes</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
     <style>
         :root {
@@ -346,100 +346,146 @@
         }
 
         /* ========================================
-           OVERVIEW SECTION
+           OVERVIEW — EDITORIAL REDESIGN
            ======================================== */
 
-        .overview-meta {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-            padding-bottom: 60px;
-            border-bottom: 1px solid var(--border-subtle);
+        .overview {
+            padding: 0 80px;
         }
 
-        .overview-meta-label {
+        /* Staggered reveal */
+        [data-reveal-child] {
+            opacity: 0;
+            transform: translateY(28px);
+            transition:
+                opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-reveal-child].is-revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Zone 1: Metadata */
+        .overview__meta {
+            padding: 100px 0 0;
+        }
+
+        .overview__meta-list {
+            display: flex;
+            gap: 64px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .overview__meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .overview__label {
             font-family: var(--sf-pro);
             font-size: 10px;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--text-40);
-            margin-bottom: 10px;
-        }
-
-        .overview-meta-value {
-            font-family: var(--sf-pro);
-            font-size: 15px;
             font-weight: 400;
-            color: var(--text-80);
-            line-height: 1.5;
-        }
-
-        .overview-description {
-            font-family: var(--sf-pro);
-            font-size: clamp(1.4rem, 2.2vw, 2rem);
-            font-weight: 300;
-            line-height: 1.5;
-            color: var(--text-80);
-            letter-spacing: -0.02em;
-            max-width: 800px;
-            padding: 60px 0;
-        }
-
-        .overview-detail {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            padding-top: 60px;
-            border-top: 1px solid var(--border-subtle);
-        }
-
-        .overview-detail-label {
-            font-family: var(--sf-pro);
-            font-size: 10px;
             letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--text-40);
-            margin-bottom: 20px;
+            line-height: 1;
         }
 
-        .overview-detail-body {
+        .overview__value {
             font-family: var(--sf-pro);
-            font-size: clamp(0.95rem, 1.2vw, 1.1rem);
-            font-weight: 300;
-            line-height: 1.7;
+            font-size: 14px;
+            font-weight: 400;
             color: var(--text-60);
+            line-height: 1.5;
+            letter-spacing: 0.01em;
         }
 
-        /* ========================================
-           RESULTS / METRICS
-           ======================================== */
+        /* Zone 2: Statement */
+        .overview__statement {
+            padding: 80px 0 100px;
+            max-width: 960px;
+        }
 
-        .metrics-grid {
+        .overview__statement-text {
+            font-family: var(--sf-pro);
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            font-weight: 200;
+            line-height: 1.35;
+            color: var(--text);
+            letter-spacing: -0.025em;
+        }
+
+        /* Zone 3: Narrative */
+        .overview__narrative {
+            display: grid;
+            grid-template-columns: 5fr 1fr 6fr;
+            gap: 0;
+            padding-bottom: 100px;
+        }
+
+        .overview__narrative-block {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .overview__narrative-block--challenge {
+            grid-column: 1 / 2;
+            padding-right: 40px;
+        }
+
+        .overview__narrative-block--solution {
+            grid-column: 3 / 4;
+            padding-top: 48px;
+        }
+
+        .overview__narrative-text {
+            font-family: var(--sf-pro);
+            font-size: clamp(0.95rem, 1.15vw, 1.1rem);
+            font-weight: 300;
+            line-height: 1.75;
+            color: var(--text-60);
+            letter-spacing: 0.005em;
+        }
+
+        /* Zone 4: Metrics */
+        .overview__metrics {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
+            padding: 64px 0 120px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .metric-card {
+        .overview__metric {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
             padding: 40px 0;
         }
 
-        .metric-value {
-            font-family: var(--sf-pro);
-            font-size: clamp(2.5rem, 4vw, 3.5rem);
+        .overview__metric-value {
+            font-family: var(--mono);
+            font-size: clamp(2.2rem, 3.5vw, 3.2rem);
             font-weight: 200;
             letter-spacing: -0.03em;
             line-height: 1;
             color: var(--text);
-            margin-bottom: 12px;
+            font-variant-numeric: tabular-nums;
         }
 
-        .metric-label {
+        .overview__metric-label {
             font-family: var(--sf-pro);
             font-size: 10px;
+            font-weight: 400;
             letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--text-40);
+            line-height: 1;
         }
 
         /* ========================================
@@ -493,14 +539,6 @@
 
 
         @media (max-width: 768px) {
-            .overview-meta {
-                grid-template-columns: 1fr 1fr;
-                gap: 32px;
-            }
-            .overview-detail {
-                grid-template-columns: 1fr;
-                gap: 48px;
-            }
             .showcase-gallery {
                 grid-template-columns: 1fr;
                 padding: 0 20px;
@@ -664,11 +702,24 @@
                 padding: 80px 40px;
             }
 
-            .overview-grid {
-                gap: 60px;
+            .overview {
+                padding: 0 40px;
             }
 
-            .metrics-grid {
+            .overview__narrative {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+
+            .overview__narrative-block--challenge {
+                padding-right: 0;
+            }
+
+            .overview__narrative-block--solution {
+                padding-top: 0;
+            }
+
+            .overview__metrics {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
@@ -686,21 +737,39 @@
                 padding: 64px 24px;
             }
 
-            .overview-grid {
+            .overview {
+                padding: 0 24px;
+            }
+
+            .overview__meta {
+                padding-top: 64px;
+            }
+
+            .overview__meta-list {
+                flex-wrap: wrap;
+                gap: 32px 48px;
+            }
+
+            .overview__statement {
+                padding: 56px 0 72px;
+            }
+
+            .overview__narrative {
                 grid-template-columns: 1fr;
                 gap: 48px;
+                padding-bottom: 72px;
             }
 
-            .metadata-grid {
-                gap: 32px 40px;
+            .overview__narrative-block--solution {
+                padding-top: 0;
             }
 
-            .metrics-grid {
+            .overview__metrics {
                 grid-template-columns: 1fr 1fr;
-                gap: 0;
+                padding: 48px 0 80px;
             }
 
-            .metric-card {
+            .overview__metric {
                 padding: 28px 0;
             }
 
@@ -735,13 +804,29 @@
                 padding: 48px 20px;
             }
 
-            .metadata-grid {
-                grid-template-columns: 1fr;
-                gap: 28px;
+            .overview {
+                padding: 0 20px;
             }
 
-            .metrics-grid {
+            .overview__meta-list {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .overview__meta-item {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: baseline;
+                gap: 16px;
+            }
+
+            .overview__statement {
+                padding: 40px 0 56px;
+            }
+
+            .overview__metrics {
                 grid-template-columns: 1fr;
+                padding: 40px 0 64px;
             }
 
             .footer-nav-inner {
@@ -988,7 +1073,7 @@
         const page = document.getElementById('projectPage');
 
         if (!project) {
-            document.title = 'Project Not Found \u2014 Pedro Gomes';
+            document.title = 'Project Not Found \u2014 Mota Gomes';
             page.innerHTML = `
                 <div class="not-found">
                     <div class="not-found-code">404 \u2014 Project not found</div>
@@ -1000,7 +1085,7 @@
         }
 
         // Update page title
-        document.title = `${project.title} \u2014 Pedro Gomes`;
+        document.title = `${project.title} \u2014 Mota Gomes`;
 
         // Prev / Next
         const currentIndex = PROJECT_ORDER.indexOf(slug);
@@ -1024,43 +1109,50 @@
                 </section>
 
                 <!-- OVERVIEW -->
-                <section class="section" data-reveal>
-                    <div class="overview-meta">
-                        <div>
-                            <div class="overview-meta-label">Client</div>
-                            <div class="overview-meta-value">${project.client}</div>
-                        </div>
-                        <div>
-                            <div class="overview-meta-label">Industry</div>
-                            <div class="overview-meta-value">${project.category}</div>
-                        </div>
-                        <div>
-                            <div class="overview-meta-label">Year</div>
-                            <div class="overview-meta-value">${project.year}</div>
-                        </div>
-                        <div>
-                            <div class="overview-meta-label">Services</div>
-                            <div class="overview-meta-value">${project.services}</div>
-                        </div>
+                <section class="overview" data-reveal-group>
+                    <div class="overview__meta" data-reveal-child>
+                        <dl class="overview__meta-list">
+                            <div class="overview__meta-item">
+                                <dt class="overview__label">Client</dt>
+                                <dd class="overview__value">${project.client}</dd>
+                            </div>
+                            <div class="overview__meta-item">
+                                <dt class="overview__label">Industry</dt>
+                                <dd class="overview__value">${project.category}</dd>
+                            </div>
+                            <div class="overview__meta-item">
+                                <dt class="overview__label">Year</dt>
+                                <dd class="overview__value">${project.year}</dd>
+                            </div>
+                            <div class="overview__meta-item">
+                                <dt class="overview__label">Services</dt>
+                                <dd class="overview__value">${project.services}</dd>
+                            </div>
+                        </dl>
                     </div>
-                    <p class="overview-description">${project.description}</p>
+
+                    <div class="overview__statement" data-reveal-child>
+                        <p class="overview__statement-text">${project.description}</p>
+                    </div>
+
                     ${project.challenge ? `
-                    <div class="overview-detail">
-                        <div>
-                            <div class="overview-detail-label">Challenge</div>
-                            <p class="overview-detail-body">${project.challenge}</p>
+                    <div class="overview__narrative" data-reveal-child>
+                        <div class="overview__narrative-block overview__narrative-block--challenge">
+                            <span class="overview__label">Challenge</span>
+                            <p class="overview__narrative-text">${project.challenge}</p>
                         </div>
-                        <div>
-                            <div class="overview-detail-label">Solution</div>
-                            <p class="overview-detail-body">${project.solution}</p>
+                        <div class="overview__narrative-block overview__narrative-block--solution">
+                            <span class="overview__label">Solution</span>
+                            <p class="overview__narrative-text">${project.solution}</p>
                         </div>
                     </div>
                     ` : ''}
-                    <div class="metrics-grid" style="padding-top: 60px;">
-                        ${project.metrics.map(m => `
-                            <div class="metric-card">
-                                <div class="metric-value">${m.value}</div>
-                                <div class="metric-label">${m.label}</div>
+
+                    <div class="overview__metrics" data-reveal-child>
+                        ${project.metrics.map((m, i) => `
+                            <div class="overview__metric" style="transition-delay: ${i * 80}ms">
+                                <div class="overview__metric-value">${m.value}</div>
+                                <div class="overview__metric-label">${m.label}</div>
                             </div>
                         `).join('')}
                     </div>
@@ -1110,21 +1202,41 @@
        ======================================== */
 
     function initRevealObserver() {
+        // Legacy data-reveal sections
         const sections = document.querySelectorAll('[data-reveal]');
-        const observer = new IntersectionObserver((entries) => {
+        const sectionObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry, i) => {
                 if (entry.isIntersecting) {
                     entry.target.style.animationDelay = `${i * 0.08}s`;
                     entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
+                    sectionObserver.unobserve(entry.target);
                 }
             });
         }, {
             threshold: 0.12,
             rootMargin: '0px 0px -40px 0px'
         });
+        sections.forEach(s => sectionObserver.observe(s));
 
-        sections.forEach(s => observer.observe(s));
+        // Staggered reveal groups (editorial overview)
+        const groups = document.querySelectorAll('[data-reveal-group]');
+        const childObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const children = entry.target.querySelectorAll('[data-reveal-child]');
+                    children.forEach((child, i) => {
+                        setTimeout(() => {
+                            child.classList.add('is-revealed');
+                        }, i * 120);
+                    });
+                    childObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.08,
+            rootMargin: '0px 0px -60px 0px'
+        });
+        groups.forEach(g => childObserver.observe(g));
     }
 
     /* ========================================
