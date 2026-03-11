@@ -72,6 +72,13 @@
             pointer-events: none;
         }
 
+        .intro-loader-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+        }
+
         .intro-loader-text {
             font-family: var(--sf-pro);
             font-size: 9px;
@@ -81,10 +88,6 @@
         }
 
         .intro-loader-line {
-            position: absolute;
-            left: 40px;
-            right: 40px;
-            bottom: 40px;
             height: 1px;
             background: rgba(255, 255, 255, 0.35);
             transform: scaleX(0);
@@ -2372,8 +2375,10 @@ margin-top: 3px;
 <body>
     <div class="intro-gate" id="introGate" aria-live="polite">
         <div class="intro-loader" id="introLoader">
-            <span class="intro-loader-text">Mota Gomes©</span>
-            <div class="intro-loader-line" id="introLoaderLine"></div>
+            <div class="intro-loader-wrap">
+                <span class="intro-loader-text">Mota Gomes©</span>
+                <div class="intro-loader-line" id="introLoaderLine"></div>
+            </div>
         </div>
     </div>
 
