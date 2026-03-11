@@ -349,37 +349,24 @@
            OVERVIEW SECTION
            ======================================== */
 
-        .overview-grid {
+        .overview-meta {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            padding-bottom: 60px;
+            border-bottom: 1px solid var(--border-subtle);
         }
 
-        .overview-description {
-            font-family: var(--sf-pro);
-            font-size: clamp(1.1rem, 1.5vw, 1.35rem);
-            font-weight: 300;
-            line-height: 1.65;
-            color: var(--text-80);
-            letter-spacing: -0.01em;
-        }
-
-        .metadata-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px 60px;
-        }
-
-        .metadata-item-label {
+        .overview-meta-label {
             font-family: var(--sf-pro);
             font-size: 10px;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--text-40);
             margin-bottom: 10px;
         }
 
-        .metadata-item-value {
+        .overview-meta-value {
             font-family: var(--sf-pro);
             font-size: 15px;
             font-weight: 400;
@@ -387,31 +374,40 @@
             line-height: 1.5;
         }
 
-        /* ========================================
-           CHALLENGE & SOLUTION
-           ======================================== */
-
-        .text-block {
-            max-width: 720px;
-        }
-
-        .text-block-heading {
+        .overview-description {
             font-family: var(--sf-pro);
-            font-size: clamp(1.5rem, 2.5vw, 2rem);
+            font-size: clamp(1.4rem, 2.2vw, 2rem);
             font-weight: 300;
+            line-height: 1.5;
+            color: var(--text-80);
             letter-spacing: -0.02em;
-            line-height: 1.2;
-            color: var(--text);
-            margin-bottom: 28px;
+            max-width: 800px;
+            padding: 60px 0;
         }
 
-        .text-block-body {
+        .overview-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            padding-top: 60px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .overview-detail-label {
             font-family: var(--sf-pro);
-            font-size: clamp(1rem, 1.2vw, 1.15rem);
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            margin-bottom: 20px;
+        }
+
+        .overview-detail-body {
+            font-family: var(--sf-pro);
+            font-size: clamp(0.95rem, 1.2vw, 1.1rem);
             font-weight: 300;
             line-height: 1.7;
             color: var(--text-60);
-            letter-spacing: -0.005em;
         }
 
         /* ========================================
@@ -426,7 +422,6 @@
 
         .metric-card {
             padding: 40px 0;
-            border-top: 1px solid var(--border-subtle);
         }
 
         .metric-value {
@@ -496,99 +491,16 @@
             overflow: hidden;
         }
 
-        /* ========================================
-           OVERVIEW ACCORDION
-           ======================================== */
-
-        .overview-accordion {
-            max-width: 100%;
-        }
-
-        .accordion-item {
-            border-top: 1px solid var(--border-subtle);
-        }
-
-        .accordion-item:last-child {
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .accordion-trigger {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 24px 0;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-family: var(--sf-pro);
-            font-size: 10px;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--text-60);
-            transition: color 0.3s ease;
-        }
-
-        .accordion-trigger:hover {
-            color: var(--text);
-        }
-
-        .accordion-icon {
-            width: 16px;
-            height: 16px;
-            position: relative;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .accordion-icon::before,
-        .accordion-icon::after {
-            content: '';
-            position: absolute;
-            background: var(--text-40);
-            transition: background 0.3s ease;
-        }
-
-        .accordion-trigger:hover .accordion-icon::before,
-        .accordion-trigger:hover .accordion-icon::after {
-            background: var(--text);
-        }
-
-        .accordion-icon::before {
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            transform: translateY(-50%);
-        }
-
-        .accordion-icon::after {
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 1px;
-            transform: translateX(-50%);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
-        }
-
-        .accordion-item.open .accordion-icon {
-            transform: rotate(180deg);
-        }
-
-        .accordion-item.open .accordion-icon::after {
-            transform: translateX(-50%) scaleY(0);
-        }
-
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .accordion-content-inner {
-            padding-bottom: 32px;
-        }
 
         @media (max-width: 768px) {
+            .overview-meta {
+                grid-template-columns: 1fr 1fr;
+                gap: 32px;
+            }
+            .overview-detail {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
             .showcase-gallery {
                 grid-template-columns: 1fr;
                 padding: 0 20px;
@@ -1111,58 +1023,39 @@
                     </div>
                 </section>
 
-                <!-- OVERVIEW (description + metadata + accordion) -->
+                <!-- OVERVIEW -->
                 <section class="section" data-reveal>
-                    <div class="overview-grid">
+                    <div class="overview-meta">
                         <div>
-                            <div class="section-label">Overview</div>
-                            <p class="overview-description">${project.description}</p>
+                            <div class="overview-meta-label">Client</div>
+                            <div class="overview-meta-value">${project.client}</div>
                         </div>
                         <div>
-                            <div class="metadata-grid">
-                                <div>
-                                    <div class="metadata-item-label">Client</div>
-                                    <div class="metadata-item-value">${project.client}</div>
-                                </div>
-                                <div>
-                                    <div class="metadata-item-label">Industry</div>
-                                    <div class="metadata-item-value">${project.category}</div>
-                                </div>
-                                <div>
-                                    <div class="metadata-item-label">Year</div>
-                                    <div class="metadata-item-value">${project.year}</div>
-                                </div>
-                                <div>
-                                    <div class="metadata-item-label">Services</div>
-                                    <div class="metadata-item-value">${project.services}</div>
-                                </div>
-                            </div>
+                            <div class="overview-meta-label">Industry</div>
+                            <div class="overview-meta-value">${project.category}</div>
+                        </div>
+                        <div>
+                            <div class="overview-meta-label">Year</div>
+                            <div class="overview-meta-value">${project.year}</div>
+                        </div>
+                        <div>
+                            <div class="overview-meta-label">Services</div>
+                            <div class="overview-meta-value">${project.services}</div>
                         </div>
                     </div>
-                    <div class="overview-accordion" style="margin-top: 48px;">
-                        <div class="accordion-item">
-                            <button class="accordion-trigger" onclick="this.parentElement.classList.toggle('open'); const c = this.nextElementSibling; c.style.maxHeight = c.style.maxHeight ? null : c.scrollHeight + 'px';">
-                                Challenge
-                                <span class="accordion-icon"></span>
-                            </button>
-                            <div class="accordion-content">
-                                <div class="accordion-content-inner">
-                                    <p class="text-block-body">${project.challenge}</p>
-                                </div>
-                            </div>
+                    <p class="overview-description">${project.description}</p>
+                    ${project.challenge ? `
+                    <div class="overview-detail">
+                        <div>
+                            <div class="overview-detail-label">Challenge</div>
+                            <p class="overview-detail-body">${project.challenge}</p>
                         </div>
-                        <div class="accordion-item">
-                            <button class="accordion-trigger" onclick="this.parentElement.classList.toggle('open'); const c = this.nextElementSibling; c.style.maxHeight = c.style.maxHeight ? null : c.scrollHeight + 'px';">
-                                Solution
-                                <span class="accordion-icon"></span>
-                            </button>
-                            <div class="accordion-content">
-                                <div class="accordion-content-inner">
-                                    <p class="text-block-body">${project.solution}</p>
-                                </div>
-                            </div>
+                        <div>
+                            <div class="overview-detail-label">Solution</div>
+                            <p class="overview-detail-body">${project.solution}</p>
                         </div>
                     </div>
+                    ` : ''}
                 </section>
 
                 <!-- SHOWCASE -->
@@ -1181,7 +1074,7 @@
                 ` : ''}
 
                 <!-- RESULTS -->
-                <section class="section" data-reveal>
+                <section class="section" data-reveal style="border-top:none;">
                     <div class="section-label">Results</div>
                     <div class="metrics-grid">
                         ${project.metrics.map(m => `
