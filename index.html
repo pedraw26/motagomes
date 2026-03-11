@@ -2428,7 +2428,7 @@ margin-top: 3px;
     <header class="header" id="header">
         <div class="header-content">
             <a href="javascript:void(0)" class="header-logo" onclick="scrollToTop()">MG</a>
-            <div class="header-center">GMT 21:24</div>
+            <div class="header-center" id="navClock">GMT 00:00</div>
             
             <div class="header-right">
                 <div class="menu-icon" id="hamburger">
@@ -3317,6 +3317,27 @@ margin-top: 3px;
             }, 1000);
         }
         
+        // ========================================
+        // NAV CLOCK — London Time
+        // ========================================
+        function updateNavClock() {
+            const el = document.getElementById('navClock');
+            if (!el) return;
+            const fmt = new Intl.DateTimeFormat('en-GB', {
+                timeZone: 'Europe/London',
+                hour: '2-digit', minute: '2-digit',
+                hour12: false
+            });
+            const offset = new Intl.DateTimeFormat('en-GB', {
+                timeZone: 'Europe/London',
+                timeZoneName: 'short'
+            }).formatToParts(new Date()).find(p => p.type === 'timeZoneName');
+            const tz = offset ? offset.value : 'GMT';
+            el.textContent = tz + ' ' + fmt.format(new Date());
+        }
+        updateNavClock();
+        setInterval(updateNavClock, 1000);
+
         // ========================================
         // WIDGET DATE LABEL
         // ========================================

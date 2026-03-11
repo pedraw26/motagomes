@@ -1240,15 +1240,23 @@
        ======================================== */
 
     function updateGMT() {
-        const now = new Date();
-        const h = String(now.getUTCHours()).padStart(2, '0');
-        const m = String(now.getUTCMinutes()).padStart(2, '0');
         const el = document.getElementById('gmtTime');
-        if (el) el.textContent = `GMT ${h}:${m}`;
+        if (!el) return;
+        const fmt = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Europe/London',
+            hour: '2-digit', minute: '2-digit',
+            hour12: false
+        });
+        const offset = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Europe/London',
+            timeZoneName: 'short'
+        }).formatToParts(new Date()).find(p => p.type === 'timeZoneName');
+        const tz = offset ? offset.value : 'GMT';
+        el.textContent = tz + ' ' + fmt.format(new Date());
     }
 
     updateGMT();
-    setInterval(updateGMT, 10000);
+    setInterval(updateGMT, 1000);
 
     /* ========================================
        HAMBURGER MENU
