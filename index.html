@@ -1866,21 +1866,29 @@ margin-top: 3px;
             position: absolute;
             top: 40px;
             right: 80px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             font-family: var(--sf-pro);
             font-size: 11px;
-            font-weight: 500;
-            letter-spacing: 0.06em;
-            color: #0c0c0c;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-40);
             text-decoration: none;
-            padding: 10px 22px;
-            border: 1px solid rgba(0,0,0,0.18);
-            border-radius: 999px;
-            transition: all 0.3s ease;
+            transition: color 0.3s ease;
         }
 
         .swiss-cv:hover {
-            background: #111;
-            color: #f5f5f0;
+            color: var(--text);
+        }
+
+        .swiss-cv svg {
+            transition: transform 0.3s ease;
+        }
+
+        .swiss-cv:hover svg {
+            transform: translateY(2px);
         }
 
         .swiss-center {
@@ -2869,7 +2877,14 @@ margin-top: 3px;
 
         <!-- FOOTER -->
         <section class="snap-section footer-swiss" id="contact">
-            <a href="/cv.pdf" download class="swiss-cv">Curriculum</a>
+            <a href="/cv.pdf" download class="swiss-cv">
+                Curriculum
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+            </a>
             <div class="swiss-center">
                 <div class="swiss-content" id="footerContent">
                     <div class="swiss-cta">
@@ -3324,6 +3339,18 @@ margin-top: 3px;
             const PI = Math.PI;
             function d2r(d) { return (d - 90) * PI / 180; }
             
+            function getLondonTime() {
+                const now = new Date();
+                const fmt = new Intl.DateTimeFormat('en-GB', {
+                    timeZone: 'Europe/London',
+                    hour: 'numeric', minute: 'numeric', second: 'numeric',
+                    day: 'numeric', hour12: false
+                });
+                const parts = {};
+                fmt.formatToParts(now).forEach(p => { parts[p.type] = parseInt(p.value, 10); });
+                return { h: parts.hour % 12, m: parts.minute, s: parts.second, day: parts.day, ms: now.getMilliseconds() };
+            }
+
             function drawLondonClock() {
                 const size = londonCanvas.offsetWidth || 200;
                 const dpr = window.devicePixelRatio || 1;
@@ -3331,15 +3358,15 @@ margin-top: 3px;
                 londonCanvas.height = size * dpr;
                 londonCanvas.style.width = size + 'px';
                 londonCanvas.style.height = size + 'px';
-                
+
                 const ctx = londonCanvas.getContext('2d');
                 ctx.scale(dpr, dpr);
-                
+
                 const C = size / 2;
                 const R = size * 0.48;
-                
-                const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/London' }));
-                const h = now.getHours() % 12, m = now.getMinutes(), s = now.getSeconds(), ms = now.getMilliseconds();
+
+                const lt = getLondonTime();
+                const h = lt.h, m = lt.m, s = lt.s, ms = lt.ms;
                 
                 ctx.clearRect(0, 0, size, size);
                 
@@ -3350,7 +3377,7 @@ margin-top: 3px;
                 ctx.fillStyle = '#aaa8a3';
                 ctx.font = `400 ${R * 0.04}px -apple-system,sans-serif`;
                 ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                ctx.fillText(now.getDate().toString(), C, C + R * 0.2);
+                ctx.fillText(lt.day.toString(), C, C + R * 0.2);
                 
                 // Hour hand
                 const ha = d2r((h + m / 60) * 30);
