@@ -3250,8 +3250,8 @@ margin-top: 3px;
             
             // First card top has reached center
             firstCardReachedCenter = firstRect.top < center;
-            // Last card disappears only when its frame begins going over center
-            lastCardPassedCenter = lastRect.bottom < center;
+            // Last card text disappears when ~65% of card has passed center
+            lastCardPassedCenter = lastRect.top + lastRect.height * 0.65 < center;
             
             const galleryVisible = firstCardReachedCenter && !lastCardPassedCenter;
 
