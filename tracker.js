@@ -50,7 +50,7 @@
   function send(data) {
     try {
       if (navigator.sendBeacon) {
-        navigator.sendBeacon(ENDPOINT, JSON.stringify(data));
+        navigator.sendBeacon(ENDPOINT, new Blob([JSON.stringify(data)], { type: "application/json" }));
       } else {
         fetch(ENDPOINT, {
           method: "POST",

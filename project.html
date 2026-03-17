@@ -522,8 +522,23 @@
         }
 
         .showcase-item.has-iframe {
-            aspect-ratio: auto;
-            height: 64vh;
+            aspect-ratio: 16 / 9;
+        }
+
+        .showcase-item.has-video {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+        }
+
+        .showcase-item.has-video iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150%;
+            height: 150%;
+            transform: translate(-50%, -50%);
+            border: none;
         }
 
         .showcase-item iframe {
@@ -883,6 +898,14 @@
        PROJECT DATA
        ======================================== */
 
+    /* Grey placeholder images */
+    const _g1 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGOQkpICAACgAE8sk/soAAAAAElFTkSuQmCC';
+    const _g2 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGNQUlICAADQAGdDq+B2AAAAAElFTkSuQmCC';
+    const _g3 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGPQ0tICAAEAAH/YikUSAAAAAElFTkSuQmCC';
+    const _g4 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGOQk5MDAAC4AFuF/QUSAAAAAElFTkSuQmCC';
+    const _g5 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGNQVVUFAADiAHA18FNgAAAAAElFTkSuQmCC';
+    const _g6 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGMwMDAAAAEkAJGCSNGTAAAAAElFTkSuQmCC';
+
     const PROJECTS = {
         'one1x': {
             title: 'One1x',
@@ -895,6 +918,12 @@
             description: 'A complete rebrand for One1x, transforming an outdated identity into a sharp, contemporary brand system built for scale.',
             challenge: 'The existing brand lacked cohesion and failed to communicate the company\'s evolved positioning in a competitive market.',
             solution: 'We stripped the brand back to its core and rebuilt from zero. A new visual identity system, typographic hierarchy, and colour language that feels both confident and adaptable across every touchpoint.',
+            images: [
+                { src: _g1, caption: 'Brand identity system — logo and colour palette', layout: 'full' },
+                { src: _g2, caption: 'Typography and visual hierarchy', layout: 'half' },
+                { src: _g3, caption: 'Brand guidelines and asset library', layout: 'half' },
+                { src: _g4, caption: 'Multi-platform brand rollout', layout: 'full' }
+            ],
             metrics: [
                 { value: '100%', label: 'Brand refresh' },
                 { value: '40+', label: 'Assets delivered' },
@@ -915,10 +944,10 @@
             challenge: 'Aura needed a cohesive brand world that translated seamlessly from physical touchpoints to a high-converting ecommerce experience. The brand had to feel premium yet accessible, standing out in a saturated DTC market.',
             solution: 'We built a refined visual identity anchored by a minimal wordmark, a muted-yet-bold colour palette, and bespoke typography pairings. The ecommerce platform was designed mobile-first with editorial product pages, smooth checkout flows, and lifestyle imagery that reinforces the brand narrative at every scroll.',
             images: [
-                { src: 'https://images.unsplash.com/photo-1561015314-6bd8c1e875ee?w=1400&h=800&fit=crop&q=80', caption: 'Brand identity — business cards and collateral', layout: 'full' },
-                { src: 'https://images.unsplash.com/photo-1542837336-d14bdf342f9b?w=1400&h=800&fit=crop&q=80', caption: 'Ecommerce website — desktop UI design', layout: 'half' },
-                { src: 'https://images.unsplash.com/photo-1705155733083-7e2b6ad63ddc?w=1400&h=800&fit=crop&q=80', caption: 'Product packaging — premium cosmetics line', layout: 'half' },
-                { src: 'https://images.unsplash.com/photo-1658825473738-a56b08976bbd?w=1400&h=800&fit=crop&q=80', caption: 'Mobile shopping — app interface design', layout: 'full' }
+                { src: _g1, caption: 'Brand identity — business cards and collateral', layout: 'full' },
+                { src: _g3, caption: 'Ecommerce website — desktop UI design', layout: 'half' },
+                { src: _g5, caption: 'Product packaging — premium cosmetics line', layout: 'half' },
+                { src: _g2, caption: 'Mobile shopping — app interface design', layout: 'full' }
             ],
             metrics: [
                 { value: '3.2x', label: 'Conversion uplift' },
@@ -928,39 +957,51 @@
             ]
         },
         'galp': {
-            title: 'Galp',
-            category: 'Ad Campaign',
+            title: 'Galp Christmas',
+            category: 'Christmas Campaign',
             client: 'Galp',
             url: 'galp.com',
-            year: '2025',
-            services: 'Campaign Design, Art Direction, Motion',
+            year: '2024',
+            services: 'Art Direction, Graphic Design, Illustration, Copywriting, Campaign Development',
             gradient: 'gradient-midnight',
-            description: 'A bold advertising campaign for Galp, bringing energy and purpose to life through striking visual storytelling across digital and print.',
-            challenge: 'Communicating complex energy transition messaging in a way that resonates emotionally with a broad, diverse audience.',
-            solution: 'We developed a campaign visual language that balances urgency with optimism. Large-scale typography, dynamic compositions, and a colour system that shifts from warm to cool to mirror the energy transition narrative.',
+            description: 'A festive holiday campaign for Galp in Portugal and Spain, showcasing exclusive seasonal products — from Christmas cookies and festive dots to traditional cakes. The visuals balanced Galp\'s brand identity with warm, nostalgic holiday charm.',
+            challenge: 'Creating a 360\u00b0 campaign across print, digital and OOH for two markets within a tight 1.2-month timeline, while keeping the festive warmth authentic to Galp\'s brand.',
+            solution: 'Led the creative vision and asset design, merging Galp\'s brand identity with festive Christmas motifs. Partnered with a junior designer to deliver 30+ custom assets across in-store posters, social media carousels, animated GIFs, gas station pump toppers, and window decals.',
+            images: [
+                { src: _g2, caption: 'Festive campaign key visual — Christmas warmth meets brand identity', layout: 'full' },
+                { src: _g4, caption: 'In-store poster design — seasonal product showcase', layout: 'half' },
+                { src: _g6, caption: 'Social media carousel assets', layout: 'half' },
+                { src: _g1, caption: 'OOH — gas station pump toppers and window decals', layout: 'full' }
+            ],
             metrics: [
-                { value: '12M+', label: 'Impressions' },
-                { value: '3.4x', label: 'Engagement lift' },
-                { value: '8', label: 'Campaign formats' },
-                { value: '24', label: 'Deliverables' }
+                { value: '23%', label: 'Seasonal product sales increase' },
+                { value: '64%', label: 'Brand recall' },
+                { value: '30+', label: 'Custom assets delivered' },
+                { value: '2', label: 'Markets (PT & ES)' }
             ]
         },
         'ulaw': {
-            title: 'ULaw',
-            category: 'Campaign',
+            title: 'Amal Clooney Scholarship',
+            category: 'Scholarship Initiative',
             client: 'University of Law',
-            url: 'ulaw.ac.uk',
-            year: '2025',
-            services: 'Campaign Design, Digital Ads, Print',
+            url: 'law.ac.uk',
+            year: '2024',
+            services: 'Visual Design, Photo Retouching, Brand Design, Video Editing, Campaign Design',
             gradient: 'gradient-ocean',
-            description: 'A recruitment campaign for the University of Law, designed to attract the next generation of legal professionals with clarity and ambition.',
-            challenge: 'Standing out in a crowded higher education market where every institution promises the same outcomes with generic creative.',
-            solution: 'We crafted a campaign identity rooted in confidence and aspiration. Bold statements, editorial photography, and a modular system that scales from social ads to campus banners while maintaining consistency.',
+            description: 'A prestigious mini campaign for the University of Law, establishing scholarships in Amal Clooney\'s name to empower future human rights advocates. The visual narrative blended Ms. Clooney\'s iconic professional elegance with ULaw\'s academic heritage.',
+            challenge: 'The submitted files were low resolution. Had to act quickly using AI upscalers and manual retouching to recover details and enhance image quality for large-scale use, while seamlessly integrating the scholarship into the existing "Law & So Much More" campaign framework.',
+            solution: 'Designed the complete suite of digital campaign assets across all channels, executing precision retouching and adaptive video editing. Used AI upscalers and manual retouching to recover low-res assets. Seamlessly incorporated the Amal Clooney Scholarship into the existing brand architecture.',
+            images: [
+                { src: _g3, caption: 'Scholarship campaign — digital assets across channels', layout: 'full' },
+                { src: _g5, caption: 'Brand integration — Law & So Much More framework', layout: 'half' },
+                { src: _g1, caption: 'Social media campaign rollout', layout: 'half' },
+                { src: _g4, caption: 'AI-upscaled and retouched key visuals', layout: 'full' }
+            ],
             metrics: [
-                { value: '280%', label: 'Application increase' },
-                { value: '45%', label: 'Click-through rate lift' },
-                { value: '6', label: 'Campaign channels' },
-                { value: '30+', label: 'Ad variations' }
+                { value: '12', label: 'International markets reached' },
+                { value: '2wk', label: 'Delivery timeline' },
+                { value: '1,984', label: 'Social engagement' },
+                { value: '\u221e', label: 'Human rights prestige boost' }
             ]
         },
         'moope': {
@@ -974,6 +1015,12 @@
             description: 'UX design for Moope, rethinking the entire user experience through research-led design and rigorous usability testing.',
             challenge: 'Users were dropping off at critical conversion points. The existing experience was functional but lacked the flow and delight that builds retention.',
             solution: 'We ran a full UX audit, mapped pain points, and redesigned the core user journeys. Every decision was backed by research. The result is an experience that feels effortless and keeps users coming back.',
+            images: [
+                { src: _g4, caption: 'UX audit — user journey mapping and pain points', layout: 'full' },
+                { src: _g2, caption: 'Wireframes and interaction design', layout: 'half' },
+                { src: _g6, caption: 'Mobile-first responsive design', layout: 'half' },
+                { src: _g3, caption: 'Usability testing and analytics dashboard', layout: 'full' }
+            ],
             metrics: [
                 { value: '72%', label: 'Retention improvement' },
                 { value: '3.1x', label: 'Task completion speed' },
@@ -982,21 +1029,124 @@
             ]
         },
         'standard-bank': {
-            title: 'Standard Bank',
-            category: 'Ad Campaign',
-            client: 'Standard Bank',
-            url: 'standardbank.com',
-            year: '2025',
-            services: 'Campaign Design, Art Direction, Digital',
+            title: 'The Voice of Experience',
+            category: '360 Campaign',
+            client: 'Standard Bank Angola',
+            url: 'standardbank.co.ao',
+            year: '2018',
+            services: 'Art Direction, Visual Design, Digital Painting, Photo Retouching, Campaign Development',
             gradient: 'gradient-emerald',
-            description: 'A multi-channel advertising campaign for Standard Bank, bringing financial services to life with bold, human-centred creative.',
-            challenge: 'Banking campaigns tend to look and feel the same. The brief was to break through the noise without losing institutional trust.',
-            solution: 'We designed a campaign system that leads with real stories and human moments. The visual identity uses unexpected colour combinations and bold typography to create distinction while the message stays grounded and trustworthy.',
+            description: 'A cinematic tribute to Angola\'s Sobas (ancestral leaders), blending their centuries-old wisdom with Standard Bank\'s legacy. The campaign "Listen to the Voice of Experience" visually paralleled the Sobas\' guidance with the bank\'s trusted expertise, using documentary storytelling and striking portraiture.',
+            challenge: 'Merging traditional Angolan symbolism with Standard Bank\'s corporate visual identity while honouring the cultural weight of the Sobas \u2014 ancestral leaders whose wisdom spans generations.',
+            solution: 'Collaborated on creating sketches and digital paintings and moodboards to guide the photoshoot direction. Developed storyboards for the final video documentary. Executed image retouching and designed posters while strictly following brand guidelines.',
+            images: [
+                { src: _g1, caption: 'Concept art — Soba portrait studies and digital paintings', layout: 'full' },
+                { src: _g5, caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
+                { src: _g3, caption: 'Campaign poster design and retouching', layout: 'half' },
+                { src: _g6, caption: 'Documentary storyboard and film production', layout: 'full' },
+                { src: 'https://player.vimeo.com/video/260034770?background=1&autoplay=1&loop=1&muted=1&title=0&byline=0&portrait=0', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full', type: 'video' }
+            ],
             metrics: [
-                { value: '18M+', label: 'Campaign reach' },
-                { value: '4.2x', label: 'Brand recall' },
-                { value: '12', label: 'Campaign formats' },
-                { value: '3', label: 'Markets launched' }
+                { value: 'Gold', label: 'Meios & Publicidade Awards' },
+                { value: 'Silver', label: 'Lus\u00f3fonos Creativity Awards' },
+                { value: '280+', label: 'Media mentions' },
+                { value: '3mo', label: 'Production timeline' }
+            ]
+        },
+        'luandina': {
+            title: 'Luandina \u2014 A Nossa',
+            category: 'Geo-Targeted Campaign',
+            client: 'Luandina',
+            url: '',
+            year: '2019',
+            services: 'Art Direction, Brand Storytelling, Photo Retouching, Campaign Development, Layout Design, OOH Design',
+            gradient: 'gradient-amber',
+            description: 'A vibrant outdoor campaign celebrating Luandina\'s presence in Luanda\'s neighbourhoods, tying the brand to summer\'s social moments \u2014 beach outings, barbecues, and lively gatherings.',
+            challenge: 'Creating a hyper-local campaign that felt authentic to each neighbourhood while maintaining brand consistency across a geo-targeted billboard strategy.',
+            solution: 'Led art direction from concept to final execution, crafting a geo-targeted billboard strategy to strengthen hyper-local engagement. Designed and artworked all visual assets across print and OOH formats.',
+            images: [
+                { src: _g5, caption: 'Summer campaign \u2014 vibrant outdoor billboard key visual', layout: 'full' },
+                { src: _g1, caption: 'Social moments \u2014 barbecue and gatherings', layout: 'half' },
+                { src: _g3, caption: 'Geo-targeted OOH placements across Luanda', layout: 'half' },
+                { src: _g2, caption: 'Brand storytelling \u2014 neighbourhood connection', layout: 'full' }
+            ],
+            metrics: [
+                { value: '23%', label: 'Social engagement increase' },
+                { value: '17%', label: 'Repeat purchases increase' },
+                { value: '85%', label: 'Geo-billboard local connections' },
+                { value: '3mo', label: 'Production timeline' }
+            ]
+        },
+        'wammo': {
+            title: 'Wammo World Cup',
+            category: 'Retail Campaign',
+            client: 'Wammo',
+            url: '',
+            year: '2022',
+            services: 'Art Direction, Campaign Design, Visual Design, Motion Graphics, Retouch, Influencer Collaboration',
+            gradient: 'gradient-gold',
+            description: 'A high-energy campaign promoting Wammo\'s exclusive 40" TV deals during the World Cup, featuring in-store FIFA gaming tournaments and starring Angola\'s top comedy group Os Tuneza to drive viral engagement.',
+            challenge: 'An extremely tight deadline and limited budget for a high-priority client. As the only all-around designer at the studio, had to strategically stretch resources while producing studio-quality assets entirely in-house.',
+            solution: 'Photographed each participant individually, capturing authentic reactions, then composited portraits into dynamic group scenes. Led the Os Tuneza campaign from initial sketches through to final execution across digital, print, and motion.',
+            images: [
+                { src: _g6, caption: 'World Cup campaign \u2014 FIFA gaming tournament activation', layout: 'full' },
+                { src: _g2, caption: 'Os Tuneza \u2014 influencer collaboration and content', layout: 'half' },
+                { src: _g4, caption: 'In-store retail activation and point of sale', layout: 'half' },
+                { src: _g1, caption: 'Motion graphics \u2014 Yellow Friday promotional assets', layout: 'full' }
+            ],
+            metrics: [
+                { value: '3M', label: 'Social impressions' },
+                { value: '68%', label: '40" TV purchase surge' },
+                { value: '18%', label: 'More customers during FIFA games' },
+                { value: '3wk', label: 'Delivery timeline' }
+            ]
+        },
+        'economy-of-words': {
+            title: 'Economy of Words',
+            category: 'Personal Project',
+            client: 'Self-Initiated',
+            url: '',
+            year: '2025',
+            services: 'Creative Copywriting, Visual Design, Design Thinking, Presentation Design',
+            gradient: 'gradient-slate',
+            description: 'A self-initiated study distilling complex narratives into their most potent verbal and visual forms. Through micro-copy experiments and visual haikus, this project examines how brevity amplifies meaning in branding.',
+            challenge: 'Exploring the cognitive science of brevity \u2014 demonstrating how concise communication significantly improves comprehension rates and message retention in professional contexts.',
+            solution: 'Wrote 50+ pieces of concise, high-impact copy \u2014 from taglines to product bios \u2014 all within tight word limits. Focused on precision, tone, and making every word count. Explored both minimalist visual design and editorial layout.',
+            images: [
+                { src: _g3, caption: 'Minimalist typography \u2014 precision in every word', layout: 'full' },
+                { src: _g5, caption: 'Editorial layout \u2014 contents and chapter design', layout: 'half' },
+                { src: _g1, caption: 'Visual haiku \u2014 brevity as design principle', layout: 'half' },
+                { src: _g4, caption: 'Cognitive science of concision \u2014 research spreads', layout: 'full' }
+            ],
+            metrics: [
+                { value: '50+', label: 'Pieces of ultra-concise copy' },
+                { value: '40%', label: 'Word reduction through editing' },
+                { value: '3x', label: 'Faster ideation-to-final draft' },
+                { value: '10', label: 'Chapters designed' }
+            ]
+        },
+        'sundial': {
+            title: 'Sundial',
+            category: 'Digital Art / NFT',
+            client: 'NFTART Finance',
+            url: '',
+            year: '2021',
+            services: 'Illustration, Visual Design, Digital Painting, 3D (Cinema 4D)',
+            gradient: 'gradient-purple',
+            description: 'An exploration of duality in digital existence, where geometric precision meets human expression. The artwork examines how structured virtual environments influence organic identity, visualising the intersection between mathematical order and artistic spontaneity.',
+            challenge: 'Creating a visually distinctive piece for a new NFT platform that would stand out among thousands of digital artworks while conveying conceptual depth.',
+            solution: 'Created the artwork using Photoshop for digital painting and Cinema 4D for the geometric elements. Developed the gradient lighting system, colour harmonies, and compositional balance that made the piece visually distinctive in the marketplace.',
+            images: [
+                { src: _g2, caption: 'Sundial \u2014 geometric precision meets human expression', layout: 'full' },
+                { src: _g6, caption: 'Digital painting process \u2014 Photoshop layers', layout: 'half' },
+                { src: _g4, caption: 'Cinema 4D \u2014 geometric elements and lighting', layout: 'half' },
+                { src: _g1, caption: 'Final artwork \u2014 gradient harmonies and composition', layout: 'full' }
+            ],
+            metrics: [
+                { value: '62%', label: 'Traffic driven to NFT portfolio' },
+                { value: '1', label: 'Platform spotlight feature' },
+                { value: '2wk', label: 'Creation timeline' },
+                { value: '\u221e', label: 'Creative exploration value' }
             ]
         },
         'aura-studio': {
@@ -1012,10 +1162,10 @@
             challenge: 'Aura Studio needed a website that reflected their creative caliber while remaining functional and conversion-focused.',
             solution: 'We designed a visually immersive site with bold imagery, fluid transitions, and intentional whitespace. Every detail reinforces the studio\'s premium positioning while guiding visitors naturally toward engagement.',
             images: [
-                { src: '/aura-showcase.html', caption: 'Aura Studio — animated brand showcase', layout: 'full', type: 'html' },
-                { src: 'https://images.unsplash.com/photo-1542837336-d14bdf342f9b?w=1400&h=800&fit=crop&q=80', caption: 'Ecommerce website — desktop UI design', layout: 'half' },
-                { src: 'https://images.unsplash.com/photo-1705155733083-7e2b6ad63ddc?w=1400&h=800&fit=crop&q=80', caption: 'Product packaging — premium cosmetics line', layout: 'half' },
-                { src: 'https://images.unsplash.com/photo-1658825473738-a56b08976bbd?w=1400&h=800&fit=crop&q=80', caption: 'Mobile shopping — app interface design', layout: 'full' }
+                { src: '/aura-showcase.html', caption: 'Aura Studio \u2014 animated brand showcase', layout: 'full', type: 'html' },
+                { src: _g3, caption: 'Ecommerce website \u2014 desktop UI design', layout: 'half' },
+                { src: _g5, caption: 'Product packaging \u2014 premium cosmetics line', layout: 'half' },
+                { src: _g2, caption: 'Mobile shopping \u2014 app interface design', layout: 'full' }
             ],
             metrics: [
                 { value: '3x', label: 'Inquiry increase' },
@@ -1027,12 +1177,16 @@
     };
 
     const PROJECT_ORDER = [
-        'one1x',
-        'aura',
+        'standard-bank',
         'galp',
         'ulaw',
+        'luandina',
+        'wammo',
+        'one1x',
+        'aura',
         'moope',
-        'standard-bank',
+        'economy-of-words',
+        'sundial',
         'aura-studio'
     ];
 
@@ -1140,9 +1294,11 @@
                 <section class="section section--showcase" data-reveal style="border-top:none; padding:0;">
                     <div class="showcase-gallery">
                         ${project.images.map(img => `
-                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}">
+                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${img.type === 'video' ? ' has-iframe has-video' : ''}">
                                 ${img.type === 'html'
                                     ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}" scrolling="no"></iframe>`
+                                    : img.type === 'video'
+                                    ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`
                                     : `<img src="${img.src}" alt="${img.caption}" loading="lazy">`}
                             </div>
                         `).join('')}
