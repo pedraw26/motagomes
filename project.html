@@ -408,7 +408,7 @@
         /* Zone 2: Statement */
         .overview__statement {
             padding: 80px 0 100px;
-            max-width: 960px;
+            max-width: 70%;
         }
 
         .overview__statement-text {
@@ -526,18 +526,19 @@
         }
 
         .showcase-item.has-video {
-            position: relative;
             aspect-ratio: 16 / 9;
             overflow: hidden;
+            position: relative;
         }
 
         .showcase-item.has-video iframe {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 150%;
-            height: 150%;
-            transform: translate(-50%, -50%);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: scale(1.4);
+            transform-origin: center center;
             border: none;
         }
 
