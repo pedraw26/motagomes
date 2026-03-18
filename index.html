@@ -1148,20 +1148,28 @@
         .about-details {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            padding-top: 60px;
-            border-top: 1px solid var(--border-subtle);
+            gap: 0;
             margin-bottom: 60px;
+        }
+
+        .about-col {
+            padding: 48px 40px;
+            border-left: 1px solid var(--border-subtle);
+        }
+
+        .about-col:first-child {
+            padding-left: 0;
+            border-left: none;
         }
 
         .about-col-title {
             font-family: var(--sf-pro);
-            font-size: 10px;
-            letter-spacing: 0.2em;
+            font-size: 11px;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--text-40);
-            margin-bottom: 20px;
-            font-weight: 400;
+            margin-bottom: 28px;
+            font-weight: 500;
         }
 
         .about-col-list {
@@ -1170,9 +1178,37 @@
 
         .about-col-list li {
             font-size: 0.9rem;
-            color: var(--text-80);
+            color: var(--text-60);
             font-weight: 300;
-            line-height: 2;
+            line-height: 1.4;
+            padding: 8px 0;
+            transition: color 0.3s ease;
+        }
+
+        .about-col-list li:hover {
+            color: var(--text);
+        }
+
+        /* Recognition metrics */
+        .about-metric {
+            padding: 12px 0;
+        }
+
+        .about-metric-value {
+            font-family: var(--sf-pro);
+            font-size: 1.6rem;
+            font-weight: 200;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .about-metric-label {
+            font-family: var(--sf-pro);
+            font-size: 12px;
+            font-weight: 300;
+            color: var(--text-40);
+            margin-top: 4px;
         }
 
         .about-col-testimonial {
@@ -2173,8 +2209,18 @@ margin-top: 3px;
             }
 
             .about-details {
-                grid-template-columns: 1fr 1fr;
-                gap: 32px;
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .about-col {
+                padding: 32px 0;
+                border-left: none;
+                border-top: 1px solid var(--border-subtle);
+            }
+
+            .about-col:first-child {
+                border-top: 1px solid var(--border-subtle);
             }
 
             .about-widgets-row {
@@ -2941,14 +2987,22 @@ margin-top: 3px;
                 <!-- Credentials -->
                 <div class="about-col">
                     <h3 class="about-col-title">Recognition</h3>
-                    <ul class="about-col-list">
-                        <li>10+ years in design</li>
-                        <li>30+ brands built</li>
-                        <li>Cross-industry experience</li>
-                        <li>Startup to enterprise</li>
-                        <li>Full product lifecycles</li>
-                        <li>Research-driven process</li>
-                    </ul>
+                    <div class="about-metric">
+                        <div class="about-metric-value">10+</div>
+                        <div class="about-metric-label">Years in design</div>
+                    </div>
+                    <div class="about-metric">
+                        <div class="about-metric-value">30+</div>
+                        <div class="about-metric-label">Brands built</div>
+                    </div>
+                    <div class="about-metric">
+                        <div class="about-metric-value">Gold & Silver</div>
+                        <div class="about-metric-label">Industry awards</div>
+                    </div>
+                    <div class="about-metric">
+                        <div class="about-metric-value">Full lifecycle</div>
+                        <div class="about-metric-label">Startup to enterprise</div>
+                    </div>
                 </div>
 
             </div>
