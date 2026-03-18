@@ -828,6 +828,77 @@
             z-index: 1;
         }
 
+        /* Password modal */
+        .pw-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .pw-modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .pw-modal-box {
+            text-align: center;
+            max-width: 340px;
+            width: 100%;
+            padding: 0 20px;
+        }
+        .pw-modal-label {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-60);
+            margin-bottom: 20px;
+        }
+        .pw-modal-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            color: #fff;
+            font-family: var(--sf-pro);
+            font-size: 16px;
+            padding: 12px 0;
+            text-align: center;
+            letter-spacing: 0.15em;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .pw-modal-input:focus {
+            border-color: rgba(255,255,255,0.6);
+        }
+        .pw-modal-input.error {
+            border-color: #ff4444;
+            animation: pwShake 0.4s ease;
+        }
+        @keyframes pwShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+        .pw-modal-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: none;
+            border: none;
+            color: var(--text-60);
+            font-size: 24px;
+            cursor: pointer;
+            font-family: var(--sf-pro);
+        }
+
         /* Coming soon tag */
         .card-coming-soon {
             position: absolute;
@@ -2764,7 +2835,7 @@ margin-top: 3px;
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-label">Scholarship Initiative</div>
                                 <div class="gallery-stacked-project-title">Amal Clooney<br>Scholarship</div>
-                                <a href="/project.html?p=ulaw" class="gallery-stacked-btn gallery-stacked-btn-fill">View Case</a>
+                                <a href="#" class="gallery-stacked-btn gallery-stacked-btn-fill" onclick="event.preventDefault();event.stopPropagation();openPwModal()">View Case</a>
                             </div>
                             <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
                         </div>
@@ -2821,133 +2892,8 @@ margin-top: 3px;
                     </div>
                 </div>
                 
-                <!-- Card 7: Luandina -->
+                <!-- Card 7: Lyft Illustrations -->
                 <div class="gallery-stacked-card" style="--card-index: 6; --card-offset: 50px;">
-                    <div class="gallery-stacked-card-inner">
-                        <div class="gallery-stacked-bar">
-                            <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-url">luandina.co.ao</div>
-                            <div class="gallery-stacked-nav">
-                                <span>Beer</span>
-                                <span>OOH</span>
-                                <span>Angola</span>
-                            </div>
-                        </div>
-                        <div class="gallery-stacked-hero gradient-amber">
-                            <div class="gallery-stacked-info">
-                                <div class="gallery-stacked-label">Geo-Targeted Campaign</div>
-                                <div class="gallery-stacked-project-title">Luandina —<br>A Nossa</div>
-                                <a href="/project.html?p=luandina" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
-                            </div>
-                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 8: Wammo -->
-                <div class="gallery-stacked-card" style="--card-index: 7; --card-offset: 50px;">
-                    <div class="gallery-stacked-card-inner">
-                        <div class="gallery-stacked-bar">
-                            <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-url">wammo.co.ao</div>
-                            <div class="gallery-stacked-nav">
-                                <span>World Cup</span>
-                                <span>Retail</span>
-                                <span>Motion</span>
-                            </div>
-                        </div>
-                        <div class="gallery-stacked-hero gradient-gold">
-                            <div class="gallery-stacked-info">
-                                <div class="gallery-stacked-label">Retail Campaign</div>
-                                <div class="gallery-stacked-project-title">Wammo<br>World Cup</div>
-                                <a href="/project.html?p=wammo" class="gallery-stacked-btn gallery-stacked-btn-fill">View Case</a>
-                            </div>
-                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 9: Economy of Words -->
-                <div class="gallery-stacked-card" style="--card-index: 8; --card-offset: 50px;">
-                    <div class="gallery-stacked-card-inner">
-                        <div class="gallery-stacked-bar">
-                            <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-url">pedraw.co.uk</div>
-                            <div class="gallery-stacked-nav">
-                                <span>Writing</span>
-                                <span>Editorial</span>
-                                <span>Concept</span>
-                            </div>
-                        </div>
-                        <div class="gallery-stacked-hero gradient-slate">
-                            <div class="gallery-stacked-info">
-                                <div class="gallery-stacked-label">Personal Project</div>
-                                <div class="gallery-stacked-project-title">Economy<br>of Words</div>
-                                <a href="/project.html?p=economy-of-words" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
-                            </div>
-                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 10: Aura Studio -->
-                <div class="gallery-stacked-card" style="--card-index: 9; --card-offset: 50px;">
-                    <div class="gallery-stacked-card-inner">
-                        <div class="gallery-stacked-bar">
-                            <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-url">aurastudio.com</div>
-                            <div class="gallery-stacked-nav">
-                                <span>Studio</span>
-                                <span>Work</span>
-                                <span>Contact</span>
-                            </div>
-                        </div>
-                        <div class="gallery-stacked-hero gradient-crimson">
-                            <div class="gallery-stacked-info">
-                                <div class="gallery-stacked-label">Brand & Web</div>
-                                <div class="gallery-stacked-project-title">Digital Presence<br>Redefined</div>
-                                <a href="/project.html?p=aura-studio" class="gallery-stacked-btn gallery-stacked-btn-fill">View Case</a>
-                            </div>
-                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 11: Sundial -->
-                <div class="gallery-stacked-card" style="--card-index: 10; --card-offset: 50px;">
-                    <div class="gallery-stacked-card-inner">
-                        <div class="gallery-stacked-bar">
-                            <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-dot"></div>
-                            <div class="gallery-stacked-url">nftartfinance.com</div>
-                            <div class="gallery-stacked-nav">
-                                <span>NFT</span>
-                                <span>Digital Art</span>
-                                <span>3D</span>
-                            </div>
-                        </div>
-                        <div class="gallery-stacked-hero gradient-purple">
-                            <div class="gallery-stacked-info">
-                                <div class="gallery-stacked-label">Digital Art / NFT</div>
-                                <div class="gallery-stacked-project-title">Sundial</div>
-                                <a href="/project.html?p=sundial" class="gallery-stacked-btn gallery-stacked-btn-fill">View Case</a>
-                            </div>
-                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 12: Lyft Illustrations -->
-                <div class="gallery-stacked-card" style="--card-index: 11; --card-offset: 50px;">
                     <div class="gallery-stacked-card-inner">
                         <div class="gallery-stacked-bar">
                             <div class="gallery-stacked-dot"></div>
@@ -2971,8 +2917,8 @@ margin-top: 3px;
                     </div>
                 </div>
 
-                <!-- Card 13: RAS Real Estate -->
-                <div class="gallery-stacked-card" style="--card-index: 12; --card-offset: 50px;">
+                <!-- Card 8: RAS Real Estate -->
+                <div class="gallery-stacked-card" style="--card-index: 7; --card-offset: 50px;">
                     <div class="gallery-stacked-card-inner">
                         <div class="gallery-stacked-bar">
                             <div class="gallery-stacked-dot"></div>
@@ -3001,6 +2947,82 @@ margin-top: 3px;
                         </div>
                     </div>
                 </div>
+
+                <!-- Card 9: Luandina -->
+                <div class="gallery-stacked-card" style="--card-index: 8; --card-offset: 50px;">
+                    <div class="gallery-stacked-card-inner">
+                        <div class="gallery-stacked-bar">
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-url">luandina.co.ao</div>
+                            <div class="gallery-stacked-nav">
+                                <span>Beer</span>
+                                <span>OOH</span>
+                                <span>Angola</span>
+                            </div>
+                        </div>
+                        <div class="gallery-stacked-hero gradient-amber">
+                            <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-label">Geo-Targeted Campaign</div>
+                                <div class="gallery-stacked-project-title">Luandina —<br>A Nossa</div>
+                                <a href="/project.html?p=luandina" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
+                            </div>
+                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 10: Wammo -->
+                <div class="gallery-stacked-card" style="--card-index: 9; --card-offset: 50px;">
+                    <div class="gallery-stacked-card-inner">
+                        <div class="gallery-stacked-bar">
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-url">wammo.co.ao</div>
+                            <div class="gallery-stacked-nav">
+                                <span>World Cup</span>
+                                <span>Retail</span>
+                                <span>Motion</span>
+                            </div>
+                        </div>
+                        <div class="gallery-stacked-hero gradient-gold">
+                            <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-label">Retail Campaign</div>
+                                <div class="gallery-stacked-project-title">Wammo<br>World Cup</div>
+                                <a href="/project.html?p=wammo" class="gallery-stacked-btn gallery-stacked-btn-fill">View Case</a>
+                            </div>
+                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 11: Aura Studio -->
+                <div class="gallery-stacked-card" style="--card-index: 10; --card-offset: 50px;">
+                    <div class="gallery-stacked-card-inner">
+                        <div class="gallery-stacked-bar">
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-url">aurastudio.com</div>
+                            <div class="gallery-stacked-nav">
+                                <span>Studio</span>
+                                <span>Work</span>
+                                <span>Contact</span>
+                            </div>
+                        </div>
+                        <div class="gallery-stacked-hero gradient-crimson">
+                            <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-label">Brand & Web</div>
+                                <div class="gallery-stacked-project-title">Digital Presence<br>Redefined</div>
+                                <a href="/project.html?p=aura-studio" class="gallery-stacked-btn gallery-stacked-btn-fill">View Case</a>
+                            </div>
+                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -3501,12 +3523,12 @@ margin-top: 3px;
         const galleryBrands = [
             'One1x', 'Galp', 'ULaw',
             'Moope', 'Standard Bank',
-            'Luandina', 'Wammo', 'Economy of Words', 'Aura Studio', 'Sundial', 'Lyft', 'RAS Real Estate'
+            'Lyft', 'RAS Real Estate', 'Luandina', 'Wammo', 'Aura Studio'
         ];
         const galleryProjects = [
             'Rebrand', 'Christmas Campaign', 'Scholarship Initiative',
             'UX Design', '360 Campaign',
-            'Geo-Targeted Campaign', 'Retail Campaign', 'Personal Project', 'Brand & Web', 'Digital Art / NFT', 'Illustration', 'Real Estate Branding'
+            'Illustration', 'Real Estate Branding', 'Geo-Targeted Campaign', 'Retail Campaign', 'Brand & Web'
         ];
         
         function updateActiveGalleryCard() {
@@ -3540,10 +3562,13 @@ margin-top: 3px;
                 
                 const cardCenter = rect.top + rect.height * 0.3;
                 const dist = (cardCenter - center) / vh;
+                const absDist = Math.abs(dist);
                 const tilt = dist * 8;
-                const scale = 1 - Math.max(0, -dist) * 0.03;
-                
-                inner.style.transform = `perspective(1200px) rotateX(${tilt}deg) scale(${Math.min(1, scale)})`;
+                const baseScale = 1 - Math.max(0, -dist) * 0.03;
+                const activeBoost = absDist < 0.15 ? 1.04 - (absDist / 0.15) * 0.04 : 1;
+                const scale = Math.min(activeBoost, baseScale);
+
+                inner.style.transform = `perspective(1200px) rotateX(${tilt}deg) scale(${scale})`;
             });
             
             const num = String(active + 1).padStart(2, '0');
@@ -3740,6 +3765,42 @@ margin-top: 3px;
             drawLondonClock();
         }
 
+    </script>
+    <!-- Password Modal -->
+    <div class="pw-modal" id="pwModal">
+        <button class="pw-modal-close" onclick="closePwModal()">&times;</button>
+        <div class="pw-modal-box">
+            <div class="pw-modal-label">Password Required</div>
+            <input type="password" class="pw-modal-input" id="pwInput" placeholder="Enter password" autocomplete="off">
+        </div>
+    </div>
+    <script>
+        function openPwModal() {
+            const modal = document.getElementById('pwModal');
+            const input = document.getElementById('pwInput');
+            modal.classList.add('open');
+            input.value = '';
+            input.classList.remove('error');
+            setTimeout(() => input.focus(), 100);
+        }
+        function closePwModal() {
+            document.getElementById('pwModal').classList.remove('open');
+        }
+        document.getElementById('pwModal').addEventListener('click', function(e) {
+            if (e.target === this) closePwModal();
+        });
+        document.getElementById('pwInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                if (this.value === 'ulaw') {
+                    closePwModal();
+                    window.location.href = '/project.html?p=ulaw';
+                } else {
+                    this.classList.add('error');
+                    this.value = '';
+                    setTimeout(() => this.classList.remove('error'), 400);
+                }
+            }
+        });
     </script>
     <script src="/tracker.js" defer></script>
 </body>
