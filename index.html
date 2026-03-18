@@ -804,6 +804,48 @@
             position: relative;
             overflow: hidden;
         }
+
+        /* Card slideshow */
+        .card-slideshow {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        .card-slideshow img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            visibility: hidden;
+        }
+        .card-slideshow img.active {
+            visibility: visible;
+        }
+        .gallery-stacked-hero .gallery-stacked-info,
+        .gallery-stacked-hero .gallery-stacked-badge {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Coming soon tag */
+        .card-coming-soon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #fff;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 6px 14px;
+            border-radius: 100px;
+        }
         
         /* Project backgrounds */
         .gradient-obsidian {
@@ -2928,6 +2970,37 @@ margin-top: 3px;
                         </div>
                     </div>
                 </div>
+
+                <!-- Card 13: RAS Real Estate -->
+                <div class="gallery-stacked-card" style="--card-index: 12; --card-offset: 50px;">
+                    <div class="gallery-stacked-card-inner">
+                        <div class="gallery-stacked-bar">
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-url">ras-realestate.com</div>
+                            <div class="gallery-stacked-nav">
+                                <span>Brand</span>
+                                <span>Real Estate</span>
+                                <span>Identity</span>
+                            </div>
+                        </div>
+                        <div class="gallery-stacked-hero gradient-midnight">
+                            <div class="card-coming-soon">Coming Soon</div>
+                            <div class="card-slideshow" data-interval="1500">
+                                <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1773852976/sBbbbArtboard_1_o0eian.png" alt="RAS Real Estate 1" class="active">
+                                <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1773853078/sBbbbArtboard_2_zdvsf5.png" alt="RAS Real Estate 2">
+                                <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1773853378/sBbbbArtboard_3_msmzcr.png" alt="RAS Real Estate 3">
+                            </div>
+                            <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-label">Real Estate Branding</div>
+                                <div class="gallery-stacked-project-title">RAS Real Estate</div>
+                                <a href="/project.html?p=ras" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
+                            </div>
+                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -3428,12 +3501,12 @@ margin-top: 3px;
         const galleryBrands = [
             'One1x', 'Galp', 'ULaw',
             'Moope', 'Standard Bank',
-            'Luandina', 'Wammo', 'Economy of Words', 'Aura Studio', 'Sundial', 'Lyft'
+            'Luandina', 'Wammo', 'Economy of Words', 'Aura Studio', 'Sundial', 'Lyft', 'RAS Real Estate'
         ];
         const galleryProjects = [
             'Rebrand', 'Christmas Campaign', 'Scholarship Initiative',
             'UX Design', '360 Campaign',
-            'Geo-Targeted Campaign', 'Retail Campaign', 'Personal Project', 'Brand & Web', 'Digital Art / NFT', 'Illustration'
+            'Geo-Targeted Campaign', 'Retail Campaign', 'Personal Project', 'Brand & Web', 'Digital Art / NFT', 'Illustration', 'Real Estate Branding'
         ];
         
         function updateActiveGalleryCard() {
@@ -3487,6 +3560,19 @@ margin-top: 3px;
         
         scrollContainer.addEventListener('scroll', () => requestAnimationFrame(updateActiveGalleryCard), { passive: true });
         updateActiveGalleryCard();
+
+        // Card slideshow
+        document.querySelectorAll('.card-slideshow').forEach(slideshow => {
+            const imgs = slideshow.querySelectorAll('img');
+            if (imgs.length < 2) return;
+            let current = 0;
+            const interval = parseInt(slideshow.dataset.interval) || 1500;
+            setInterval(() => {
+                imgs[current].classList.remove('active');
+                current = (current + 1) % imgs.length;
+                imgs[current].classList.add('active');
+            }, interval);
+        });
         
         // ========================================
         // WIDGETS CAROUSEL
