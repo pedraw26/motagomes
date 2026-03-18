@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building This Portfolio — Mota Gomes</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <style>
+        :root {
+            --sf-pro: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            --mono: 'SF Mono', 'Fira Code', 'Monaco', 'Menlo', monospace;
+            --bg-black: #000000;
+            --text: #ffffff;
+            --text-80: #e5e5e5;
+            --text-60: #999999;
+            --text-40: #666666;
+            --border-subtle: rgba(255, 255, 255, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--sf-pro);
+            background: var(--bg-black);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* NAV */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 24px 80px;
+            z-index: 100;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .nav-logo { color: var(--text); text-decoration: none; font-weight: 600; font-size: 15px; letter-spacing: 0.05em; }
+
+        /* ARTICLE */
+        .article {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 160px 24px 120px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 40px;
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--text-40);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .article-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--text-40);
+        }
+
+        .article-title {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 200;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+            margin-bottom: 48px;
+            color: var(--text);
+        }
+
+        .article-body p {
+            font-size: 17px;
+            line-height: 1.75;
+            color: var(--text-80);
+            margin-bottom: 24px;
+            font-weight: 300;
+        }
+
+        .article-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        .article-body em {
+            color: var(--text-60);
+            font-style: normal;
+            font-family: var(--mono);
+            font-size: 14px;
+        }
+
+        /* BACK LINK */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 64px;
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: var(--text); }
+
+        @media (max-width: 640px) {
+            .nav { padding: 18px 24px; }
+            .article { padding: 120px 20px 80px; }
+            .article-title { margin-bottom: 36px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="/" class="nav-logo">MG</a>
+    </nav>
+
+    <article class="article">
+        <div class="article-meta">
+            <span>2 min read</span>
+            <div class="article-dot"></div>
+            <span>2025</span>
+            <div class="article-dot"></div>
+            <span>HTML / CSS / JS / AI</span>
+        </div>
+
+        <h1 class="article-title">Building This Portfolio</h1>
+
+        <div class="article-body">
+            <p>I'm a designer who's picked up code, not a developer by trade. Comfortable enough to break things and piece them back together. This site is the proof of that.</p>
+
+            <p>I built it with creative directors and design managers in mind. No buried PDFs, no fiddly navigation. Just work, presented clearly, fast to load, and easy to scan on any screen. If you've landed here mid-scroll between candidates, everything you need is within a couple of clicks.</p>
+
+            <p>A lot of what sits under the surface is me experimenting. I've been leaning into AI workflows quite heavily, using tools like Claude to accelerate the build, debug layout quirks, and learn as I go. Some evenings I'd fall asleep mid-prompt, pick it up the next morning, and carry on exactly where I left off. It's genuinely changed how I learn: iterate, break, fix, ship.</p>
+
+            <p>Not everything here will make the final cut. Some bits are rough, some are overbuilt, and that's the point. This portfolio is alive, always evolving, much like the work inside it.</p>
+
+            <p><em>Written in London, probably past midnight.</em></p>
+        </div>
+
+        <a href="/#research" class="back-link">&larr; Back to portfolio</a>
+    </article>
+</body>
+</html>
