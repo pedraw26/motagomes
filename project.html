@@ -523,16 +523,14 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 16px 14px;
-            min-height: 140px;
-            position: relative;
+            padding: 12px 14px;
         }
         .showcase-colorstrip .cs-role {
             font-family: var(--sf-pro);
             font-size: 11px;
             font-weight: 500;
             letter-spacing: 0.02em;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .showcase-colorstrip .cs-meta {
             font-family: var(--mono);
@@ -541,16 +539,6 @@
             text-transform: uppercase;
             opacity: 0.45;
             line-height: 1.8;
-        }
-        .showcase-colorstrip .cs-circle {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 1.5px solid currentColor;
-            opacity: 0.2;
-            position: absolute;
-            top: 14px;
-            right: 14px;
         }
 
         .showcase-slideshow {
@@ -1415,7 +1403,7 @@
                                     : img.type === 'slideshow'
                                     ? `<div class="showcase-slideshow" data-interval="${img.interval || 1500}">${img.src.map((s, i) => `<img src="${s}" alt="${img.caption}" loading="lazy" class="${i === 0 ? 'active' : ''}">`).join('')}</div>`
                                     : img.type === 'colorstrip'
-                                    ? `<div class="showcase-colorstrip">${img.colors.map((c, ci) => { const hex = c.replace('#',''); const r = parseInt(hex.substr(0,2),16); const g = parseInt(hex.substr(2,2),16); const b = parseInt(hex.substr(4,2),16); const lum = (r*299+g*587+b*114)/1000; const tc = lum > 140 ? '#000' : '#fff'; const pnt = img.pantones && img.pantones[ci] ? img.pantones[ci] : ''; const role = img.roles && img.roles[ci] ? img.roles[ci] : ''; return `<div style="background:${c};color:${tc}"><div class="cs-circle"></div>${role ? `<div class="cs-role">${role}</div>` : ''}<div class="cs-meta">${c.toUpperCase()}${pnt ? '<br>' + pnt : ''}</div></div>`; }).join('')}</div>`
+                                    ? `<div class="showcase-colorstrip">${img.colors.map((c, ci) => { const hex = c.replace('#',''); const r = parseInt(hex.substr(0,2),16); const g = parseInt(hex.substr(2,2),16); const b = parseInt(hex.substr(4,2),16); const lum = (r*299+g*587+b*114)/1000; const tc = lum > 140 ? '#000' : '#fff'; const pnt = img.pantones && img.pantones[ci] ? img.pantones[ci] : ''; const role = img.roles && img.roles[ci] ? img.roles[ci] : ''; return `<div style="background:${c};color:${tc}">${role ? `<div class="cs-role">${role}</div>` : ''}<div class="cs-meta">${c.toUpperCase()}${pnt ? '<br>' + pnt : ''}</div></div>`; }).join('')}</div>`
                                     : `<img src="${img.src}" alt="${img.caption}" loading="lazy">`}
                             </div>
                         `).join('')}
