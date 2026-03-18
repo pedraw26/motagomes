@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Building This Portfolio — Mota Gomes</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
@@ -115,6 +116,25 @@
         }
         .back-link:hover { color: var(--text); }
 
+        /* FADE-IN ANIMATIONS */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal {
+            opacity: 0;
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .reveal-1 { animation-delay: 0.1s; }
+        .reveal-2 { animation-delay: 0.25s; }
+        .reveal-3 { animation-delay: 0.4s; }
+        .reveal-4 { animation-delay: 0.55s; }
+        .reveal-5 { animation-delay: 0.7s; }
+        .reveal-6 { animation-delay: 0.85s; }
+        .reveal-7 { animation-delay: 1.0s; }
+
         @media (max-width: 640px) {
             .nav { padding: 18px 24px; }
             .article { padding: 120px 20px 80px; }
@@ -128,7 +148,7 @@
     </nav>
 
     <article class="article">
-        <div class="article-meta">
+        <div class="article-meta reveal reveal-1">
             <span>2 min read</span>
             <div class="article-dot"></div>
             <span>2025</span>
@@ -136,21 +156,21 @@
             <span>HTML / CSS / JS / AI</span>
         </div>
 
-        <h1 class="article-title">Building This Portfolio</h1>
+        <h1 class="article-title reveal reveal-2">Building This Portfolio</h1>
 
         <div class="article-body">
-            <p>I'm a designer who's picked up code, not a developer by trade. Comfortable enough to break things and piece them back together. This site is the proof of that.</p>
+            <p class="reveal reveal-3">I'm a designer who's picked up code, not a developer by trade. Comfortable enough to break things and piece them back together. This site is the proof of that.</p>
 
-            <p>I built it with creative directors and design managers in mind. No buried PDFs, no fiddly navigation. Just work, presented clearly, fast to load, and easy to scan on any screen. If you've landed here mid-scroll between candidates, everything you need is within a couple of clicks.</p>
+            <p class="reveal reveal-4">I built it with creative directors and design managers in mind. No buried PDFs, no fiddly navigation. Just work, presented clearly, fast to load, and easy to scan on any screen. If you've landed here mid-scroll between candidates, everything you need is within a couple of clicks.</p>
 
-            <p>A lot of what sits under the surface is me experimenting. I've been leaning into AI workflows quite heavily, using tools like Claude to accelerate the build, debug layout quirks, and learn as I go. Some evenings I'd fall asleep mid-prompt, pick it up the next morning, and carry on exactly where I left off. It's genuinely changed how I learn: iterate, break, fix, ship.</p>
+            <p class="reveal reveal-5">A lot of what sits under the surface is me experimenting. I've been leaning into AI workflows quite heavily, using tools like Claude to accelerate the build, debug layout quirks, and learn as I go. Some evenings I'd fall asleep mid-prompt, pick it up the next morning, and carry on exactly where I left off. It's genuinely changed how I learn: iterate, break, fix, ship.</p>
 
-            <p>Not everything here will make the final cut. Some bits are rough, some are overbuilt, and that's the point. This portfolio is alive, always evolving, much like the work inside it.</p>
+            <p class="reveal reveal-6">Not everything here will make the final cut. Some bits are rough, some are overbuilt, and that's the point. This portfolio is alive, always evolving, much like the work inside it.</p>
 
-            <p><em>Written in London, probably past midnight.</em></p>
+            <p class="reveal reveal-7"><em>Written in London, probably past midnight.</em></p>
         </div>
 
-        <a href="/#research" class="back-link">&larr; Back to portfolio</a>
+        <a href="/#research" class="back-link reveal reveal-7">&larr; Back to portfolio</a>
     </article>
 </body>
 </html>
