@@ -511,6 +511,23 @@
             grid-column: 1 / -1;
         }
 
+        .showcase-slideshow {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .showcase-slideshow img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            visibility: hidden;
+        }
+        .showcase-slideshow img.active {
+            visibility: visible;
+        }
+
         .showcase-item img {
             width: 100%;
             height: 100%;
@@ -1209,14 +1226,14 @@
             year: '2025',
             services: 'Brand Identity, Visual System, Real Estate Marketing, Art Direction',
             gradient: 'gradient-midnight',
-            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773852976/sBbbbArtboard_1_o0eian.png',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773855922/sBbbbArtboard_1_o0eian.png',
             description: 'A premium brand identity for RAS Real Estate, crafting a visual language that communicates trust, sophistication, and market authority in the luxury property sector.',
             challenge: 'The real estate market demands a brand that balances prestige with approachability — standing out in a saturated landscape while building immediate trust with high-value clients.',
             solution: 'Built a refined identity system rooted in clean geometry and restrained elegance. The visual language scales seamlessly from property brochures to digital listings, establishing RAS as a credible force in premium real estate.',
             images: [
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773852976/sBbbbArtboard_1_o0eian.png', caption: 'RAS Real Estate — brand identity system', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773855922/sBbbbArtboard_1_o0eian.png', caption: 'RAS Real Estate — brand identity system', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773853078/sBbbbArtboard_2_zdvsf5.png', caption: 'Visual identity — stationery and collateral', layout: 'half' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773853378/sBbbbArtboard_3_msmzcr.png', caption: 'Brand applications — property marketing', layout: 'half' }
+                { type: 'slideshow', src: ['https://res.cloudinary.com/dzgqzeebg/image/upload/v1773853378/sBbbbArtboard_3_msmzcr.png', 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773855561/sBbbbArtboard_8_mhazq9.png'], interval: 1500, caption: 'Brand applications — property marketing', layout: 'half' }
             ],
             metrics: [
                 { value: '1', label: 'Complete brand system' },
@@ -1352,6 +1369,8 @@
                                     ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}" scrolling="no"></iframe>`
                                     : img.type === 'video'
                                     ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`
+                                    : img.type === 'slideshow'
+                                    ? `<div class="showcase-slideshow" data-interval="${img.interval || 1500}">${img.src.map((s, i) => `<img src="${s}" alt="${img.caption}" loading="lazy" class="${i === 0 ? 'active' : ''}">`).join('')}</div>`
                                     : `<img src="${img.src}" alt="${img.caption}" loading="lazy">`}
                             </div>
                         `).join('')}
@@ -1498,6 +1517,19 @@
 
     const slug = getSlug();
     renderProject(slug);
+
+    // Showcase slideshows
+    document.querySelectorAll('.showcase-slideshow').forEach(ss => {
+        const imgs = ss.querySelectorAll('img');
+        if (imgs.length < 2) return;
+        let current = 0;
+        const interval = parseInt(ss.dataset.interval) || 1500;
+        setInterval(() => {
+            imgs[current].classList.remove('active');
+            current = (current + 1) % imgs.length;
+            imgs[current].classList.add('active');
+        }, interval);
+    });
 
     </script>
 </body>
