@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@100;200;300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Urbanist',sans-serif;background:#000;color:#fff}
+body{font-family:'Urbanist',sans-serif;background:#000;color:#fff;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-kerning:auto}
 
 .page{width:100%;aspect-ratio:16/9;display:grid;grid-template-rows:auto 1fr}
 
@@ -15,11 +15,11 @@ body{font-family:'Urbanist',sans-serif;background:#000;color:#fff}
 
 .top-left{padding:8% 5.5% 8%;display:flex;flex-direction:column}
 .typo-label{font-family:'Inter',sans-serif;font-size:clamp(11px,1.1vw,16px);font-weight:400;color:#00E5CC;margin-bottom:0.6em;opacity:0;animation:fadeUp .6s ease forwards .3s}
-.font-hero{font-size:clamp(36px,5.5vw,90px);font-weight:900;line-height:.95;letter-spacing:-.03em;color:#fff;opacity:0;animation:fadeUp .8s ease forwards .5s}
+.font-hero{font-size:clamp(36px,5.5vw,90px);font-weight:900;line-height:.95;letter-spacing:-.03em;color:#fff;font-feature-settings:'kern' 1,'liga' 1;opacity:0;animation:fadeUp .8s ease forwards .5s}
 
 .top-right{padding:8% 5.5% 8%;display:flex;flex-direction:column}
-.intro-heading{font-size:clamp(16px,2.2vw,34px);font-weight:800;line-height:1.15;letter-spacing:-.01em;color:#fff;margin-bottom:0.4em;opacity:0;animation:fadeUp .7s ease forwards .6s}
-.intro-desc{font-family:'Inter',sans-serif;font-size:clamp(9px,0.9vw,14px);font-weight:400;line-height:1.55;color:#666;opacity:0;animation:fadeUp .7s ease forwards .8s}
+.intro-heading{font-size:clamp(16px,2.2vw,34px);font-weight:800;line-height:1.2;letter-spacing:-.01em;color:#fff;margin-bottom:0.4em;font-feature-settings:'kern' 1,'liga' 1;opacity:0;animation:fadeUp .7s ease forwards .6s}
+.intro-desc{font-family:'Inter',sans-serif;font-size:clamp(9px,0.9vw,14px);font-weight:400;line-height:1.6;letter-spacing:.005em;color:#666;opacity:0;animation:fadeUp .7s ease forwards .8s}
 
 .bottom-row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #1a1a1a}
 
@@ -29,7 +29,7 @@ body{font-family:'Urbanist',sans-serif;background:#000;color:#fff}
 .glyph-cell{display:flex;align-items:center;gap:clamp(12px,2vw,32px);padding:3.5% 5.5%;opacity:0;animation:fadeUp .6s ease forwards}
 .glyph-cell:first-child{border-bottom:1px solid #1a1a1a}
 
-.glyph{font-size:clamp(40px,5.5vw,96px);line-height:1;color:#00E5CC;min-width:clamp(60px,8vw,140px);transition:color .3s}
+.glyph{font-size:clamp(40px,5.5vw,96px);line-height:1;color:#00E5CC;min-width:clamp(60px,8vw,140px);transition:color .3s;font-feature-settings:'kern' 1,'liga' 1}
 .glyph-cell:hover .glyph{color:#fff}
 
 .glyph-meta{display:flex;flex-direction:column;gap:0.5em}
@@ -56,8 +56,8 @@ body{font-family:'Urbanist',sans-serif;background:#000;color:#fff}
       <div class="font-hero">Urbanist</div>
     </div>
     <div class="top-right">
-      <div class="intro-heading">Hello, I'm Font Urbanist, The Official Primary Font of This Brand.</div>
-      <div class="intro-desc">Urbanist is a modern geometric sans-serif with squared terminals and rectangular proportions. It's a variable sans-serif font that mirrors the sharp, blocky identity of the RAS logotype, similar to popular open-source projects like Inter or Manrope.</div>
+      <div class="intro-heading">The Official Primary Typeface.</div>
+      <div class="intro-desc">A modern geometric sans-serif with squared terminals, mirroring the sharp, blocky identity of the RAS logotype.</div>
     </div>
   </div>
 
