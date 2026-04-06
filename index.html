@@ -99,6 +99,56 @@
             animation: introLineGrow 1.8s ease-out forwards;
         }
 
+        .intro-pw {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+        .intro-pw.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .intro-pw-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.25);
+            color: #fff;
+            font-family: var(--sf-pro);
+            font-size: 14px;
+            padding: 10px 0;
+            width: 200px;
+            text-align: center;
+            letter-spacing: 0.15em;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .intro-pw-input:focus {
+            border-color: rgba(255,255,255,0.5);
+        }
+        .intro-pw-input.error {
+            border-color: #ff4444;
+            animation: pwShake 0.4s ease;
+        }
+        .intro-pw-hint {
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            margin-top: 16px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .intro-pw-hint.visible {
+            opacity: 1;
+        }
+
         @keyframes introLineGrow {
             from { transform: scaleX(0); }
             to { transform: scaleX(1); }
@@ -2635,6 +2685,10 @@ margin-top: 3px;
                 <div class="intro-loader-line" id="introLoaderLine"></div>
             </div>
         </div>
+        <div class="intro-pw" id="introPw">
+            <input type="password" class="intro-pw-input" id="introPwInput" placeholder="" autocomplete="off">
+            <div class="intro-pw-hint" id="introPwHint">Incorrect password</div>
+        </div>
     </div>
 
     <!-- Hover Image Container -->
@@ -3326,6 +3380,22 @@ margin-top: 3px;
         const introLoader = document.getElementById('introLoader');
         const introLoaderLine = document.getElementById('introLoaderLine');
 
+        const introPw = document.getElementById('introPw');
+        const introPwInput = document.getElementById('introPwInput');
+        const introPwHint = document.getElementById('introPwHint');
+
+        function unlockSite() {
+            introPw.style.opacity = '0';
+            introPw.style.pointerEvents = 'none';
+            setTimeout(() => {
+                introGate.classList.add('hidden');
+                setTimeout(() => {
+                    introGate.remove();
+                }, 650);
+                startFirstScreenSequence();
+            }, 400);
+        }
+
         if (introGate && introLoader && introLoaderLine) {
             setTimeout(() => {
                 introLoaderLine.classList.add('animate');
@@ -3336,12 +3406,27 @@ margin-top: 3px;
             }, 2400);
 
             setTimeout(() => {
-                introGate.classList.add('hidden');
-                setTimeout(() => {
-                    introGate.remove();
-                }, 650);
-                startFirstScreenSequence();
+                introPw.classList.add('visible');
+                introPwInput.focus();
             }, 3000);
+
+            introPwInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    if (this.value === 'motagomes') {
+                        unlockSite();
+                    } else {
+                        this.classList.add('error');
+                        introPwHint.classList.add('visible');
+                        this.value = '';
+                        setTimeout(() => {
+                            this.classList.remove('error');
+                        }, 400);
+                        setTimeout(() => {
+                            introPwHint.classList.remove('visible');
+                        }, 2000);
+                    }
+                }
+            });
         } else {
             startFirstScreenSequence();
         }
