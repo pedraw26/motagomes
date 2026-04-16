@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standard Bank — Poster Wireframe</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #e8e8e8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    padding: 40px;
+  }
+
+  .poster {
+    width: 595px;
+    height: 842px;
+    background: #2a2a2a;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  /* Grid overlay */
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .grid-overlay .margin {
+    position: absolute;
+    border: 1px dashed rgba(0, 180, 255, 0.2);
+  }
+
+  .margin-top { top: 40px; left: 40px; right: 40px; height: 0; }
+  .margin-bottom { bottom: 60px; left: 40px; right: 40px; height: 0; }
+  .margin-left { top: 40px; bottom: 60px; left: 40px; width: 0; }
+  .margin-right { top: 40px; bottom: 60px; right: 40px; width: 0; }
+
+  /* Hero image placeholder */
+  .hero-image {
+    position: absolute;
+    inset: 0;
+    bottom: 56px;
+    background: #3d3d3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 40%,
+      rgba(0,0,0,0.7) 100%
+    );
+  }
+
+  .img-placeholder {
+    width: 120px;
+    height: 120px;
+    border: 2px dashed rgba(255,255,255,0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 1;
+  }
+
+  .img-placeholder svg {
+    opacity: 0.2;
+  }
+
+  .img-placeholder span {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+  }
+
+  /* Logo - top right */
+  .logo {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-shield {
+    width: 48px;
+    height: 48px;
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,91,172,0.3);
+  }
+
+  .logo-shield svg {
+    opacity: 0.6;
+  }
+
+  .logo-text {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+
+  /* Main headline */
+  .headline {
+    position: absolute;
+    bottom: 200px;
+    right: 40px;
+    z-index: 5;
+    text-align: right;
+  }
+
+  .headline h1 {
+    font-size: 38px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .headline .accent-line {
+    position: absolute;
+    right: -8px;
+    bottom: 0;
+    width: 2px;
+    height: 80%;
+    background: #005bac;
+  }
+
+  /* Subject info */
+  .subject-info {
+    position: absolute;
+    bottom: 160px;
+    right: 40px;
+    z-index: 5;
+    text-align: right;
+  }
+
+  .subject-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.01em;
+  }
+
+  .subject-location {
+    font-size: 11px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+  }
+
+  /* CTA - bottom left */
+  .cta {
+    position: absolute;
+    bottom: 80px;
+    left: 40px;
+    z-index: 5;
+  }
+
+  .cta p {
+    font-size: 10px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.5;
+  }
+
+  .cta .url {
+    font-weight: 600;
+    color: rgba(255,255,255,0.75);
+  }
+
+  /* Footer bar */
+  .footer-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: rgba(255,255,255,0.05);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    z-index: 5;
+  }
+
+  .footer-logo {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.01em;
+  }
+
+  .footer-tagline {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.01em;
+  }
+
+  /* Wireframe annotations */
+  .annotation {
+    position: absolute;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .annotation .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ff3b5c;
+    flex-shrink: 0;
+  }
+
+  .annotation .label {
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #ff3b5c;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .a1 { top: 36px; right: 100px; }
+  .a2 { bottom: 248px; right: 280px; }
+  .a3 { bottom: 166px; right: 200px; }
+  .a4 { bottom: 92px; left: 220px; }
+  .a5 { bottom: 16px; left: 40px; }
+
+  /* Dimension markers */
+  .dim {
+    position: absolute;
+    z-index: 15;
+  }
+
+  .dim-h {
+    height: 1px;
+    background: rgba(0, 180, 255, 0.25);
+  }
+
+  .dim-v {
+    width: 1px;
+    background: rgba(0, 180, 255, 0.25);
+  }
+
+  .dim-label {
+    font-size: 7px;
+    color: rgba(0, 180, 255, 0.5);
+    letter-spacing: 0.1em;
+    position: absolute;
+  }
+
+  .dim-top { top: 0; left: 40px; right: 40px; }
+  .dim-top .dim-label { top: 18px; left: 0; }
+
+  .dim-right { top: 40px; right: 40px; height: calc(100% - 100px); }
+  .dim-right .dim-label { top: 0; right: 8px; writing-mode: vertical-rl; }
+
+  /* Layout spec panel */
+  .spec-panel {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    z-index: 5;
+  }
+
+  .spec-panel .spec-title {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    margin-bottom: 12px;
+  }
+
+  .spec-panel .spec-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+    align-items: baseline;
+  }
+
+  .spec-panel .spec-key {
+    font-size: 7px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+    min-width: 50px;
+  }
+
+  .spec-panel .spec-val {
+    font-size: 7px;
+    color: rgba(255,255,255,0.35);
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<div class="poster">
+  <!-- Grid overlay -->
+  <div class="grid-overlay">
+    <div class="margin margin-top"></div>
+    <div class="margin margin-bottom"></div>
+    <div class="margin margin-left"></div>
+    <div class="margin margin-right"></div>
+  </div>
+
+  <!-- Hero image area -->
+  <div class="hero-image">
+    <div class="img-placeholder">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      <span>Portrait</span>
+    </div>
+  </div>
+
+  <!-- Layout specs -->
+  <div class="spec-panel">
+    <div class="spec-title">Layout Spec</div>
+    <div class="spec-item">
+      <span class="spec-key">Format</span>
+      <span class="spec-val">A4 Portrait (210 x 297mm)</span>
+    </div>
+    <div class="spec-item">
+      <span class="spec-key">Margins</span>
+      <span class="spec-val">40px safe area</span>
+    </div>
+    <div class="spec-item">
+      <span class="spec-key">Image</span>
+      <span class="spec-val">Full bleed, gradient overlay bottom</span>
+    </div>
+    <div class="spec-item">
+      <span class="spec-key">Headline</span>
+      <span class="spec-val">Right-aligned, bottom third</span>
+    </div>
+    <div class="spec-item">
+      <span class="spec-key">Brand</span>
+      <span class="spec-val">Standard Bank Blue #005BAC</span>
+    </div>
+  </div>
+
+  <!-- Logo -->
+  <div class="logo">
+    <div class="logo-shield">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M12 2L3 7v6c0 5.25 3.75 10.15 9 11.25 5.25-1.1 9-6 9-11.25V7l-9-5z"/></svg>
+    </div>
+    <div class="logo-text">Standard<br>Bank</div>
+  </div>
+
+  <!-- Headline -->
+  <div class="headline">
+    <h1>Oica a voz da<br>experiencia.</h1>
+    <div class="accent-line"></div>
+  </div>
+
+  <!-- Subject -->
+  <div class="subject-info">
+    <div class="subject-name">Soba Jose Viegas</div>
+    <div class="subject-location">Quibala - Kwanza Sul</div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <p>Veja a nossa<br>homenagem aos<br>Sobas de Angola em<br><span class="url">www.standardbank.co.ao</span></p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-bar">
+    <span class="footer-logo">Standard Bank</span>
+    <span class="footer-tagline">Seguindo em frente</span>
+  </div>
+
+  <!-- Annotations -->
+  <div class="annotation a1">
+    <span class="dot"></span>
+    <span class="label">Brand Logo</span>
+  </div>
+  <div class="annotation a2">
+    <span class="dot"></span>
+    <span class="label">Headline</span>
+  </div>
+  <div class="annotation a3">
+    <span class="dot"></span>
+    <span class="label">Subject ID</span>
+  </div>
+  <div class="annotation a4">
+    <span class="dot"></span>
+    <span class="label">CTA</span>
+  </div>
+  <div class="annotation a5">
+    <span class="dot"></span>
+    <span class="label">Footer Bar</span>
+  </div>
+</div>
+
+</body>
+</html>
