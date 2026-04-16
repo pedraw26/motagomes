@@ -1296,169 +1296,6 @@
             padding: 120px 80px 40px;
         }
 
-        /* ========================================
-           ABOUT V3 — Split Screen
-           ======================================== */
-        .about-v3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            min-height: 100vh;
-            background: var(--bg-black);
-            border-top: 1px solid rgba(255,255,255,0.08);
-            margin-top: 40px;
-        }
-
-        .about-v3-left {
-            position: relative;
-            overflow: hidden;
-            border-right: 1px solid rgba(255,255,255,0.08);
-            min-height: 600px;
-        }
-
-        .about-v3-photo {
-            position: absolute;
-            inset: 0;
-            background-image: url('https://res.cloudinary.com/dzgqzeebg/image/upload/v1772426168/hf_20260301_214454_187f349f-7937-44a6-be8f-aab1a2322ca4_bu9k9l.jpg');
-            background-size: cover;
-            background-position: center;
-            filter: grayscale(1) contrast(1.05);
-            transition: filter 0.6s ease;
-        }
-
-        .about-v3-left:hover .about-v3-photo {
-            filter: grayscale(0) contrast(1.02);
-        }
-
-        .about-v3-photo-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.6) 100%);
-            pointer-events: none;
-        }
-
-        .about-v3-photo-meta {
-            position: absolute;
-            left: 32px;
-            right: 32px;
-            bottom: 32px;
-            display: flex;
-            justify-content: space-between;
-            font-family: var(--sf-pro);
-            font-size: 10px;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.75);
-            z-index: 2;
-        }
-
-        .about-v3-right {
-            padding: 64px 56px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 40px;
-        }
-
-        .about-v3-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-family: var(--sf-pro);
-            font-size: 10px;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.5);
-        }
-
-        .about-v3-label::before {
-            content: '';
-            width: 24px;
-            height: 1px;
-            background: rgba(255,255,255,0.25);
-        }
-
-        .about-v3-headline {
-            font-family: var(--sf-pro);
-            font-size: clamp(36px, 4.2vw, 72px);
-            font-weight: 300;
-            letter-spacing: -0.03em;
-            line-height: 1.05;
-            color: var(--text);
-        }
-
-        .about-v3-headline strong {
-            font-weight: 700;
-        }
-
-        .about-v3-bio {
-            font-family: var(--sf-pro);
-            font-size: 15px;
-            line-height: 1.7;
-            color: rgba(255,255,255,0.55);
-            max-width: 540px;
-            font-weight: 400;
-        }
-
-        .about-v3-stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 24px 0;
-        }
-
-        .about-v3-stat {
-            padding: 0 16px;
-            border-right: 1px solid rgba(255,255,255,0.1);
-        }
-        .about-v3-stat:last-child {
-            border-right: none;
-        }
-
-        .about-v3-stat-num {
-            font-family: var(--sf-pro);
-            font-size: 28px;
-            font-weight: 300;
-            letter-spacing: -0.02em;
-            color: var(--text);
-            margin-bottom: 6px;
-        }
-
-        .about-v3-stat-label {
-            font-family: var(--sf-pro);
-            font-size: 10px;
-            color: rgba(255,255,255,0.5);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-        }
-
-        @media (max-width: 880px) {
-            .about-v3 {
-                grid-template-columns: 1fr;
-            }
-            .about-v3-left {
-                min-height: 60vh;
-                border-right: none;
-                border-bottom: 1px solid rgba(255,255,255,0.08);
-            }
-            .about-v3-right {
-                padding: 48px 24px;
-            }
-            .about-v3-stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .about-v3-stat:nth-child(2) {
-                border-right: none;
-            }
-            .about-v3-stat:nth-child(1),
-            .about-v3-stat:nth-child(2) {
-                padding-bottom: 16px;
-                border-bottom: 1px solid rgba(255,255,255,0.1);
-                margin-bottom: 16px;
-            }
-        }
-
         .about-hero {
             display: grid;
             grid-template-columns: 1fr 1.4fr;
@@ -3342,42 +3179,62 @@ margin-top: 3px;
             
         </section>
 
-        <!-- SECTION: ABOUT (V3 Split) -->
-        <section class="snap-section about-v3" id="about">
-          <div class="about-v3-left">
-            <div class="about-v3-photo"></div>
-            <div class="about-v3-photo-overlay"></div>
-            <div class="about-v3-photo-meta">
-              <span>Mota Gomes</span>
-              <span>London · 2026</span>
+        <!-- SECTION: ABOUT -->
+        <section class="snap-section about-section" id="about">
+            <h2 class="about-title">About</h2>
+            <div class="about-hero">
+                <div class="about-hero-left">
+                    <div class="about-photo-wrap">
+                        <img class="about-photo" src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1772426168/hf_20260301_214454_187f349f-7937-44a6-be8f-aab1a2322ca4_bu9k9l.jpg" alt="Mota Gomes">
+                    </div>
+                </div>
+                <div class="about-hero-right">
+                    <h2 class="about-headline">Mota Gomes</h2>
+                    <p class="about-role">Multidisciplinary Designer — London, UK</p>
+                    <div class="about-bio">
+                        <p>I’m a research-led visual designer building thoughtful, contemporary work for brands and digital products. With over a decade of experience spanning startups, enterprise, and deep tech, I bring a strong conceptual foundation to every project before moving into execution.</p>
+                        <p>My work sits at the intersection of design systems, brand identity, and product thinking. I care deeply about composition, typography, and detail — the invisible scaffolding that makes design feel intentional rather than decorative.</p>
+                        <p>I’ve led design across full product lifecycles: from early-stage identity and positioning, through interface design and prototyping, to production-ready systems that scale. Every engagement starts with research and ends with something that ships.</p>
+                    </div>
+                </div>
             </div>
-          </div>
 
-          <div class="about-v3-right">
-            <div class="about-v3-label">About</div>
-            <h2 class="about-v3-headline">Designing with <strong>intent</strong>, shipping with care.</h2>
+            <!-- Widgets row -->
+            <div class="about-widgets-row">
+                <div class="widgets-panel widget-london">
+                    <div class="content">
+                        <div class="top-label">
+                            <span id="widgetDayDate">Local Time - MONDAY 2 MAR 2026</span>
+                        </div>
+                        <div class="clock-wrap">
+                            <canvas id="londonClock"></canvas>
+                        </div>
+                        <div class="bot">
+                            <div>
+                                <div class="bot-loc">London, United Kingdom</div>
+                                <div class="bot-coords">51.5074° N, 0.1278° W</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <p class="about-v3-bio">I'm a research-led visual designer building thoughtful, contemporary work for brands and digital products. With over a decade of experience spanning startups, enterprise, and deep tech, I bring a strong conceptual foundation to every project before moving into execution.</p>
-
-            <div class="about-v3-stats">
-              <div class="about-v3-stat">
-                <div class="about-v3-stat-num">10+</div>
-                <div class="about-v3-stat-label">Years</div>
-              </div>
-              <div class="about-v3-stat">
-                <div class="about-v3-stat-num">30+</div>
-                <div class="about-v3-stat-label">Brands</div>
-              </div>
-              <div class="about-v3-stat">
-                <div class="about-v3-stat-num">EU/UK</div>
-                <div class="about-v3-stat-label">Region</div>
-              </div>
-              <div class="about-v3-stat">
-                <div class="about-v3-stat-num">Open</div>
-                <div class="about-v3-stat-label">Status</div>
-              </div>
+                <div class="widgets-panel widget-cap-v3">
+                    <div class="widget-cap-v3-stage">
+                        <div class="widget-cap-v3-line active">Creative Strategy</div>
+                        <div class="widget-cap-v3-line">Design Leadership</div>
+                        <div class="widget-cap-v3-line">Brand Systems</div>
+                        <div class="widget-cap-v3-line">Product Thinking</div>
+                        <div class="widget-cap-v3-line">UX/UI</div>
+                        <div class="widget-cap-v3-line">Typography</div>
+                        <div class="widget-cap-v3-line">Motion Design</div>
+                        <div class="widget-cap-v3-line">Gen AI</div>
+                        <div class="widget-cap-v3-line">Conversion Design</div>
+                        <div class="widget-cap-v3-line">Illustration</div>
+                        <div class="widget-cap-v3-line">Retouching</div>
+                        <div class="widget-cap-v3-line">Video Editing</div>
+                    </div>
+                </div>
             </div>
-          </div>
         </section>
 
         <!-- FOOTER -->
