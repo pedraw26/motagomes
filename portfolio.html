@@ -1299,22 +1299,19 @@
         /* ========================================
            ABOUT V3 — Split Screen
            ======================================== */
-        .snap-section.about-v3 {
-            min-height: 0;
-        }
-
         .about-v3 {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
             background: var(--bg-black);
             border-top: 1px solid rgba(255,255,255,0.08);
-            margin-top: 0;
         }
 
         .about-v3-left {
             position: relative;
             overflow: hidden;
             border-right: 1px solid rgba(255,255,255,0.08);
+            min-height: 600px;
         }
 
         .about-v3-photo {
@@ -1454,7 +1451,7 @@
                 grid-template-columns: 1fr;
             }
             .about-v3-left {
-                aspect-ratio: 4 / 5;
+                min-height: 60vh;
                 border-right: none;
                 border-bottom: 1px solid rgba(255,255,255,0.08);
             }
