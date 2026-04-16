@@ -2313,11 +2313,19 @@ margin-top: 3px;
         }
 
         /* Responsive */
+        /* Hide stacked-gallery side labels below viewport widths
+           where they would collide with the 1000px card container.
+           Container (1000) + 2× (80px pad + ~180px label) ≈ 1320px safe */
+        @media (max-width: 1320px) {
+            .gallery-stacked-side {
+                display: none;
+            }
+        }
         @media (max-width: 1024px) {
             .gallery-1-item {
                 width: 420px;
             }
-            
+
             .gallery-stacked-side-left {
                 left: 24px;
             }
