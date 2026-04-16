@@ -6,7 +6,7 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    background: #f2c4b8;
+    background: #baefbc;
     overflow: hidden;
     width: 100%;
     height: 100vh;
@@ -33,11 +33,6 @@
     animation-duration: 22s;
   }
 
-  .row:nth-child(4) {
-    animation-duration: 28s;
-    animation-direction: reverse;
-  }
-
   @keyframes scrollLeft {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
@@ -45,16 +40,15 @@
 
   .card {
     flex-shrink: 0;
-    width: 320px;
-    height: 200px;
+    width: 380px;
     border-radius: 16px;
     overflow: hidden;
   }
 
   .card img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
     display: block;
   }
 </style>
@@ -68,12 +62,11 @@ const images = [
   'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776303297/orange_natal_p-2_dqyqzc.jpg'
 ];
 
-// 4 rows, each with a different pattern offset
+// 3 rows, each with a different pattern offset
 const patterns = [
   [0, 1, 2, 0, 1, 2],
   [1, 2, 0, 1, 2, 0],
-  [2, 0, 1, 2, 0, 1],
-  [0, 2, 1, 0, 2, 1]
+  [2, 0, 1, 2, 0, 1]
 ];
 
 patterns.forEach((pattern) => {
