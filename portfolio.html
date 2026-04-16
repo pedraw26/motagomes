@@ -3776,13 +3776,16 @@ margin-top: 3px;
         setInterval(updateWidgetDate, 60000);
         
         // ========================================
-        // LONDON CLOCK — Nordic Cream Dial
+        // LONDON CLOCK — Nordic Cream Dial (responsive)
         // ========================================
         const londonCanvas = document.getElementById('londonClock');
         if (londonCanvas) {
             const PI = Math.PI;
-            function d2r(d) { return (d - 90) * PI / 180; }
-            
+            const d2r = (d) => (d - 90) * PI / 180;
+
+            let cssSize = 0;   // Current CSS pixel size
+            let ctx = londonCanvas.getContext('2d');
+
             function getLondonTime() {
                 const now = new Date();
                 const fmt = new Intl.DateTimeFormat('en-GB', {
@@ -3795,59 +3798,87 @@ margin-top: 3px;
                 return { h: parts.hour % 12, m: parts.minute, s: parts.second, day: parts.day, ms: now.getMilliseconds() };
             }
 
+            function resizeClock() {
+                const rect = londonCanvas.getBoundingClientRect();
+                const next = Math.max(0, Math.floor(Math.min(rect.width, rect.height)));
+                if (next === cssSize || next === 0) return;
+                cssSize = next;
+                const dpr = Math.max(1, window.devicePixelRatio || 1);
+                londonCanvas.width = cssSize * dpr;
+                londonCanvas.height = cssSize * dpr;
+                londonCanvas.style.width = cssSize + 'px';
+                londonCanvas.style.height = cssSize + 'px';
+                ctx = londonCanvas.getContext('2d');
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            }
+
             function drawLondonClock() {
-                const size = londonCanvas.offsetWidth || 200;
-                const dpr = window.devicePixelRatio || 1;
-                londonCanvas.width = size * dpr;
-                londonCanvas.height = size * dpr;
-                londonCanvas.style.width = size + 'px';
-                londonCanvas.style.height = size + 'px';
+                resizeClock();
+                if (!cssSize) { requestAnimationFrame(drawLondonClock); return; }
 
-                const ctx = londonCanvas.getContext('2d');
-                ctx.scale(dpr, dpr);
-
+                const size = cssSize;
                 const C = size / 2;
                 const R = size * 0.48;
 
                 const lt = getLondonTime();
-                const h = lt.h, m = lt.m, s = lt.s, ms = lt.ms;
-                
+                const { h, m, s, ms } = lt;
+
                 ctx.clearRect(0, 0, size, size);
-                
+
                 // Face
-                ctx.beginPath(); ctx.arc(C, C, R, 0, PI * 2); ctx.fillStyle = '#f0ede7'; ctx.fill();
-                
-                // Date
+                ctx.beginPath(); ctx.arc(C, C, R, 0, PI * 2);
+                ctx.fillStyle = '#f0ede7'; ctx.fill();
+
+                // Date number
                 ctx.fillStyle = '#aaa8a3';
-                ctx.font = `400 ${R * 0.04}px -apple-system,sans-serif`;
+                ctx.font = `400 ${Math.max(8, R * 0.09)}px -apple-system, sans-serif`;
                 ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                ctx.fillText(lt.day.toString(), C, C + R * 0.2);
-                
+                ctx.fillText(lt.day.toString(), C, C + R * 0.35);
+
                 // Hour hand
                 const ha = d2r((h + m / 60) * 30);
-                ctx.beginPath(); ctx.moveTo(C - Math.cos(ha) * R * 0.037, C - Math.sin(ha) * R * 0.037);
-                ctx.lineTo(C + Math.cos(ha) * R * 0.43, C + Math.sin(ha) * R * 0.43);
-                ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = R * 0.022; ctx.lineCap = 'round'; ctx.stroke();
-                
+                ctx.beginPath();
+                ctx.moveTo(C - Math.cos(ha) * R * 0.06, C - Math.sin(ha) * R * 0.06);
+                ctx.lineTo(C + Math.cos(ha) * R * 0.52, C + Math.sin(ha) * R * 0.52);
+                ctx.strokeStyle = '#1a1a1a';
+                ctx.lineWidth = Math.max(2, R * 0.045);
+                ctx.lineCap = 'round'; ctx.stroke();
+
                 // Minute hand
                 const ma = d2r(m * 6 + s / 10);
-                ctx.beginPath(); ctx.moveTo(C - Math.cos(ma) * R * 0.037, C - Math.sin(ma) * R * 0.037);
-                ctx.lineTo(C + Math.cos(ma) * R * 0.66, C + Math.sin(ma) * R * 0.66);
-                ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = R * 0.01; ctx.lineCap = 'round'; ctx.stroke();
-                
+                ctx.beginPath();
+                ctx.moveTo(C - Math.cos(ma) * R * 0.06, C - Math.sin(ma) * R * 0.06);
+                ctx.lineTo(C + Math.cos(ma) * R * 0.74, C + Math.sin(ma) * R * 0.74);
+                ctx.strokeStyle = '#1a1a1a';
+                ctx.lineWidth = Math.max(1.5, R * 0.028);
+                ctx.lineCap = 'round'; ctx.stroke();
+
                 // Sweep seconds
                 const ssa = d2r((s + ms / 1000) * 6);
-                ctx.beginPath(); ctx.moveTo(C - Math.cos(ssa) * R * 0.09, C - Math.sin(ssa) * R * 0.09);
-                ctx.lineTo(C + Math.cos(ssa) * R * 0.72, C + Math.sin(ssa) * R * 0.72);
-                ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 1.5; ctx.lineCap = 'round'; ctx.stroke();
-                
+                ctx.beginPath();
+                ctx.moveTo(C - Math.cos(ssa) * R * 0.12, C - Math.sin(ssa) * R * 0.12);
+                ctx.lineTo(C + Math.cos(ssa) * R * 0.82, C + Math.sin(ssa) * R * 0.82);
+                ctx.strokeStyle = '#c0392b';
+                ctx.lineWidth = Math.max(1, R * 0.012);
+                ctx.lineCap = 'round'; ctx.stroke();
+
                 // Center cap
-                ctx.beginPath(); ctx.arc(C, C, R * 0.014, 0, PI * 2); ctx.fillStyle = '#1a1a1a'; ctx.fill();
-                ctx.beginPath(); ctx.arc(C, C, R * 0.005, 0, PI * 2); ctx.fillStyle = '#f0ede7'; ctx.fill();
-                
+                ctx.beginPath(); ctx.arc(C, C, Math.max(2, R * 0.035), 0, PI * 2);
+                ctx.fillStyle = '#1a1a1a'; ctx.fill();
+                ctx.beginPath(); ctx.arc(C, C, Math.max(0.6, R * 0.012), 0, PI * 2);
+                ctx.fillStyle = '#f0ede7'; ctx.fill();
+
                 requestAnimationFrame(drawLondonClock);
             }
-            
+
+            // Watch the canvas for size changes
+            if (typeof ResizeObserver !== 'undefined') {
+                const ro = new ResizeObserver(() => resizeClock());
+                ro.observe(londonCanvas);
+            }
+            window.addEventListener('resize', resizeClock, { passive: true });
+            window.addEventListener('load', resizeClock);
+
             drawLondonClock();
         }
 
