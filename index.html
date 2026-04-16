@@ -8,323 +8,225 @@
 <link rel="icon" type="image/svg+xml" href="./favicon.svg">
 <style>
   :root {
-    --sf-pro: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
-    --mono: 'SF Mono', 'Fira Code', 'Monaco', 'Menlo', monospace;
-    --bg-black: #000000;
-    --text: #ffffff;
-    --text-80: #e5e5e5;
-    --text-60: #999999;
-    --text-40: #666666;
-    --border-light: rgba(255, 255, 255, 0.25);
-    --border-subtle: rgba(255, 255, 255, 0.15);
+    --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --bg: #000000;
+    --fg: #ffffff;
+    --muted: rgba(255,255,255,0.5);
+    --line: rgba(255,255,255,0.15);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   html, body {
     height: 100%;
-    background: var(--bg-black);
-    color: var(--text);
-    font-family: var(--sf-pro);
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow: hidden;
-  }
-
-  /* Grain overlay for texture */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.02), transparent 70%);
-    z-index: 1;
   }
 
   .stage {
     position: relative;
     width: 100%;
     height: 100vh;
-    display: flex;
-    flex-direction: column;
-    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto 1fr auto;
+    gap: 0;
+    padding: 32px;
   }
 
   /* Header */
   .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 28px 40px;
-    border-bottom: 1px solid var(--border-subtle);
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: baseline;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
   }
 
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 14px;
+  .h-slot {
+    color: var(--muted);
   }
 
-  .logo-mark {
-    font-family: var(--sf-pro);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: var(--text);
+  .h-slot strong {
+    color: var(--fg);
+    font-weight: 400;
   }
 
-  .logo-divider {
-    width: 1px;
-    height: 12px;
-    background: var(--border-subtle);
-  }
-
-  .logo-sub {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--text-60);
-  }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-  }
-
-  .status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--text-60);
-  }
-
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #ff6b35;
-    box-shadow: 0 0 8px #ff6b35;
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  .clock {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    color: var(--text-60);
-    font-variant-numeric: tabular-nums;
-  }
+  .h-1 { grid-column: 1 / span 3; }
+  .h-2 { grid-column: 4 / span 3; }
+  .h-3 { grid-column: 7 / span 3; }
+  .h-4 { grid-column: 10 / span 3; text-align: right; }
 
   /* Main */
   .main {
-    flex: 1;
-    display: flex;
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
     align-items: center;
-    justify-content: center;
-    padding: 40px;
-    position: relative;
+    padding: 80px 0;
   }
 
-  /* Corner crosshairs */
-  .crosshair {
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    opacity: 0.5;
-  }
-  .crosshair::before, .crosshair::after {
-    content: '';
-    position: absolute;
-    background: var(--border-subtle);
-  }
-  .crosshair::before { top: 0; left: 0; width: 100%; height: 1px; }
-  .crosshair::after  { top: 0; left: 0; width: 1px; height: 100%; }
-  .ch-tl { top: 40px; left: 40px; }
-  .ch-tr { top: 40px; right: 40px; transform: scaleX(-1); }
-  .ch-bl { bottom: 40px; left: 40px; transform: scaleY(-1); }
-  .ch-br { bottom: 40px; right: 40px; transform: scale(-1); }
-
-  .content {
-    max-width: 680px;
-    text-align: center;
-    position: relative;
+  .block {
+    grid-column: 2 / span 6;
   }
 
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--text-60);
+  .meta {
+    grid-column: 9 / span 3;
+    align-self: end;
+    color: var(--muted);
+  }
+
+  .index {
+    display: inline-block;
+    color: var(--muted);
     margin-bottom: 40px;
   }
 
-  .eyebrow-line {
-    width: 24px;
-    height: 1px;
-    background: var(--border-light);
-  }
-
   h1 {
-    font-family: var(--sf-pro);
-    font-size: clamp(56px, 9vw, 120px);
-    font-weight: 300;
-    line-height: 0.95;
-    letter-spacing: -0.04em;
-    color: var(--text);
-    margin-bottom: 28px;
-  }
-
-  h1 .soon {
-    font-style: italic;
-    font-weight: 200;
-    color: var(--text-60);
-  }
-
-  .lede {
-    font-family: var(--sf-pro);
-    font-size: 14px;
+    font-size: 11px;
     font-weight: 400;
-    line-height: 1.7;
-    color: var(--text-60);
-    max-width: 420px;
-    margin: 0 auto 56px;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+    color: var(--fg);
+    margin-bottom: 32px;
+    max-width: 32ch;
   }
 
-  /* Login */
-  .login {
+  .desc {
+    color: var(--muted);
+    max-width: 48ch;
+    margin-bottom: 48px;
+  }
+
+  /* Form */
+  .form {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 18px;
+    gap: 0;
+    max-width: 320px;
+    border-bottom: 1px solid var(--fg);
+    padding-bottom: 6px;
   }
 
-  .login-label {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--text-40);
-  }
-
-  .login-wrap {
-    position: relative;
-    width: 280px;
-  }
-
-  .login-input {
-    width: 100%;
+  .form input {
+    flex: 1;
     background: transparent;
     border: none;
-    border-bottom: 1px solid var(--border-light);
-    color: var(--text);
-    font-family: var(--sf-pro);
-    font-size: 14px;
-    padding: 10px 36px 10px 0;
-    text-align: center;
-    letter-spacing: 0.25em;
     outline: none;
-    transition: border-color 0.3s ease;
+    color: var(--fg);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    padding: 0;
   }
 
-  .login-input:focus {
-    border-color: rgba(255,255,255,0.5);
+  .form input::placeholder {
+    color: var(--muted);
   }
 
-  .login-input.error {
+  .form button {
+    background: transparent;
+    border: none;
+    color: var(--fg);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .form button:hover { opacity: 0.6; }
+
+  .form.error {
     border-color: #ff4444;
-    animation: shake 0.4s ease;
+    animation: shake 0.35s ease;
   }
 
   @keyframes shake {
     0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-6px); }
-    75% { transform: translateX(6px); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
   }
 
-  .login-arrow {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    background: transparent;
-    border: none;
-    color: var(--text-60);
-    cursor: pointer;
-    padding: 6px;
-    transition: color 0.2s ease, transform 0.2s ease;
-  }
-
-  .login-arrow:hover {
-    color: var(--text);
-    transform: translateY(-50%) translateX(2px);
-  }
-
-  .login-hint {
-    font-family: var(--mono);
-    font-size: 8px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--text-40);
-    min-height: 10px;
+  .hint {
+    margin-top: 12px;
+    color: var(--muted);
+    min-height: 16px;
     transition: color 0.2s ease;
   }
 
-  .login-hint.error { color: #ff4444; }
+  .hint.error { color: #ff4444; }
+
+  /* Meta column on right */
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .meta-row:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .meta-row span:last-child {
+    color: var(--fg);
+  }
 
   /* Footer */
   .footer {
-    padding: 24px 40px;
-    border-top: 1px solid var(--border-subtle);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--text-40);
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: baseline;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
   }
 
-  .footer-links {
-    display: flex;
-    gap: 28px;
-  }
+  .f-slot { }
+  .f-1 { grid-column: 1 / span 3; }
+  .f-2 { grid-column: 4 / span 3; }
+  .f-3 { grid-column: 7 / span 3; }
+  .f-4 { grid-column: 10 / span 3; text-align: right; }
 
   .footer a {
-    color: inherit;
+    color: var(--muted);
     text-decoration: none;
     transition: color 0.2s ease;
+    margin-right: 16px;
   }
 
-  .footer a:hover { color: var(--text); }
+  .footer a:last-child { margin-right: 0; }
+  .footer a:hover { color: var(--fg); }
 
-  @media (max-width: 640px) {
-    .header, .footer { padding: 20px; }
-    .main { padding: 20px; }
-    .ch-tl, .ch-tr { top: 20px; }
-    .ch-bl, .ch-br { bottom: 20px; }
-    .ch-tl, .ch-bl { left: 20px; }
-    .ch-tr, .ch-br { right: 20px; }
-    .footer { flex-direction: column; gap: 10px; text-align: center; }
-    .header-right { gap: 14px; }
-    .status span:last-child { display: none; }
-    .login-wrap { width: 240px; }
+  @media (max-width: 720px) {
+    .stage { padding: 20px; }
+    .header, .main, .footer {
+      grid-template-columns: 1fr;
+    }
+    .h-1, .h-2, .h-3, .h-4,
+    .block, .meta,
+    .f-1, .f-2, .f-3, .f-4 {
+      grid-column: 1;
+      text-align: left;
+      margin-bottom: 8px;
+    }
+    .main { padding: 40px 0; }
+    .meta { margin-top: 40px; }
+    .footer .f-slot { margin-bottom: 0; }
   }
 </style>
 </head>
@@ -334,60 +236,43 @@
 
   <!-- Header -->
   <header class="header">
-    <div class="header-left">
-      <span class="logo-mark">MG</span>
-      <span class="logo-divider"></span>
-      <span class="logo-sub">Mota Gomes</span>
-    </div>
-    <div class="header-right">
-      <div class="status">
-        <span class="status-dot"></span>
-        <span>In the works</span>
-      </div>
-      <div class="clock" id="clock">GMT — —:— —</div>
-    </div>
+    <div class="h-slot h-1"><strong>Mota Gomes</strong></div>
+    <div class="h-slot h-2">Portfolio / v2.0</div>
+    <div class="h-slot h-3">Status — In progress</div>
+    <div class="h-slot h-4" id="clock">— —</div>
   </header>
 
   <!-- Main -->
   <main class="main">
-    <div class="crosshair ch-tl"></div>
-    <div class="crosshair ch-tr"></div>
-    <div class="crosshair ch-bl"></div>
-    <div class="crosshair ch-br"></div>
+    <div class="block">
+      <span class="index">Index — 001</span>
 
-    <div class="content">
-      <div class="eyebrow">
-        <span class="eyebrow-line"></span>
-        <span>v2.0 — Under construction</span>
-        <span class="eyebrow-line"></span>
-      </div>
+      <h1>Coming soon. A new portfolio is in the works.</h1>
 
-      <h1>Coming<br><span class="soon">soon.</span></h1>
-
-      <p class="lede">
-        A new portfolio is in the works. Until then, if you have the keys — come on in.
+      <p class="desc">
+        The next iteration of this site is under construction. If you have access credentials, please sign in below to continue to the existing portfolio.
       </p>
 
-      <form class="login" id="loginForm" autocomplete="off">
-        <div class="login-label">Enter password</div>
-        <div class="login-wrap">
-          <input type="password" class="login-input" id="pw" autocomplete="off" spellcheck="false">
-          <button type="submit" class="login-arrow" aria-label="Enter">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter">
-              <line x1="5" y1="12" x2="19" y2="12"/>
-              <polyline points="12 5 19 12 12 19"/>
-            </svg>
-          </button>
-        </div>
-        <div class="login-hint" id="hint">Press return to continue</div>
+      <form class="form" id="loginForm" autocomplete="off">
+        <input type="password" id="pw" placeholder="Enter password" autocomplete="off" spellcheck="false">
+        <button type="submit">Enter →</button>
       </form>
+      <div class="hint" id="hint">Press return to continue</div>
     </div>
+
+    <aside class="meta">
+      <div class="meta-row"><span>Location</span><span>Lisbon — PT</span></div>
+      <div class="meta-row"><span>Discipline</span><span>Design</span></div>
+      <div class="meta-row"><span>Release</span><span>Soon</span></div>
+    </aside>
   </main>
 
   <!-- Footer -->
   <footer class="footer">
-    <div>© 2026 — All rights reserved</div>
-    <div class="footer-links">
+    <div class="f-slot f-1">© 2026</div>
+    <div class="f-slot f-2">All rights reserved</div>
+    <div class="f-slot f-3"></div>
+    <div class="f-slot f-4">
       <a href="mailto:hello@motagomes.com">Email</a>
       <a href="https://www.linkedin.com/in/pedromotagomes" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://www.behance.net/pedromotagomes" target="_blank" rel="noopener">Behance</a>
@@ -423,24 +308,24 @@
       sessionStorage.setItem('mg_unlocked', '1');
       hint.textContent = 'Unlocked — loading';
       hint.classList.remove('error');
-      input.classList.remove('error');
+      form.classList.remove('error');
       setTimeout(() => {
         window.location.href = '/portfolio.html';
       }, 450);
     } else {
-      input.classList.add('error');
+      form.classList.add('error');
       hint.textContent = 'Incorrect password';
       hint.classList.add('error');
       input.value = '';
       setTimeout(() => {
-        input.classList.remove('error');
+        form.classList.remove('error');
       }, 400);
     }
   });
 
   input.addEventListener('input', function() {
-    if (input.classList.contains('error')) {
-      input.classList.remove('error');
+    if (form.classList.contains('error')) {
+      form.classList.remove('error');
       hint.textContent = 'Press return to continue';
       hint.classList.remove('error');
     }
