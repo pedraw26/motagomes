@@ -1431,7 +1431,7 @@
             solution: 'Collaborated on creating sketches and digital paintings and moodboards to guide the photoshoot direction. Developed storyboards for the final video documentary. Executed image retouching and designed posters while strictly following brand guidelines.',
             images: [
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776311200/standart_bank_copy_bnauat.jpg', caption: 'Concept art — Soba portrait studies and digital paintings', layout: 'full' },
-                { type: 'placeholders', count: 8, kicker: 'Conceptual Illustration', eyebrow: 'Campaign Development · 2018', ctaText: 'See more personal work', ctaHref: 'https://www.instagram.com/motagomes_/', igHref: 'https://www.instagram.com/motagomes_/', caption: 'Conceptual illustration for campaign', layout: 'full' },
+                { type: 'placeholders', count: 8, kicker: 'Conceptual Illustration · Campaign Development · 2018', eyebrow: '', ctaText: 'See more personal work', ctaHref: 'https://www.instagram.com/motagomes_/', igHref: 'https://www.instagram.com/motagomes_/', caption: 'Conceptual illustration for campaign', layout: 'full' },
                 { type: 'mp4', src: 'https://res.cloudinary.com/dzgqzeebg/video/upload/v1776453073/hf_20260417_161823_be42aff6-94ae-4add-836f-ea6904f9f135_wnk0ul.mp4', grain: true, caption: 'Campaign film', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773803838/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1BNVHoxU0VyTVR0S2ozMURNLVNqMTdqMVlTMGsxS2pKRFNuN1NuMTR0WVMwaw_albnbl.webp', caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776307954/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL21qMFptck1UMVNFck1UdEtqMzFETS1TajE3ajFZUzBrMUtqSkRTbjdTbnRZUzBr_oldho6.webp', caption: 'Campaign poster design and retouching', layout: 'half' },
@@ -1787,13 +1787,13 @@
                                         const cellSvg = `<div class="ph-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-4.5-4.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg></div>`;
                                         const setA = Array.from({length: img.count || 8}, () => cellSvg).join('');
                                         const kicker = img.kicker || 'Conceptual illustration';
-                                        const eyebrow = img.eyebrow || 'For the campaign';
+                                        const eyebrow = img.eyebrow != null ? img.eyebrow : 'For the campaign';
                                         const cta = img.ctaText || 'See more of my personal work';
                                         const ctaHref = img.ctaHref || 'https://www.instagram.com/motagomes_/';
                                         const igHref = img.igHref || ctaHref;
                                         const igSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>`;
                                         const arrow = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13,6 19,12 13,18"/></svg>`;
-                                        return `<div class="ph-kicker"><span>${kicker}</span><span>${eyebrow}</span></div>
+                                        return `<div class="ph-kicker"><span>${kicker}</span>${eyebrow ? `<span>${eyebrow}</span>` : ''}</div>
                                                 <div class="showcase-placeholders"><div class="ph-track">${setA}${setA}</div></div>
                                                 <div class="ph-footer"><a class="ph-cta" href="${ctaHref}" target="_blank" rel="noopener">${cta} ${arrow}</a><a class="ph-ig" href="${igHref}" target="_blank" rel="noopener" aria-label="Instagram">${igSvg}</a></div>`;
                                     })()
