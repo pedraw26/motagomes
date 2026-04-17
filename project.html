@@ -491,6 +491,46 @@
             max-width: 180px;
         }
 
+        /* Animated metallic text — gold + silver, looped */
+        .metal-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-size: 200% 100%;
+            animation: metal-sweep 5.5s linear infinite;
+            font-weight: 400;
+        }
+        .metal-text.gold {
+            background-image: linear-gradient(
+                100deg,
+                #7a5a1c 0%,
+                #c89a3a 18%,
+                #f3d77a 32%,
+                #fff3b8 42%,
+                #f3d77a 52%,
+                #c89a3a 68%,
+                #7a5a1c 82%,
+                #c89a3a 100%
+            );
+        }
+        .metal-text.silver {
+            background-image: linear-gradient(
+                100deg,
+                #6a6a6f 0%,
+                #a8a8ad 18%,
+                #e5e5ea 32%,
+                #ffffff 42%,
+                #e5e5ea 52%,
+                #a8a8ad 68%,
+                #6a6a6f 82%,
+                #a8a8ad 100%
+            );
+        }
+        @keyframes metal-sweep {
+            0%   { background-position: 200% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         /* ========================================
            SHOWCASE GALLERY
            ======================================== */
@@ -1732,12 +1772,18 @@
                     ` : ''}
 
                     <div class="overview__metrics" data-reveal-child>
-                        ${project.metrics.map((m, i) => `
+                        ${project.metrics.map((m, i) => {
+                            const raw = m.value.replace(/0/g, 'O');
+                            const lower = String(m.value).trim().toLowerCase();
+                            const metalClass = lower === 'gold' ? ' metal-text gold'
+                                            : lower === 'silver' ? ' metal-text silver'
+                                            : '';
+                            return `
                             <div class="overview__metric" style="transition-delay: ${i * 80}ms">
-                                <div class="overview__metric-value">${m.value.replace(/0/g, 'O')}</div>
+                                <div class="overview__metric-value${metalClass}">${raw}</div>
                                 <div class="overview__metric-label">${m.label}</div>
-                            </div>
-                        `).join('')}
+                            </div>`;
+                        }).join('')}
                     </div>
                 </section>
 
