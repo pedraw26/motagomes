@@ -1182,6 +1182,7 @@
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776325416/Untitled-1_copy_pvw93f.jpg', caption: 'Summer campaign — vibrant outdoor billboard key visual', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776322175/Asset_1-50_hejf3c.jpg', caption: 'Campaign key visual — neighbourhood connection', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776328447/hf_20260416_061903_3ff6163c-6400-4a67-8bf6-89a36385b377_copy_yua8jz.jpg', caption: 'Geo-targeted billboard development', layout: 'full' },
+                { type: 'mp4', src: 'https://res.cloudinary.com/dzgqzeebg/video/upload/v1776434638/kling_20260417_%E4%BD%9C%E5%93%81_____prompt_5508_0_avjval.mp4', caption: 'Campaign film — summer moments across Luanda', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776324426/Asset_2-50_bdilfk.jpg', caption: 'OOH campaign — billboard placements across Luanda', layout: 'full' }
             ],
             metrics: [
@@ -1466,7 +1467,7 @@
                 <section class="section section--showcase" data-reveal style="border-top:none; padding:0;">
                     <div class="showcase-gallery">
                         ${project.images.map(img => `
-                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube') ? ' has-iframe has-video' : ''}"${img.bgStyle ? ` style="${img.bgStyle} display:flex; align-items:center; justify-content:center;"` : ''}>
+                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube' || img.type === 'mp4') ? ' has-iframe has-video' : ''}"${img.bgStyle ? ` style="${img.bgStyle} display:flex; align-items:center; justify-content:center;"` : ''}>
                                 ${img.type === 'youtube'
                                     ? `<div class="yt-player" data-vid="${img.src}">
                                         <iframe id="yt-${img.src}" src="https://www.youtube.com/embed/${img.src}?enablejsapi=1&autoplay=0&loop=1&playlist=${img.src}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&start=10" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -1482,6 +1483,8 @@
                                     ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}" scrolling="no"></iframe>`
                                     : img.type === 'video'
                                     ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`
+                                    : img.type === 'mp4'
+                                    ? `<video src="${img.src}" autoplay muted loop playsinline preload="metadata" poster="${img.poster || ''}" style="width:100%;height:100%;object-fit:cover;display:block;background:#000;"></video>`
                                     : img.type === 'slideshow'
                                     ? `<div class="showcase-slideshow" data-interval="${img.interval || 1500}">${img.src.map((s, i) => `<img src="${s}" alt="${img.caption}" loading="lazy" class="${i === 0 ? 'active' : ''}">`).join('')}</div>`
                                     : img.type === 'colorstrip'
