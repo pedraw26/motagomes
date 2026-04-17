@@ -553,22 +553,30 @@
             line-height: 1.8;
         }
 
-        /* 3:4 placeholder grid — white cells with image icon, horizontally centered */
+        /* 3:4 placeholder marquee — white cells scrolling right → left, on white background */
+        .showcase-item.has-placeholders { background: #ffffff; }
         .showcase-placeholders {
             width: 100%;
+            padding: 72px 0;
+            background: #ffffff;
+            overflow: hidden;
+            position: relative;
+            -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+                    mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+        }
+        .showcase-placeholders .ph-track {
             display: flex;
-            justify-content: center;
             align-items: center;
-            gap: 20px;
-            padding: 64px 48px;
-            background: transparent;
-            flex-wrap: wrap;
+            gap: 24px;
+            width: max-content;
+            animation: ph-marquee 28s linear infinite;
         }
         .showcase-placeholders .ph-cell {
             aspect-ratio: 3 / 4;
-            flex: 0 1 200px;
-            max-width: 220px;
+            width: 210px;
+            flex-shrink: 0;
             background: #ffffff;
+            border: 1px solid rgba(18,16,16,0.08);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -579,9 +587,14 @@
             height: auto;
             display: block;
         }
+        @keyframes ph-marquee {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
         @media (max-width: 768px) {
-            .showcase-placeholders { gap: 14px; padding: 32px 20px; }
-            .showcase-placeholders .ph-cell { flex: 0 1 140px; }
+            .showcase-placeholders { padding: 40px 0; }
+            .showcase-placeholders .ph-track { gap: 16px; }
+            .showcase-placeholders .ph-cell { width: 140px; }
         }
 
         .showcase-slideshow {
@@ -620,6 +633,126 @@
         .showcase-item.has-video {
             aspect-ratio: 16 / 9;
         }
+
+        /* Documentary click-to-play poster */
+        .doc-player {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #0a0909;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .doc-player .doc-poster {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .8s cubic-bezier(.16,1,.3,1), opacity .4s ease;
+        }
+        .doc-player .doc-shade {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,.65) 0%, rgba(0,0,0,.2) 45%, rgba(0,0,0,.25) 100%);
+            transition: opacity .4s ease;
+            pointer-events: none;
+        }
+        .doc-player .doc-meta {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 8%;
+            color: #fff;
+            pointer-events: none;
+            transition: opacity .4s ease;
+        }
+        .doc-player .doc-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            font-family: var(--mono, ui-monospace, monospace);
+            font-size: 11px;
+            letter-spacing: .28em;
+            text-transform: uppercase;
+            opacity: .85;
+        }
+        .doc-player .doc-bottom {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+        }
+        .doc-player .doc-title {
+            font-family: var(--sf-pro, -apple-system, sans-serif);
+            font-size: clamp(28px, 3.6vw, 52px);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            line-height: 1.02;
+            max-width: 70%;
+        }
+        .doc-player .doc-runtime {
+            font-family: var(--mono, ui-monospace, monospace);
+            font-size: 11px;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            opacity: .75;
+            text-align: right;
+            white-space: nowrap;
+        }
+        .doc-player .doc-cta {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            pointer-events: none;
+            transition: transform .4s cubic-bezier(.16,1,.3,1), opacity .4s ease;
+        }
+        .doc-player .doc-cta-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255,255,255,.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .doc-player .doc-cta-btn svg { width: 22px; height: 22px; transform: translateX(2px); }
+        .doc-player .doc-cta-label {
+            font-family: var(--sf-pro, -apple-system, sans-serif);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: .04em;
+            color: #fff;
+        }
+        .doc-player:hover .doc-poster { transform: scale(1.02); }
+        .doc-player:hover .doc-cta { transform: translate(-50%, -50%) scale(1.04); }
+        .doc-player.playing .doc-poster,
+        .doc-player.playing .doc-shade,
+        .doc-player.playing .doc-meta,
+        .doc-player.playing .doc-cta {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .doc-player .doc-frame {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            opacity: 0;
+            transition: opacity .4s ease;
+        }
+        .doc-player.playing { cursor: default; }
+        .doc-player.playing .doc-frame { opacity: 1; }
 
         /* YouTube custom player */
         .yt-player {
@@ -1229,12 +1362,12 @@
             solution: 'Collaborated on creating sketches and digital paintings and moodboards to guide the photoshoot direction. Developed storyboards for the final video documentary. Executed image retouching and designed posters while strictly following brand guidelines.',
             images: [
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776311200/standart_bank_copy_bnauat.jpg', caption: 'Concept art — Soba portrait studies and digital paintings', layout: 'full' },
-                { type: 'placeholders', count: 4, caption: 'Portrait series placeholders', layout: 'full' },
+                { type: 'placeholders', count: 8, caption: 'Portrait series placeholders', layout: 'full' },
                 { type: 'mp4', src: 'https://res.cloudinary.com/dzgqzeebg/video/upload/v1776453073/hf_20260417_161823_be42aff6-94ae-4add-836f-ea6904f9f135_wnk0ul.mp4', grain: true, caption: 'Campaign film', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773803838/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1BNVHoxU0VyTVR0S2ozMURNLVNqMTdqMVlTMGsxS2pKRFNuN1NuMTR0WVMwaw_albnbl.webp', caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776307954/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL21qMFptck1UMVNFck1UdEtqMzFETS1TajE3ajFZUzBrMUtqSkRTbjdTbnRZUzBr_oldho6.webp', caption: 'Campaign poster design and retouching', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776310428/hf_20260416_032825_4da86cb2-3d7e-4de4-9485-220b213df54f_mennyc.png', caption: 'Documentary storyboard and film production', layout: 'full' },
-                { src: 'https://player.vimeo.com/video/260034770?autoplay=1&loop=1&muted=1&title=0&byline=0&portrait=0&controls=0', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full', type: 'video' }
+                { type: 'video', src: 'https://player.vimeo.com/video/260034770?autoplay=1&title=0&byline=0&portrait=0', poster: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776312630/hf_20260416_040746_8c19b4cc-2c31-4a7b-a951-8dc72e210136_tfq8xi.png', label: 'Documentary', title: 'The Voice of Experience', runtime: '6 min', year: '2018', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full' }
             ],
             metrics: [
                 { value: 'Gold', label: 'Meios & Publicidade Awards' },
@@ -1544,7 +1677,7 @@
                 <section class="section section--showcase" data-reveal style="border-top:none; padding:0;">
                     <div class="showcase-gallery">
                         ${project.images.map(img => `
-                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube' || img.type === 'mp4') ? ' has-iframe has-video' : ''}${img.grain ? ' has-grain' : ''}"${img.bgStyle ? ` style="${img.bgStyle} display:flex; align-items:center; justify-content:center;"` : ''}>
+                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube' || img.type === 'mp4') ? ' has-iframe has-video' : ''}${img.grain ? ' has-grain' : ''}${img.type === 'placeholders' ? ' has-placeholders' : ''}"${img.bgStyle ? ` style="${img.bgStyle} display:flex; align-items:center; justify-content:center;"` : ''}>
                                 ${img.type === 'youtube'
                                     ? `<div class="yt-player" data-vid="${img.src}">
                                         <iframe id="yt-${img.src}" src="https://www.youtube.com/embed/${img.src}?enablejsapi=1&autoplay=0&loop=1&playlist=${img.src}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&start=10" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -1558,6 +1691,22 @@
                                     ? img.html
                                     : img.type === 'html'
                                     ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}" scrolling="no"></iframe>`
+                                    : img.type === 'video' && img.poster
+                                    ? `<div class="doc-player" data-src="${img.src}">
+                                        <img class="doc-poster" src="${img.poster}" alt="${img.caption}" loading="lazy">
+                                        <div class="doc-shade"></div>
+                                        <div class="doc-meta">
+                                            <div class="doc-top"><span>${img.label || 'Documentary'}</span><span>${img.year || ''}</span></div>
+                                            <div class="doc-bottom">
+                                                <div class="doc-title">${img.title || img.caption}</div>
+                                                <div class="doc-runtime">${img.runtime || ''}</div>
+                                            </div>
+                                        </div>
+                                        <div class="doc-cta">
+                                            <div class="doc-cta-btn"><svg viewBox="0 0 24 24" fill="#fff"><polygon points="6,4 6,20 20,12"/></svg></div>
+                                            <span class="doc-cta-label">Watch documentary</span>
+                                        </div>
+                                       </div>`
                                     : img.type === 'video'
                                     ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`
                                     : img.type === 'mp4'
@@ -1565,7 +1714,11 @@
                                     : img.type === 'slideshow'
                                     ? `<div class="showcase-slideshow" data-interval="${img.interval || 1500}">${img.src.map((s, i) => `<img src="${s}" alt="${img.caption}" loading="lazy" class="${i === 0 ? 'active' : ''}">`).join('')}</div>`
                                     : img.type === 'placeholders'
-                                    ? `<div class="showcase-placeholders">${Array.from({length: img.count || 4}, () => `<div class="ph-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-4.5-4.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg></div>`).join('')}</div>`
+                                    ? (() => {
+                                        const cellSvg = `<div class="ph-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-4.5-4.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg></div>`;
+                                        const setA = Array.from({length: img.count || 8}, () => cellSvg).join('');
+                                        return `<div class="showcase-placeholders"><div class="ph-track">${setA}${setA}</div></div>`;
+                                    })()
                                     : img.type === 'colorstrip'
                                     ? `<div class="showcase-colorstrip">${img.colors.map((c, ci) => { const hex = c.replace('#',''); const r = parseInt(hex.substr(0,2),16); const g = parseInt(hex.substr(2,2),16); const b = parseInt(hex.substr(4,2),16); const lum = (r*299+g*587+b*114)/1000; const tc = lum > 140 ? '#000' : '#fff'; const pnt = img.pantones && img.pantones[ci] ? img.pantones[ci] : ''; const role = img.roles && img.roles[ci] ? img.roles[ci] : ''; return `<div style="background:${c};color:${tc}">${role ? `<div class="cs-role">${role}</div>` : ''}<div class="cs-meta">${c.toUpperCase()}${pnt ? '<br>' + pnt : ''}</div></div>`; }).join('')}</div>`
                                     : `<img src="${img.src}" alt="${img.caption}" loading="lazy"${img.style ? ` style="${img.style}"` : ''}>`}
@@ -1739,6 +1892,25 @@
                 });
             }
             lastTime = v.currentTime;
+        });
+    });
+
+    // Documentary click-to-play poster
+    document.querySelectorAll('.doc-player').forEach(dp => {
+        dp.addEventListener('click', () => {
+            if (dp.classList.contains('playing')) return;
+            const src = dp.dataset.src;
+            if (!dp.querySelector('.doc-frame')) {
+                const f = document.createElement('iframe');
+                f.className = 'doc-frame';
+                f.src = src;
+                f.title = dp.querySelector('.doc-title')?.textContent || 'Documentary';
+                f.setAttribute('frameborder', '0');
+                f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
+                f.setAttribute('allowfullscreen', '');
+                dp.appendChild(f);
+            }
+            dp.classList.add('playing');
         });
     });
 
