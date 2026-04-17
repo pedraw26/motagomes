@@ -553,6 +553,24 @@
             line-height: 1.8;
         }
 
+        /* 3:4 placeholder grid — fully blank slide */
+        .showcase-placeholders {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            padding: 48px;
+            background: transparent;
+        }
+        .showcase-placeholders .ph-cell {
+            aspect-ratio: 3 / 4;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        @media (max-width: 768px) {
+            .showcase-placeholders { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 24px; }
+        }
+
         .showcase-slideshow {
             position: relative;
             width: 100%;
@@ -1171,6 +1189,8 @@
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776311200/standart_bank_copy_bnauat.jpg', caption: 'Concept art — Soba portrait studies and digital paintings', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773803838/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1BNVHoxU0VyTVR0S2ozMURNLVNqMTdqMVlTMGsxS2pKRFNuN1NuMTR0WVMwaw_albnbl.webp', caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776307954/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL21qMFptck1UMVNFck1UdEtqMzFETS1TajE3ajFZUzBrMUtqSkRTbjdTbnRZUzBr_oldho6.webp', caption: 'Campaign poster design and retouching', layout: 'half' },
+                { type: 'placeholders', count: 4, caption: 'Portrait series placeholders', layout: 'full' },
+                { type: 'mp4', src: 'https://res.cloudinary.com/dzgqzeebg/video/upload/v1776453073/hf_20260417_161823_be42aff6-94ae-4add-836f-ea6904f9f135_wnk0ul.mp4', effect: 'cinematic-zoom', caption: 'Campaign film', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776310428/hf_20260416_032825_4da86cb2-3d7e-4de4-9485-220b213df54f_mennyc.png', caption: 'Documentary storyboard and film production', layout: 'full' },
                 { src: 'https://player.vimeo.com/video/260034770?autoplay=1&loop=1&muted=1&title=0&byline=0&portrait=0&controls=0', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full', type: 'video' }
             ],
@@ -1502,6 +1522,8 @@
                                     ? `<video src="${img.src}" autoplay muted loop playsinline preload="metadata" poster="${img.poster || ''}" class="${img.effect === 'cinematic-zoom' ? 'cinematic-zoom' : ''}" style="width:100%;height:100%;object-fit:cover;display:block;background:#000;"></video>`
                                     : img.type === 'slideshow'
                                     ? `<div class="showcase-slideshow" data-interval="${img.interval || 1500}">${img.src.map((s, i) => `<img src="${s}" alt="${img.caption}" loading="lazy" class="${i === 0 ? 'active' : ''}">`).join('')}</div>`
+                                    : img.type === 'placeholders'
+                                    ? `<div class="showcase-placeholders">${Array.from({length: img.count || 4}, () => '<div class="ph-cell"></div>').join('')}</div>`
                                     : img.type === 'colorstrip'
                                     ? `<div class="showcase-colorstrip">${img.colors.map((c, ci) => { const hex = c.replace('#',''); const r = parseInt(hex.substr(0,2),16); const g = parseInt(hex.substr(2,2),16); const b = parseInt(hex.substr(4,2),16); const lum = (r*299+g*587+b*114)/1000; const tc = lum > 140 ? '#000' : '#fff'; const pnt = img.pantones && img.pantones[ci] ? img.pantones[ci] : ''; const role = img.roles && img.roles[ci] ? img.roles[ci] : ''; return `<div style="background:${c};color:${tc}">${role ? `<div class="cs-role">${role}</div>` : ''}<div class="cs-meta">${c.toUpperCase()}${pnt ? '<br>' + pnt : ''}</div></div>`; }).join('')}</div>`
                                     : `<img src="${img.src}" alt="${img.caption}" loading="lazy"${img.style ? ` style="${img.style}"` : ''}>`}
