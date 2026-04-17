@@ -645,6 +645,18 @@
             overflow: hidden;
         }
 
+        /* cinematic zoom-out — slow, one-shot, holds at natural scale */
+        @keyframes cinematic-zoom-out {
+            0%   { transform: scale(1.18); }
+            100% { transform: scale(1.00); }
+        }
+        .showcase-item { overflow: hidden; }
+        .showcase-item video.cinematic-zoom {
+            transform-origin: center center;
+            animation: cinematic-zoom-out 16s cubic-bezier(.22,1,.36,1) forwards;
+            will-change: transform;
+        }
+
 
         @media (max-width: 768px) {
             .showcase-gallery {
@@ -1182,7 +1194,7 @@
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776325416/Untitled-1_copy_pvw93f.jpg', caption: 'Summer campaign — vibrant outdoor billboard key visual', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776322175/Asset_1-50_hejf3c.jpg', caption: 'Campaign key visual — neighbourhood connection', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776328447/hf_20260416_061903_3ff6163c-6400-4a67-8bf6-89a36385b377_copy_yua8jz.jpg', caption: 'Geo-targeted billboard development', layout: 'full' },
-                { type: 'mp4', src: 'https://res.cloudinary.com/dzgqzeebg/video/upload/v1776434638/kling_20260417_%E4%BD%9C%E5%93%81_____prompt_5508_0_avjval.mp4', caption: 'Campaign film — summer moments across Luanda', layout: 'full' },
+                { type: 'mp4', src: 'https://res.cloudinary.com/dzgqzeebg/video/upload/v1776434638/kling_20260417_%E4%BD%9C%E5%93%81_____prompt_5508_0_avjval.mp4', effect: 'cinematic-zoom', caption: 'Campaign film — summer moments across Luanda', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776324426/Asset_2-50_bdilfk.jpg', caption: 'OOH campaign — billboard placements across Luanda', layout: 'full' }
             ],
             metrics: [
@@ -1484,7 +1496,7 @@
                                     : img.type === 'video'
                                     ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`
                                     : img.type === 'mp4'
-                                    ? `<video src="${img.src}" autoplay muted loop playsinline preload="metadata" poster="${img.poster || ''}" style="width:100%;height:100%;object-fit:cover;display:block;background:#000;"></video>`
+                                    ? `<video src="${img.src}" autoplay muted loop playsinline preload="metadata" poster="${img.poster || ''}" class="${img.effect === 'cinematic-zoom' ? 'cinematic-zoom' : ''}" style="width:100%;height:100%;object-fit:cover;display:block;background:#000;"></video>`
                                     : img.type === 'slideshow'
                                     ? `<div class="showcase-slideshow" data-interval="${img.interval || 1500}">${img.src.map((s, i) => `<img src="${s}" alt="${img.caption}" loading="lazy" class="${i === 0 ? 'active' : ''}">`).join('')}</div>`
                                     : img.type === 'colorstrip'
