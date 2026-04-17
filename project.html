@@ -553,22 +553,35 @@
             line-height: 1.8;
         }
 
-        /* 3:4 placeholder grid — fully blank slide */
+        /* 3:4 placeholder grid — white cells with image icon, horizontally centered */
         .showcase-placeholders {
             width: 100%;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            padding: 48px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 64px 48px;
             background: transparent;
+            flex-wrap: wrap;
         }
         .showcase-placeholders .ph-cell {
             aspect-ratio: 3 / 4;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
+            flex: 0 1 200px;
+            max-width: 220px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(18,16,16,0.22);
+        }
+        .showcase-placeholders .ph-cell svg {
+            width: 38%;
+            height: auto;
+            display: block;
         }
         @media (max-width: 768px) {
-            .showcase-placeholders { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 24px; }
+            .showcase-placeholders { gap: 14px; padding: 32px 20px; }
+            .showcase-placeholders .ph-cell { flex: 0 1 140px; }
         }
 
         .showcase-slideshow {
@@ -689,7 +702,7 @@
             background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.7'/></svg>");
             background-size: 180px 180px;
             mix-blend-mode: overlay;
-            opacity: 0.16;
+            opacity: 0.28;
             animation: grain-shift 1.2s steps(6) infinite;
             will-change: transform;
         }
@@ -1216,10 +1229,10 @@
             solution: 'Collaborated on creating sketches and digital paintings and moodboards to guide the photoshoot direction. Developed storyboards for the final video documentary. Executed image retouching and designed posters while strictly following brand guidelines.',
             images: [
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776311200/standart_bank_copy_bnauat.jpg', caption: 'Concept art — Soba portrait studies and digital paintings', layout: 'full' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773803838/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1BNVHoxU0VyTVR0S2ozMURNLVNqMTdqMVlTMGsxS2pKRFNuN1NuMTR0WVMwaw_albnbl.webp', caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776307954/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL21qMFptck1UMVNFck1UdEtqMzFETS1TajE3ajFZUzBrMUtqSkRTbjdTbnRZUzBr_oldho6.webp', caption: 'Campaign poster design and retouching', layout: 'half' },
                 { type: 'placeholders', count: 4, caption: 'Portrait series placeholders', layout: 'full' },
                 { type: 'mp4', src: 'https://res.cloudinary.com/dzgqzeebg/video/upload/v1776453073/hf_20260417_161823_be42aff6-94ae-4add-836f-ea6904f9f135_wnk0ul.mp4', grain: true, caption: 'Campaign film', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773803838/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1BNVHoxU0VyTVR0S2ozMURNLVNqMTdqMVlTMGsxS2pKRFNuN1NuMTR0WVMwaw_albnbl.webp', caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776307954/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL21qMFptck1UMVNFck1UdEtqMzFETS1TajE3ajFZUzBrMUtqSkRTbjdTbnRZUzBr_oldho6.webp', caption: 'Campaign poster design and retouching', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776310428/hf_20260416_032825_4da86cb2-3d7e-4de4-9485-220b213df54f_mennyc.png', caption: 'Documentary storyboard and film production', layout: 'full' },
                 { src: 'https://player.vimeo.com/video/260034770?autoplay=1&loop=1&muted=1&title=0&byline=0&portrait=0&controls=0', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full', type: 'video' }
             ],
@@ -1552,7 +1565,7 @@
                                     : img.type === 'slideshow'
                                     ? `<div class="showcase-slideshow" data-interval="${img.interval || 1500}">${img.src.map((s, i) => `<img src="${s}" alt="${img.caption}" loading="lazy" class="${i === 0 ? 'active' : ''}">`).join('')}</div>`
                                     : img.type === 'placeholders'
-                                    ? `<div class="showcase-placeholders">${Array.from({length: img.count || 4}, () => '<div class="ph-cell"></div>').join('')}</div>`
+                                    ? `<div class="showcase-placeholders">${Array.from({length: img.count || 4}, () => `<div class="ph-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-4.5-4.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg></div>`).join('')}</div>`
                                     : img.type === 'colorstrip'
                                     ? `<div class="showcase-colorstrip">${img.colors.map((c, ci) => { const hex = c.replace('#',''); const r = parseInt(hex.substr(0,2),16); const g = parseInt(hex.substr(2,2),16); const b = parseInt(hex.substr(4,2),16); const lum = (r*299+g*587+b*114)/1000; const tc = lum > 140 ? '#000' : '#fff'; const pnt = img.pantones && img.pantones[ci] ? img.pantones[ci] : ''; const role = img.roles && img.roles[ci] ? img.roles[ci] : ''; return `<div style="background:${c};color:${tc}">${role ? `<div class="cs-role">${role}</div>` : ''}<div class="cs-meta">${c.toUpperCase()}${pnt ? '<br>' + pnt : ''}</div></div>`; }).join('')}</div>`
                                     : `<img src="${img.src}" alt="${img.caption}" loading="lazy"${img.style ? ` style="${img.style}"` : ''}>`}
