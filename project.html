@@ -2087,33 +2087,44 @@
         });
     });
 
-    // Documentary click-to-play with custom Vimeo controls
+    // Documentary click-to-play with custom controls — uses the official Vimeo Player SDK
     function fmtTime(s) {
-        if (!isFinite(s)) return '--:--';
+        if (!isFinite(s) || s < 0) return '--:--';
         const m = Math.floor(s / 60);
         const r = Math.floor(s % 60);
         return String(m).padStart(2,'0') + ':' + String(r).padStart(2,'0');
     }
-    function vimeoSend(frame, method, value) {
-        if (!frame || !frame.contentWindow) return;
-        const msg = value !== undefined ? { method, value } : { method };
-        frame.contentWindow.postMessage(JSON.stringify(msg), '*');
+    // Lazy-load Vimeo Player SDK once, shared across all doc-players on the page
+    let vimeoSdkPromise = null;
+    function loadVimeoSdk() {
+        if (window.Vimeo && window.Vimeo.Player) return Promise.resolve();
+        if (vimeoSdkPromise) return vimeoSdkPromise;
+        vimeoSdkPromise = new Promise((resolve, reject) => {
+            const s = document.createElement('script');
+            s.src = 'https://player.vimeo.com/api/player.js';
+            s.async = true;
+            s.onload = resolve;
+            s.onerror = reject;
+            document.head.appendChild(s);
+        });
+        return vimeoSdkPromise;
     }
+
     document.querySelectorAll('.doc-player').forEach(dp => {
-        const poster = dp.querySelector('.doc-poster');
         const playBtn = dp.querySelector('.doc-play');
         const muteBtn = dp.querySelector('.doc-mute');
-        const iPlay = playBtn && playBtn.querySelector('.i-play');
+        const iPlay  = playBtn && playBtn.querySelector('.i-play');
         const iPause = playBtn && playBtn.querySelector('.i-pause');
         const iSound = muteBtn && muteBtn.querySelector('.i-sound');
         const iMuted = muteBtn && muteBtn.querySelector('.i-muted');
         const fill = dp.querySelector('.doc-progress-fill');
         const time = dp.querySelector('.doc-time');
         const progress = dp.querySelector('.doc-progress');
-        let frame = null;
+        let player = null;
         let duration = 0;
         let isPlaying = false;
         let isMuted = false;
+        let hideTimer = null;
 
         const setPlayUI = (playing) => {
             isPlaying = playing;
@@ -2131,18 +2142,20 @@
             }
             if (muteBtn) muteBtn.setAttribute('aria-label', muted ? 'Unmute' : 'Mute');
         };
+        const scheduleHide = () => {
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => dp.classList.remove('show-controls'), 2600);
+        };
 
-        // Start on poster click
         const startPlayback = () => {
             if (dp.classList.contains('playing')) return;
             const src = dp.dataset.src;
-            // Build iframe with Vimeo Player API — hides all chrome, enables postMessage control
-            frame = document.createElement('iframe');
+            // Build the Vimeo iframe — chromeless
+            const frame = document.createElement('iframe');
             frame.className = 'doc-frame';
-            // Force-param: controls off, chromeless, API enabled, autoplay on
             const url = src
                 + (src.indexOf('?') > -1 ? '&' : '?')
-                + 'autoplay=1&controls=0&title=0&byline=0&portrait=0&transparent=0&dnt=1&api=1';
+                + 'autoplay=1&controls=0&title=0&byline=0&portrait=0&dnt=1';
             frame.src = url;
             frame.title = dp.querySelector('.doc-title')?.textContent || 'Documentary';
             frame.setAttribute('frameborder', '0');
@@ -2151,70 +2164,76 @@
             dp.appendChild(frame);
             dp.classList.add('playing', 'show-controls');
             setPlayUI(true);
-            setMuteUI(false);  // starts with sound on (user gesture ok)
+            setMuteUI(false);
+            scheduleHide();
 
-            // Auto-hide controls after a few seconds; reappear on hover
-            setTimeout(() => dp.classList.remove('show-controls'), 2800);
-
-            // After the iframe loads, register with the Vimeo Player API
-            frame.addEventListener('load', () => {
-                // Listen for ready → then ask for play/pause/timeupdate events
-                vimeoSend(frame, 'addEventListener', 'play');
-                vimeoSend(frame, 'addEventListener', 'pause');
-                vimeoSend(frame, 'addEventListener', 'timeupdate');
-                vimeoSend(frame, 'addEventListener', 'loaded');
-                vimeoSend(frame, 'getDuration');
-                vimeoSend(frame, 'setVolume', 1);
-            });
+            loadVimeoSdk().then(() => {
+                player = new Vimeo.Player(frame);
+                player.ready().then(() => {
+                    player.setVolume(1).catch(()=>{});
+                    player.getDuration().then(d => {
+                        duration = d || 0;
+                        if (time) time.textContent = '00:00 / ' + fmtTime(duration);
+                    }).catch(()=>{});
+                });
+                player.on('play',  () => setPlayUI(true));
+                player.on('pause', () => setPlayUI(false));
+                player.on('ended', () => setPlayUI(false));
+                player.on('timeupdate', data => {
+                    duration = data.duration || duration;
+                    if (fill && duration) fill.style.width = (data.seconds / duration * 100) + '%';
+                    if (time) time.textContent = fmtTime(data.seconds) + ' / ' + fmtTime(duration);
+                });
+                player.on('volumechange', data => {
+                    setMuteUI((data.volume || 0) === 0);
+                });
+            }).catch(err => console.warn('Vimeo SDK failed to load', err));
         };
 
-        // Master click: only start if not already playing
+        // Poster click starts playback
         dp.addEventListener('click', (e) => {
             if (dp.classList.contains('playing')) return;
-            // ignore clicks coming from the control area
             if (e.target.closest('.doc-controls')) return;
             startPlayback();
         });
 
-        // Control handlers
-        playBtn && playBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (!frame) return;
-            vimeoSend(frame, isPlaying ? 'pause' : 'play');
-        });
-        muteBtn && muteBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (!frame) return;
-            vimeoSend(frame, 'setVolume', isMuted ? 1 : 0);
-            setMuteUI(!isMuted);
-        });
-        progress && progress.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (!frame || !duration) return;
-            const rect = progress.getBoundingClientRect();
-            const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-            vimeoSend(frame, 'setCurrentTime', pct * duration);
+        // While playing: keep controls visible on hover or mousemove
+        dp.addEventListener('mousemove', () => {
+            if (!dp.classList.contains('playing')) return;
+            dp.classList.add('show-controls');
+            scheduleHide();
         });
 
-        // Receive Vimeo API messages (player → parent)
-        window.addEventListener('message', (e) => {
-            if (!frame || e.source !== frame.contentWindow) return;
-            let data;
-            try { data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data; }
-            catch (_) { return; }
-            if (data.event === 'play')       setPlayUI(true);
-            else if (data.event === 'pause') setPlayUI(false);
-            else if (data.event === 'timeupdate' && data.data) {
-                const t = data.data.seconds || 0;
-                const d = data.data.duration || duration;
-                duration = d || duration;
-                if (fill && duration) fill.style.width = (t / duration * 100) + '%';
-                if (time) time.textContent = fmtTime(t) + ' / ' + fmtTime(duration);
+        // Play / pause button
+        playBtn && playBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (!player) return;
+            try {
+                if (isPlaying) await player.pause();
+                else           await player.play();
+            } catch (err) {
+                // Browser blocked play — retry muted as a recovery path
+                try { await player.setVolume(0); setMuteUI(true); await player.play(); } catch (_) {}
             }
-            else if (data.method === 'getDuration' && typeof data.value === 'number') {
-                duration = data.value;
-                if (time) time.textContent = '00:00 / ' + fmtTime(duration);
-            }
+            scheduleHide();
+        });
+
+        // Mute / unmute button
+        muteBtn && muteBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (!player) return;
+            try { await player.setVolume(isMuted ? 1 : 0); } catch(_){}
+            scheduleHide();
+        });
+
+        // Scrub-bar click
+        progress && progress.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (!player || !duration) return;
+            const rect = progress.getBoundingClientRect();
+            const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+            try { await player.setCurrentTime(pct * duration); } catch(_){}
+            scheduleHide();
         });
     });
 
