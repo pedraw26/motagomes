@@ -593,6 +593,51 @@
             line-height: 1.8;
         }
 
+        /* Standard Bank royal-blue slide — 3 large 3:4 screens scrolling left→right */
+        .showcase-item.has-sbscreens {
+            aspect-ratio: 16 / 9;
+            background: #0033A0;   /* Standard Bank royal blue */
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        .showcase-item.has-sbscreens .sbs-track {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            width: max-content;
+            padding: 0 40px;
+            transform: translateX(-50%);
+            animation: sbs-marquee 34s linear infinite;
+        }
+        .showcase-item.has-sbscreens .sbs-cell {
+            aspect-ratio: 3 / 4;
+            width: min(36vw, 420px);
+            flex-shrink: 0;
+            background: #ffffff;
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: 0 24px 80px -30px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(18,16,16,0.22);
+        }
+        .showcase-item.has-sbscreens .sbs-cell svg {
+            width: 28px;
+            height: 28px;
+            display: block;
+            opacity: .85;
+        }
+        @keyframes sbs-marquee {
+            0%   { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+        @media (max-width: 768px) {
+            .showcase-item.has-sbscreens .sbs-track { gap: 22px; padding: 0 22px; }
+            .showcase-item.has-sbscreens .sbs-cell { width: min(62vw, 260px); }
+        }
+
         /* Solid-white breathing slide — one full 16:9 frame in #ffffff */
         .showcase-item.has-bwsplit {
             aspect-ratio: 16 / 9;
@@ -1581,7 +1626,7 @@
                 { type: 'mp4', src: 'https://res.cloudinary.com/dzgqzeebg/video/upload/f_auto,q_auto/v1776453073/hf_20260417_161823_be42aff6-94ae-4add-836f-ea6904f9f135_wnk0ul.mp4', grain: true, caption: 'Campaign film', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773803838/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1BNVHoxU0VyTVR0S2ozMURNLVNqMTdqMVlTMGsxS2pKRFNuN1NuMTR0WVMwaw_albnbl.webp', caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776307954/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL21qMFptck1UMVNFck1UdEtqMzFETS1TajE3ajFZUzBrMUtqSkRTbjdTbnRZUzBr_oldho6.webp', caption: 'Campaign poster design and retouching', layout: 'half' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776310428/hf_20260416_032825_4da86cb2-3d7e-4de4-9485-220b213df54f_mennyc.png', caption: 'Documentary storyboard and film production', layout: 'full' },
+                { type: 'sbscreens', caption: 'Brand application — digital touchpoints across Standard Bank systems', layout: 'full' },
                 { type: 'bwsplit', caption: 'Transition', layout: 'full' },
                 { type: 'video', src: 'https://player.vimeo.com/video/260034770', poster: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776312630/hf_20260416_040746_8c19b4cc-2c31-4a7b-a951-8dc72e210136_tfq8xi.png', label: '', title: 'The Voice of Experience', runtime: '10:20', year: '2018', awardPill: 'Gold', award: 'Meios & Publicidade 2018', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full' }
             ],
@@ -1899,7 +1944,7 @@
                 <section class="section section--showcase" data-reveal style="border-top:none; padding:0;">
                     <div class="showcase-gallery">
                         ${project.images.map(img => `
-                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube' || img.type === 'mp4') ? ' has-iframe has-video' : ''}${img.grain ? ' has-grain' : ''}${img.type === 'placeholders' ? ' has-placeholders' : ''}${img.type === 'bwsplit' ? ' has-bwsplit' : ''}"${img.bgStyle ? ` style="${img.bgStyle} display:flex; align-items:center; justify-content:center;"` : ''}>
+                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube' || img.type === 'mp4') ? ' has-iframe has-video' : ''}${img.grain ? ' has-grain' : ''}${img.type === 'placeholders' ? ' has-placeholders' : ''}${img.type === 'bwsplit' ? ' has-bwsplit' : ''}${img.type === 'sbscreens' ? ' has-sbscreens' : ''}"${img.bgStyle ? ` style="${img.bgStyle} display:flex; align-items:center; justify-content:center;"` : ''}>
                                 ${img.type === 'youtube'
                                     ? `<div class="yt-player" data-vid="${img.src}">
                                         <iframe id="yt-${img.src}" src="https://www.youtube.com/embed/${img.src}?enablejsapi=1&autoplay=0&loop=1&playlist=${img.src}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&start=10" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -1948,6 +1993,13 @@
                                     ? `<div class="showcase-slideshow" data-interval="${img.interval || 1500}">${img.src.map((s, i) => `<img src="${s}" alt="${img.caption}" loading="lazy" class="${i === 0 ? 'active' : ''}">`).join('')}</div>`
                                     : img.type === 'bwsplit'
                                     ? `<div class="bw-split"></div>`
+                                    : img.type === 'sbscreens'
+                                    ? (() => {
+                                        const icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-4.5-4.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg>`;
+                                        // Three screens, duplicated for seamless loop
+                                        const set = `<div class="sbs-cell">${icon}</div><div class="sbs-cell">${icon}</div><div class="sbs-cell">${icon}</div>`;
+                                        return `<div class="sbs-track">${set}${set}</div>`;
+                                    })()
                                     : img.type === 'placeholders'
                                     ? (() => {
                                         const cellSvg = `<div class="ph-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-4.5-4.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg></div>`;
