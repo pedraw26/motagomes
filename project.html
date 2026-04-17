@@ -1661,6 +1661,20 @@
         }, interval);
     });
 
+    // Cinematic zoom-out — restart on each video loop
+    document.querySelectorAll('video.cinematic-zoom').forEach(v => {
+        let lastTime = 0;
+        v.addEventListener('timeupdate', () => {
+            // looped when currentTime drops back toward 0 from near the end
+            if (v.currentTime < lastTime - 0.5) {
+                v.classList.remove('cinematic-zoom');
+                void v.offsetWidth;            // force reflow so the animation restarts
+                v.classList.add('cinematic-zoom');
+            }
+            lastTime = v.currentTime;
+        });
+    });
+
     // YouTube custom player
     document.querySelectorAll('.yt-player').forEach(player => {
         const iframe = player.querySelector('iframe');
