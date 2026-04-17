@@ -786,21 +786,34 @@
             font-size: 12px;
             font-weight: 400;
             letter-spacing: 0.01em;
-            opacity: .85;
+            opacity: .95;
+        }
+        .doc-player .doc-top-l {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 70%;
+        }
+        .doc-player .doc-label {
+            font-family: var(--sf-pro);
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            color: rgba(255,255,255,0.85);
+        }
+        .doc-player .doc-title {
+            font-family: var(--sf-pro);
+            font-size: clamp(26px, 3.2vw, 46px);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            line-height: 1.02;
+            color: #fff;
         }
         .doc-player .doc-bottom {
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
             gap: 24px;
-        }
-        .doc-player .doc-title {
-            font-family: var(--sf-pro, -apple-system, sans-serif);
-            font-size: clamp(28px, 3.6vw, 52px);
-            font-weight: 300;
-            letter-spacing: -0.02em;
-            line-height: 1.02;
-            max-width: 70%;
         }
         .doc-player .doc-runtime {
             font-family: var(--sf-pro);
@@ -813,29 +826,26 @@
             font-variant-numeric: tabular-nums;
         }
         .doc-player .doc-cta {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             display: flex;
             align-items: center;
             gap: 14px;
             pointer-events: none;
-            transition: transform .4s cubic-bezier(.16,1,.3,1), opacity .4s ease;
+            transition: transform .3s cubic-bezier(.16,1,.3,1), opacity .4s ease;
         }
         .doc-player .doc-cta-btn {
-            width: 64px;
-            height: 64px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            border: 1.5px solid rgba(255,255,255,.85);
+            border: 1.3px solid rgba(255,255,255,.85);
             display: flex;
             align-items: center;
             justify-content: center;
             background: rgba(0,0,0,.15);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
+            color: #fff;
         }
-        .doc-player .doc-cta-btn svg { width: 22px; height: 22px; transform: translateX(2px); }
+        .doc-player .doc-cta-btn svg { width: 14px; height: 14px; transform: translateX(1px); fill: currentColor; }
         .doc-player .doc-cta-label {
             font-family: var(--sf-pro);
             font-size: 13px;
@@ -844,7 +854,7 @@
             color: #fff;
         }
         .doc-player:hover .doc-poster { transform: scale(1.02); }
-        .doc-player:hover .doc-cta { transform: translate(-50%, -50%) scale(1.04); }
+        .doc-player:hover .doc-cta { transform: translateX(6px); }
         .doc-player.playing .doc-poster,
         .doc-player.playing .doc-shade,
         .doc-player.playing .doc-meta,
@@ -1881,15 +1891,19 @@
                                         <img class="doc-poster" src="${img.poster}" alt="${img.caption}" loading="lazy">
                                         <div class="doc-shade"></div>
                                         <div class="doc-meta">
-                                            <div class="doc-top"><span>${img.label || 'Documentary'}</span></div>
+                                            <div class="doc-top">
+                                                <div class="doc-top-l">
+                                                    <span class="doc-label">${img.label || 'Documentary'}</span>
+                                                    <span class="doc-title">${img.title || img.caption}</span>
+                                                </div>
+                                            </div>
                                             <div class="doc-bottom">
-                                                <div class="doc-title">${img.title || img.caption}</div>
+                                                <div class="doc-cta">
+                                                    <div class="doc-cta-btn"><svg viewBox="0 0 24 24"><polygon points="6,4 6,20 20,12"/></svg></div>
+                                                    <span class="doc-cta-label">Watch documentary</span>
+                                                </div>
                                                 <div class="doc-runtime">${img.runtime || ''}</div>
                                             </div>
-                                        </div>
-                                        <div class="doc-cta">
-                                            <div class="doc-cta-btn"><svg viewBox="0 0 24 24"><polygon points="6,4 6,20 20,12"/></svg></div>
-                                            <span class="doc-cta-label">Watch documentary</span>
                                         </div>
                                         <div class="doc-controls">
                                             <button class="doc-btn doc-play" aria-label="Pause"><svg class="i-pause" viewBox="0 0 24 24"><rect x="7" y="5" width="3.2" height="14" rx=".6"/><rect x="13.8" y="5" width="3.2" height="14" rx=".6"/></svg><svg class="i-play" viewBox="0 0 24 24" style="display:none"><polygon points="7,5 7,19 19,12"/></svg></button>
