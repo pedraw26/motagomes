@@ -645,16 +645,19 @@
             overflow: hidden;
         }
 
-        /* cinematic zoom-out — slow, one-shot, holds at natural scale */
+        /* cinematic zoom-out — synced to each video loop, gpu-composited */
         @keyframes cinematic-zoom-out {
-            0%   { transform: scale(1.18); }
-            100% { transform: scale(1.00); }
+            0%   { transform: translate3d(0,0,0) scale(1.18); }
+            100% { transform: translate3d(0,0,0) scale(1.00); }
         }
         .showcase-item { overflow: hidden; }
         .showcase-item video.cinematic-zoom {
             transform-origin: center center;
+            transform: translate3d(0,0,0) scale(1.18);
             animation: cinematic-zoom-out 16s cubic-bezier(.22,1,.36,1) forwards;
             will-change: transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
 
 
@@ -1661,15 +1664,15 @@
         }, interval);
     });
 
-    // Cinematic zoom-out — restart on each video loop
+    // Cinematic zoom-out — restart on each video loop via Web Animations API (no DOM thrash)
     document.querySelectorAll('video.cinematic-zoom').forEach(v => {
         let lastTime = 0;
         v.addEventListener('timeupdate', () => {
-            // looped when currentTime drops back toward 0 from near the end
             if (v.currentTime < lastTime - 0.5) {
-                v.classList.remove('cinematic-zoom');
-                void v.offsetWidth;            // force reflow so the animation restarts
-                v.classList.add('cinematic-zoom');
+                // seek every running CSS animation on this element back to 0 and keep it playing
+                v.getAnimations().forEach(a => {
+                    try { a.currentTime = 0; a.play(); } catch(e) {}
+                });
             }
             lastTime = v.currentTime;
         });
