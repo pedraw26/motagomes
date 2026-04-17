@@ -90,11 +90,15 @@
         </g>
       </g>
 
-      <!-- ======= DIMENSION CALLOUTS (yellow) ======= -->
+      <!-- ======= DIMENSION CALLOUTS (yellow) — clearspace box around logo ======= -->
       <g id="anno" fill="none" stroke="#ffe066" stroke-width="1">
-        <!-- TOP dim — full-width line matching axes (120 → 1800) -->
-        <line class="yellow" x1="120" y1="344" x2="1800" y2="344" opacity=".6"/>
-        <!-- top tick caps at letter boundaries (R · A · S) -->
+        <!-- BOX · 40u clearspace frame: x 502→1444 · y 344→668 -->
+        <line class="yellow" x1="502"  y1="344" x2="1444" y2="344" opacity=".75"/>  <!-- top    -->
+        <line class="yellow" x1="502"  y1="668" x2="1444" y2="668" opacity=".75"/>  <!-- bottom -->
+        <line class="yellow" x1="502"  y1="344" x2="502"  y2="668" opacity=".75"/>  <!-- left   -->
+        <line class="yellow" x1="1444" y1="344" x2="1444" y2="668" opacity=".75"/>  <!-- right  -->
+
+        <!-- TOP tick caps at letter boundaries (R · A · S) -->
         <line class="yellow" x1="542"  y1="334" x2="542"  y2="354" opacity=".85"/>
         <line class="yellow" x1="798"  y1="334" x2="798"  y2="354" opacity=".85"/>
         <line class="yellow" x1="848"  y1="334" x2="848"  y2="354" opacity=".85"/>
@@ -102,15 +106,13 @@
         <line class="yellow" x1="1149" y1="334" x2="1149" y2="354" opacity=".85"/>
         <line class="yellow" x1="1404" y1="334" x2="1404" y2="354" opacity=".85"/>
 
-        <!-- BOTTOM dim — full-width line matching axes -->
-        <line class="yellow" x1="120" y1="668" x2="1800" y2="668" opacity=".8"/>
+        <!-- BOTTOM tick caps — total-width endpoints -->
         <line class="yellow" x1="542"  y1="658" x2="542"  y2="678" opacity=".85"/>
         <line class="yellow" x1="1404" y1="658" x2="1404" y2="678" opacity=".85"/>
 
-        <!-- RIGHT cap-height rail (40u right of logo edge) -->
-        <line class="yellow" x1="1444" y1="384" x2="1444" y2="628" opacity=".7"/>
-        <line class="yellow" x1="1434" y1="384" x2="1454" y2="384" opacity=".7"/>
-        <line class="yellow" x1="1434" y1="628" x2="1454" y2="628" opacity=".7"/>
+        <!-- RIGHT rail tick caps — cap / baseline (internal H marks) -->
+        <line class="yellow" x1="1434" y1="384" x2="1454" y2="384" opacity=".85"/>
+        <line class="yellow" x1="1434" y1="628" x2="1454" y2="628" opacity=".85"/>
       </g>
 
       <!-- ======= YELLOW NUMERIC LABELS ======= -->
