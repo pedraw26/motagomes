@@ -811,13 +811,11 @@
         }
         .doc-player .doc-award {
             font-family: var(--sf-pro);
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 400;
             letter-spacing: 0.02em;
-            text-align: right;
             white-space: nowrap;
-            flex-shrink: 0;
-            padding-top: 4px;
+            margin-top: 4px;
         }
         .doc-player .doc-bottom {
             display: flex;
@@ -1905,8 +1903,8 @@
                                                 <div class="doc-top-l">
                                                     <span class="doc-label">${img.label || 'Documentary'}</span>
                                                     <span class="doc-title">${img.title || img.caption}</span>
+                                                    ${img.award ? `<span class="doc-award metal-text gold">${img.award}</span>` : ''}
                                                 </div>
-                                                ${img.award ? `<span class="doc-award metal-text gold">${img.award}</span>` : ''}
                                             </div>
                                             <div class="doc-bottom">
                                                 <div class="doc-cta">
