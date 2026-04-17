@@ -678,6 +678,35 @@
             -webkit-backface-visibility: hidden;
         }
 
+        /* 35mm film-grain overlay — subtle, animated, on any showcase-item with .has-grain */
+        .showcase-item.has-grain { position: relative; isolation: isolate; }
+        .showcase-item.has-grain::after {
+            content: '';
+            position: absolute;
+            inset: -20%;
+            pointer-events: none;
+            z-index: 3;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.7'/></svg>");
+            background-size: 180px 180px;
+            mix-blend-mode: overlay;
+            opacity: 0.16;
+            animation: grain-shift 1.2s steps(6) infinite;
+            will-change: transform;
+        }
+        @keyframes grain-shift {
+            0%   { transform: translate(0, 0); }
+            10%  { transform: translate(-5%, -5%); }
+            20%  { transform: translate(-10%, 5%); }
+            30%  { transform: translate(5%, -10%); }
+            40%  { transform: translate(-5%, 15%); }
+            50%  { transform: translate(-10%, 5%); }
+            60%  { transform: translate(15%, 0); }
+            70%  { transform: translate(0, 10%); }
+            80%  { transform: translate(-15%, 0); }
+            90%  { transform: translate(10%, 5%); }
+            100% { transform: translate(0, 0); }
+        }
+
 
         @media (max-width: 768px) {
             .showcase-gallery {
@@ -1190,7 +1219,7 @@
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773803838/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1BNVHoxU0VyTVR0S2ozMURNLVNqMTdqMVlTMGsxS2pKRFNuN1NuMTR0WVMwaw_albnbl.webp', caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776307954/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL21qMFptck1UMVNFck1UdEtqMzFETS1TajE3ajFZUzBrMUtqSkRTbjdTbnRZUzBr_oldho6.webp', caption: 'Campaign poster design and retouching', layout: 'half' },
                 { type: 'placeholders', count: 4, caption: 'Portrait series placeholders', layout: 'full' },
-                { type: 'mp4', src: 'https://res.cloudinary.com/dzgqzeebg/video/upload/v1776453073/hf_20260417_161823_be42aff6-94ae-4add-836f-ea6904f9f135_wnk0ul.mp4', effect: 'cinematic-zoom', caption: 'Campaign film', layout: 'full' },
+                { type: 'mp4', src: 'https://res.cloudinary.com/dzgqzeebg/video/upload/v1776453073/hf_20260417_161823_be42aff6-94ae-4add-836f-ea6904f9f135_wnk0ul.mp4', grain: true, caption: 'Campaign film', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776310428/hf_20260416_032825_4da86cb2-3d7e-4de4-9485-220b213df54f_mennyc.png', caption: 'Documentary storyboard and film production', layout: 'full' },
                 { src: 'https://player.vimeo.com/video/260034770?autoplay=1&loop=1&muted=1&title=0&byline=0&portrait=0&controls=0', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full', type: 'video' }
             ],
@@ -1502,7 +1531,7 @@
                 <section class="section section--showcase" data-reveal style="border-top:none; padding:0;">
                     <div class="showcase-gallery">
                         ${project.images.map(img => `
-                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube' || img.type === 'mp4') ? ' has-iframe has-video' : ''}"${img.bgStyle ? ` style="${img.bgStyle} display:flex; align-items:center; justify-content:center;"` : ''}>
+                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube' || img.type === 'mp4') ? ' has-iframe has-video' : ''}${img.grain ? ' has-grain' : ''}"${img.bgStyle ? ` style="${img.bgStyle} display:flex; align-items:center; justify-content:center;"` : ''}>
                                 ${img.type === 'youtube'
                                     ? `<div class="yt-player" data-vid="${img.src}">
                                         <iframe id="yt-${img.src}" src="https://www.youtube.com/embed/${img.src}?enablejsapi=1&autoplay=0&loop=1&playlist=${img.src}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&start=10" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
