@@ -605,16 +605,14 @@
         .showcase-item.has-sbscreens .sbs-track {
             display: flex;
             align-items: center;
-            gap: 40px;
             width: max-content;
-            padding: 0 40px;
-            transform: translateX(-50%);
             animation: sbs-marquee 34s linear infinite;
         }
         .showcase-item.has-sbscreens .sbs-cell {
             aspect-ratio: 3 / 4;
             width: min(36vw, 420px);
             flex-shrink: 0;
+            margin-right: 40px;   /* gap lives ON the cell so it's part of the loop unit */
             background: #ffffff;
             border: 1px solid rgba(255,255,255,0.12);
             box-shadow: 0 24px 80px -30px rgba(0,0,0,0.5);
@@ -634,8 +632,7 @@
             100% { transform: translateX(0); }
         }
         @media (max-width: 768px) {
-            .showcase-item.has-sbscreens .sbs-track { gap: 22px; padding: 0 22px; }
-            .showcase-item.has-sbscreens .sbs-cell { width: min(62vw, 260px); }
+            .showcase-item.has-sbscreens .sbs-cell { width: min(62vw, 260px); margin-right: 22px; }
         }
 
         /* Solid-white breathing slide — one full 16:9 frame in #ffffff */
