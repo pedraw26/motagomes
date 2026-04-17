@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAS · Logo Construction — 01 Blueprint</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap');
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden}
+  body{
+    background:#121010;
+    color:#ffffff;
+    font-family:'Inter',sans-serif;
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
+  }
+  .wrap{width:100%;height:100%;max-width:1920px;max-height:1080px;position:relative;display:flex;flex-direction:column}
+  .stage{flex:1;position:relative;overflow:hidden}
+  svg{display:block;width:100%;height:100%}
+  /* tick markers in corners */
+  .crn{position:absolute;width:16px;height:16px;pointer-events:none}
+  .crn::before,.crn::after{content:'';position:absolute;background:#ffffff;opacity:.6}
+  .crn::before{top:0;left:0;width:100%;height:1px}
+  .crn::after{top:0;left:0;width:1px;height:100%}
+  .crn.tl{top:0;left:0}
+  .crn.tr{top:0;right:0;transform:scaleX(-1)}
+  .crn.bl{bottom:0;left:0;transform:scaleY(-1)}
+  .crn.br{bottom:0;right:0;transform:scale(-1,-1)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="stage">
+    <span class="crn tl"></span><span class="crn tr"></span><span class="crn bl"></span><span class="crn br"></span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid meet">
+      <!-- backdrop -->
+      <rect x="0" y="0" width="1920" height="1080" fill="#121010"/>
+
+      <!-- ======= CONSTRUCTION GRID ======= -->
+      <g id="grid-minor">
+        <!-- vertical minor every 40, from 80 to 1840 -->
+      </g>
+      <g id="grid-major">
+        <!-- major every 160 -->
+      </g>
+
+      <!-- ======= MAIN AXES / BASELINE & CAP ======= -->
+      <g id="axes">
+        <!-- cap y=384 (actual letter top), baseline y=628, x-mid y=506, descent y=712 -->
+        <line id="ax-cap"  class="keyline" x1="120" y1="384" x2="1800" y2="384" stroke="#ffffff" stroke-width="1" opacity=".55"/>
+        <line id="ax-mid"  class="keyline" x1="120" y1="506" x2="1800" y2="506" stroke="#ffffff" stroke-width="1" opacity=".3"/>
+        <line id="ax-base" class="keyline" x1="120" y1="628" x2="1800" y2="628" stroke="#ffffff" stroke-width="1" opacity=".55"/>
+      </g>
+
+      <!-- ======= LETTER BOUNDING BOXES (drawn in) ======= -->
+      <g id="boxes" fill="none" stroke="#ffffff" stroke-width="1.2" opacity=".7">
+        <!-- R: 542 .. 797  (w=255, h=244) -->
+        <rect class="bbox" x="542" y="384" width="256" height="244"/>
+        <!-- A: 848 .. 1103 (w=255) -->
+        <rect class="bbox" x="848" y="384" width="256" height="244"/>
+        <!-- S: 1149 .. 1404 (w=255) -->
+        <rect class="bbox" x="1149" y="384" width="256" height="244"/>
+      </g>
+
+      <!-- ======= VERTICAL STEM ANCHORS ======= -->
+      <g id="anchors" stroke="#ffffff" stroke-width=".8" opacity=".35">
+        <line class="anchor" x1="542"  y1="320" x2="542"  y2="680"/>
+        <line class="anchor" x1="670"  y1="320" x2="670"  y2="680"/>
+        <line class="anchor" x1="798"  y1="320" x2="798"  y2="680"/>
+        <line class="anchor" x1="848"  y1="320" x2="848"  y2="680"/>
+        <line class="anchor" x1="976"  y1="320" x2="976"  y2="680"/>
+        <line class="anchor" x1="1103" y1="320" x2="1103" y2="680"/>
+        <line class="anchor" x1="1149" y1="320" x2="1149" y2="680"/>
+        <line class="anchor" x1="1277" y1="320" x2="1277" y2="680"/>
+        <line class="anchor" x1="1404" y1="320" x2="1404" y2="680"/>
+      </g>
+
+      <!-- ======= TICK MARKS (outside top & bottom) ======= -->
+      <g id="ticks" stroke="#ffffff" stroke-width="1" opacity=".55">
+        <!-- major tick at each 128-unit letter center -->
+      </g>
+
+      <!-- ======= LOGO (clean rebuild — uniform stroke 55 u, aligned to cap=384 / base=628) ======= -->
+      <g id="logo" fill="#ffffff">
+        <!-- LETTER R -->
+        <g class="glyph" id="g-R">
+          <rect x="542" y="384" width="55"  height="244"/>  <!-- left stem     -->
+          <rect x="542" y="384" width="255" height="55"/>   <!-- top bar       -->
+          <rect x="542" y="494" width="255" height="55"/>   <!-- middle bar    -->
+          <rect x="742" y="384" width="55"  height="165"/>  <!-- upper R stem  -->
+          <polygon points="687,549 742,549 797,628 742,628"/> <!-- diagonal leg -->
+        </g>
+        <!-- LETTER A -->
+        <g class="glyph" id="g-A">
+          <rect x="848"  y="384" width="55"  height="244"/> <!-- left stem    -->
+          <rect x="1048" y="384" width="55"  height="244"/> <!-- right stem   -->
+          <rect x="848"  y="384" width="255" height="55"/>  <!-- top bar      -->
+          <rect x="903"  y="494" width="145" height="55"/>  <!-- mid crossbar -->
+        </g>
+        <!-- LETTER S (zig-pattern as designed) -->
+        <g class="glyph" id="g-S">
+          <rect x="1149" y="384" width="255" height="55"/>  <!-- top bar           -->
+          <rect x="1149" y="384" width="55"  height="94"/>  <!-- top-left stem     -->
+          <rect x="1204" y="478" width="145" height="55"/>  <!-- middle crossbar   -->
+          <rect x="1349" y="533" width="55"  height="95"/>  <!-- bottom-right stem -->
+          <rect x="1149" y="573" width="255" height="55"/>  <!-- bottom bar        -->
+        </g>
+      </g>
+
+      <!-- ======= DIMENSION CALLOUTS (yellow) ======= -->
+      <g id="anno" fill="none" stroke="#ffe066" stroke-width="1">
+        <!-- horizontal total width dim (mirrors top: 40u below baseline / 40u above cap) -->
+        <line class="yellow" x1="542"  y1="668" x2="1404" y2="668" opacity=".8"/>
+        <line class="yellow" x1="542"  y1="658" x2="542"  y2="678" opacity=".8"/>
+        <line class="yellow" x1="1404" y1="658" x2="1404" y2="678" opacity=".8"/>
+        <!-- letter-width individual dims -->
+        <line class="yellow" x1="542"  y1="344" x2="798"  y2="344" opacity=".6"/>
+        <line class="yellow" x1="848"  y1="344" x2="1103" y2="344" opacity=".6"/>
+        <line class="yellow" x1="1149" y1="344" x2="1404" y2="344" opacity=".6"/>
+        <!-- gap dims -->
+        <line class="yellow" x1="798"  y1="344" x2="848"  y2="344" opacity=".5" stroke-dasharray="2 3"/>
+        <line class="yellow" x1="1103" y1="344" x2="1149" y2="344" opacity=".5" stroke-dasharray="2 3"/>
+        <!-- cap-height vertical (40u right of logo edge, matches 40u top/bottom) -->
+        <line class="yellow" x1="1444" y1="384" x2="1444" y2="628" opacity=".7"/>
+        <line class="yellow" x1="1434" y1="384" x2="1454" y2="384" opacity=".7"/>
+        <line class="yellow" x1="1434" y1="628" x2="1454" y2="628" opacity=".7"/>
+      </g>
+
+      <!-- text labels -->
+      <g id="labels" font-family="Inter" font-size="14" font-weight="400" fill="#ffffff">
+        <!-- base labels (cap, baseline, x-mid) -->
+        <text class="baseTxt" x="70"   y="388" text-anchor="end" opacity=".7">cap  <tspan fill="#ffffff" data-num="384" data-suffix=" u">0 u</tspan></text>
+        <text class="baseTxt" x="70"   y="510" text-anchor="end" opacity=".5">x-mid</text>
+        <text class="baseTxt" x="70"   y="632" text-anchor="end" opacity=".7">base <tspan fill="#ffffff" data-num="628" data-suffix=" u">0 u</tspan></text>
+
+        <!-- yellow annotations — numeric -->
+        <text class="yTxt" x="973"  y="698" text-anchor="middle" fill="#ffe066" font-size="16" font-weight="500">W <tspan data-num="862" data-suffix=" u">0 u</tspan></text>
+
+        <text class="yTxt" x="670"  y="332" text-anchor="middle" fill="#ffe066" font-size="12"><tspan data-num="256" data-suffix=" u">0 u</tspan></text>
+        <text class="yTxt" x="976"  y="332" text-anchor="middle" fill="#ffe066" font-size="12"><tspan data-num="256" data-suffix=" u">0 u</tspan></text>
+        <text class="yTxt" x="1277" y="332" text-anchor="middle" fill="#ffe066" font-size="12"><tspan data-num="256" data-suffix=" u">0 u</tspan></text>
+
+        <text class="yTxt" x="823"  y="332" text-anchor="middle" fill="#ffe066" font-size="10" opacity=".75"><tspan data-num="50" data-suffix="">0</tspan></text>
+        <text class="yTxt" x="1126" y="332" text-anchor="middle" fill="#ffe066" font-size="10" opacity=".75"><tspan data-num="46" data-suffix="">0</tspan></text>
+
+        <text class="yTxt" x="1474" y="510" fill="#ffe066" font-size="14">H <tspan data-num="244" data-suffix=" u">0 u</tspan></text>
+
+        <!-- coordinate readout top-right and bottom-left  -->
+        <text class="baseTxt" x="1840" y="130" text-anchor="end" opacity=".55" font-size="10">LAT 51°30′26″ N</text>
+        <text class="baseTxt" x="1840" y="146" text-anchor="end" opacity=".55" font-size="10">LNG 00°07′39″ W</text>
+        <text class="baseTxt" x="80"   y="820" opacity=".55" font-size="10">GRID  40 u × 40 u</text>
+        <text class="baseTxt" x="80"   y="836" opacity=".55" font-size="10">k     0.08 · hybrid</text>
+      </g>
+
+      <!-- subdivision ticks (top) -->
+      <g id="subdiv" stroke="#ffffff" stroke-width=".7" opacity=".4"></g>
+    </svg>
+  </div>
+</div>
+
+<script>
+(function(){
+  var svg = document.querySelector('svg');
+  var NS = 'http://www.w3.org/2000/svg';
+
+  // ----- build grid programmatically -----
+  // Logo-native module: horizontal step = 64 (256 letter-width / 4),
+  //                     vertical   step = 61 (244 cap-height / 4).
+  // Origin anchored at R top-left (542, 384), so cap & baseline are major lines
+  // and R's three stems (542, 670, 798) land on major verticals.
+  var minor = document.getElementById('grid-minor');
+  var major = document.getElementById('grid-major');
+  var STEP_X = 64, STEP_Y = 61;
+  var ORIG_X = 542, ORIG_Y = 384;
+  // vertical lines
+  for (var n=-8;n<=21;n++){
+    var x = ORIG_X + n*STEP_X;
+    if (x < 80 || x > 1840) continue;
+    var isMaj = (n%2===0);          // every 2 minors = 128 u major (stem-to-stem)
+    var l = document.createElementNS(NS,'line');
+    l.setAttribute('x1',x);l.setAttribute('x2',x);
+    l.setAttribute('y1',80);l.setAttribute('y2',1000);
+    l.setAttribute('stroke','#ffffff');
+    l.setAttribute('stroke-width',isMaj?'.6':'.35');
+    l.setAttribute('opacity',isMaj?'.18':'.08');
+    l.classList.add('g-line');
+    (isMaj?major:minor).appendChild(l);
+  }
+  // horizontal lines
+  for (var m=-5;m<=11;m++){
+    var y = ORIG_Y + m*STEP_Y;
+    if (y < 80 || y > 1000) continue;
+    var isMaj = (m%2===0);          // every 2 minors = 122 u major (cap / mid / base)
+    var l = document.createElementNS(NS,'line');
+    l.setAttribute('y1',y);l.setAttribute('y2',y);
+    l.setAttribute('x1',80);l.setAttribute('x2',1840);
+    l.setAttribute('stroke','#ffffff');
+    l.setAttribute('stroke-width',isMaj?'.6':'.35');
+    l.setAttribute('opacity',isMaj?'.18':'.08');
+    l.classList.add('g-line');
+    (isMaj?major:minor).appendChild(l);
+  }
+
+  // ----- top subdivision ticks every 16u between R left (542) and S right (1404) -----
+  var sd = document.getElementById('subdiv');
+  for (var tx=542;tx<=1404;tx+=16){
+    var offset = tx - 542;
+    var isMaj = (offset % 64 === 0);
+    var t = document.createElementNS(NS,'line');
+    t.setAttribute('x1',tx);t.setAttribute('x2',tx);
+    t.setAttribute('y1',368);t.setAttribute('y2',isMaj?378:374);
+    t.setAttribute('stroke','#ffffff');
+    t.setAttribute('stroke-width','.7');
+    t.setAttribute('opacity','.45');
+    t.classList.add('tick');
+    sd.appendChild(t);
+  }
+
+  // ----- helpers -----
+  function len(el){
+    if (el.tagName==='line'){
+      return Math.hypot(el.x2.baseVal.value-el.x1.baseVal.value, el.y2.baseVal.value-el.y1.baseVal.value);
+    }
+    if (el.tagName==='rect'){
+      return 2*(el.width.baseVal.value+el.height.baseVal.value);
+    }
+    if (el.getTotalLength) return el.getTotalLength();
+    return 0;
+  }
+  function prep(el){
+    var L = len(el);
+    el.style.strokeDasharray = L;
+    el.style.strokeDashoffset = L;
+    return L;
+  }
+  function draw(el,delay,dur){
+    var L = prep(el);
+    el.animate(
+      [{strokeDashoffset:L},{strokeDashoffset:0}],
+      {duration:dur,delay:delay,easing:'cubic-bezier(.18,.82,.22,1)',fill:'forwards'}
+    );
+  }
+  function fadeIn(el,delay,dur,to){
+    el.animate(
+      [{opacity:0},{opacity:to||1}],
+      {duration:dur,delay:delay,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'}
+    );
+  }
+  function glow(el,delay){
+    el.animate(
+      [{opacity:0},{opacity:1}],
+      {duration:600,delay:delay,easing:'cubic-bezier(.2,.85,.2,1)',fill:'forwards'}
+    );
+  }
+  function countUp(el,delay,dur){
+    var target = parseFloat(el.getAttribute('data-num'));
+    var suffix = el.getAttribute('data-suffix') || '';
+    var t0 = performance.now()+delay;
+    function step(now){
+      var t = (now-t0)/dur;
+      if (t<0){requestAnimationFrame(step);return;}
+      if (t>1) t=1;
+      var eased = 1-Math.pow(1-t,3);
+      el.textContent = Math.round(target*eased)+suffix;
+      if (t<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // ----- collect elements -----
+  var gLines   = [].slice.call(document.querySelectorAll('#grid-minor .g-line, #grid-major .g-line'));
+  var axes     = [].slice.call(document.querySelectorAll('#axes .keyline'));
+  var anchors  = [].slice.call(document.querySelectorAll('#anchors .anchor'));
+  var ticks    = [].slice.call(document.querySelectorAll('#subdiv .tick'));
+  var boxes    = [].slice.call(document.querySelectorAll('#boxes .bbox'));
+  var logo     = document.getElementById('logo');
+  var glyphs   = [].slice.call(document.querySelectorAll('#logo .glyph'));
+  var yellows  = [].slice.call(document.querySelectorAll('#anno .yellow'));
+  var yTexts   = [].slice.call(document.querySelectorAll('.yTxt'));
+  var baseTxts = [].slice.call(document.querySelectorAll('.baseTxt'));
+  var numTxts  = [].slice.call(document.querySelectorAll('[data-num]'));
+
+  function reset(){
+    gLines.concat(axes,anchors,ticks,boxes,yellows).forEach(function(el){
+      el.style.strokeDasharray='';el.style.strokeDashoffset='';el.getAnimations&&el.getAnimations().forEach(function(a){a.cancel();});
+    });
+    glyphs.forEach(function(el){el.style.opacity=0;el.style.filter='none';el.getAnimations&&el.getAnimations().forEach(function(a){a.cancel();});});
+    yTexts.concat(baseTxts).forEach(function(el){el.style.opacity=0;el.style.filter='none';el.getAnimations&&el.getAnimations().forEach(function(a){a.cancel();});});
+    numTxts.forEach(function(el){el.textContent='0'+(el.getAttribute('data-suffix')||'');});
+  }
+
+  function run(){
+    reset();
+    var t = 0;
+
+    // 1. grid minor + major
+    gLines.forEach(function(el,i){draw(el, t + i*6, 600);});
+    t += 1600;
+
+    // 2. key axes
+    axes.forEach(function(el,i){draw(el, t + i*140, 900);});
+    t += 900;
+
+    // 3. anchors
+    anchors.forEach(function(el,i){draw(el, t + i*60, 700);});
+    t += anchors.length*60 + 400;
+
+    // 4. subdiv ticks
+    ticks.forEach(function(el,i){draw(el, t + i*10, 360);});
+    t += ticks.length*10 + 260;
+
+    // 5. bbox
+    boxes.forEach(function(el,i){draw(el, t + i*220, 1100);});
+    t += boxes.length*220 + 600;
+
+    // 6. logo glyphs
+    glyphs.forEach(function(el,i){fadeIn(el, t + i*240, 1400);});
+    t += glyphs.length*240 + 600;
+
+    // base text labels
+    baseTxts.forEach(function(el,i){fadeIn(el, t - 400 + i*35, 500, .8);});
+
+    // 7. yellow dims
+    yellows.forEach(function(el,i){draw(el, t + i*70, 520);});
+    yTexts.forEach(function(el,i){glow(el, t + 120 + i*80);});
+    numTxts.forEach(function(el,i){countUp(el, t + 120 + i*80, 1200);});
+    t += yellows.length*70 + 1400;
+
+    // 8. settle breath
+    gLines.forEach(function(el){
+      el.animate(
+        [{opacity: parseFloat(el.getAttribute('opacity'))},{opacity: Math.max(0.04, parseFloat(el.getAttribute('opacity'))*0.6)},{opacity: parseFloat(el.getAttribute('opacity'))}],
+        {duration:2200,delay:t,easing:'ease-in-out',fill:'forwards'}
+      );
+    });
+
+    // loop
+    window.setTimeout(run, t + 3000);
+  }
+
+  run();
+})();
+</script>
+</body>
+</html>
