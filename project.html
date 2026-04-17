@@ -863,6 +863,74 @@
         .doc-player.playing { cursor: default; }
         .doc-player.playing .doc-frame { opacity: 1; }
 
+        /* Custom controls shown while playing */
+        .doc-player .doc-controls {
+            position: absolute;
+            bottom: 28px;
+            left: 32px;
+            right: 32px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            z-index: 4;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity .35s ease, transform .35s ease;
+            pointer-events: none;
+        }
+        .doc-player.playing:hover .doc-controls,
+        .doc-player.playing.show-controls .doc-controls {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .doc-player .doc-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,.25);
+            background: rgba(10,9,9,.55);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background .25s ease, border-color .25s ease, transform .25s ease;
+            padding: 0;
+        }
+        .doc-player .doc-btn:hover { background: rgba(10,9,9,.8); border-color: rgba(255,255,255,.55); transform: scale(1.06); }
+        .doc-player .doc-btn svg { width: 16px; height: 16px; display: block; fill: currentColor; }
+        .doc-player .doc-progress {
+            flex: 1;
+            height: 2px;
+            background: rgba(255,255,255,.18);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            border-radius: 1px;
+        }
+        .doc-player .doc-progress-fill {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 0%;
+            background: #ffffff;
+            transition: width .1s linear;
+        }
+        .doc-player .doc-time {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .08em;
+            color: rgba(255,255,255,.85);
+            font-variant-numeric: tabular-nums;
+            min-width: 96px;
+            text-align: right;
+            text-shadow: 0 1px 8px rgba(0,0,0,.5);
+        }
+        /* hide the Vimeo iframe's pointer events so user can't click into it */
+        .doc-player .doc-frame { pointer-events: none; }
+
         /* YouTube custom player */
         .yt-player {
             position: relative;
@@ -1476,7 +1544,7 @@
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773803838/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1BNVHoxU0VyTVR0S2ozMURNLVNqMTdqMVlTMGsxS2pKRFNuN1NuMTR0WVMwaw_albnbl.webp', caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776307954/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL21qMFptck1UMVNFck1UdEtqMzFETS1TajE3ajFZUzBrMUtqSkRTbjdTbnRZUzBr_oldho6.webp', caption: 'Campaign poster design and retouching', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776310428/hf_20260416_032825_4da86cb2-3d7e-4de4-9485-220b213df54f_mennyc.png', caption: 'Documentary storyboard and film production', layout: 'full' },
-                { src: 'https://player.vimeo.com/video/260034770?autoplay=1&loop=1&muted=1&title=0&byline=0&portrait=0&controls=0', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full', type: 'video' }
+                { type: 'video', src: 'https://player.vimeo.com/video/260034770', poster: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776312630/hf_20260416_040746_8c19b4cc-2c31-4a7b-a951-8dc72e210136_tfq8xi.png', label: 'Documentary', title: 'The Voice of Experience', runtime: '06:00', year: '2018', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full' }
             ],
             metrics: [
                 { value: 'Gold', label: 'Meios & Publicidade Awards' },
@@ -1818,8 +1886,14 @@
                                             </div>
                                         </div>
                                         <div class="doc-cta">
-                                            <div class="doc-cta-btn"><svg viewBox="0 0 24 24" fill="#fff"><polygon points="6,4 6,20 20,12"/></svg></div>
+                                            <div class="doc-cta-btn"><svg viewBox="0 0 24 24"><polygon points="6,4 6,20 20,12"/></svg></div>
                                             <span class="doc-cta-label">Watch documentary</span>
+                                        </div>
+                                        <div class="doc-controls">
+                                            <button class="doc-btn doc-play" aria-label="Pause"><svg class="i-pause" viewBox="0 0 24 24"><rect x="7" y="5" width="3.2" height="14" rx=".6"/><rect x="13.8" y="5" width="3.2" height="14" rx=".6"/></svg><svg class="i-play" viewBox="0 0 24 24" style="display:none"><polygon points="7,5 7,19 19,12"/></svg></button>
+                                            <button class="doc-btn doc-mute" aria-label="Unmute"><svg class="i-muted" viewBox="0 0 24 24"><path d="M4 9v6h4l6 4V5L8 9H4z"/><line x1="16" y1="9" x2="22" y2="15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/><line x1="22" y1="9" x2="16" y2="15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg><svg class="i-sound" viewBox="0 0 24 24" style="display:none"><path d="M4 9v6h4l6 4V5L8 9H4z"/><path d="M17 8.5a5 5 0 0 1 0 7" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M19.5 6.5a8 8 0 0 1 0 11" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></button>
+                                            <div class="doc-progress"><div class="doc-progress-fill"></div></div>
+                                            <div class="doc-time">00:00 / --:--</div>
                                         </div>
                                        </div>`
                                     : img.type === 'video'
@@ -2019,22 +2093,134 @@
         });
     });
 
-    // Documentary click-to-play poster
+    // Documentary click-to-play with custom Vimeo controls
+    function fmtTime(s) {
+        if (!isFinite(s)) return '--:--';
+        const m = Math.floor(s / 60);
+        const r = Math.floor(s % 60);
+        return String(m).padStart(2,'0') + ':' + String(r).padStart(2,'0');
+    }
+    function vimeoSend(frame, method, value) {
+        if (!frame || !frame.contentWindow) return;
+        const msg = value !== undefined ? { method, value } : { method };
+        frame.contentWindow.postMessage(JSON.stringify(msg), '*');
+    }
     document.querySelectorAll('.doc-player').forEach(dp => {
-        dp.addEventListener('click', () => {
+        const poster = dp.querySelector('.doc-poster');
+        const playBtn = dp.querySelector('.doc-play');
+        const muteBtn = dp.querySelector('.doc-mute');
+        const iPlay = playBtn && playBtn.querySelector('.i-play');
+        const iPause = playBtn && playBtn.querySelector('.i-pause');
+        const iSound = muteBtn && muteBtn.querySelector('.i-sound');
+        const iMuted = muteBtn && muteBtn.querySelector('.i-muted');
+        const fill = dp.querySelector('.doc-progress-fill');
+        const time = dp.querySelector('.doc-time');
+        const progress = dp.querySelector('.doc-progress');
+        let frame = null;
+        let duration = 0;
+        let isPlaying = false;
+        let isMuted = false;
+
+        const setPlayUI = (playing) => {
+            isPlaying = playing;
+            if (iPlay && iPause) {
+                iPlay.style.display  = playing ? 'none' : 'block';
+                iPause.style.display = playing ? 'block' : 'none';
+            }
+            if (playBtn) playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+        };
+        const setMuteUI = (muted) => {
+            isMuted = muted;
+            if (iSound && iMuted) {
+                iSound.style.display = muted ? 'none' : 'block';
+                iMuted.style.display = muted ? 'block' : 'none';
+            }
+            if (muteBtn) muteBtn.setAttribute('aria-label', muted ? 'Unmute' : 'Mute');
+        };
+
+        // Start on poster click
+        const startPlayback = () => {
             if (dp.classList.contains('playing')) return;
             const src = dp.dataset.src;
-            if (!dp.querySelector('.doc-frame')) {
-                const f = document.createElement('iframe');
-                f.className = 'doc-frame';
-                f.src = src;
-                f.title = dp.querySelector('.doc-title')?.textContent || 'Documentary';
-                f.setAttribute('frameborder', '0');
-                f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
-                f.setAttribute('allowfullscreen', '');
-                dp.appendChild(f);
+            // Build iframe with Vimeo Player API — hides all chrome, enables postMessage control
+            frame = document.createElement('iframe');
+            frame.className = 'doc-frame';
+            // Force-param: controls off, chromeless, API enabled, autoplay on
+            const url = src
+                + (src.indexOf('?') > -1 ? '&' : '?')
+                + 'autoplay=1&controls=0&title=0&byline=0&portrait=0&transparent=0&dnt=1&api=1';
+            frame.src = url;
+            frame.title = dp.querySelector('.doc-title')?.textContent || 'Documentary';
+            frame.setAttribute('frameborder', '0');
+            frame.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
+            frame.setAttribute('allowfullscreen', '');
+            dp.appendChild(frame);
+            dp.classList.add('playing', 'show-controls');
+            setPlayUI(true);
+            setMuteUI(false);  // starts with sound on (user gesture ok)
+
+            // Auto-hide controls after a few seconds; reappear on hover
+            setTimeout(() => dp.classList.remove('show-controls'), 2800);
+
+            // After the iframe loads, register with the Vimeo Player API
+            frame.addEventListener('load', () => {
+                // Listen for ready → then ask for play/pause/timeupdate events
+                vimeoSend(frame, 'addEventListener', 'play');
+                vimeoSend(frame, 'addEventListener', 'pause');
+                vimeoSend(frame, 'addEventListener', 'timeupdate');
+                vimeoSend(frame, 'addEventListener', 'loaded');
+                vimeoSend(frame, 'getDuration');
+                vimeoSend(frame, 'setVolume', 1);
+            });
+        };
+
+        // Master click: only start if not already playing
+        dp.addEventListener('click', (e) => {
+            if (dp.classList.contains('playing')) return;
+            // ignore clicks coming from the control area
+            if (e.target.closest('.doc-controls')) return;
+            startPlayback();
+        });
+
+        // Control handlers
+        playBtn && playBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!frame) return;
+            vimeoSend(frame, isPlaying ? 'pause' : 'play');
+        });
+        muteBtn && muteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!frame) return;
+            vimeoSend(frame, 'setVolume', isMuted ? 1 : 0);
+            setMuteUI(!isMuted);
+        });
+        progress && progress.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!frame || !duration) return;
+            const rect = progress.getBoundingClientRect();
+            const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+            vimeoSend(frame, 'setCurrentTime', pct * duration);
+        });
+
+        // Receive Vimeo API messages (player → parent)
+        window.addEventListener('message', (e) => {
+            if (!frame || e.source !== frame.contentWindow) return;
+            let data;
+            try { data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data; }
+            catch (_) { return; }
+            if (data.event === 'play')       setPlayUI(true);
+            else if (data.event === 'pause') setPlayUI(false);
+            else if (data.event === 'timeupdate' && data.data) {
+                const t = data.data.seconds || 0;
+                const d = data.data.duration || duration;
+                duration = d || duration;
+                if (fill && duration) fill.style.width = (t / duration * 100) + '%';
+                if (time) time.textContent = fmtTime(t) + ' / ' + fmtTime(duration);
             }
-            dp.classList.add('playing');
+            else if (data.method === 'getDuration' && typeof data.value === 'number') {
+                duration = data.value;
+                if (time) time.textContent = '00:00 / ' + fmtTime(duration);
+            }
         });
     });
 
