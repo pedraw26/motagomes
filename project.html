@@ -782,10 +782,10 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            font-family: var(--mono, ui-monospace, monospace);
-            font-size: 11px;
-            letter-spacing: .28em;
-            text-transform: uppercase;
+            font-family: var(--sf-pro);
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.01em;
             opacity: .85;
         }
         .doc-player .doc-bottom {
@@ -803,13 +803,14 @@
             max-width: 70%;
         }
         .doc-player .doc-runtime {
-            font-family: var(--mono, ui-monospace, monospace);
-            font-size: 11px;
-            letter-spacing: .3em;
-            text-transform: uppercase;
+            font-family: var(--sf-pro);
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.01em;
             opacity: .75;
             text-align: right;
             white-space: nowrap;
+            font-variant-numeric: tabular-nums;
         }
         .doc-player .doc-cta {
             position: absolute;
@@ -836,10 +837,10 @@
         }
         .doc-player .doc-cta-btn svg { width: 22px; height: 22px; transform: translateX(2px); }
         .doc-player .doc-cta-label {
-            font-family: var(--sf-pro, -apple-system, sans-serif);
+            font-family: var(--sf-pro);
             font-size: 13px;
-            font-weight: 500;
-            letter-spacing: .04em;
+            font-weight: 400;
+            letter-spacing: 0.01em;
             color: #fff;
         }
         .doc-player:hover .doc-poster { transform: scale(1.02); }
@@ -919,9 +920,10 @@
             transition: width .1s linear;
         }
         .doc-player .doc-time {
-            font-family: var(--mono);
-            font-size: 11px;
-            letter-spacing: .08em;
+            font-family: var(--sf-pro);
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.01em;
             color: rgba(255,255,255,.85);
             font-variant-numeric: tabular-nums;
             min-width: 96px;
