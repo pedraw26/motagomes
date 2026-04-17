@@ -593,6 +593,35 @@
             line-height: 1.8;
         }
 
+        /* Black/white split slide — minimal transition divider */
+        .showcase-item.has-bwsplit {
+            aspect-ratio: 21 / 9;
+            background: #121010;
+            position: relative;
+            overflow: hidden;
+        }
+        .showcase-item.has-bwsplit .bw-split {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        .showcase-item.has-bwsplit .bw-split .half {
+            position: relative;
+        }
+        .showcase-item.has-bwsplit .bw-split .half.black {
+            background: #121010;
+            transform: translateX(-100%);
+            animation: bw-in-left 1.4s cubic-bezier(.65,0,.35,1) forwards;
+        }
+        .showcase-item.has-bwsplit .bw-split .half.white {
+            background: #ffffff;
+            transform: translateX(100%);
+            animation: bw-in-right 1.4s cubic-bezier(.65,0,.35,1) forwards;
+        }
+        @keyframes bw-in-left  { to { transform: translateX(0); } }
+        @keyframes bw-in-right { to { transform: translateX(0); } }
+
         /* 3:4 placeholder marquee — white cells scrolling right → left, vertically centered */
         .showcase-item.has-placeholders {
             background: #ffffff;
@@ -1563,6 +1592,7 @@
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773803838/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1BNVHoxU0VyTVR0S2ozMURNLVNqMTdqMVlTMGsxS2pKRFNuN1NuMTR0WVMwaw_albnbl.webp', caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776307954/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL21qMFptck1UMVNFck1UdEtqMzFETS1TajE3ajFZUzBrMUtqSkRTbjdTbnRZUzBr_oldho6.webp', caption: 'Campaign poster design and retouching', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776310428/hf_20260416_032825_4da86cb2-3d7e-4de4-9485-220b213df54f_mennyc.png', caption: 'Documentary storyboard and film production', layout: 'full' },
+                { type: 'bwsplit', caption: 'Transition', layout: 'full' },
                 { type: 'video', src: 'https://player.vimeo.com/video/260034770', poster: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776312630/hf_20260416_040746_8c19b4cc-2c31-4a7b-a951-8dc72e210136_tfq8xi.png', label: '', title: 'The Voice of Experience', runtime: '10:20', year: '2018', award: 'Gold \u2014 Meios & Publicidade 2018', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full' }
             ],
             metrics: [
@@ -1879,7 +1909,7 @@
                 <section class="section section--showcase" data-reveal style="border-top:none; padding:0;">
                     <div class="showcase-gallery">
                         ${project.images.map(img => `
-                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube' || img.type === 'mp4') ? ' has-iframe has-video' : ''}${img.grain ? ' has-grain' : ''}${img.type === 'placeholders' ? ' has-placeholders' : ''}"${img.bgStyle ? ` style="${img.bgStyle} display:flex; align-items:center; justify-content:center;"` : ''}>
+                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube' || img.type === 'mp4') ? ' has-iframe has-video' : ''}${img.grain ? ' has-grain' : ''}${img.type === 'placeholders' ? ' has-placeholders' : ''}${img.type === 'bwsplit' ? ' has-bwsplit' : ''}"${img.bgStyle ? ` style="${img.bgStyle} display:flex; align-items:center; justify-content:center;"` : ''}>
                                 ${img.type === 'youtube'
                                     ? `<div class="yt-player" data-vid="${img.src}">
                                         <iframe id="yt-${img.src}" src="https://www.youtube.com/embed/${img.src}?enablejsapi=1&autoplay=0&loop=1&playlist=${img.src}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&start=10" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -1926,6 +1956,8 @@
                                     ? `<video src="${img.src}" autoplay muted loop playsinline preload="metadata" poster="${img.poster || ''}" class="${img.effect === 'cinematic-zoom' ? 'cinematic-zoom' : ''}" style="width:100%;height:100%;object-fit:cover;display:block;background:#000;"></video>`
                                     : img.type === 'slideshow'
                                     ? `<div class="showcase-slideshow" data-interval="${img.interval || 1500}">${img.src.map((s, i) => `<img src="${s}" alt="${img.caption}" loading="lazy" class="${i === 0 ? 'active' : ''}">`).join('')}</div>`
+                                    : img.type === 'bwsplit'
+                                    ? `<div class="bw-split"><div class="half black"></div><div class="half white"></div></div>`
                                     : img.type === 'placeholders'
                                     ? (() => {
                                         const cellSvg = `<div class="ph-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-4.5-4.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg></div>`;
