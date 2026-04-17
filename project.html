@@ -841,9 +841,26 @@
         .doc-player .doc-award {
             font-family: var(--sf-pro);
             font-size: 12px;
-            font-weight: 500;
+            font-weight: 400;
             letter-spacing: 0.02em;
             white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .doc-player .doc-award-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border: 1px solid rgba(217,176,90,0.55);
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .doc-player .doc-award-text {
+            color: rgba(255,255,255,0.85);
         }
         .doc-player .doc-bottom {
             display: flex;
@@ -1593,7 +1610,7 @@
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776307954/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL21qMFptck1UMVNFck1UdEtqMzFETS1TajE3ajFZUzBrMUtqSkRTbjdTbnRZUzBr_oldho6.webp', caption: 'Campaign poster design and retouching', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776310428/hf_20260416_032825_4da86cb2-3d7e-4de4-9485-220b213df54f_mennyc.png', caption: 'Documentary storyboard and film production', layout: 'full' },
                 { type: 'bwsplit', caption: 'Transition', layout: 'full' },
-                { type: 'video', src: 'https://player.vimeo.com/video/260034770', poster: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776312630/hf_20260416_040746_8c19b4cc-2c31-4a7b-a951-8dc72e210136_tfq8xi.png', label: '', title: 'The Voice of Experience', runtime: '10:20', year: '2018', award: 'Gold \u2014 Meios & Publicidade 2018', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full' }
+                { type: 'video', src: 'https://player.vimeo.com/video/260034770', poster: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776312630/hf_20260416_040746_8c19b4cc-2c31-4a7b-a951-8dc72e210136_tfq8xi.png', label: '', title: 'The Voice of Experience', runtime: '10:20', year: '2018', awardPill: 'Gold', award: 'Meios & Publicidade 2018', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full' }
             ],
             metrics: [
                 { value: 'Gold', label: 'Meios & Publicidade Awards' },
@@ -1932,7 +1949,7 @@
                                                 <div class="doc-top-l">
                                                     ${img.label ? `<span class="doc-label">${img.label}</span>` : ''}
                                                     <span class="doc-title">${img.title || img.caption}</span>
-                                                    ${img.award ? `<span class="doc-award metal-text gold">${img.award}</span>` : ''}
+                                                    ${img.award ? `<span class="doc-award"><span class="doc-award-pill metal-text gold">${img.awardPill || 'Gold'}</span><span class="doc-award-text">${img.award}</span></span>` : ''}
                                                 </div>
                                             </div>
                                             <div class="doc-bottom">
