@@ -556,10 +556,70 @@
         /* 3:4 placeholder marquee — white cells scrolling right → left, vertically centered */
         .showcase-item.has-placeholders {
             background: #ffffff;
-            min-height: 420px;
+            min-height: 520px;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+        }
+        .showcase-item.has-placeholders .ph-kicker {
+            position: absolute;
+            top: 40px;
+            left: 48px;
+            right: 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 24px;
+            font-family: var(--mono, ui-monospace, monospace);
+            font-size: 10px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: rgba(18,16,16,0.55);
+            pointer-events: none;
+            z-index: 2;
+        }
+        .showcase-item.has-placeholders .ph-footer {
+            position: absolute;
+            bottom: 40px;
+            left: 48px;
+            right: 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            z-index: 2;
+        }
+        .showcase-item.has-placeholders .ph-cta {
+            font-family: var(--sf-pro, -apple-system, sans-serif);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: rgba(18,16,16,0.75);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: color .3s ease, gap .3s ease;
+        }
+        .showcase-item.has-placeholders .ph-cta:hover { color: #121010; gap: 12px; }
+        .showcase-item.has-placeholders .ph-cta svg { width: 12px; height: 12px; }
+        .showcase-item.has-placeholders .ph-ig {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            color: rgba(18,16,16,0.55);
+            text-decoration: none;
+            transition: color .3s ease, transform .3s ease;
+        }
+        .showcase-item.has-placeholders .ph-ig:hover { color: #121010; transform: scale(1.1); }
+        .showcase-item.has-placeholders .ph-ig svg { width: 18px; height: 18px; }
+        @media (max-width: 768px) {
+            .showcase-item.has-placeholders .ph-kicker { top: 22px; left: 20px; right: 20px; font-size: 9px; letter-spacing: .24em; }
+            .showcase-item.has-placeholders .ph-footer { bottom: 22px; left: 20px; right: 20px; }
+            .showcase-item.has-placeholders .ph-cta { font-size: 11px; }
         }
         .showcase-placeholders {
             width: 100%;
@@ -1726,7 +1786,16 @@
                                     ? (() => {
                                         const cellSvg = `<div class="ph-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-4.5-4.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg></div>`;
                                         const setA = Array.from({length: img.count || 8}, () => cellSvg).join('');
-                                        return `<div class="showcase-placeholders"><div class="ph-track">${setA}${setA}</div></div>`;
+                                        const kicker = img.kicker || 'Conceptual illustration';
+                                        const eyebrow = img.eyebrow || 'For the campaign';
+                                        const cta = img.ctaText || 'See more of my personal work';
+                                        const ctaHref = img.ctaHref || 'https://www.instagram.com/motagomes_/';
+                                        const igHref = img.igHref || ctaHref;
+                                        const igSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>`;
+                                        const arrow = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13,6 19,12 13,18"/></svg>`;
+                                        return `<div class="ph-kicker"><span>${kicker}</span><span>${eyebrow}</span></div>
+                                                <div class="showcase-placeholders"><div class="ph-track">${setA}${setA}</div></div>
+                                                <div class="ph-footer"><a class="ph-cta" href="${ctaHref}" target="_blank" rel="noopener">${cta} ${arrow}</a><a class="ph-ig" href="${igHref}" target="_blank" rel="noopener" aria-label="Instagram">${igSvg}</a></div>`;
                                     })()
                                     : img.type === 'colorstrip'
                                     ? `<div class="showcase-colorstrip">${img.colors.map((c, ci) => { const hex = c.replace('#',''); const r = parseInt(hex.substr(0,2),16); const g = parseInt(hex.substr(2,2),16); const b = parseInt(hex.substr(4,2),16); const lum = (r*299+g*587+b*114)/1000; const tc = lum > 140 ? '#000' : '#fff'; const pnt = img.pantones && img.pantones[ci] ? img.pantones[ci] : ''; const role = img.roles && img.roles[ci] ? img.roles[ci] : ''; return `<div style="background:${c};color:${tc}">${role ? `<div class="cs-role">${role}</div>` : ''}<div class="cs-meta">${c.toUpperCase()}${pnt ? '<br>' + pnt : ''}</div></div>`; }).join('')}</div>`
