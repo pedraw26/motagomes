@@ -606,7 +606,8 @@
             display: flex;
             align-items: center;
             width: max-content;
-            animation: sbs-marquee 34s linear infinite;
+            animation: sbs-marquee 40s linear infinite;
+            animation-delay: -17s;   /* start mid-cycle so page load looks already in motion */
         }
         .showcase-item.has-sbscreens .sbs-cell {
             aspect-ratio: 3 / 4;
@@ -1993,8 +1994,9 @@
                                     : img.type === 'sbscreens'
                                     ? (() => {
                                         const icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-4.5-4.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg>`;
-                                        // Three screens, duplicated for seamless loop
-                                        const set = `<div class="sbs-cell">${icon}</div><div class="sbs-cell">${icon}</div><div class="sbs-cell">${icon}</div>`;
+                                        // 4 original screens, duplicated (8 total) for seamless loop + viewport always full
+                                        const cell = `<div class="sbs-cell">${icon}</div>`;
+                                        const set = cell + cell + cell + cell;
                                         return `<div class="sbs-track">${set}${set}</div>`;
                                     })()
                                     : img.type === 'placeholders'
