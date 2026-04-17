@@ -553,14 +553,21 @@
             line-height: 1.8;
         }
 
-        /* 3:4 placeholder marquee — white cells scrolling right → left, on white background */
-        .showcase-item.has-placeholders { background: #ffffff; }
+        /* 3:4 placeholder marquee — white cells scrolling right → left, vertically centered */
+        .showcase-item.has-placeholders {
+            background: #ffffff;
+            min-height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         .showcase-placeholders {
             width: 100%;
-            padding: 72px 0;
             background: #ffffff;
             overflow: hidden;
             position: relative;
+            display: flex;
+            align-items: center;
             -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
                     mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
         }
@@ -580,21 +587,23 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: rgba(18,16,16,0.22);
+            color: rgba(18,16,16,0.25);
         }
         .showcase-placeholders .ph-cell svg {
-            width: 38%;
-            height: auto;
+            width: 20px;
+            height: 20px;
             display: block;
+            opacity: .85;
         }
         @keyframes ph-marquee {
             0%   { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
         @media (max-width: 768px) {
-            .showcase-placeholders { padding: 40px 0; }
+            .showcase-item.has-placeholders { min-height: 280px; }
             .showcase-placeholders .ph-track { gap: 16px; }
             .showcase-placeholders .ph-cell { width: 140px; }
+            .showcase-placeholders .ph-cell svg { width: 16px; height: 16px; }
         }
 
         .showcase-slideshow {
@@ -1366,8 +1375,7 @@
                 { type: 'mp4', src: 'https://res.cloudinary.com/dzgqzeebg/video/upload/v1776453073/hf_20260417_161823_be42aff6-94ae-4add-836f-ea6904f9f135_wnk0ul.mp4', grain: true, caption: 'Campaign film', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773803838/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1BNVHoxU0VyTVR0S2ozMURNLVNqMTdqMVlTMGsxS2pKRFNuN1NuMTR0WVMwaw_albnbl.webp', caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776307954/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL21qMFptck1UMVNFck1UdEtqMzFETS1TajE3ajFZUzBrMUtqSkRTbjdTbnRZUzBr_oldho6.webp', caption: 'Campaign poster design and retouching', layout: 'half' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776310428/hf_20260416_032825_4da86cb2-3d7e-4de4-9485-220b213df54f_mennyc.png', caption: 'Documentary storyboard and film production', layout: 'full' },
-                { type: 'video', src: 'https://player.vimeo.com/video/260034770?autoplay=1&title=0&byline=0&portrait=0', poster: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776312630/hf_20260416_040746_8c19b4cc-2c31-4a7b-a951-8dc72e210136_tfq8xi.png', label: 'Documentary', title: 'The Voice of Experience', runtime: '6 min', year: '2018', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full' }
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776310428/hf_20260416_032825_4da86cb2-3d7e-4de4-9485-220b213df54f_mennyc.png', caption: 'Documentary storyboard and film production', layout: 'full' }
             ],
             metrics: [
                 { value: 'Gold', label: 'Meios & Publicidade Awards' },
