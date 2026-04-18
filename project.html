@@ -822,9 +822,9 @@
             position: absolute;
             top: clamp(20px, 2.6vw, 36px);
             right: clamp(20px, 2.6vw, 36px);
-            width: clamp(34px, 3.2vw, 48px);
+            width: clamp(40px, 3.6vw, 56px);
             height: auto;
-            color: #ffffff;
+            display: block;
             opacity: 0.95;
         }
         .sbsp-stat-row {
@@ -853,12 +853,31 @@
         .sbsp-card-image {
             background: #1a1a1a;
             position: relative;
+            isolation: isolate;
         }
         .sbsp-card-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
+        }
+        /* 35mm film grain — scoped to the photo card only (does NOT overlay the blue stat card).
+           Uses the same SVG fractal-noise + 1.2s stepped shift as .has-grain for visual consistency. */
+        .sbsp-card-image.has-image::after {
+            content: '';
+            position: absolute;
+            inset: -20%;
+            pointer-events: none;
+            z-index: 3;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.7'/></svg>");
+            background-size: 180px 180px;
+            mix-blend-mode: overlay;
+            opacity: 0.28;
+            animation: grain-shift 1.2s steps(6) infinite;
+            will-change: transform;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .sbsp-card-image.has-image::after { animation: none; }
         }
         .sbsp-placeholder {
             position: absolute;
@@ -1900,7 +1919,7 @@
                     'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1100,c_limit/v1776535801/2b_aksvsh.jpg',
                     'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1100,c_limit/v1776535799/3b_qketwt.jpg'
                 ], caption: 'Brand application — photo-paper develop sequence', layout: 'full' },
-                { type: 'sbstatpair', stat: 84, body: 'Audience reaction was overwhelmingly positive. 84% of viewers described the campaign as emotional and said they felt represented — a signal that the story had landed with the people it was meant to honour.', caption: 'Campaign impact — audience reception', layout: 'full' },
+                { type: 'sbstatpair', stat: 84, body: 'Audience reaction was overwhelmingly positive. 84% of viewers described the campaign as emotional and said they felt represented — a signal that the story had landed with the people it was meant to honour.', imageSrc: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776555893/Female_holding_ipad_vqopon.webp', imageCaption: 'Audience reaction — campaign reception', caption: 'Campaign impact — audience reception', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776532670/standart_bank_ccccopy_zfdzlv.jpg', caption: 'Standard Bank — campaign closer', layout: 'full' },
                 { type: 'video', src: 'https://player.vimeo.com/video/260034770', poster: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776312630/hf_20260416_040746_8c19b4cc-2c31-4a7b-a951-8dc72e210136_tfq8xi.png', label: '', title: 'The Voice of Experience', runtime: '10:20', year: '2018', awardPill: 'Gold', award: 'Meios & Publicidade 2018', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full' }
             ],
@@ -2276,13 +2295,14 @@
                                     ? `<div class="sbd-grid">${(img.images || []).map(u => `<div class="sbd-cell"><img src="${u}" alt="" loading="lazy" decoding="async" fetchpriority="low"></div>`).join('')}</div>`
                                     : img.type === 'sbstatpair'
                                     ? (() => {
-                                        const sbShield = `<svg class="sbsp-logo" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 4 C33 4 40 8 40 14 L40 26 C40 36 32 42 24 44 C16 42 8 36 8 26 L8 14 C8 8 15 4 24 4 Z"/><path d="M18 18 L30 18 M16 24 L32 24 M18 30 L30 30"/></svg>`;
+                                        const sbShield = `<img class="sbsp-logo" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_200,c_limit/v1776556065/logo_STB_dv8toe.webp" alt="Standard Bank" loading="lazy" decoding="async">`;
                                         const placeholderSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-4.5-4.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg>`;
                                         const target = parseInt(img.stat || '84', 10);
                                         const bodyText = img.body || 'Audience reaction was overwhelmingly positive — viewers described the campaign as emotional and said they felt represented.';
                                         const rightInner = img.imageSrc
                                             ? `<img src="${img.imageSrc}" alt="${img.imageCaption || ''}" loading="lazy" decoding="async">`
                                             : `<div class="sbsp-placeholder">${placeholderSvg}<span>Image placeholder</span></div>`;
+                                        const rightClass = img.imageSrc ? 'sbsp-card sbsp-card-image has-image' : 'sbsp-card sbsp-card-image';
                                         return `
                                             <div class="sbsp-card sbsp-card-stat">
                                                 ${sbShield}
@@ -2291,7 +2311,7 @@
                                                     <p class="sbsp-stat-body">${bodyText}</p>
                                                 </div>
                                             </div>
-                                            <div class="sbsp-card sbsp-card-image">${rightInner}</div>
+                                            <div class="${rightClass}">${rightInner}</div>
                                         `;
                                     })()
                                     : img.type === 'sbscreens'
