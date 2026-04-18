@@ -610,21 +610,20 @@
             animation: sbs-marquee 40s linear infinite;
             animation-delay: -17s;   /* start mid-cycle so page load looks already in motion */
         }
-        /* Cell aspect ratio is set so object-fit: cover trims exactly 3% off each side
-           with NO vertical cropping. Image aspect 1920/2715 = 0.7072.
-           Cell aspect 0.7072 × 0.94 = 0.6648 → image overflows width by 6.38%, clipped 3.19% per side. */
+        /* Images are pre-cropped — cells fit each image's natural aspect with no CSS cropping. */
         .showcase-item.has-sbscreens .sbs-cell {
             height: 75%;
-            aspect-ratio: 0.665;
             flex-shrink: 0;
             margin-right: 40px;
             box-shadow: 0 24px 80px -30px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: stretch;
             overflow: hidden;
         }
         .showcase-item.has-sbscreens .sbs-cell img {
-            width: 100%;
             height: 100%;
-            object-fit: cover;
+            width: auto;
+            max-width: none;
             display: block;
         }
         /* Icon fallback — only applies when no images provided */
@@ -1642,12 +1641,12 @@
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773803838/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1BNVHoxU0VyTVR0S2ozMURNLVNqMTdqMVlTMGsxS2pKRFNuN1NuMTR0WVMwaw_albnbl.webp', caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776307954/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL21qMFptck1UMVNFck1UdEtqMzFETS1TajE3ajFZUzBrMUtqSkRTbjdTbnRZUzBr_oldho6.webp', caption: 'Campaign poster design and retouching', layout: 'half' },
                 { type: 'sbscreens', images: [
-                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776533114/15c4a32e710f5c_tx7vw0.webp',
-                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776533113/15c4a32ca9105e_teu5xq.webp',
-                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776533158/15c4a32d92397e_fa4opr.webp',
-                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776533117/15c4a330792dc6_czayxf.webp',
-                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776533115/15c4a32f54311f_u5imni.webp',
-                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776533116/15c4a32fa8afd3_pv3hyp.webp'
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776535800/1_cxcnt8.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776535800/2_uor0gy.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776535801/3_nf0cce.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776535799/1b_buedao.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776535801/2b_aksvsh.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776535799/3b_qketwt.jpg'
                 ], caption: 'Brand application — digital touchpoints across Standard Bank systems', layout: 'full' },
                 { type: 'bwsplit', caption: 'Transition', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776532670/standart_bank_ccccopy_zfdzlv.jpg', caption: 'Standard Bank — campaign closer', layout: 'full' },
