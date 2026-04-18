@@ -559,15 +559,20 @@
             color: #111;
             max-width: 1100px;
             margin: 0 auto 40px;
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
         }
-
-        .hero-subtitle.is-visible {
+        .hero-subtitle .hs-part {
+            display: inline;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 900ms cubic-bezier(.22,1,.36,1), transform 1100ms cubic-bezier(.22,1,.36,1);
+            will-change: opacity, transform;
+        }
+        .hero-subtitle.is-visible .hs-part {
             opacity: 1;
             transform: translateY(0);
         }
+        .hero-subtitle.is-visible .hs-part.p2 { transition-delay: 450ms; }
+        .hero-subtitle.is-visible .hs-part.p3 { transition-delay: 900ms; }
 
         .hero-inline-stack {
             --hero-inline-shift: 0em;
@@ -3064,7 +3069,7 @@ margin-top: 3px;
         <!-- SECTION 1: HERO -->
         <section class="snap-section hero" id="hero">
             <div class="hero-content">
-                <p class="hero-subtitle">Hybrid Designer focused on elevating brands <span class="hero-inline-stack"><span class="hero-inline-green"></span><img class="hero-inline-image" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1772425940/Layer_21_qw0mad.png" alt=""></span> experiences that balance aesthetics with purpose.</p>
+                <p class="hero-subtitle"><span class="hs-part p1">Hybrid Designer</span> <span class="hs-part p2">focused on elevating brands <span class="hero-inline-stack"><span class="hero-inline-green"></span><img class="hero-inline-image" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1772425940/Layer_21_qw0mad.png" alt=""></span> experiences</span> <span class="hs-part p3">that balance aesthetics with purpose.</span></p>
                 <a href="#work" class="hero-cta">
                     View Work
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
