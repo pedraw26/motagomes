@@ -1303,6 +1303,13 @@
             max-width: 24ch;
             margin: 0 auto;
         }
+        .philosophy-text .ph-line {
+            display: block;
+            margin-bottom: 0.12em;
+        }
+        .philosophy-text .ph-line:last-child {
+            margin-bottom: 0;
+        }
 
         /* Generic scroll-reveal — fade + rise when entering viewport */
         [data-scroll-reveal] {
@@ -3349,7 +3356,11 @@ margin-top: 3px;
         <!-- PHILOSOPHY BRIDGE -->
         <section class="snap-section philosophy">
             <div class="philosophy-inner">
-                <p class="philosophy-text" data-scroll-reveal>Design is research made visible — every pixel carries intent, every interaction tells a story.</p>
+                <p class="philosophy-text">
+                    <span class="ph-line" data-scroll-reveal>Design is research made visible —</span>
+                    <span class="ph-line" data-scroll-reveal data-scroll-reveal-delay="500">every pixel carries intent,</span>
+                    <span class="ph-line" data-scroll-reveal data-scroll-reveal-delay="1000">every interaction tells a story.</span>
+                </p>
             </div>
         </section>
 
