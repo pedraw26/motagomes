@@ -853,7 +853,10 @@
         }
         
         .gallery-stacked-card-inner {
-            height: 500px;
+            /* Lock aspect ratio so cards look identical on every viewport:
+               desktop 1000×500, tablet 768×384, mobile 375×188 — all 2:1. */
+            aspect-ratio: 2 / 1;
+            width: 100%;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 -10px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);

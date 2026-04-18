@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project — Mota Gomes</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <!-- Preconnect to Cloudinary: saves ~100-300ms on first image handshake (DNS + TLS + TCP upfront) -->
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+    <link rel="dns-prefetch" href="https://res.cloudinary.com">
     <style>
         :root {
             --sf-pro: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
@@ -277,7 +280,8 @@
             inset: 0;
             opacity: 0.35;
             z-index: 0;
-            background-attachment: fixed;
+            /* background-attachment: fixed removed — it forced a full-page repaint on every scroll frame,
+               especially combined with the blurred header backdrop-filter. Huge scroll perf win. */
         }
 
         .project-hero-overlay {
@@ -660,6 +664,227 @@
         @media (max-width: 768px) {
             .showcase-item.has-sbscreens .sbs-cell { margin-right: 22px; height: 68%; }
             .showcase-item.has-sbscreens .sbs-cell.sbs-cell-icon { width: min(62vw, 260px); height: auto; }
+        }
+
+        /* Standard Bank royal-blue cross-fade — single centered portrait, cycles through frames (documentary V6, no text).
+           Height is 16:9 minus 50px — shorter than a standard slide; inner image scales proportionally via % height. */
+        .showcase-item.has-sbcrossfade {
+            aspect-ratio: auto;
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: calc(56.25% - 50px);
+            background: #0033A0;
+            overflow: hidden;
+        }
+        .showcase-item.has-sbcrossfade .sbx-stage {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .showcase-item.has-sbcrossfade .sbx-frame {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: sbx-cycle 24s cubic-bezier(.22, 1, .36, 1) infinite;
+        }
+        .showcase-item.has-sbcrossfade .sbx-frame img {
+            height: 82%;
+            width: auto;
+            max-width: 70%;
+            object-fit: cover;
+            display: block;
+            filter: contrast(1.04);
+            box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.6);
+        }
+        .showcase-item.has-sbcrossfade .sbx-frame:nth-child(1) { animation-delay: 0s; }
+        .showcase-item.has-sbcrossfade .sbx-frame:nth-child(2) { animation-delay: -4s; }
+        .showcase-item.has-sbcrossfade .sbx-frame:nth-child(3) { animation-delay: -8s; }
+        .showcase-item.has-sbcrossfade .sbx-frame:nth-child(4) { animation-delay: -12s; }
+        .showcase-item.has-sbcrossfade .sbx-frame:nth-child(5) { animation-delay: -16s; }
+        .showcase-item.has-sbcrossfade .sbx-frame:nth-child(6) { animation-delay: -20s; }
+        @keyframes sbx-cycle {
+            0%, 1%   { opacity: 0; }
+            4%, 16%  { opacity: 1; }
+            19%, 100%{ opacity: 0; }
+        }
+        @media (max-width: 768px) {
+            .showcase-item.has-sbcrossfade .sbx-frame img { height: 72%; max-width: 82%; }
+        }
+
+        /* Standard Bank royal-blue DARKROOM — photo-paper cream cells with image developing from invert/contrast
+           into positive, wet-sheen pass, on infinite loop. No text. Replaces sbcrossfade as the main SB marquee. */
+        .showcase-item.has-sbdarkroom {
+            aspect-ratio: auto;
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: calc(56.25% - 50px);
+            background: #0033A0;
+            overflow: hidden;
+        }
+        .showcase-item.has-sbdarkroom .sbd-grid {
+            position: absolute;
+            inset: 10% 6%;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 14px;
+            align-items: center;
+        }
+        .showcase-item.has-sbdarkroom .sbd-cell {
+            aspect-ratio: 1848 / 2715;
+            position: relative;
+            overflow: hidden;
+            background: #e8e2d0;                       /* blank photo paper cream before image develops */
+            box-shadow: 0 22px 50px -22px rgba(0, 0, 0, 0.55);
+        }
+        .showcase-item.has-sbdarkroom .sbd-cell img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            animation: sbd-develop 9s cubic-bezier(.4, 0, .2, 1) infinite;
+        }
+        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(1) img { animation-delay: 0s; }
+        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(2) img { animation-delay: .4s; }
+        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(3) img { animation-delay: .8s; }
+        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(4) img { animation-delay: 1.2s; }
+        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(5) img { animation-delay: 1.6s; }
+        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(6) img { animation-delay: 2s; }
+        @keyframes sbd-develop {
+            0%, 3%    { opacity: 0;  filter: invert(1)  contrast(2)   brightness(2)   sepia(.3); }
+            10%       { opacity: .4; filter: invert(.6) contrast(1.6) brightness(1.4) sepia(.2); }
+            25%       { opacity: .7; filter: invert(.2) contrast(1.2) brightness(1.1) sepia(.1); }
+            35%, 80%  { opacity: 1;  filter: invert(0)  contrast(1)   brightness(1)   sepia(0); }
+            95%, 100% { opacity: 1;  filter: invert(0)  contrast(1)   brightness(1)   sepia(0); }
+        }
+        /* Wet-paper sheen sweep, synced with each cell's develop delay */
+        .showcase-item.has-sbdarkroom .sbd-cell::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.3) 50%, transparent 60%);
+            opacity: 0;
+            animation: sbd-shine 9s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(1)::after { animation-delay: 0s; }
+        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(2)::after { animation-delay: .4s; }
+        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(3)::after { animation-delay: .8s; }
+        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(4)::after { animation-delay: 1.2s; }
+        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(5)::after { animation-delay: 1.6s; }
+        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(6)::after { animation-delay: 2s; }
+        @keyframes sbd-shine {
+            0%, 8%    { opacity: 0;  transform: translateX(-100%); }
+            15%       { opacity: .7; transform: translateX(0); }
+            22%, 100% { opacity: 0;  transform: translateX(100%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .showcase-item.has-sbdarkroom .sbd-cell img,
+            .showcase-item.has-sbdarkroom .sbd-cell::after { animation: none; }
+            .showcase-item.has-sbdarkroom .sbd-cell img { filter: none; opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            .showcase-item.has-sbdarkroom .sbd-grid { inset: 8% 4%; gap: 8px; }
+        }
+
+        /* Standard Bank stat-pair — 2-card layout on a white background for contrast.
+           Left: royal-blue card with animated % + body copy + SB shield.
+           Right: image (or dark placeholder until artwork is supplied). */
+        .showcase-item.has-sbstatpair {
+            aspect-ratio: auto;
+            background: #ffffff;
+            /* Match reference: cards flush to left/right edges, generous white above/below and between. */
+            padding: clamp(50px, 7vw, 110px) 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(40px, 6vw, 96px);
+            align-items: stretch;
+        }
+        .sbsp-card {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+        }
+        .sbsp-card-stat {
+            background: #0033A0;
+            padding: clamp(28px, 4vw, 56px);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        .sbsp-logo {
+            position: absolute;
+            top: clamp(20px, 2.6vw, 36px);
+            right: clamp(20px, 2.6vw, 36px);
+            width: clamp(34px, 3.2vw, 48px);
+            height: auto;
+            color: #ffffff;
+            opacity: 0.95;
+        }
+        .sbsp-stat-row {
+            display: flex;
+            align-items: flex-end;
+            gap: clamp(18px, 2.4vw, 36px);
+        }
+        .sbsp-stat-num {
+            font-family: var(--sf-pro);
+            font-size: clamp(64px, 10vw, 168px);
+            font-weight: 300;
+            color: #ffffff;
+            line-height: 0.88;
+            letter-spacing: -0.035em;
+            flex-shrink: 0;
+            font-variant-numeric: tabular-nums;
+        }
+        .sbsp-stat-body {
+            font-family: var(--sf-pro);
+            font-size: clamp(12px, 0.95vw, 15px);
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.5;
+            max-width: 38ch;
+            padding-bottom: clamp(6px, 0.8vw, 14px);
+        }
+        .sbsp-card-image {
+            background: #1a1a1a;
+            position: relative;
+        }
+        .sbsp-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .sbsp-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.22);
+            gap: 14px;
+        }
+        .sbsp-placeholder svg { width: 48px; height: 48px; }
+        .sbsp-placeholder span {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+        }
+        @media (max-width: 900px) {
+            .showcase-item.has-sbstatpair {
+                grid-template-columns: 1fr;
+                padding: 32px 0;
+                gap: 32px;
+            }
+            .sbsp-stat-row { flex-direction: column; align-items: flex-start; gap: 18px; }
+            .sbsp-stat-body { padding-bottom: 0; }
         }
 
         /* Solid-white breathing slide — one full 16:9 frame in #ffffff */
@@ -1536,7 +1761,7 @@
             year: '2024',
             services: 'Brand Identity, Ecommerce Design, Art Direction, Packaging',
             gradient: 'gradient-velvet',
-            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773219965/Aura_Site_copy_zjjcgh.jpg',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1773219965/Aura_Site_copy_zjjcgh.jpg',
             description: 'Complete brand identity and ecommerce platform for Aura — a premium lifestyle brand. From logo and visual system to a fully designed online store experience.',
             challenge: 'Aura needed a cohesive brand world that translated seamlessly from physical touchpoints to a high-converting ecommerce experience. The brand had to feel premium yet accessible, standing out in a saturated DTC market.',
             solution: 'We built a refined visual identity anchored by a minimal wordmark, a muted-yet-bold colour palette, and bespoke typography pairings. The ecommerce platform was designed mobile-first with editorial product pages, smooth checkout flows, and lifestyle imagery that reinforces the brand narrative at every scroll.',
@@ -1561,20 +1786,20 @@
             year: '2024',
             services: 'Art Direction, Graphic Design, Illustration, Copywriting, Campaign Development, Strategy',
             gradient: 'gradient-midnight',
-            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776301771/Papel-embrulho1_dukbrt.jpg',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776301771/Papel-embrulho1_dukbrt.jpg',
             description: 'A festive holiday campaign for Galp across Portugal and Spain, showcasing their exclusive seasonal products — from Christmas cookies and festive dots to traditional cakes — with a playful twist on the Portuguese saying "comer e chorar por mais." The visuals balanced Galp\'s brand identity with warm, nostalgic holiday charm.',
             challenge: 'Delivering a full 360° campaign across print, digital and OOH for two markets within a tight 1.2-month timeline — while ensuring the festive warmth felt authentic to Galp\'s brand and resonated with both Portuguese and Spanish audiences.',
             solution: 'Led the creative vision and asset design, merging Galp\'s brand identity with festive Christmas motifs. Partnered with another designer to deliver a complete 360° campaign:<br><br><strong>Print</strong> — In-store posters, flyers, and shelf talkers<br><strong>Digital</strong> — Social media carousels and animated GIFs with product close-ups<br><strong>OOH</strong> — Gas station pump toppers and window decals',
             images: [
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773865908/galp-card_vn3fdn.gif', caption: 'Festive campaign key visual — Christmas warmth meets brand identity', layout: 'full', style: 'transform: scale(1.10);' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1773865908/galp-card_vn3fdn.gif', caption: 'Festive campaign key visual — Christmas warmth meets brand identity', layout: 'full', style: 'transform: scale(1.10);' },
                 { type: 'html', src: '/galp-grid.html', caption: 'Festive card system — animated grid showcase', layout: 'full' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776303437/bandeja_iajxem.jpg', caption: 'Festive product tray — seasonal packaging design', layout: 'full' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776301769/Papel-embrulho_wquff2.jpg', caption: 'Wrapping paper design — festive brand pattern', layout: 'full' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776301771/Papel-embrulho1_dukbrt.jpg', caption: 'Wrapping paper variant — holiday gift packaging', layout: 'full' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776301788/poster2_god4h8.jpg', caption: 'Campaign poster — seasonal product showcase', layout: 'full' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776302254/Artboard-1_tmgf8z.jpg', caption: 'Social media assets — carousel design', layout: 'half' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776302254/Artboard-1-copy-2_w3320i.jpg', caption: 'Social media assets — carousel variant', layout: 'half' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776305960/gap_ygkvl7.jpg', caption: 'Campaign overview — full asset grid', layout: 'full' }
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776303437/bandeja_iajxem.jpg', caption: 'Festive product tray — seasonal packaging design', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776301769/Papel-embrulho_wquff2.jpg', caption: 'Wrapping paper design — festive brand pattern', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776301771/Papel-embrulho1_dukbrt.jpg', caption: 'Wrapping paper variant — holiday gift packaging', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776301788/poster2_god4h8.jpg', caption: 'Campaign poster — seasonal product showcase', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776302254/Artboard-1_tmgf8z.jpg', caption: 'Social media assets — carousel design', layout: 'half' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776302254/Artboard-1-copy-2_w3320i.jpg', caption: 'Social media assets — carousel variant', layout: 'half' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776305960/gap_ygkvl7.jpg', caption: 'Campaign overview — full asset grid', layout: 'full' }
             ],
             metrics: [
                 { value: '23%', label: 'Seasonal Sales Increase' },
@@ -1591,7 +1816,7 @@
             year: '2024',
             services: 'Visual Design, Photo Retouching, Brand Design, Video Editing, Campaign Design',
             gradient: 'gradient-ocean',
-            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773804309/Amal_Clooney_mucx8j.jpg',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1773804309/Amal_Clooney_mucx8j.jpg',
             description: 'A prestigious mini campaign for the University of Law, establishing scholarships in Amal Clooney\'s name to empower future human rights advocates. The visual narrative blended Ms. Clooney\'s iconic professional elegance with ULaw\'s academic heritage.',
             challenge: 'The submitted files were low resolution. Had to act quickly using AI upscalers and manual retouching to recover details and enhance image quality for large-scale use, while seamlessly integrating the scholarship into the existing "Law & So Much More" campaign framework.',
             solution: 'Designed the complete suite of digital campaign assets across all channels, executing precision retouching and adaptive video editing. Used AI upscalers and manual retouching to recover low-res assets. Seamlessly incorporated the Amal Clooney Scholarship into the existing brand architecture.',
@@ -1640,27 +1865,44 @@
             year: '2018',
             services: 'Art Direction, Visual Design, Digital Painting, Photo Retouching, Campaign Development',
             gradient: 'gradient-emerald',
-            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776312630/hf_20260416_040746_8c19b4cc-2c31-4a7b-a951-8dc72e210136_tfq8xi.png',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776312630/hf_20260416_040746_8c19b4cc-2c31-4a7b-a951-8dc72e210136_tfq8xi.png',
             description: 'A cinematic tribute to Angola\'s Sobas (ancestral leaders), blending their centuries-old wisdom with Standard Bank\'s legacy. The campaign "Listen to the Voice of Experience" visually paralleled the Sobas\' guidance with the bank\'s trusted expertise, using documentary storytelling and striking portraiture.',
             challenge: 'Merging traditional Angolan symbolism with Standard Bank\'s corporate visual identity while honouring the cultural weight of the Sobas \u2014 ancestral leaders whose wisdom spans generations.',
             solution: 'Collaborated on creating sketches and digital paintings and moodboards to guide the photoshoot direction. Developed storyboards for the final video documentary. Executed image retouching and designed posters while strictly following brand guidelines.',
             images: [
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776311200/standart_bank_copy_bnauat.jpg', caption: 'Concept art — Soba portrait studies and digital paintings', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776311200/standart_bank_copy_bnauat.jpg', caption: 'Concept art — Soba portrait studies and digital paintings', layout: 'full' },
                 { type: 'placeholders', count: 8, kicker: 'Conceptual Illustration · Campaign Development · 2018', eyebrow: '', ctaText: 'See more personal work', ctaHref: 'https://www.instagram.com/motagomes_/', igHref: 'https://www.instagram.com/motagomes_/', caption: 'Conceptual illustration for campaign', layout: 'full' },
-                { type: 'mp4', src: 'https://res.cloudinary.com/dzgqzeebg/video/upload/f_auto,q_auto/v1776453073/hf_20260417_161823_be42aff6-94ae-4add-836f-ea6904f9f135_wnk0ul.mp4', grain: true, caption: 'Campaign film', layout: 'full' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773803838/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1BNVHoxU0VyTVR0S2ozMURNLVNqMTdqMVlTMGsxS2pKRFNuN1NuMTR0WVMwaw_albnbl.webp', caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776307954/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL21qMFptck1UMVNFck1UdEtqMzFETS1TajE3ajFZUzBrMUtqSkRTbjdTbnRZUzBr_oldho6.webp', caption: 'Campaign poster design and retouching', layout: 'half' },
+                { type: 'mp4', src: 'https://res.cloudinary.com/dzgqzeebg/video/upload/f_auto,q_auto,w_1280,br_1500k/v1776453073/hf_20260417_161823_be42aff6-94ae-4add-836f-ea6904f9f135_wnk0ul.mp4', grain: true, caption: 'Campaign film', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1773803838/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1BNVHoxU0VyTVR0S2ozMURNLVNqMTdqMVlTMGsxS2pKRFNuN1NuMTR0WVMwaw_albnbl.webp', caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776307954/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL21qMFptck1UMVNFck1UdEtqMzFETS1TajE3ajFZUzBrMUtqSkRTbjdTbnRZUzBr_oldho6.webp', caption: 'Campaign poster design and retouching', layout: 'half' },
                 { type: 'bwsplit', caption: 'Transition', layout: 'full' },
-                { type: 'sbscreens', images: [
-                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776535800/1_cxcnt8.jpg',
-                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776535800/2_uor0gy.jpg',
-                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776535801/3_nf0cce.jpg',
-                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776535799/1b_buedao.jpg',
-                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776535801/2b_aksvsh.jpg',
-                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776535799/3b_qketwt.jpg'
+                { type: 'sbscreens', hidden: true, images: [
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776535800/1_cxcnt8.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776535800/2_uor0gy.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776535801/3_nf0cce.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776535799/1b_buedao.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776535801/2b_aksvsh.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776535799/3b_qketwt.jpg'
                 ], caption: 'Brand application — digital touchpoints across Standard Bank systems', layout: 'full' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776532670/standart_bank_ccccopy_zfdzlv.jpg', caption: 'Standard Bank — campaign closer', layout: 'full' },
-                { type: 'video', src: 'https://player.vimeo.com/video/260034770', poster: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776312630/hf_20260416_040746_8c19b4cc-2c31-4a7b-a951-8dc72e210136_tfq8xi.png', label: '', title: 'The Voice of Experience', runtime: '10:20', year: '2018', awardPill: 'Gold', award: 'Meios & Publicidade 2018', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full' }
+                { type: 'sbcrossfade', hidden: true, images: [
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1100,c_limit/v1776535800/1_cxcnt8.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1100,c_limit/v1776535800/2_uor0gy.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1100,c_limit/v1776535801/3_nf0cce.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1100,c_limit/v1776535799/1b_buedao.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1100,c_limit/v1776535801/2b_aksvsh.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1100,c_limit/v1776535799/3b_qketwt.jpg'
+                ], caption: 'Brand application — digital touchpoints across Standard Bank systems', layout: 'full' },
+                { type: 'sbdarkroom', images: [
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1100,c_limit/v1776535800/1_cxcnt8.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1100,c_limit/v1776535800/2_uor0gy.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1100,c_limit/v1776535801/3_nf0cce.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1100,c_limit/v1776535799/1b_buedao.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1100,c_limit/v1776535801/2b_aksvsh.jpg',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1100,c_limit/v1776535799/3b_qketwt.jpg'
+                ], caption: 'Brand application — photo-paper develop sequence', layout: 'full' },
+                { type: 'sbstatpair', stat: 84, body: 'Audience reaction was overwhelmingly positive. 84% of viewers described the campaign as emotional and said they felt represented — a signal that the story had landed with the people it was meant to honour.', caption: 'Campaign impact — audience reception', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776532670/standart_bank_ccccopy_zfdzlv.jpg', caption: 'Standard Bank — campaign closer', layout: 'full' },
+                { type: 'video', src: 'https://player.vimeo.com/video/260034770', poster: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776312630/hf_20260416_040746_8c19b4cc-2c31-4a7b-a951-8dc72e210136_tfq8xi.png', label: '', title: 'The Voice of Experience', runtime: '10:20', year: '2018', awardPill: 'Gold', award: 'Meios & Publicidade 2018', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full' }
             ],
             metrics: [
                 { value: 'Gold', label: 'Meios & Publicidade Awards' },
@@ -1677,16 +1919,16 @@
             year: '2019',
             services: 'Art Direction, Brand Storytelling, Photo Retouching, Campaign Development, Strategy, Layout Design, OOH Design',
             gradient: 'gradient-amber',
-            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776321539/cd599073612173.5c13900282998_pc2vlh.jpg',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776321539/cd599073612173.5c13900282998_pc2vlh.jpg',
             description: 'A vibrant outdoor campaign celebrating Luandina\'s presence in Luanda\'s neighbourhoods, tying the brand to summer\'s social moments — beach outings, barbecues, and lively gatherings.',
             challenge: 'Creating a hyper-local campaign that felt authentic to each neighbourhood while maintaining brand consistency across a geo-targeted billboard strategy.',
             solution: 'Created initial illustration concepts that evolved into the photographic direction for the campaign. Briefed and accompanied photoshoots on location, then developed the full suite of geo-targeted billboards and print assets alongside the team.',
             images: [
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776325416/Untitled-1_copy_pvw93f.jpg', caption: 'Summer campaign — vibrant outdoor billboard key visual', layout: 'full' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776322175/Asset_1-50_hejf3c.jpg', caption: 'Campaign key visual — neighbourhood connection', layout: 'full' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776328447/hf_20260416_061903_3ff6163c-6400-4a67-8bf6-89a36385b377_copy_yua8jz.jpg', caption: 'Geo-targeted billboard development', layout: 'full' },
-                { type: 'mp4', src: 'https://res.cloudinary.com/dzgqzeebg/video/upload/f_auto,q_auto/v1776434638/kling_20260417_%E4%BD%9C%E5%93%81_____prompt_5508_0_avjval.mp4', effect: 'cinematic-zoom', caption: 'Campaign film — summer moments across Luanda', layout: 'full' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776527014/lluandina_copy_azce8t.jpg', caption: 'OOH campaign — billboard placements across Luanda', layout: 'full' }
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776325416/Untitled-1_copy_pvw93f.jpg', caption: 'Summer campaign — vibrant outdoor billboard key visual', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776322175/Asset_1-50_hejf3c.jpg', caption: 'Campaign key visual — neighbourhood connection', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776328447/hf_20260416_061903_3ff6163c-6400-4a67-8bf6-89a36385b377_copy_yua8jz.jpg', caption: 'Geo-targeted billboard development', layout: 'full' },
+                { type: 'mp4', src: 'https://res.cloudinary.com/dzgqzeebg/video/upload/f_auto,q_auto,w_1280,br_1500k/v1776434638/kling_20260417_%E4%BD%9C%E5%93%81_____prompt_5508_0_avjval.mp4', effect: 'cinematic-zoom', caption: 'Campaign film — summer moments across Luanda', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776527014/lluandina_copy_azce8t.jpg', caption: 'OOH campaign — billboard placements across Luanda', layout: 'full' }
             ],
             metrics: [
                 { value: '23%', label: 'Social Engagement vs. Previous Campaign' },
@@ -1774,7 +2016,7 @@
             year: '2025',
             services: 'Brand & Web, Visual Identity, Art Direction',
             gradient: 'gradient-crimson',
-            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773219965/Aura_Site_copy_zjjcgh.jpg',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1773219965/Aura_Site_copy_zjjcgh.jpg',
             description: 'A refined digital presence for a creative studio, blending editorial aesthetics with seamless user experience.',
             challenge: 'Aura Studio needed a website that reflected their creative caliber while remaining functional and conversion-focused.',
             solution: 'We designed a visually immersive site with bold imagery, fluid transitions, and intentional whitespace. Every detail reinforces the studio\'s premium positioning while guiding visitors naturally toward engagement.',
@@ -1799,12 +2041,12 @@
             year: '2023',
             services: 'Illustration, Visual Design, Brand Storytelling, Character Design',
             gradient: 'gradient-slate',
-            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1771801419/sBbbbArtboard_6moope_gikcuc.png',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1771801419/sBbbbArtboard_6moope_gikcuc.png',
             description: 'A series of custom illustrations for Lyft, bringing warmth and personality to the brand through hand-crafted characters and scenes that celebrate the human side of getting from A to B.',
             challenge: 'Creating illustrations that felt distinctly Lyft while remaining versatile enough to work across app, web, social, and print touchpoints.',
             solution: 'Developed a cohesive illustration system with a warm, approachable style. Each piece tells a micro-story about connection, community, and movement, reinforcing Lyft\'s brand values through visual narrative.',
             images: [
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1771801419/sBbbbArtboard_6moope_gikcuc.png', caption: 'Lyft illustration — brand characters and scenes', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1771801419/sBbbbArtboard_6moope_gikcuc.png', caption: 'Lyft illustration — brand characters and scenes', layout: 'full' },
                 { src: _g2, caption: 'Character design system — expression and pose studies', layout: 'half' },
                 { src: _g4, caption: 'In-app illustration placements', layout: 'half' },
                 { src: _g6, caption: 'Social media and print applications', layout: 'full' }
@@ -1824,7 +2066,7 @@
             year: '2025',
             services: 'Brand Identity, Visual System, Real Estate Marketing, Art Direction',
             gradient: 'gradient-midnight',
-            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1774150674/Asset_1-100_szaika.jpg',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1774150674/Asset_1-100_szaika.jpg',
             description: 'A premium brand identity for RAS Real Estate, crafting a visual language that communicates trust, sophistication, and market authority in the luxury property sector.',
             challenge: 'The real estate market demands a brand that balances prestige with approachability — standing out in a saturated landscape while building immediate trust with high-value clients.',
             solution: 'Built a refined identity system rooted in clean geometry and restrained elegance. The visual language scales seamlessly from property brochures to digital listings, establishing RAS as a credible force in premium real estate.',
@@ -1832,14 +2074,14 @@
                 // palette now leads — dark-to-light value ramp with white appended
                 { type: 'colorstrip', colors: ['#121010', '#42dbdb', '#F5ECDA', '#cbf4f7', '#FFFFFF'], pantones: ['Pantone Black 6 C', 'Pantone 3255 C', 'Pantone 7499 C', 'Pantone 573 C', 'Pantone 11-0601 TCX'], roles: ['Primary', 'Accent', 'Highlight', 'Surface', 'Paper'], caption: 'Brand colour palette', layout: 'full' },
                 // hidden: original brand-identity opener
-                // { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773855922/sBbbbArtboard_1_o0eian.png', caption: 'RAS Real Estate — brand identity system', layout: 'full' },
+                // { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1773855922/sBbbbArtboard_1_o0eian.png', caption: 'RAS Real Estate — brand identity system', layout: 'full' },
                 { type: 'html', src: '/ras-construction-01-blueprint.html', caption: 'Logo construction — blueprint system', layout: 'full' },
                 // hidden: stationery collateral + typography animation
-                // { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773853078/sBbbbArtboard_2_zdvsf5.png', caption: 'Visual identity — stationery and collateral', layout: 'half' },
+                // { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1773853078/sBbbbArtboard_2_zdvsf5.png', caption: 'Visual identity — stationery and collateral', layout: 'half' },
                 // { type: 'html', src: '/ras-typography.html', caption: 'Typography — Urbanist type system', layout: 'half' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776388803/hf_20260417_002633_f4bad765-7958-423d-a7c2-44e8e83ebae8_ebotvv.png', caption: 'Brand application — campaign visual', layout: 'full' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1774150046/Screenshot_2026-03-22_at_03.26.31_buypz6.png', caption: 'Brand application — editorial layout', layout: 'full' },
-                { type: 'slideshow', src: ['https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1774150046/Screenshot_2026-03-22_at_03.26.42_tenr0w.png', 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1774150046/Screenshot_2026-03-22_at_03.26.35_jnqire.png'], caption: 'Brand application — signage and digital touchpoints', layout: 'full' }
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776388803/hf_20260417_002633_f4bad765-7958-423d-a7c2-44e8e83ebae8_ebotvv.png', caption: 'Brand application — campaign visual', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1774150046/Screenshot_2026-03-22_at_03.26.31_buypz6.png', caption: 'Brand application — editorial layout', layout: 'full' },
+                { type: 'slideshow', src: ['https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1774150046/Screenshot_2026-03-22_at_03.26.42_tenr0w.png', 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1774150046/Screenshot_2026-03-22_at_03.26.35_jnqire.png'], caption: 'Brand application — signage and digital touchpoints', layout: 'full' }
             ],
             metrics: [
                 { value: '1', label: 'Complete brand system' },
@@ -1910,7 +2152,7 @@
             <div class="page-content">
                 <!-- PROJECT HERO -->
                 <section class="project-hero">
-                    <div class="project-hero-gradient ${project.gradient}" ${project.heroImage ? `style="background:url('${project.heroImage}') center/cover no-repeat fixed; opacity:0.5;"` : ''}></div>
+                    <div class="project-hero-gradient ${project.gradient}" ${project.heroImage ? `style="background:url('${project.heroImage.replace('/upload/', '/upload/w_1800,c_limit/')}') center/cover no-repeat; opacity:0.5;"` : ''}></div>
                     <div class="project-hero-overlay"></div>
                     <div class="project-hero-content">
                         <h1 class="project-hero-title">${project.title}</h1>
@@ -1978,8 +2220,8 @@
                 ${project.images ? `
                 <section class="section section--showcase" data-reveal style="border-top:none; padding:0;">
                     <div class="showcase-gallery">
-                        ${project.images.map(img => `
-                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube' || img.type === 'mp4') ? ' has-iframe has-video' : ''}${img.grain ? ' has-grain' : ''}${img.type === 'placeholders' ? ' has-placeholders' : ''}${img.type === 'bwsplit' ? ' has-bwsplit' : ''}${img.type === 'sbscreens' ? ' has-sbscreens' : ''}"${img.bgStyle ? ` style="${img.bgStyle} display:flex; align-items:center; justify-content:center;"` : ''}>
+                        ${project.images.filter(img => !img.hidden).map(img => `
+                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube' || img.type === 'mp4') ? ' has-iframe has-video' : ''}${img.grain ? ' has-grain' : ''}${img.type === 'placeholders' ? ' has-placeholders' : ''}${img.type === 'bwsplit' ? ' has-bwsplit' : ''}${img.type === 'sbscreens' ? ' has-sbscreens' : ''}${img.type === 'sbcrossfade' ? ' has-sbcrossfade' : ''}${img.type === 'sbdarkroom' ? ' has-sbdarkroom' : ''}${img.type === 'sbstatpair' ? ' has-sbstatpair' : ''}"${img.bgStyle ? ` style="${img.bgStyle} display:flex; align-items:center; justify-content:center;"` : ''}>
                                 ${img.type === 'youtube'
                                     ? `<div class="yt-player" data-vid="${img.src}">
                                         <iframe id="yt-${img.src}" src="https://www.youtube.com/embed/${img.src}?enablejsapi=1&autoplay=0&loop=1&playlist=${img.src}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&start=10" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -2028,6 +2270,30 @@
                                     ? `<div class="showcase-slideshow" data-interval="${img.interval || 1500}">${img.src.map((s, i) => `<img src="${s}" alt="${img.caption}" loading="lazy" class="${i === 0 ? 'active' : ''}">`).join('')}</div>`
                                     : img.type === 'bwsplit'
                                     ? `<div class="bw-split"></div>`
+                                    : img.type === 'sbcrossfade'
+                                    ? `<div class="sbx-stage">${(img.images || []).map(u => `<div class="sbx-frame"><img src="${u}" alt="" loading="lazy" decoding="async" fetchpriority="low"></div>`).join('')}</div>`
+                                    : img.type === 'sbdarkroom'
+                                    ? `<div class="sbd-grid">${(img.images || []).map(u => `<div class="sbd-cell"><img src="${u}" alt="" loading="lazy" decoding="async" fetchpriority="low"></div>`).join('')}</div>`
+                                    : img.type === 'sbstatpair'
+                                    ? (() => {
+                                        const sbShield = `<svg class="sbsp-logo" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 4 C33 4 40 8 40 14 L40 26 C40 36 32 42 24 44 C16 42 8 36 8 26 L8 14 C8 8 15 4 24 4 Z"/><path d="M18 18 L30 18 M16 24 L32 24 M18 30 L30 30"/></svg>`;
+                                        const placeholderSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-4.5-4.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg>`;
+                                        const target = parseInt(img.stat || '84', 10);
+                                        const bodyText = img.body || 'Audience reaction was overwhelmingly positive — viewers described the campaign as emotional and said they felt represented.';
+                                        const rightInner = img.imageSrc
+                                            ? `<img src="${img.imageSrc}" alt="${img.imageCaption || ''}" loading="lazy" decoding="async">`
+                                            : `<div class="sbsp-placeholder">${placeholderSvg}<span>Image placeholder</span></div>`;
+                                        return `
+                                            <div class="sbsp-card sbsp-card-stat">
+                                                ${sbShield}
+                                                <div class="sbsp-stat-row">
+                                                    <div class="sbsp-stat-num" data-count-to="${target}">0%</div>
+                                                    <p class="sbsp-stat-body">${bodyText}</p>
+                                                </div>
+                                            </div>
+                                            <div class="sbsp-card sbsp-card-image">${rightInner}</div>
+                                        `;
+                                    })()
                                     : img.type === 'sbscreens'
                                     ? (() => {
                                         const icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-4.5-4.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg>`;
@@ -2397,6 +2663,36 @@
             }
         });
     });
+
+    // Count-up animation for sbstatpair stat numbers (triggers once when scrolled into view).
+    // Uses requestAnimationFrame + ease-out cubic for a smooth, restrained feel — no spring overshoot.
+    const statNums = document.querySelectorAll('.sbsp-stat-num[data-count-to]');
+    if (statNums.length && 'IntersectionObserver' in window) {
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const statObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const el = entry.target;
+                const target = parseInt(el.dataset.countTo, 10) || 0;
+                if (prefersReduced) {
+                    el.textContent = target + '%';
+                    statObserver.unobserve(el);
+                    return;
+                }
+                const duration = 1800;
+                const t0 = performance.now();
+                const tick = (now) => {
+                    const p = Math.min((now - t0) / duration, 1);
+                    const eased = 1 - Math.pow(1 - p, 3); // ease-out cubic
+                    el.textContent = Math.round(eased * target) + '%';
+                    if (p < 1) requestAnimationFrame(tick);
+                };
+                requestAnimationFrame(tick);
+                statObserver.unobserve(el);
+            });
+        }, { threshold: 0.45 });
+        statNums.forEach(el => statObserver.observe(el));
+    }
 
     </script>
 </body>
