@@ -1465,27 +1465,19 @@
         .about-v3-contact-link {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 18px;
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 100px;
-            color: var(--text-80);
+            justify-content: center;
+            color: var(--text-70, rgba(255,255,255,0.7));
             text-decoration: none;
-            font-family: var(--sf-pro);
-            font-size: 12px;
-            letter-spacing: 0.05em;
-            font-weight: 400;
-            transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+            transition: color 0.25s ease, transform 0.25s ease;
         }
-
         .about-v3-contact-link:hover {
-            color: var(--bg-black);
-            background: var(--text);
-            border-color: var(--text);
+            color: var(--text);
+            transform: translateY(-1px);
         }
-
         .about-v3-contact-link svg {
             flex-shrink: 0;
+            width: 20px;
+            height: 20px;
         }
 
         @media (max-width: 880px) {
@@ -3409,17 +3401,15 @@ margin-top: 3px;
 
             <div class="about-v3-contact">
               <a href="mailto:hi@motagomes.com" class="about-v3-contact-link" aria-label="Email">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                   <rect x="3" y="5" width="18" height="14" rx="2"/>
                   <path d="M3 7l9 6 9-6"/>
                 </svg>
-                <span>Email</span>
               </a>
               <a href="https://linkedin.com/in/pedraw" target="_blank" rel="noopener" class="about-v3-contact-link" aria-label="LinkedIn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zm1.78 13.02H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/>
                 </svg>
-                <span>LinkedIn</span>
               </a>
             </div>
           </div>
