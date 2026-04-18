@@ -3054,8 +3054,8 @@ margin-top: 3px;
             
             <!-- Side indicators -->
             <div class="gallery-stacked-side gallery-stacked-side-left">
-                <div class="gallery-stacked-category" id="galleryCategory">One1x</div>
-                <div class="gallery-stacked-type" id="galleryType">Rebrand</div>
+                <div class="gallery-stacked-category" id="galleryCategory">Standard Bank</div>
+                <div class="gallery-stacked-type" id="galleryType">360 Campaign</div>
             </div>
             <div class="gallery-stacked-side gallery-stacked-side-right">
                 <div class="gallery-stacked-scroll-label"></div>
@@ -3777,15 +3777,17 @@ margin-top: 3px;
         const gallerySides = document.querySelectorAll('.gallery-stacked-side');
         const galleryProgressFill = document.getElementById('galleryProgressFill');
         
+        // Order must mirror the card order in the DOM above:
+        // standard-bank → galp → luandina → ras → lyft → one1x → moope → wammo → aura-studio → amal clooney
         const galleryBrands = [
-            'One1x', 'Galp', 'ULaw',
-            'Moope', 'Standard Bank',
-            'Lyft', 'RAS Real Estate', 'Luandina', 'Wammo', 'Aura Studio'
+            'Standard Bank', 'Galp', 'Luandina',
+            'RAS Real Estate', 'Lyft', 'One1x',
+            'Moope', 'Wammo', 'Aura Studio', 'ULaw'
         ];
         const galleryProjects = [
-            'Rebrand', 'Christmas Campaign', 'Scholarship Initiative',
-            'UX Design', '360 Campaign',
-            'Illustration', 'Real Estate Branding', 'Geo-Targeted Campaign', 'Retail Campaign', 'Brand & Web'
+            '360 Campaign', 'Christmas Campaign', 'Geo-Targeted Campaign',
+            'Real Estate Branding', 'Illustration', 'Rebrand',
+            'UX Design', 'Retail Campaign', 'Brand & Web', 'Scholarship Initiative'
         ];
         
         function updateActiveGalleryCard() {
