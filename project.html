@@ -627,8 +627,8 @@
             max-width: none;
             display: block;
             object-fit: contain;
-            /* Slight scale + center-crop trims any white padding baked into the source files */
-            transform: scale(1.06);
+            /* Scale 1.13 crops ~6.5% off each edge to remove the white border baked into the source files */
+            transform: scale(1.13);
             transform-origin: center;
         }
         /* Icon fallback — only applies when no images provided */
