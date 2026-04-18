@@ -626,10 +626,12 @@
             width: auto;
             max-width: none;
             display: block;
-            object-fit: contain;
-            /* Source files have a 114 px white border baked in — 5.94% of width, 4.2% of height.
-               Scale 1.126 trims ~6% per edge, removing the full side-border with negligible top/bottom over-crop. */
-            transform: scale(1.126);
+            /* Per-side clip + compensating translate+scale.
+               Source has ~9% of visible white padding on sides (measured 114px of solid white
+               plus anti-aliased fringe), ~5% on top/bottom. Clip-path removes the exact strip
+               then transform enlarges the remainder to fill the cell edge-to-edge. */
+            clip-path: inset(5% 9% 5% 9%);
+            transform: translate(0, 0) scale(1.22);
             transform-origin: center;
         }
         /* Icon fallback — only applies when no images provided */
