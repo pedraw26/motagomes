@@ -1158,6 +1158,10 @@
             border-right: none;
         }
 
+        /* BACK pinned left, MAIN MENU pinned right — at all sizes */
+        .footer-nav-link:nth-child(1)  { justify-content: flex-start; padding-left: 40px; }
+        .footer-nav-link:nth-child(4)  { justify-content: flex-end;   padding-right: 40px; }
+
         .footer-nav-link:hover {
             color: var(--text);
             background: rgba(255, 255, 255, 0.03);
@@ -1360,20 +1364,14 @@
 
             .footer-nav-link {
                 font-size: 9px;
-                padding: 18px 12px;
+                padding: 18px 24px;
             }
 
-            .footer-nav-link:nth-child(2) {
-                border-right: none;
-            }
-
-            .footer-nav-link:nth-child(3) {
-                border-top: 1px solid var(--border-subtle);
-            }
-
-            .footer-nav-link:nth-child(4) {
-                border-top: 1px solid var(--border-subtle);
-            }
+            /* 2×2 grid — BACK top-left, prev top-right, next bottom-left, MAIN MENU bottom-right */
+            .footer-nav-link:nth-child(1) { justify-content: flex-start; padding-left: 24px; }
+            .footer-nav-link:nth-child(2) { justify-content: flex-end;   padding-right: 24px; border-right: none; }
+            .footer-nav-link:nth-child(3) { justify-content: flex-start; padding-left: 24px;  border-top: 1px solid var(--border-subtle); }
+            .footer-nav-link:nth-child(4) { justify-content: flex-end;   padding-right: 24px; border-top: 1px solid var(--border-subtle); }
         }
 
         @media (max-width: 480px) {
@@ -1414,9 +1412,16 @@
                 grid-template-columns: 1fr;
             }
 
-            .footer-nav-link {
+            .footer-nav-link,
+            .footer-nav-link:nth-child(1),
+            .footer-nav-link:nth-child(2),
+            .footer-nav-link:nth-child(3),
+            .footer-nav-link:nth-child(4) {
                 border-right: none;
                 border-bottom: 1px solid var(--border-subtle);
+                border-top: none;
+                justify-content: flex-start;
+                padding: 16px 20px;
             }
 
             .footer-nav-link:last-child {
