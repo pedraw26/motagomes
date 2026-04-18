@@ -1304,6 +1304,18 @@
             margin: 0 auto;
         }
 
+        /* Generic scroll-reveal — fade + rise when entering viewport */
+        [data-scroll-reveal] {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s cubic-bezier(.22,1,.36,1), transform 1.2s cubic-bezier(.22,1,.36,1);
+            will-change: opacity, transform;
+        }
+        [data-scroll-reveal].is-revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* ========================================
            RESEARCH & EXPERIMENTS SECTION
            ======================================== */
@@ -3337,7 +3349,7 @@ margin-top: 3px;
         <!-- PHILOSOPHY BRIDGE -->
         <section class="snap-section philosophy">
             <div class="philosophy-inner">
-                <p class="philosophy-text">Design is research made visible — every pixel carries intent, every interaction tells a story.</p>
+                <p class="philosophy-text" data-scroll-reveal>Design is research made visible — every pixel carries intent, every interaction tells a story.</p>
             </div>
         </section>
 
@@ -3389,15 +3401,15 @@ margin-top: 3px;
           </div>
 
           <div class="about-v3-right">
-            <h2 class="about-v3-name">Mota Gomes</h2>
+            <h2 class="about-v3-name" data-scroll-reveal>Mota Gomes</h2>
 
             <div class="about-v3-bio">
-              <p>I'm a research-led visual designer building thoughtful, contemporary work for brands and digital products. With over a decade of experience spanning startups, enterprise, and deep tech, I bring a strong conceptual foundation to every project before moving into execution.</p>
-              <p>My work sits at the intersection of design systems, brand identity, and product thinking. I care deeply about composition, typography, and detail — the invisible scaffolding that makes design feel intentional rather than decorative.</p>
-              <p>I've led design across full product lifecycles: from early-stage identity and positioning, through interface design and prototyping, to production-ready systems that scale. Every engagement starts with research and ends with something that ships.</p>
+              <p data-scroll-reveal data-scroll-reveal-delay="120">I'm a research-led visual designer building thoughtful, contemporary work for brands and digital products. With over a decade of experience spanning startups, enterprise, and deep tech, I bring a strong conceptual foundation to every project before moving into execution.</p>
+              <p data-scroll-reveal data-scroll-reveal-delay="260">My work sits at the intersection of design systems, brand identity, and product thinking. I care deeply about composition, typography, and detail — the invisible scaffolding that makes design feel intentional rather than decorative.</p>
+              <p data-scroll-reveal data-scroll-reveal-delay="400">I've led design across full product lifecycles: from early-stage identity and positioning, through interface design and prototyping, to production-ready systems that scale. Every engagement starts with research and ends with something that ships.</p>
             </div>
 
-            <p class="about-v3-role">Multidisciplinary Designer — London, UK  ·  Available for immediate start</p>
+            <p class="about-v3-role" data-scroll-reveal data-scroll-reveal-delay="540">Multidisciplinary Designer — London, UK  ·  Available for immediate start</p>
 
             <div class="about-v3-contact">
               <a href="mailto:hi@motagomes.com" class="about-v3-contact-link" aria-label="Email">
@@ -3610,6 +3622,35 @@ margin-top: 3px;
         } else {
             startFirstScreenSequence();
         }
+
+        // ========================================
+        // SCROLL-REVEAL (generic, opt-in via [data-scroll-reveal])
+        // Fades + rises any element when it enters the viewport.
+        // Supports per-element delay via data-scroll-reveal-delay="200" (ms).
+        // ========================================
+        (function(){
+            const els = document.querySelectorAll('[data-scroll-reveal]');
+            if (!els.length) return;
+            // Skip for users who prefer reduced motion
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                els.forEach(el => el.classList.add('is-revealed'));
+                return;
+            }
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const delay = parseInt(entry.target.dataset.scrollRevealDelay || '0', 10);
+                        if (delay > 0) {
+                            setTimeout(() => entry.target.classList.add('is-revealed'), delay);
+                        } else {
+                            entry.target.classList.add('is-revealed');
+                        }
+                        io.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
+            els.forEach(el => io.observe(el));
+        })();
 
         // ========================================
         // HERO SUBTITLE REVEAL ON SCROLL
