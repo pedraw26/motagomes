@@ -627,8 +627,9 @@
             max-width: none;
             display: block;
             object-fit: contain;
-            /* Scale 1.08 crops ~4% off each edge */
-            transform: scale(1.08);
+            /* Source files have a 114 px white border baked in — 5.94% of width, 4.2% of height.
+               Scale 1.126 trims ~6% per edge, removing the full side-border with negligible top/bottom over-crop. */
+            transform: scale(1.126);
             transform-origin: center;
         }
         /* Icon fallback — only applies when no images provided */
