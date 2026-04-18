@@ -818,7 +818,8 @@
             flex-direction: column;
             justify-content: flex-end;
         }
-        .sbsp-logo {
+        /* Scoped under .showcase-item.has-sbstatpair so it beats the global .showcase-item img {width:100%} rule */
+        .showcase-item.has-sbstatpair .sbsp-logo {
             position: absolute;
             top: clamp(20px, 2.6vw, 36px);
             right: clamp(20px, 2.6vw, 36px);
@@ -826,6 +827,7 @@
             height: auto;
             display: block;
             opacity: 0.9;
+            object-fit: contain;
         }
         .sbsp-eyebrow {
             position: absolute;
@@ -862,12 +864,12 @@
             max-width: 38ch;
             padding-bottom: clamp(6px, 0.8vw, 14px);
         }
-        .sbsp-card-image {
+        .showcase-item.has-sbstatpair .sbsp-card-image {
             background: #1a1a1a;
             position: relative;
             isolation: isolate;
         }
-        .sbsp-card-image img {
+        .showcase-item.has-sbstatpair .sbsp-card-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
