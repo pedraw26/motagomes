@@ -822,10 +822,22 @@
             position: absolute;
             top: clamp(20px, 2.6vw, 36px);
             right: clamp(20px, 2.6vw, 36px);
-            width: clamp(40px, 3.6vw, 56px);
+            width: clamp(22px, 1.9vw, 32px);
             height: auto;
             display: block;
-            opacity: 0.95;
+            opacity: 0.9;
+        }
+        .sbsp-eyebrow {
+            position: absolute;
+            top: clamp(22px, 2.8vw, 40px);
+            left: clamp(22px, 3vw, 44px);
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.72);
+            z-index: 2;
         }
         .sbsp-stat-row {
             display: flex;
@@ -2303,8 +2315,10 @@
                                             ? `<img src="${img.imageSrc}" alt="${img.imageCaption || ''}" loading="lazy" decoding="async">`
                                             : `<div class="sbsp-placeholder">${placeholderSvg}<span>Image placeholder</span></div>`;
                                         const rightClass = img.imageSrc ? 'sbsp-card sbsp-card-image has-image' : 'sbsp-card sbsp-card-image';
+                                        const eyebrow = img.eyebrow != null ? img.eyebrow : 'Findings';
                                         return `
                                             <div class="sbsp-card sbsp-card-stat">
+                                                ${eyebrow ? `<div class="sbsp-eyebrow">${eyebrow}</div>` : ''}
                                                 ${sbShield}
                                                 <div class="sbsp-stat-row">
                                                     <div class="sbsp-stat-num" data-count-to="${target}">0%</div>
