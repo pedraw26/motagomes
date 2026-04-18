@@ -627,6 +627,9 @@
             max-width: none;
             display: block;
             object-fit: contain;
+            /* Slight scale + center-crop trims any white padding baked into the source files */
+            transform: scale(1.06);
+            transform-origin: center;
         }
         /* Icon fallback — only applies when no images provided */
         .showcase-item.has-sbscreens .sbs-cell.sbs-cell-icon {
