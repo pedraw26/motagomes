@@ -1132,11 +1132,9 @@
             z-index: 100;
         }
 
-        /* Flex row: BACK hugs left, MAIN MENU hugs right,
-           prev + next group together in the true centre via auto margins. */
         .footer-nav-inner {
-            display: flex;
-            align-items: stretch;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
             min-height: 72px;
         }
 
@@ -1144,20 +1142,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px 40px;
+            padding: 24px 20px;
             font-family: var(--sf-pro);
             font-size: 10px;
             letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--text-40);
             text-decoration: none;
-            transition: color 0.3s ease, background 0.3s ease;
+            transition: all 0.3s ease;
+            border-right: 1px solid var(--border-subtle);
             white-space: nowrap;
-            flex: 0 0 auto;
         }
 
-        .footer-nav-link:nth-child(2) { margin-left: auto;  padding-right: 18px; }
-        .footer-nav-link:nth-child(3) { margin-right: auto; padding-left: 18px; border-left: 1px solid var(--border-subtle); }
+        .footer-nav-link:last-child {
+            border-right: none;
+        }
 
         .footer-nav-link:hover {
             color: var(--text);
@@ -1356,23 +1355,25 @@
             }
 
             .footer-nav-inner {
-                display: grid;
                 grid-template-columns: 1fr 1fr;
-                align-items: stretch;
             }
 
             .footer-nav-link {
                 font-size: 9px;
-                padding: 18px 24px;
-                margin: 0 !important;
-                border-left: none;
+                padding: 18px 12px;
             }
 
-            /* 2×2 — BACK top-left, prev top-right, next bottom-left, MAIN MENU bottom-right */
-            .footer-nav-link:nth-child(1) { justify-content: flex-start; padding-left: 24px; border-right: 1px solid var(--border-subtle); }
-            .footer-nav-link:nth-child(2) { justify-content: flex-end;   padding-right: 24px; }
-            .footer-nav-link:nth-child(3) { justify-content: flex-start; padding-left: 24px;  border-top: 1px solid var(--border-subtle); border-right: 1px solid var(--border-subtle); }
-            .footer-nav-link:nth-child(4) { justify-content: flex-end;   padding-right: 24px; border-top: 1px solid var(--border-subtle); }
+            .footer-nav-link:nth-child(2) {
+                border-right: none;
+            }
+
+            .footer-nav-link:nth-child(3) {
+                border-top: 1px solid var(--border-subtle);
+            }
+
+            .footer-nav-link:nth-child(4) {
+                border-top: 1px solid var(--border-subtle);
+            }
         }
 
         @media (max-width: 480px) {
@@ -1410,22 +1411,12 @@
             }
 
             .footer-nav-inner {
-                display: grid;
                 grid-template-columns: 1fr;
             }
 
-            .footer-nav-link,
-            .footer-nav-link:nth-child(1),
-            .footer-nav-link:nth-child(2),
-            .footer-nav-link:nth-child(3),
-            .footer-nav-link:nth-child(4) {
+            .footer-nav-link {
                 border-right: none;
-                border-left: none;
                 border-bottom: 1px solid var(--border-subtle);
-                border-top: none;
-                justify-content: flex-start;
-                padding: 16px 20px;
-                margin: 0;
             }
 
             .footer-nav-link:last-child {
@@ -2038,10 +2029,18 @@
                 <!-- FOOTER NAVIGATION -->
                 <nav class="footer-nav">
                     <div class="footer-nav-inner">
-                        <a href="/#work" class="footer-nav-link">Back</a>
-                        <a href="project.html?p=${prevSlug}" class="footer-nav-link">${prevProject.client}</a>
-                        <a href="project.html?p=${nextSlug}" class="footer-nav-link">${nextProject.client}</a>
-                        <a href="/" class="footer-nav-link">Main Menu</a>
+                        <a href="/#work" class="footer-nav-link">
+                            <span class="arrow arrow-left">&larr;</span>&nbsp;&nbsp;Back
+                        </a>
+                        <a href="project.html?p=${prevSlug}" class="footer-nav-link">
+                            <span class="arrow arrow-left">&larr;</span>&nbsp;&nbsp;${prevProject.client}
+                        </a>
+                        <a href="project.html?p=${nextSlug}" class="footer-nav-link">
+                            ${nextProject.client}&nbsp;&nbsp;<span class="arrow arrow-right">&rarr;</span>
+                        </a>
+                        <a href="/" class="footer-nav-link">
+                            Main Menu
+                        </a>
                     </div>
                 </nav>
             </div>
