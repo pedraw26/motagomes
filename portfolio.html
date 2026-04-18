@@ -1288,6 +1288,138 @@
         }
 
         /* ========================================
+           SERVICES — Hover Reveal Grid
+           Sits directly above the Philosophy bridge.
+           ======================================== */
+        .services {
+            background: var(--bg-black);
+            padding: 120px 80px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .services-inner { max-width: 1440px; margin: 0 auto; }
+        .services-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 56px;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .services-kicker {
+            font-family: var(--sf-pro);
+            font-size: 11px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+        }
+        .services-title {
+            font-family: var(--sf-pro);
+            font-size: clamp(2rem, 3.2vw, 3.2rem);
+            font-weight: 300;
+            letter-spacing: -0.025em;
+            line-height: 1.02;
+            color: #ffffff;
+            max-width: 22ch;
+        }
+        .services-title em {
+            font-style: italic;
+            font-weight: 300;
+            color: #d9b34e;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+        .svc-card {
+            background: #0f0e0e;
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 40px 34px;
+            aspect-ratio: 3/4;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+            transition: border-color .5s ease;
+        }
+        .svc-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: #ffffff;
+            transform: translateY(100%);
+            transition: transform .7s cubic-bezier(.65, 0, .35, 1);
+            z-index: 1;
+        }
+        .svc-card:hover::after { transform: translateY(0); }
+        .svc-card:hover { border-color: #ffffff; }
+        .svc-card > * {
+            position: relative;
+            z-index: 2;
+            transition: color .7s cubic-bezier(.65, 0, .35, 1);
+        }
+        .svc-card:hover .svc-tag,
+        .svc-card:hover .svc-desc,
+        .svc-card:hover .svc-list li { color: rgba(11,10,10,0.7); }
+        .svc-card:hover .svc-head { color: #0b0a0a; }
+        .svc-card:hover .svc-head em { color: #9b7729; }
+        .svc-card:hover .svc-list li { border-color: rgba(11,10,10,0.18); }
+        .svc-tag {
+            font-family: var(--sf-pro);
+            font-size: 11px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.45);
+        }
+        .svc-head {
+            font-family: var(--sf-pro);
+            font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            line-height: 1;
+            color: #ffffff;
+            margin: 22px 0 20px;
+        }
+        .svc-head em {
+            font-style: italic;
+            font-weight: 300;
+            color: #d9b34e;
+        }
+        .svc-desc {
+            font-family: var(--sf-pro);
+            font-size: 13px;
+            line-height: 1.65;
+            color: rgba(255,255,255,0.72);
+        }
+        .svc-list {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 22px;
+            padding: 0;
+        }
+        .svc-list li {
+            font-family: var(--sf-pro);
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            padding: 4px 10px;
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 999px;
+            color: rgba(255,255,255,0.7);
+            transition: color .7s cubic-bezier(.65, 0, .35, 1), border-color .7s cubic-bezier(.65, 0, .35, 1);
+        }
+        @media (max-width: 900px) {
+            .services { padding: 80px 24px 40px; }
+            .services-grid { grid-template-columns: 1fr; gap: 14px; }
+            .svc-card { aspect-ratio: auto; min-height: 260px; padding: 30px 26px; }
+        }
+
+        /* ========================================
            RESEARCH & EXPERIMENTS SECTION
            ======================================== */
         
@@ -3322,6 +3454,57 @@ margin-top: 3px;
                     </div>
                 </div>
 
+            </div>
+        </section>
+
+        <!-- SERVICES · Hover Reveal Grid -->
+        <section class="snap-section services" id="services">
+            <div class="services-inner">
+                <div class="services-head">
+                    <span class="services-kicker">What I do · Capabilities</span>
+                    <h2 class="services-title">A studio of <em>one</em>, operating as many.</h2>
+                </div>
+                <div class="services-grid">
+                    <article class="svc-card">
+                        <span class="svc-tag">01 · Creative</span>
+                        <h3 class="svc-head">Art <em>Direction</em></h3>
+                        <p class="svc-desc">Brand identity and visual systems for businesses that know what they want to stand for. Strategy-first, craft-obsessed.</p>
+                        <ul class="svc-list">
+                            <li>Identity</li>
+                            <li>Strategy</li>
+                            <li>Campaigns</li>
+                            <li>Guidelines</li>
+                            <li>Consulting</li>
+                        </ul>
+                    </article>
+
+                    <article class="svc-card">
+                        <span class="svc-tag">02 · Print / Digital</span>
+                        <h3 class="svc-head">Editorial <em>Design</em></h3>
+                        <p class="svc-desc">Publication-grade layout, typography, and composition applied to print and digital — where design earns its seriousness.</p>
+                        <ul class="svc-list">
+                            <li>Layout</li>
+                            <li>Posters</li>
+                            <li>OOH</li>
+                            <li>Annual reports</li>
+                            <li>Collateral</li>
+                            <li>Retouching</li>
+                        </ul>
+                    </article>
+
+                    <article class="svc-card">
+                        <span class="svc-tag">03 · Motion / Video</span>
+                        <h3 class="svc-head">Motion <em>&amp; Kinetic</em></h3>
+                        <p class="svc-desc">Typography and identity set in motion. Brand film, kinetic logos, animated systems — movement with intent.</p>
+                        <ul class="svc-list">
+                            <li>Kinetic typography</li>
+                            <li>Animated logos</li>
+                            <li>Video direction</li>
+                            <li>Motion graphics</li>
+                            <li>Storyboards</li>
+                        </ul>
+                    </article>
+                </div>
             </div>
         </section>
 
