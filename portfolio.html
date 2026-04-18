@@ -806,17 +806,19 @@
             font-weight: 400;
             letter-spacing: -0.02em;
         }
+        /* Asterisk reads as part of the "Selected Projects" wordmark —
+           inherits color/size from the heading; SVG keeps rotation clean. */
         .gallery-stacked-title .star {
             display: inline-block;
-            width: 0.72em;
-            height: 0.72em;
-            margin-left: 0.16em;
-            vertical-align: 0.08em;
-            color: #d9b34e;
+            width: 0.52em;
+            height: 0.52em;
+            margin-left: 0.04em;
+            vertical-align: 0.32em;
+            color: currentColor;
             animation: star-spin 9s linear infinite;
             transform-origin: center center;
         }
-        .gallery-stacked-title .star svg { width: 100%; height: 100%; display: block; }
+        .gallery-stacked-title .star svg { width: 100%; height: 100%; display: block; overflow: visible; }
         @keyframes star-spin {
             from { transform: rotate(0deg); }
             to   { transform: rotate(360deg); }
