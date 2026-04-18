@@ -610,29 +610,22 @@
             animation: sbs-marquee 40s linear infinite;
             animation-delay: -17s;   /* start mid-cycle so page load looks already in motion */
         }
-        /* Image cells — height fixed to 75% of slide, width auto-fits image aspect ratio
-           so there's zero white edge around any image. */
+        /* Cell aspect ratio is set so object-fit: cover trims exactly 3% off each side
+           with NO vertical cropping. Image aspect 1920/2715 = 0.7072.
+           Cell aspect 0.7072 × 0.94 = 0.6648 → image overflows width by 6.38%, clipped 3.19% per side. */
         .showcase-item.has-sbscreens .sbs-cell {
             height: 75%;
+            aspect-ratio: 0.665;
             flex-shrink: 0;
-            margin-right: 40px;   /* gap lives ON the cell so it's part of the loop unit */
+            margin-right: 40px;
             box-shadow: 0 24px 80px -30px rgba(0,0,0,0.5);
-            display: flex;
-            align-items: stretch;
             overflow: hidden;
         }
         .showcase-item.has-sbscreens .sbs-cell img {
+            width: 100%;
             height: 100%;
-            width: auto;
-            max-width: none;
+            object-fit: cover;
             display: block;
-            /* Per-side clip + compensating translate+scale.
-               Source has ~9% of visible white padding on sides (measured 114px of solid white
-               plus anti-aliased fringe), ~5% on top/bottom. Clip-path removes the exact strip
-               then transform enlarges the remainder to fill the cell edge-to-edge. */
-            clip-path: inset(5% 9% 5% 9%);
-            transform: translate(0, 0) scale(1.22);
-            transform-origin: center;
         }
         /* Icon fallback — only applies when no images provided */
         .showcase-item.has-sbscreens .sbs-cell.sbs-cell-icon {
