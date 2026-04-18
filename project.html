@@ -606,27 +606,40 @@
             display: flex;
             align-items: center;
             width: max-content;
+            height: 100%;
             animation: sbs-marquee 40s linear infinite;
             animation-delay: -17s;   /* start mid-cycle so page load looks already in motion */
         }
+        /* Image cells — height fixed to 75% of slide, width auto-fits image aspect ratio
+           so there's zero white edge around any image. */
         .showcase-item.has-sbscreens .sbs-cell {
-            aspect-ratio: 3 / 4;
-            width: min(36vw, 420px);
+            height: 75%;
             flex-shrink: 0;
             margin-right: 40px;   /* gap lives ON the cell so it's part of the loop unit */
-            background: #ffffff;
-            border: 1px solid rgba(255,255,255,0.12);
             box-shadow: 0 24px 80px -30px rgba(0,0,0,0.5);
             display: flex;
+            align-items: stretch;
+            overflow: hidden;
+        }
+        .showcase-item.has-sbscreens .sbs-cell img {
+            height: 100%;
+            width: auto;
+            max-width: none;
+            display: block;
+            object-fit: contain;
+        }
+        /* Icon fallback — only applies when no images provided */
+        .showcase-item.has-sbscreens .sbs-cell.sbs-cell-icon {
+            aspect-ratio: 3 / 4;
+            width: min(36vw, 420px);
+            height: auto;
+            background: #ffffff;
+            border: 1px solid rgba(255,255,255,0.12);
             align-items: center;
             justify-content: center;
             color: rgba(18,16,16,0.22);
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            overflow: hidden;
         }
-        .showcase-item.has-sbscreens .sbs-cell svg {
+        .showcase-item.has-sbscreens .sbs-cell.sbs-cell-icon svg {
             width: 28px;
             height: 28px;
             display: block;
@@ -637,7 +650,8 @@
             100% { transform: translateX(0); }
         }
         @media (max-width: 768px) {
-            .showcase-item.has-sbscreens .sbs-cell { width: min(62vw, 260px); margin-right: 22px; }
+            .showcase-item.has-sbscreens .sbs-cell { margin-right: 22px; height: 68%; }
+            .showcase-item.has-sbscreens .sbs-cell.sbs-cell-icon { width: min(62vw, 260px); height: auto; }
         }
 
         /* Solid-white breathing slide — one full 16:9 frame in #ffffff */
@@ -2009,12 +2023,11 @@
                                     : img.type === 'sbscreens'
                                     ? (() => {
                                         const icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-4.5-4.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg>`;
-                                        // If images are provided, each cell shows one as a background; otherwise fall back to the placeholder icon.
+                                        // Image cells are <img> elements so the cell width auto-fits the image's natural aspect — no white edge.
                                         const hasImgs = Array.isArray(img.images) && img.images.length > 0;
                                         const cellsSource = hasImgs
-                                            ? img.images.map(u => `<div class="sbs-cell" style="background-image:url('${u}')"></div>`).join('')
-                                            : Array.from({length: img.count || 4}, () => `<div class="sbs-cell">${icon}</div>`).join('');
-                                        // Duplicate the set so the marquee loops seamlessly
+                                            ? img.images.map(u => `<div class="sbs-cell"><img src="${u}" alt="" loading="lazy"></div>`).join('')
+                                            : Array.from({length: img.count || 4}, () => `<div class="sbs-cell sbs-cell-icon">${icon}</div>`).join('');
                                         return `<div class="sbs-track">${cellsSource}${cellsSource}</div>`;
                                     })()
                                     : img.type === 'placeholders'
