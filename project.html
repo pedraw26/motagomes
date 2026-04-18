@@ -621,6 +621,10 @@
             align-items: center;
             justify-content: center;
             color: rgba(18,16,16,0.22);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow: hidden;
         }
         .showcase-item.has-sbscreens .sbs-cell svg {
             width: 28px;
@@ -1624,7 +1628,14 @@
                 { type: 'mp4', src: 'https://res.cloudinary.com/dzgqzeebg/video/upload/f_auto,q_auto/v1776453073/hf_20260417_161823_be42aff6-94ae-4add-836f-ea6904f9f135_wnk0ul.mp4', grain: true, caption: 'Campaign film', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773803838/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1BNVHoxU0VyTVR0S2ozMURNLVNqMTdqMVlTMGsxS2pKRFNuN1NuMTR0WVMwaw_albnbl.webp', caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776307954/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL21qMFptck1UMVNFck1UdEtqMzFETS1TajE3ajFZUzBrMUtqSkRTbjdTbnRZUzBr_oldho6.webp', caption: 'Campaign poster design and retouching', layout: 'half' },
-                { type: 'sbscreens', caption: 'Brand application — digital touchpoints across Standard Bank systems', layout: 'full' },
+                { type: 'sbscreens', images: [
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776533114/15c4a32e710f5c_tx7vw0.webp',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776533113/15c4a32ca9105e_teu5xq.webp',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776533158/15c4a32d92397e_fa4opr.webp',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776533117/15c4a330792dc6_czayxf.webp',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776533115/15c4a32f54311f_u5imni.webp',
+                    'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776533116/15c4a32fa8afd3_pv3hyp.webp'
+                ], caption: 'Brand application — digital touchpoints across Standard Bank systems', layout: 'full' },
                 { type: 'bwsplit', caption: 'Transition', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776532670/standart_bank_ccccopy_zfdzlv.jpg', caption: 'Standard Bank — campaign closer', layout: 'full' },
                 { type: 'video', src: 'https://player.vimeo.com/video/260034770', poster: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776312630/hf_20260416_040746_8c19b4cc-2c31-4a7b-a951-8dc72e210136_tfq8xi.png', label: '', title: 'The Voice of Experience', runtime: '10:20', year: '2018', awardPill: 'Gold', award: 'Meios & Publicidade 2018', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full' }
@@ -1998,10 +2009,13 @@
                                     : img.type === 'sbscreens'
                                     ? (() => {
                                         const icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-4.5-4.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg>`;
-                                        // 4 original screens, duplicated (8 total) for seamless loop + viewport always full
-                                        const cell = `<div class="sbs-cell">${icon}</div>`;
-                                        const set = cell + cell + cell + cell;
-                                        return `<div class="sbs-track">${set}${set}</div>`;
+                                        // If images are provided, each cell shows one as a background; otherwise fall back to the placeholder icon.
+                                        const hasImgs = Array.isArray(img.images) && img.images.length > 0;
+                                        const cellsSource = hasImgs
+                                            ? img.images.map(u => `<div class="sbs-cell" style="background-image:url('${u}')"></div>`).join('')
+                                            : Array.from({length: img.count || 4}, () => `<div class="sbs-cell">${icon}</div>`).join('');
+                                        // Duplicate the set so the marquee loops seamlessly
+                                        return `<div class="sbs-track">${cellsSource}${cellsSource}</div>`;
                                     })()
                                     : img.type === 'placeholders'
                                     ? (() => {
