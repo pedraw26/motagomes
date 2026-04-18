@@ -1084,6 +1084,31 @@
             letter-spacing: -0.02em;
             white-space: pre-line;
         }
+
+        /* Animated metallic gold award line — ties to the site's metrics treatment */
+        .gallery-stacked-award {
+            font-family: var(--sf-pro);
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            margin-top: 10px;
+            white-space: nowrap;
+            background-image: linear-gradient(100deg,#5b4314 0%,#9b7729 16%,#c89a3a 32%,#fff3b8 44%,#c89a3a 58%,#9b7729 74%,#5b4314 90%,#c89a3a 100%);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: card-gold-sweep 16s linear infinite;
+        }
+        .gallery-stacked-award b {
+            font-weight: 800;
+            margin-right: 2px;
+        }
+        @keyframes card-gold-sweep {
+            0%   { background-position: 200% 50%; }
+            100% { background-position: 0% 50%; }
+        }
         
         .gallery-stacked-btn {
             margin-top: 24px;
@@ -3056,8 +3081,9 @@ margin-top: 3px;
                         </div>
                         <div class="gallery-stacked-hero gradient-emerald" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773790961/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1VqRFNuc1VabVNzZWpuTUVqSjdaRnR6dGtKcg_1_wcenki.webp') center/cover no-repeat;">
                             <div class="gallery-stacked-info">
-                                <div class="gallery-stacked-label">360 Campaign</div>
-                                <div class="gallery-stacked-project-title">The Voice of Experience</div>
+                                <div class="gallery-stacked-label">The Voice of Experience · 360 Campaign</div>
+                                <div class="gallery-stacked-project-title">Standard Bank</div>
+                                <div class="gallery-stacked-award"><b>Gold</b>&nbsp;&nbsp;Prémios Lusófonos</div>
                                 <a href="/project.html?p=standard-bank" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
                             </div>
                             <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
