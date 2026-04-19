@@ -1370,89 +1370,189 @@
         
 
         /* ========================================
-           MOTION DESIGN TEASER
+           MOTION DESIGN — scroll-expand media (embedded)
            ======================================== */
-        .motion-teaser {
+        .motion-embed {
             position: relative;
-            min-height: 100vh;
+            background: #050505;
+            /* Tall inner gives a scroll runway for the expansion */
+            min-height: 200vh;
+        }
+        .motion-embed__pin {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            background: #050505;
-            isolation: isolate;
         }
-        .motion-teaser__bg {
+        .motion-embed__bg {
             position: absolute;
             inset: 0;
             z-index: 0;
+            transition: opacity 0.1s linear;
         }
-        .motion-teaser__bg video,
-        .motion-teaser__bg img {
+        .motion-embed__bg video,
+        .motion-embed__bg img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
-            filter: brightness(0.55) saturate(0.9);
         }
-        .motion-teaser__bg::after {
+        .motion-embed__bg::after {
             content: '';
             position: absolute;
             inset: 0;
-            background:
-                radial-gradient(60% 55% at 50% 60%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 100%),
-                linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6));
+            background: rgba(0,0,0,0.28);
         }
-        .motion-teaser__content {
+
+        /* Media box — centered, size set via JS as progress grows */
+        .motion-embed__media {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 18px;
+            overflow: hidden;
+            max-width: 95vw;
+            max-height: 85vh;
+            box-shadow: 0 0 50px rgba(0,0,0,0.3);
+            z-index: 1;
+            /* width/height come from JS */
+        }
+        .motion-embed__media video,
+        .motion-embed__media iframe,
+        .motion-embed__media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 18px;
+        }
+        .motion-embed__shade {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            border-radius: 18px;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        /* Under-media meta */
+        .motion-embed__meta {
+            position: absolute;
+            left: 50%;
+            top: calc(50% + clamp(220px, 40vh, 420px));
+            transform: translateX(-50%);
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            text-align: center;
+            color: #b9cde8;
+            pointer-events: none;
+        }
+        .motion-embed__meta .me-date {
+            font-size: 18px;
+            letter-spacing: 0.08em;
+        }
+        .motion-embed__meta .me-prompt {
+            font-size: 13px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            font-weight: 500;
+            opacity: 0.85;
+        }
+
+        /* Split title */
+        .motion-embed__title {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3em;
+            text-align: center;
+            color: #b9cde8;
+            mix-blend-mode: difference;
+            pointer-events: none;
+        }
+        .motion-embed__title h2 {
+            font-size: clamp(44px, 7.4vw, 86px);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            transition: none;
+        }
+
+        /* Content revealed after full expansion */
+        .motion-embed__content {
             position: relative;
             z-index: 2;
-            text-align: center;
-            padding: 0 40px;
-            max-width: 900px;
+            width: 100%;
+            padding: 90px 40px 120px;
+            max-width: 1280px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
         }
-        .motion-teaser__eyebrow {
+        .motion-embed__content.is-revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .motion-embed__content h3 {
+            font-size: clamp(28px, 3.4vw, 44px);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 18px;
+            color: #fff;
+        }
+        .motion-embed__content p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-60);
+            max-width: 68ch;
+            margin-bottom: 16px;
+        }
+        .motion-embed__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin-top: 44px;
+        }
+        .motion-embed__grid figure {
+            position: relative;
+            aspect-ratio: 4 / 5;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #111;
+        }
+        .motion-embed__grid figure video,
+        .motion-embed__grid figure img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .motion-embed__grid figcaption {
+            position: absolute;
+            left: 14px;
+            bottom: 14px;
             font-size: 11px;
-            letter-spacing: 0.28em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.55);
-            margin-bottom: 22px;
-        }
-        .motion-teaser__title {
-            font-size: clamp(2.4rem, 6.2vw, 5.2rem);
-            font-weight: 300;
-            line-height: 1.08;
-            letter-spacing: -0.025em;
-            color: #fff;
-            margin-bottom: 34px;
-        }
-        .motion-teaser__cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 22px;
-            border: 1px solid rgba(255,255,255,0.4);
-            border-radius: 999px;
-            color: #fff;
-            text-decoration: none;
-            font-size: 12px;
             letter-spacing: 0.14em;
             text-transform: uppercase;
+            color: rgba(255,255,255,0.9);
+            background: rgba(0,0,0,0.55);
+            padding: 5px 9px;
+            border-radius: 6px;
             backdrop-filter: blur(6px);
-            transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
         }
-        .motion-teaser__cta svg {
-            width: 14px; height: 14px;
-            transition: transform 0.3s ease;
-        }
-        .motion-teaser__cta:hover {
-            background: #fff;
-            border-color: #fff;
-            color: #000;
-        }
-        .motion-teaser__cta:hover svg { transform: translateX(3px); }
 
         @media (max-width: 720px) {
-            .motion-teaser__content { padding: 0 24px; }
+            .motion-embed__content { padding: 60px 24px 100px; }
         }
 
         /* ========================================
@@ -3622,23 +3722,54 @@ margin-top: 3px;
             </div>
         </section>
 
-        <!-- MOTION DESIGN TEASER -->
-        <section class="snap-section motion-teaser" id="motion">
-            <div class="motion-teaser__bg">
-                <video autoplay muted loop playsinline preload="metadata"
-                    poster="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1920,c_limit/v1776301788/poster2_god4h8.jpg"
-                    src="https://res.cloudinary.com/dzgqzeebg/video/upload/f_auto,q_auto,w_1280,br_1500k/v1776453073/hf_20260417_161823_be42aff6-94ae-4add-836f-ea6904f9f135_wnk0ul.mp4">
-                </video>
+        <!-- MOTION DESIGN — scroll-expand media (embedded) -->
+        <section class="motion-embed" id="motion">
+            <div class="motion-embed__pin" id="motionPin">
+                <div class="motion-embed__bg" id="motionBg">
+                    <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1920,c_limit/v1776301788/poster2_god4h8.jpg" alt="">
+                </div>
+
+                <div class="motion-embed__media" id="motionMedia">
+                    <video id="motionVideo"
+                        src="https://res.cloudinary.com/dzgqzeebg/video/upload/f_auto,q_auto,w_1280,br_1500k/v1776453073/hf_20260417_161823_be42aff6-94ae-4add-836f-ea6904f9f135_wnk0ul.mp4"
+                        autoplay muted loop playsinline preload="metadata"
+                        disablepictureinpicture disableremoteplayback></video>
+                    <div class="motion-embed__shade" id="motionShade"></div>
+                </div>
+
+                <div class="motion-embed__meta">
+                    <p class="me-date" id="motionDate">Selected Reels · 2022 — 2026</p>
+                    <p class="me-prompt" data-i18n="motion.scrollPrompt">Scroll to Expand</p>
+                </div>
+
+                <div class="motion-embed__title">
+                    <h2 id="motionTitleA">Motion</h2>
+                    <h2 id="motionTitleB">Design</h2>
+                </div>
             </div>
-            <div class="motion-teaser__content" data-scroll-reveal>
-                <div class="motion-teaser__eyebrow" data-i18n="menu.motion">Motion Design</div>
-                <h2 class="motion-teaser__title" data-i18n="motion.h1">Motion is where timing becomes voice.</h2>
-                <a href="/motion-design.html" class="motion-teaser__cta">
-                    <span data-i18n="motion.exploreReel">Explore the reel</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 12h14M13 5l7 7-7 7"/>
-                    </svg>
-                </a>
+
+            <!-- Post-expansion content -->
+            <div class="motion-embed__content" id="motionContent">
+                <h3 data-i18n="motion.h1">Motion is where timing becomes voice.</h3>
+                <p data-i18n="motion.p1">A selection of short-form motion work — campaign films, living posters, product reveals, and sound-reactive experiments. Each piece is a study in pacing: when to hold a frame, when to cut, when to let a transition breathe.</p>
+                <p data-i18n="motion.p2">Below: a sampling. Full reels and raw files available on request.</p>
+
+                <div class="motion-embed__grid">
+                    <figure>
+                        <video autoplay muted loop playsinline preload="metadata"
+                            src="https://res.cloudinary.com/dzgqzeebg/video/upload/f_auto,q_auto,w_640,br_900k/v1776560394/old_1_tc3avv.mp4"></video>
+                        <figcaption>Standard Bank · Living poster</figcaption>
+                    </figure>
+                    <figure>
+                        <video autoplay muted loop playsinline preload="metadata"
+                            src="https://res.cloudinary.com/dzgqzeebg/video/upload/f_auto,q_auto,w_640,br_900k/v1776434638/kling_20260417_%E4%BD%9C%E5%93%81_____prompt_5508_0_avjval.mp4"></video>
+                        <figcaption>Luandina · Campaign film</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800,c_limit/v1773865908/galp-card_vn3fdn.gif" alt="Galp campaign loop">
+                        <figcaption>Galp · Christmas loop</figcaption>
+                    </figure>
+                </div>
             </div>
         </section>
 
@@ -4273,6 +4404,76 @@ margin-top: 3px;
         scrollContainer.addEventListener('scroll', () => requestAnimationFrame(updateHeroInlineShift), { passive: true });
         window.addEventListener('resize', updateHeroInlineShift);
         updateHeroInlineShift();
+
+        // ========================================
+        // MOTION DESIGN — scroll-expand media
+        // Driven by .scroll-container scroll position against the section's
+        // own bounds. Sticky-pin handles the visual pin; JS computes a 0→1
+        // progress over the section's 2× viewport run, then applies sizing,
+        // background fade, shade thinning, and the split-title translation.
+        // ========================================
+        (function initMotionExpand() {
+            const section   = document.getElementById('motion');
+            if (!section) return;
+            const pin       = document.getElementById('motionPin');
+            const bg        = document.getElementById('motionBg');
+            const media     = document.getElementById('motionMedia');
+            const shade     = document.getElementById('motionShade');
+            const titleA    = document.getElementById('motionTitleA');
+            const titleB    = document.getElementById('motionTitleB');
+            const content   = document.getElementById('motionContent');
+            if (!pin || !media) return;
+
+            let isMobile = window.innerWidth < 768;
+            let rafPending = false;
+
+            function layout(progress) {
+                const p = Math.max(0, Math.min(1, progress));
+                const w = 300 + p * (isMobile ? 650 : 1250);
+                const h = 400 + p * (isMobile ? 200 : 400);
+                const tx = p * (isMobile ? 180 : 150);
+
+                media.style.width  = w + 'px';
+                media.style.height = h + 'px';
+                bg.style.opacity   = (1 - p).toFixed(3);
+                shade.style.opacity = (0.5 - p * 0.3).toFixed(3);
+                titleA.style.transform = 'translateX(-' + tx + 'vw)';
+                titleB.style.transform = 'translateX('  + tx + 'vw)';
+
+                if (p >= 1) content.classList.add('is-revealed');
+                else if (p < 0.75) content.classList.remove('is-revealed');
+            }
+
+            function compute() {
+                rafPending = false;
+                // Distance scrolled into the section, measured in scrollContainer coordinates
+                const rect = pin.getBoundingClientRect();
+                const hostRect = scrollContainer.getBoundingClientRect();
+                const sectionTop = section.offsetTop - scrollContainer.scrollTop;
+                // Progress: how far through the 100vh pin runway we are
+                // runway = sectionHeight - viewportHeight (= 100vh on a 200vh section)
+                const viewportH = scrollContainer.clientHeight;
+                const runway = section.offsetHeight - viewportH;
+                const travelled = scrollContainer.scrollTop - section.offsetTop;
+                const p = runway > 0 ? travelled / runway : 0;
+                layout(p);
+            }
+
+            function onScroll() {
+                if (rafPending) return;
+                rafPending = true;
+                requestAnimationFrame(compute);
+            }
+
+            function onResize() {
+                isMobile = window.innerWidth < 768;
+                compute();
+            }
+
+            scrollContainer.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onResize);
+            compute();
+        })();
 
         // ========================================
         // CAPABILITIES WIDGET V3
