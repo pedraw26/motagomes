@@ -90,6 +90,27 @@
         }
         .header-right { display: flex; align-items: center; justify-self: end; gap: 16px; }
 
+        .header-updated {
+            font-family: var(--sf-pro);
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            color: var(--text-40);
+            text-transform: uppercase;
+            white-space: nowrap;
+            line-height: 1;
+        }
+        .header-social {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-60);
+            transition: color 0.25s ease;
+        }
+        .header-social:hover { color: var(--text); }
+        .header-social svg { width: 15px; height: 15px; display: block; }
+        @media (max-width: 720px) {
+            .header-updated { display: none; }
+        }
+
         .header-lang {
             display: inline-flex;
             align-items: center;
@@ -335,6 +356,10 @@
             </div>
             <div class="header-center" id="gmtTime">GMT 00:00</div>
             <div class="header-right">
+                <span class="header-updated" data-i18n="nav.lastUpdated">Last updated · February 2026</span>
+                <a class="header-social" href="https://linkedin.com/in/pedraw" target="_blank" rel="noopener" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zm1.78 13.02H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+                </a>
                 <div class="header-lang" role="group" aria-label="Language">
                     <button type="button" data-i18n-toggle="en" aria-pressed="true">EN</button>
                     <span class="ml-sep" aria-hidden="true">/</span>
