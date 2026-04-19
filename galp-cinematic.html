@@ -9,12 +9,13 @@
     --color-foreground: #1a1a1a;
     --card-purple: #ea5906;                        /* campaign orange — replaces royal purple */
 
-    /* Bezel geometry — the source of truth.
-       Concentric curves: inner-radius = outer-radius - bezel-inset. */
-    --bezel-w: 320px;
-    --bezel-h: 660px;
-    --bezel-radius: 3.2rem;                        /* = 51.2px */
-    --bezel-inset: 7px;                            /* black ring thickness */
+    /* Bezel geometry — fully fluid now. Height tracks viewport height;
+       the phone's 320:660 aspect-ratio keeps its shape. Radius and bezel
+       inset scale proportionally via clamp() so the rim/ring stay visually
+       correct on every viewport from 200px iframe up to full desktop. */
+    --bezel-h: clamp(280px, 74vh, 660px);
+    --bezel-radius: clamp(1.6rem, 5.2vh, 3.2rem);
+    --bezel-inset: clamp(4px, 1.1vh, 7px);
     --screen-radius: calc(var(--bezel-radius) - var(--bezel-inset));
   }
 
@@ -24,10 +25,9 @@
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    /* Festive wrapping-paper image becomes the stage backdrop, replacing the solid dusty-pink.
-       background-attachment: fixed keeps the paper locked while the hero content scrolls. */
+    /* Festive wrapping-paper image as the stage backdrop (fixed attachment dropped
+       because iOS Safari renders it janky inside nested/iframed scroll contexts). */
     background: url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_2000,c_limit/v1776301769/Papel-embrulho_wquff2.jpg') center/cover no-repeat;
-    background-attachment: fixed;
   }
 
   /* Pinned hero container */
@@ -70,26 +70,21 @@
     z-index: 10;
   }
 
-  /* Mockup sizing wrappers */
+  /* Mockup sizing wrappers — height fills card; phone derives its own size
+     from --bezel-h (viewport-relative), so no manual scale tier needed. */
   .mockup-scroll-wrapper {
     position: relative;
-    width: 100%; height: 460px;
+    width: 100%; height: 100%;
     display: flex; align-items: center; justify-content: center;
     z-index: 10;
     visibility: hidden;
-  }
-  @media (min-width: 1024px) {
-    .mockup-scroll-wrapper { height: 760px; }
   }
 
   .mockup-scale {
     position: relative;
     width: 100%; height: 100%;
     display: flex; align-items: center; justify-content: center;
-    transform: scale(0.8);
   }
-  @media (min-width: 768px) { .mockup-scale { transform: scale(1); } }
-  @media (min-width: 1024px) { .mockup-scale { transform: scale(1.18); } }
 
   /* ---------------- Physical iPhone bezel ----------------
      Rebuilt as real nested layers (padding-based) instead of inset box-shadows.
@@ -99,8 +94,8 @@
      own border-radius so the browser clips each with real geometry. */
   .iphone-bezel {
     position: relative;
-    width: var(--bezel-w);
     height: var(--bezel-h);
+    aspect-ratio: 320 / 660;                     /* width derives from height */
     border-radius: var(--bezel-radius);
     background: #c7c7c7;                         /* outer rim — light grey */
     padding: 2px;
@@ -142,20 +137,23 @@
     will-change: transform;
   }
 
-  /* Dynamic Island */
+  /* Dynamic Island — also scales with viewport so it stays proportional to the phone */
   .notch {
     position: absolute;
-    top: 5px; left: 50%;
+    top: clamp(3px, 0.8vh, 5px);
+    left: 50%;
     transform: translateX(-50%);
-    width: 100px; height: 28px;
+    width: clamp(58px, 15vh, 100px);
+    height: clamp(16px, 4.2vh, 28px);
     background: #000;
     border-radius: 999px;
     z-index: 2;
     display: flex; align-items: center; justify-content: flex-end;
-    padding: 0 12px;
+    padding: 0 clamp(7px, 1.8vh, 12px);
   }
   .notch-dot {
-    width: 6px; height: 6px;
+    width: clamp(4px, 0.9vh, 6px);
+    height: clamp(4px, 0.9vh, 6px);
     border-radius: 50%;
     background: #10b981;
     box-shadow: 0 0 6px rgba(16, 185, 129, 0.7);
