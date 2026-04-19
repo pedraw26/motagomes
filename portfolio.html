@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mota Gomes - Portfolio</title>
+    <title data-i18n="meta.title.portfolio">Mota Gomes - Portfolio</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <script>(function(){try{var l=localStorage.getItem('mg_lang');if(l==='pt')document.documentElement.lang='pt-PT';}catch(e){}})();</script>
+    <script src="/i18n.js" defer></script>
     <style>
         :root {
             --sf-pro: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
@@ -3058,6 +3060,41 @@ margin-top: 3px;
             transform: translateY(2px);
         }
 
+        /* Language toggle inside menu overlay */
+        .menu-overlay-lang {
+            margin-top: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            align-self: center;
+            gap: 10px;
+            font-family: var(--sf-pro);
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-40);
+        }
+        .menu-overlay-lang button {
+            background: transparent;
+            border: none;
+            padding: 2px 4px;
+            font: inherit;
+            letter-spacing: inherit;
+            text-transform: inherit;
+            color: var(--text-40);
+            cursor: pointer;
+            transition: color 0.25s ease;
+        }
+        .menu-overlay-lang button:hover { color: var(--text-80); }
+        .menu-overlay-lang button.is-active,
+        .menu-overlay-lang button[aria-pressed="true"] {
+            color: var(--text);
+        }
+        .menu-overlay-lang .ml-sep {
+            opacity: 0.5;
+        }
+
         .menu-overlay-footer {
             position: absolute;
             bottom: 40px;
@@ -3082,12 +3119,12 @@ margin-top: 3px;
 </head>
 <body>
     <!-- Site-refresh banner. Dismissal persisted in localStorage under 'sitebanner-refresh-v1'. -->
-    <div class="sitebanner" id="siteBanner" role="status" aria-label="Site notice">
+    <div class="sitebanner" id="siteBanner" role="status" aria-label="Site notice" data-i18n-attr="aria-label:banner.aria">
         <span class="sitebanner-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20"/></svg>
         </span>
-        <span class="sitebanner-text"><em>Portfolio in refinement.</em> New case studies and refreshed layouts are rolling out over the coming days — a few sections may shift as the edit continues.</span>
-        <button class="sitebanner-close" type="button" id="siteBannerClose" aria-label="Dismiss notice">
+        <span class="sitebanner-text"><em data-i18n="banner.textEm">Portfolio in refinement.</em><span data-i18n="banner.textRest"> New case studies and refreshed layouts are rolling out over the coming days — a few sections may shift as the edit continues.</span></span>
+        <button class="sitebanner-close" type="button" id="siteBannerClose" aria-label="Dismiss notice" data-i18n-attr="aria-label:banner.dismiss">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
     </div>
@@ -3100,7 +3137,7 @@ margin-top: 3px;
         </div>
         <div class="intro-pw" id="introPw">
             <input type="password" class="intro-pw-input" id="introPwInput" placeholder="" autocomplete="off">
-            <div class="intro-pw-hint" id="introPwHint">Incorrect password</div>
+            <div class="intro-pw-hint" id="introPwHint" data-i18n="pw.wrong">Incorrect password</div>
         </div>
     </div>
 
@@ -3133,25 +3170,30 @@ margin-top: 3px;
     
     <!-- Hidden Menu Overlay -->
     <div class="menu-overlay" id="menuOverlay">
-        <button class="menu-overlay-close" id="menuClose" aria-label="Close menu">
+        <button class="menu-overlay-close" id="menuClose" aria-label="Close menu" data-i18n-attr="aria-label:menu.close">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
         </button>
         <div class="menu-overlay-items">
-            <a href="#work" class="menu-overlay-link">Work</a>
-            <a href="#research" class="menu-overlay-link">Research</a>
-            <a href="#about" class="menu-overlay-link">About</a>
-            <a href="mailto:hi@motagomes.com" class="menu-overlay-cta">Let's Talk</a>
+            <a href="#work" class="menu-overlay-link" data-i18n="menu.work">Work</a>
+            <a href="#research" class="menu-overlay-link" data-i18n="menu.research">Research</a>
+            <a href="#about" class="menu-overlay-link" data-i18n="menu.about">About</a>
+            <a href="mailto:hi@motagomes.com" class="menu-overlay-cta" data-i18n="menu.letstalk">Let's Talk</a>
             <a href="/cv.pdf" download class="menu-overlay-cv">
-                Curriculum
+                <span data-i18n="menu.cv">Curriculum</span>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                     <polyline points="7 10 12 15 17 10"></polyline>
                     <line x1="12" y1="15" x2="12" y2="3"></line>
                 </svg>
             </a>
+            <div class="menu-overlay-lang" role="group" aria-label="Language">
+                <button type="button" data-i18n-toggle="en" aria-pressed="true">EN</button>
+                <span class="ml-sep" aria-hidden="true">/</span>
+                <button type="button" data-i18n-toggle="pt" aria-pressed="false">PT</button>
+            </div>
         </div>
     </div>
 
@@ -3197,20 +3239,20 @@ margin-top: 3px;
                 </div>
             </div>
             <div class="video-scroll-indicator" onclick="document.getElementById('hero').scrollIntoView({behavior: 'smooth'})">
-                <span>Scroll Down ↓</span>
+                <span data-i18n="hero.scrollDown">Scroll Down ↓</span>
             </div>
         </section>
 
         <!-- SECTION 1: HERO -->
         <section class="snap-section hero" id="hero">
             <div class="hero-content">
-                <p class="hero-subtitle"><span class="hs-part p1">Hybrid Designer</span> <span class="hs-part p2">focused on elevating brands <span class="hero-inline-stack"><span class="hero-inline-green"></span><img class="hero-inline-image" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1772425940/Layer_21_qw0mad.png" alt=""></span> experiences</span> <span class="hs-part p3">that balance aesthetics with purpose.</span></p>
-                <a href="#work" class="mbtn" aria-label="View Work">
+                <p class="hero-subtitle"><span class="hs-part p1" data-i18n="hero.p1">Hybrid Designer</span> <span class="hs-part p2"><span data-i18n="hero.p2">focused on elevating brands</span> <span class="hero-inline-stack"><span class="hero-inline-green"></span><img class="hero-inline-image" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1772425940/Layer_21_qw0mad.png" alt=""></span> <span data-i18n="hero.p2b">experiences</span></span> <span class="hs-part p3" data-i18n="hero.p3">that balance aesthetics with purpose.</span></p>
+                <a href="#work" class="mbtn" aria-label="View Work" data-i18n-attr="aria-label:hero.viewWork">
                     <span class="mbtn-circle" aria-hidden="true"></span>
                     <span class="mbtn-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                     </span>
-                    <span class="mbtn-label">View Work</span>
+                    <span class="mbtn-label" data-i18n="hero.viewWork">View Work</span>
                 </a>
             </div>
         </section>
@@ -3218,7 +3260,7 @@ margin-top: 3px;
         <!-- SECTION 2: GALLERY STACKED WITH GRADIENTS -->
         <section class="snap-section gallery-stacked" id="work">
             <div class="gallery-stacked-header">
-                <h2 class="gallery-stacked-title">Selected Projects<span class="star" aria-hidden="true"><svg viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="14" stroke-linecap="round" fill="none"><line x1="0" y1="-40" x2="0" y2="40"/><line x1="-34.64" y1="-20" x2="34.64" y2="20"/><line x1="-34.64" y1="20" x2="34.64" y2="-20"/></g></svg></span></h2>
+                <h2 class="gallery-stacked-title"><span data-i18n="work.title">Selected Projects</span><span class="star" aria-hidden="true"><svg viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="14" stroke-linecap="round" fill="none"><line x1="0" y1="-40" x2="0" y2="40"/><line x1="-34.64" y1="-20" x2="34.64" y2="20"/><line x1="-34.64" y1="20" x2="34.64" y2="-20"/></g></svg></span></h2>
             </div>
             
             <!-- Side indicators -->
@@ -3253,9 +3295,9 @@ margin-top: 3px;
                                 <div class="gallery-stacked-label">The Voice of Experience · 360 Campaign</div>
                                 <div class="gallery-stacked-project-title">Standard Bank</div>
                                 <div class="gallery-stacked-award"><b>Gold</b>&nbsp;&nbsp;Prémios Lusófonos</div>
-                                <a href="/project.html?p=standard-bank" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
+                                <a href="/project.html?p=standard-bank" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
                             </div>
-                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
+                            <div class="gallery-stacked-badge"><span data-i18n="card.viewProject">VIEW</span><br><span data-i18n="card.projectWord">PROJECT</span></div>
                         </div>
                     </div>
                 </div>
@@ -3278,9 +3320,9 @@ margin-top: 3px;
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-label">Christmas Campaign</div>
                                 <div class="gallery-stacked-project-title">Galp Christmas</div>
-                                <a href="/project.html?p=galp" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
+                                <a href="/project.html?p=galp" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
                             </div>
-                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
+                            <div class="gallery-stacked-badge"><span data-i18n="card.viewProject">VIEW</span><br><span data-i18n="card.projectWord">PROJECT</span></div>
                         </div>
                     </div>
                 </div>
@@ -3303,9 +3345,9 @@ margin-top: 3px;
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-label">Geo-Targeted Campaign</div>
                                 <div class="gallery-stacked-project-title">Luandina —<br>A Nossa</div>
-                                <a href="/project.html?p=luandina" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
+                                <a href="/project.html?p=luandina" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
                             </div>
-                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
+                            <div class="gallery-stacked-badge"><span data-i18n="card.viewProject">VIEW</span><br><span data-i18n="card.projectWord">PROJECT</span></div>
                         </div>
                     </div>
                 </div>
@@ -3334,9 +3376,9 @@ margin-top: 3px;
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-label">Real Estate Branding</div>
                                 <div class="gallery-stacked-project-title">RAS Real Estate</div>
-                                <a href="/project.html?p=ras" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
+                                <a href="/project.html?p=ras" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
                             </div>
-                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
+                            <div class="gallery-stacked-badge"><span data-i18n="card.viewProject">VIEW</span><br><span data-i18n="card.projectWord">PROJECT</span></div>
                         </div>
                     </div>
                 </div>
@@ -3359,9 +3401,9 @@ margin-top: 3px;
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-label">Illustration</div>
                                 <div class="gallery-stacked-project-title">Lyft Illustrations</div>
-                                <a href="/project.html?p=lyft" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
+                                <a href="/project.html?p=lyft" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
                             </div>
-                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
+                            <div class="gallery-stacked-badge"><span data-i18n="card.viewProject">VIEW</span><br><span data-i18n="card.projectWord">PROJECT</span></div>
                         </div>
                     </div>
                 </div>
@@ -3384,9 +3426,9 @@ margin-top: 3px;
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-label">Rebrand</div>
                                 <div class="gallery-stacked-project-title">One1x</div>
-                                <a href="/project.html?p=one1x" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
+                                <a href="/project.html?p=one1x" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
                             </div>
-                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
+                            <div class="gallery-stacked-badge"><span data-i18n="card.viewProject">VIEW</span><br><span data-i18n="card.projectWord">PROJECT</span></div>
                         </div>
                     </div>
                 </div>
@@ -3409,9 +3451,9 @@ margin-top: 3px;
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-label">UX Design</div>
                                 <div class="gallery-stacked-project-title">Moope</div>
-                                <a href="/project.html?p=moope" class="gallery-stacked-btn gallery-stacked-btn-outline">View Case</a>
+                                <a href="/project.html?p=moope" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
                             </div>
-                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
+                            <div class="gallery-stacked-badge"><span data-i18n="card.viewProject">VIEW</span><br><span data-i18n="card.projectWord">PROJECT</span></div>
                         </div>
                     </div>
                 </div>
@@ -3434,9 +3476,9 @@ margin-top: 3px;
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-label">Retail Campaign</div>
                                 <div class="gallery-stacked-project-title">Wammo<br>World Cup</div>
-                                <a href="/project.html?p=wammo" class="gallery-stacked-btn gallery-stacked-btn-fill">View Case</a>
+                                <a href="/project.html?p=wammo" class="gallery-stacked-btn gallery-stacked-btn-fill"><span data-i18n="card.viewCase">View Case</span></a>
                             </div>
-                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
+                            <div class="gallery-stacked-badge"><span data-i18n="card.viewProject">VIEW</span><br><span data-i18n="card.projectWord">PROJECT</span></div>
                         </div>
                     </div>
                 </div>
@@ -3459,9 +3501,9 @@ margin-top: 3px;
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-label">Brand & Web</div>
                                 <div class="gallery-stacked-project-title">Digital Presence<br>Redefined</div>
-                                <a href="/project.html?p=aura-studio" class="gallery-stacked-btn gallery-stacked-btn-fill">View Case</a>
+                                <a href="/project.html?p=aura-studio" class="gallery-stacked-btn gallery-stacked-btn-fill"><span data-i18n="card.viewCase">View Case</span></a>
                             </div>
-                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
+                            <div class="gallery-stacked-badge"><span data-i18n="card.viewProject">VIEW</span><br><span data-i18n="card.projectWord">PROJECT</span></div>
                         </div>
                     </div>
                 </div>
@@ -3484,9 +3526,9 @@ margin-top: 3px;
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-label">Scholarship Initiative</div>
                                 <div class="gallery-stacked-project-title">Amal Clooney<br>Scholarship</div>
-                                <a href="#" class="gallery-stacked-btn gallery-stacked-btn-fill" onclick="event.preventDefault();event.stopPropagation();openPwModal()">View Case</a>
+                                <a href="#" class="gallery-stacked-btn gallery-stacked-btn-fill" onclick="event.preventDefault();event.stopPropagation();openPwModal()"><span data-i18n="card.viewCase">View Case</span></a>
                             </div>
-                            <div class="gallery-stacked-badge">VIEW<br>PROJECT</div>
+                            <div class="gallery-stacked-badge"><span data-i18n="card.viewProject">VIEW</span><br><span data-i18n="card.projectWord">PROJECT</span></div>
                         </div>
                     </div>
                 </div>
@@ -3498,9 +3540,9 @@ margin-top: 3px;
         <section class="snap-section philosophy">
             <div class="philosophy-inner">
                 <p class="philosophy-text">
-                    <span class="ph-line" data-scroll-reveal>Design is research made visible —</span>
-                    <span class="ph-line" data-scroll-reveal data-scroll-reveal-delay="500">every pixel carries intent,</span>
-                    <span class="ph-line" data-scroll-reveal data-scroll-reveal-delay="1000">every interaction tells a story.</span>
+                    <span class="ph-line" data-scroll-reveal data-i18n="philosophy.l1">Design is research made visible —</span>
+                    <span class="ph-line" data-scroll-reveal data-scroll-reveal-delay="500" data-i18n="philosophy.l2">every pixel carries intent,</span>
+                    <span class="ph-line" data-scroll-reveal data-scroll-reveal-delay="1000" data-i18n="philosophy.l3">every interaction tells a story.</span>
                 </p>
             </div>
         </section>
@@ -3510,7 +3552,7 @@ margin-top: 3px;
             <div class="research-content">
                 <div class="research-inner">
                     <div class="research-header">
-                        <h2 class="research-title" data-scroll-reveal>Research &amp; Experiments</h2>
+                        <h2 class="research-title" data-scroll-reveal data-i18n="research.landingTitle">Research &amp; Experiments</h2>
                     </div>
 
                     <div class="research-list">
@@ -3556,27 +3598,27 @@ margin-top: 3px;
             <h2 class="about-v3-name" data-scroll-reveal>Mota Gomes</h2>
 
             <div class="about-v3-bio">
-              <p data-scroll-reveal data-scroll-reveal-delay="120">I'm a research-led visual designer building thoughtful, contemporary work for brands and digital products. With over a decade of experience spanning startups, enterprise, and deep tech, I bring a strong conceptual foundation to every project before moving into execution.</p>
-              <p data-scroll-reveal data-scroll-reveal-delay="260">My work sits at the intersection of design systems, brand identity, and product thinking. I care deeply about composition, typography, and detail — the invisible scaffolding that makes design feel intentional rather than decorative.</p>
-              <p data-scroll-reveal data-scroll-reveal-delay="400">I've led design across full product lifecycles: from early-stage identity and positioning, through interface design and prototyping, to production-ready systems that scale. Every engagement starts with research and ends with something that ships.</p>
+              <p data-scroll-reveal data-scroll-reveal-delay="120" data-i18n="about.p1">I'm a research-led visual designer building thoughtful, contemporary work for brands and digital products. With over a decade of experience spanning startups, enterprise, and deep tech, I bring a strong conceptual foundation to every project before moving into execution.</p>
+              <p data-scroll-reveal data-scroll-reveal-delay="260" data-i18n="about.p2">My work sits at the intersection of design systems, brand identity, and product thinking. I care deeply about composition, typography, and detail — the invisible scaffolding that makes design feel intentional rather than decorative.</p>
+              <p data-scroll-reveal data-scroll-reveal-delay="400" data-i18n="about.p3">I've led design across full product lifecycles: from early-stage identity and positioning, through interface design and prototyping, to production-ready systems that scale. Every engagement starts with research and ends with something that ships.</p>
             </div>
 
-            <p class="about-v3-role" data-scroll-reveal data-scroll-reveal-delay="540">Multidisciplinary Designer — London, UK  ·  Available for immediate start</p>
+            <p class="about-v3-role" data-scroll-reveal data-scroll-reveal-delay="540" data-i18n="about.role">Multidisciplinary Designer — London, UK  ·  Available for immediate start</p>
 
-            <div class="about-v3-signature" aria-label="Pedro Mota Gomes signature" data-signature-reveal>
+            <div class="about-v3-signature" aria-label="Pedro Mota Gomes signature" data-signature-reveal data-i18n-attr="aria-label:about.signatureAria">
               <svg viewBox="0 0 1127.36 305.38" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
                 <path d="M491.97,75.6l39.86-36.67c3.67-3.31,8.32-5.44,11.69-4.78,4.34.85,6.6,5.66,2.3,11.67-2.21,3.09-5.75,5.75-8.65,8.21-6.58,5.6-13.16,11.19-19.74,16.79-.94.8-2.58,2.38-3.48,3.3-2.07,2.11,1.99,1.65,7.81,1.95,8.91.46,15.65.44,23.47.65,2.07.06,4.18.12,6.15.77,5.16,1.7,7.8,9.92,1.65,12.36-1.52.6-3.2.56-4.83.5-7.77-.26-15.55-.52-23.32-.78-7.59-.25-17.09-.78-24.65-.16-3.04.25-3.96.13-6.05,2.27-3.25,3.33-4.45,4.51-6.91,6.87-4.97,4.77-10.05,10.2-14.95,15.03-5.92,5.83-9.72,10.71-15.1,16.76-1.88,2.12-3.47,4.64-4.23,5.74-1.04,1.5-1.11,1.83-2.18,3.59-.24.39-.52.76-.61,1.21s.05.97.44,1.2c.24.14.23.73,2.16.63,5.9-.29,10.95-3.98,16.29-6.31,5.84-2.55,11.61-5.26,17.63-7.37,11.11-3.89,40.99-14.98,35.14,7.35,26.73-7.66,53.48-6.53,81.06-6.24,6.32-11.81,13.98-22.97,22.3-33.48C657.57,55.81,723.99-2.37,779.27.07c55.4,2.45,50.96,52.35,47.42,92.45-1.53,17.35-19.85,18.57-23.6,9.53-2.49-5.99,1.53-25.52,1.86-33.22.73-17.07,3.95-42.65-15.06-50.02-28.94-11.22-71.98,15.37-94.94,32.27-29.15,21.46-54.2,48.4-73.5,79.02.18-.29,3.47.12,3.81.13,3.12.11,6.24.22,9.35.32,3.72.13,7.43.26,11.15.39,3.77.13,7.85-.03,11.55.63,3.8.69,8.48,3.74,6.89,8.18-1.37,3.82-6.03,5.66-9.73,6.08-13.15,1.5-28.18-1.36-41.42-.53-14.3,26.33-30.45,76.08,7.36,90.15,37.3,13.89,75.59-13.09,103.22-35.13,17.05-13.61,33.44-28.72,49.82-42.95-.5.01-1.06-.13-1.55,0-14.15,4-29.42,15.93-42.82,21.13-5.4,2.1-12.57,4.55-17.99,1.96-2.48-1.19-4.21-4.88-3.97-7.75.33-3.86,3-7.72,6.58-9.19,1.58-.65,3.21-1.08,4.75-1.8.92-.43,1.96-.7,2.92-1.05,6.57-2.4,13.1-4.94,19.63-7.45,7.5-2.88,13.71-5.7,21.27-8.4,7.86-2.82,14.02-5.29,22.03-7.66,7.67-2.26,16.63-4.7,24.5-6.12,6.95-1.26,14.28-2.47,21.35-2.3,5.84.14,13.36.16,18.37,3.23,5.76,3.53,5.18,6,5.82,6.38,0,0,26.2-14.16,40.37-13.95,6.7.1,10.13,5.22,5.59,9.89,7.95-1.78,26.62-7.54,33.49-2.55,6.58,4.78-6.75,10.19-9.33,12.69-.17.17-.35.38-.31.61.05.31.42.44.72.49.28.05.56.08.84.03,3.59-.58,7.11-2.12,10.43-3.64,3.79-1.73,7.49-3.66,11.22-5.51,6.69-3.32,14.11-7.27,21.75-7.46,1.56-.04,3.13.12,4.63.58,8.67,2.67-.7,8.84,1,11.06,6.45-2.4,13.58-4.48,20.45-5.22,5.67-.61,11.37-1.05,17.06-1.37,11.12-.63,22.26-.82,33.39-.9,11.25-.09,22.5-.06,33.75-.24,10.99-.17,21.97-.82,32.94-1.07,3.53-.08,7.03-.06,10.45.9.42.12,1.54.42,2.43,1.1.97.74,1.6,1.6,1.89,2.79.39,1.57.32,2.88.01,4.43-1.61,8.31-22.29,6.05-29.25,5.92-31.68-.61-68.01-2.21-99.54-.03-2.89.2-8.75.72-11.3,1.28-10.05,2.18-29.26,14.74-29.9-4.01-14.94,1.84-29.79,13.43-44.81,12.2-2.37-.19-4.75-.29-6.6-2.01-1.76-1.63-1.57-4.09-.44-5.77,1.85-2.63,4.01-4.9,6.77-6.56.33-.2.66-.39.94-.65,1.13-1.08,0-1.84-1.15-1.81-.95.02-1.87.3-2.78.58-2.46.78-4.89,1.65-7.29,2.61-2.22.89-4.47,1.67-6.69,2.58-4.88,2-24.47,14.95-27.1,6.05-1.36-4.61,2.43-6.33,5.06-9.22.15-.8-.96-.63-1.57-.53-4.32.72-14.79,7.42-19.73,9.63-1.9.85-3.77,1.78-5.65,2.68-4.63,2.21-10.58,5.64-15.92,5.06-5.99-.66-5.38-10.33-2.26-13.57,1.86-1.93-.83-1.86-2.17-1.83-2.26.05-4.51.27-6.74.64-2.49.41-4.95,1.02-7.35,1.82-1.71.57-4.29,1.02-5.02,2.87-.81,2.07-3.08,8.85-10.39,22.89-14.4,27.65-28.67,42.31-35.37,75.69,23.28,1.33,10.85,24.45-5.99,21.14-11.49-2.26-9.31-20.12-7.34-27.65,6.05-23.11,19.18-43.32,29.05-64.77-34.92,26.35-66.52,63.95-111.08,73.94-25.63,5.74-56.01,2.9-73.39-18.92-19.42-24.38-8.5-60.87,3.12-86.45-6.46-.15-12.97.15-19.44.03-11.88-.22-23.07-1.08-35.11,1.49-9.42,2.01-34.3,14.66-40.9,3.24-2.25-3.89.45-5.3-.46-8.95-14.04,3.5-31.63,15.64-45.36,17.54-17.39,2.4-22.46-4.49-20.7-12.9,2.27-10.82,15.25-24.88,21.52-32.4,5.65-6.78,8.19-8.83,13.85-14.87,3.31-3.53,6.33-6.65,8.6-8.72l-25.4-.38c-10.17,11.37-21.81,21.92-31.71,33.35-1.37,1.58-6.81,8.19-7.3,9.48-1.08,2.87.75,1.89,8.47.81,6.09-.86,8.67,5.61,4.72,10.28-3.61,4.27-27.74,5.04-34.16,7.25l15.17,10.49c33.44,25.71,47.93,67.55,28.37,106.96-16.28,32.8-63.62,48.93-95.62,29.48-41.83-25.42-30.51-95.4-21.32-135.41-65.41,9.9-130.89,20.76-196.68,28.17-24.24,2.73-88.19,11.58-108.35,3.78-12.63-4.89-16.46-15.51-11.02-27.76,9.62-21.67,50.25-37.25,71.81-43.51,48.71-14.14,100.42-15.68,150.75-13.33l54.27-84.62c3.74-6.22,11.86-6.02,13.12,1.48-4.01,24.64-13.1,52.33-10.45,77.46,2.01,19.03,11.26,11.09,21.77,3.17,15.58-11.75,31.52-30.91,44.11-46.04,10.26-12.33,21.05-29.88,31.51-40.82,4.82-5.04,12.17-5.46,12.64,2.05.27,4.37-10.51,20.43-13.23,25.67-13.73,26.44-26.61,53.48-36.15,81.78l16.5,5.51,5,1.67c-3.14-20.22,18.29-29.32,34.99-25.7,4.22.91,8.99,5.38,7.14,11.57,9.53-10.66,14.56-17.11,19.14-22.32,3.79-4.32,4.85-5.61,8.17-9.19,1.83-1.98.32-2.45-.78-2.41l-34.91.69s-4.89.21-6.89-.27c-1.76-.42-2.48-1.34-2.74-1.74-.68-1.03-.91-2.29-.75-3.53.11-.88.7-2.95,3.03-3.89,3.52-1.41,9.25-1.55,9.25-1.55l46.71-1.7c10.08-8.78,20.33-17.42,30.36-26.25,5.25-4.62,15.66-15.64,23.14-15.41,5.99.18,8.55,6.12,1.89,12.14l-33.44,28.94h23.59ZM270.25,113.34c-4.22-17.13.04-34.31.53-51.37l-30.93,48.22,30.4,3.15ZM329.98,124.88l15.74-40.89-36.66,35.12c-.01,1.8,18.26,4.5,20.92,5.77ZM215.73,121.73c-52.93-1.18-108.69.49-158.55,20.17-12.06,4.76-29.15,13.27-38.03,22.78-18.83,20.19,13.11,19.28,26.22,18.88,41.38-1.24,87.51-8.34,128.81-13.77,49.33-6.48,98.48-14.69,147.7-21.87l3.93-10.46c-30.38-7.62-61.49-11.98-92.72-14.71-1.65.02-2.19,1.2-3.15,2.18-6.15,6.24-12.26,21.32-18.4,28.77-5.81,7.04-14.3,3.48-12.36-5.01.71-3.1,17.75-25.92,16.56-26.96ZM380.63,139.97c6.63.04,18.59-5.95,24.86-16.85,0,0-7.13,8.08-14.18,12.6-4.06,2.6-10.67,4.25-10.67,4.25ZM369.35,153.7c-4.54-.25-26.96,3.68-32.23,5.02-1.42.36-3.61.58-4.48,1.81-11.61,39.59-24.74,131.87,38.78,131.87,57.14,0,76.35-66.92,41.95-107.78-6.5-7.72-34.76-30.4-44.01-30.91Z"/>
               </svg>
             </div>
 
             <div class="about-v3-contact">
-              <a href="mailto:hi@motagomes.com" class="about-v3-contact-link" aria-label="Email">
+              <a href="mailto:hi@motagomes.com" class="about-v3-contact-link" aria-label="Email" data-i18n-attr="aria-label:about.emailAria">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                   <rect x="3" y="5" width="18" height="14" rx="2"/>
                   <path d="M3 7l9 6 9-6"/>
                 </svg>
               </a>
-              <a href="https://linkedin.com/in/pedraw" target="_blank" rel="noopener" class="about-v3-contact-link" aria-label="LinkedIn">
+              <a href="https://linkedin.com/in/pedraw" target="_blank" rel="noopener" class="about-v3-contact-link" aria-label="LinkedIn" data-i18n-attr="aria-label:about.linkedinAria">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zm1.78 13.02H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/>
                 </svg>
@@ -3593,7 +3635,7 @@ margin-top: 3px;
                 </svg>
             </a>
             <a href="/cv.pdf" download class="swiss-cv">
-                Curriculum
+                <span data-i18n="menu.cv">Curriculum</span>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                     <polyline points="7 10 12 15 17 10"></polyline>
@@ -3603,9 +3645,9 @@ margin-top: 3px;
             <div class="swiss-center">
                 <div class="swiss-content" id="footerContent">
                     <div class="swiss-cta">
-                        <h3>Thanks for <img class="circle-avatar" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1772425940/Layer_21_qw0mad.png" alt="Mota Gomes"> taking the time<br>to look through my work.</h3>
+                        <h3><span data-i18n="footer.cta">Thanks for</span> <img class="circle-avatar" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1772425940/Layer_21_qw0mad.png" alt="Mota Gomes"> <span data-i18n="footer.ctaRest">taking the time</span><br><span data-i18n="footer.ctaRest2">to look through my work.</span></h3>
                         <a href="mailto:hi@motagomes.com" class="swiss-cta-link">
-                            Say Hi
+                            <span data-i18n="footer.sayHi">Say Hi</span>
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"></path>
                             </svg>
@@ -3615,9 +3657,9 @@ margin-top: 3px;
             </div>
 
             <div class="swiss-foot">
-                <span class="swiss-copyright">DESIGNED BY MOTAGOMES © 2026</span>
+                <span class="swiss-copyright" data-i18n="footer.copyright">DESIGNED BY MOTAGOMES © 2026</span>
                 <a class="swiss-backtop" onclick="scrollToTop()">
-                    Back to top
+                    <span data-i18n="footer.backTop">Back to top</span>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M12 19V5M5 12l7-7 7 7"></path>
                     </svg>
@@ -4300,8 +4342,8 @@ margin-top: 3px;
     <div class="pw-modal" id="pwModal">
         <button class="pw-modal-close" onclick="closePwModal()">&times;</button>
         <div class="pw-modal-box">
-            <div class="pw-modal-label">Password Required</div>
-            <input type="password" class="pw-modal-input" id="pwInput" placeholder="Enter password" autocomplete="off">
+            <div class="pw-modal-label" data-i18n="pw.title">Password Required</div>
+            <input type="password" class="pw-modal-input" id="pwInput" placeholder="Enter password" autocomplete="off" data-i18n-attr="placeholder:pw.placeholder">
         </div>
     </div>
     <script>

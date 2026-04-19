@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project — Mota Gomes</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <script>(function(){try{var l=localStorage.getItem('mg_lang');if(l==='pt')document.documentElement.lang='pt-PT';}catch(e){}})();</script>
+    <script src="/i18n.js" defer></script>
     <!-- Preconnect to Cloudinary: saves ~100-300ms on first image handshake (DNS + TLS + TCP upfront) -->
     <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
     <link rel="dns-prefetch" href="https://res.cloudinary.com">
@@ -204,6 +206,38 @@
             border-color: var(--text);
             color: var(--bg-black);
         }
+
+        /* Language toggle inside menu overlay */
+        .menu-overlay-lang {
+            margin-top: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: var(--sf-pro);
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+        }
+        .menu-overlay-lang button {
+            background: transparent;
+            border: none;
+            padding: 2px 4px;
+            font: inherit;
+            letter-spacing: inherit;
+            text-transform: inherit;
+            color: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: color 0.25s ease;
+        }
+        .menu-overlay-lang button:hover { color: rgba(255,255,255,0.85); }
+        .menu-overlay-lang button.is-active,
+        .menu-overlay-lang button[aria-pressed="true"] {
+            color: var(--text);
+        }
+        .menu-overlay-lang .ml-sep { opacity: 0.5; }
 
         .menu-overlay-footer {
             position: absolute;
@@ -1826,12 +1860,12 @@
 </head>
 <body>
     <!-- Site-refresh banner. Dismissal shared with portfolio.html via localStorage key. -->
-    <div class="sitebanner" id="siteBanner" role="status" aria-label="Site notice">
+    <div class="sitebanner" id="siteBanner" role="status" aria-label="Site notice" data-i18n-attr="aria-label:banner.aria">
         <span class="sitebanner-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20"/></svg>
         </span>
-        <span class="sitebanner-text"><em>Portfolio in refinement.</em> New case studies and refreshed layouts are rolling out over the coming days — a few sections may shift as the edit continues.</span>
-        <button class="sitebanner-close" type="button" id="siteBannerClose" aria-label="Dismiss notice">
+        <span class="sitebanner-text"><em data-i18n="banner.textEm">Portfolio in refinement.</em><span data-i18n="banner.textRest"> New case studies and refreshed layouts are rolling out over the coming days — a few sections may shift as the edit continues.</span></span>
+        <button class="sitebanner-close" type="button" id="siteBannerClose" aria-label="Dismiss notice" data-i18n-attr="aria-label:banner.dismiss">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
     </div>
@@ -1855,14 +1889,19 @@
     <!-- Hidden Menu Overlay -->
     <div class="menu-overlay" id="menuOverlay">
         <div class="menu-overlay-items">
-            <a href="/#work" class="menu-overlay-link">Work</a>
-            <a href="/#research" class="menu-overlay-link">Research</a>
-            <a href="/#about" class="menu-overlay-link">About</a>
-            <a href="/dashboard/" class="menu-overlay-link">Dashboard</a>
-            <a href="mailto:hi@motagomes.com" class="menu-overlay-cta">Let's Talk</a>
+            <a href="/#work" class="menu-overlay-link" data-i18n="menu.work">Work</a>
+            <a href="/#research" class="menu-overlay-link" data-i18n="menu.research">Research</a>
+            <a href="/#about" class="menu-overlay-link" data-i18n="menu.about">About</a>
+            <a href="/dashboard/" class="menu-overlay-link" data-i18n="menu.dashboard">Dashboard</a>
+            <a href="mailto:hi@motagomes.com" class="menu-overlay-cta" data-i18n="menu.letstalk">Let's Talk</a>
+            <div class="menu-overlay-lang" role="group" aria-label="Language">
+                <button type="button" data-i18n-toggle="en" aria-pressed="true">EN</button>
+                <span class="ml-sep" aria-hidden="true">/</span>
+                <button type="button" data-i18n-toggle="pt" aria-pressed="false">PT</button>
+            </div>
         </div>
         <div class="menu-overlay-footer">
-            <a href="mailto:hi@motagomes.com">Email</a>
+            <a href="mailto:hi@motagomes.com" data-i18n="about.emailAria">Email</a>
             <a href="https://linkedin.com/in/pedraw" target="_blank" rel="noopener">LinkedIn</a>
         </div>
     </div>
@@ -1972,7 +2011,7 @@
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776302254/Artboard-1_tmgf8z.jpg', caption: 'Social media assets — carousel design', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776302254/Artboard-1-copy-2_w3320i.jpg', caption: 'Social media assets — carousel variant', layout: 'half' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776305960/gap_ygkvl7.jpg', caption: 'Campaign overview — full asset grid', layout: 'full' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776628059/Asset_2img_best_II_i5mtic.webp', caption: 'Closing frame — festive campaign hero', layout: 'full' }
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776629974/Asset_3img_best_III_c160ou.webp', caption: 'Closing frame — festive campaign hero', layout: 'full' }
             ],
             metrics: [
                 { value: '23%', label: 'Seasonal Sales Increase' },
@@ -2297,15 +2336,19 @@
         const project = PROJECTS[slug];
         const page = document.getElementById('projectPage');
 
+        var I18N = window.MGI18n;
+        var tr = I18N ? I18N.t : function (k) { return k; };
+
         if (!project) {
-            document.title = 'Project Not Found \u2014 Mota Gomes';
+            document.title = I18N ? I18N.t('meta.title.notfound') : 'Project Not Found \u2014 Mota Gomes';
             page.innerHTML = `
                 <div class="not-found">
-                    <div class="not-found-code">404 \u2014 Project not found</div>
-                    <h1 class="not-found-title">This project doesn't exist.</h1>
-                    <a href="/" class="not-found-link">Back to Portfolio</a>
+                    <div class="not-found-code" data-i18n="project.notFound.code">404 \u2014 Project not found</div>
+                    <h1 class="not-found-title" data-i18n="project.notFound.title">This project doesn't exist.</h1>
+                    <a href="/" class="not-found-link" data-i18n="project.nav.back">Back to Portfolio</a>
                 </div>
             `;
+            if (I18N) I18N.apply(page);
             return;
         }
 
@@ -2338,20 +2381,20 @@
                     <div class="overview__meta" data-reveal-child>
                         <dl class="overview__meta-list">
                             <div class="overview__meta-item">
-                                <dt class="overview__label">Client</dt>
+                                <dt class="overview__label" data-i18n="project.label.client">Client</dt>
                                 <dd class="overview__value">${project.client}</dd>
                             </div>
                             <div class="overview__meta-item">
-                                <dt class="overview__label">Industry</dt>
-                                <dd class="overview__value">${project.category}</dd>
+                                <dt class="overview__label" data-i18n="project.label.industry">Industry</dt>
+                                <dd class="overview__value">${I18N ? I18N.tCategory(project.category) : project.category}</dd>
                             </div>
                             <div class="overview__meta-item">
-                                <dt class="overview__label">Year</dt>
+                                <dt class="overview__label" data-i18n="project.label.year">Year</dt>
                                 <dd class="overview__value">${project.year}</dd>
                             </div>
                             <div class="overview__meta-item">
-                                <dt class="overview__label">Services</dt>
-                                <dd class="overview__value">${project.services}</dd>
+                                <dt class="overview__label" data-i18n="project.label.services">Services</dt>
+                                <dd class="overview__value">${I18N ? I18N.tServices(project.services) : project.services}</dd>
                             </div>
                         </dl>
                     </div>
@@ -2363,11 +2406,11 @@
                     ${project.challenge ? `
                     <div class="overview__narrative" data-reveal-child>
                         <div class="overview__narrative-block overview__narrative-block--challenge">
-                            <span class="overview__label">Challenge</span>
+                            <span class="overview__label" data-i18n="project.label.challenge">Challenge</span>
                             <p class="overview__narrative-text">${project.challenge}</p>
                         </div>
                         <div class="overview__narrative-block overview__narrative-block--solution">
-                            <span class="overview__label">Solution</span>
+                            <span class="overview__label" data-i18n="project.label.solution">Solution</span>
                             <p class="overview__narrative-text">${project.solution}</p>
                         </div>
                     </div>
@@ -2380,10 +2423,11 @@
                             const metalClass = lower === 'gold' ? ' metal-text gold'
                                             : lower === 'silver' ? ' metal-text silver'
                                             : '';
+                            var mLabel = I18N ? I18N.tMetric(m.label) : m.label;
                             return `
                             <div class="overview__metric" style="transition-delay: ${i * 80}ms">
                                 <div class="overview__metric-value${metalClass}">${raw}</div>
-                                <div class="overview__metric-label">${m.label}</div>
+                                <div class="overview__metric-label">${mLabel}</div>
                             </div>`;
                         }).join('')}
                     </div>
@@ -2399,7 +2443,7 @@
                                     ? `<div class="yt-player" data-vid="${img.src}">
                                         <iframe id="yt-${img.src}" src="https://www.youtube.com/embed/${img.src}?enablejsapi=1&autoplay=0&loop=1&playlist=${img.src}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&start=10" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                                         <div class="yt-overlay">
-                                            <button class="yt-play-btn" aria-label="Play video">
+                                            <button class="yt-play-btn" aria-label="Play video" data-i18n-attr="aria-label:project.doc.playAria">
                                                 <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="31" stroke="white" stroke-width="2"/><polygon points="26,20 26,44 46,32" fill="white"/></svg>
                                             </button>
                                         </div>
@@ -2417,32 +2461,32 @@
                                                 <div class="doc-top-l">
                                                     ${img.label ? `<span class="doc-label">${img.label}</span>` : ''}
                                                     <span class="doc-title">${img.title || img.caption}</span>
-                                                    ${img.award ? `<span class="doc-award metal-text gold"><b class="doc-award-accent">${img.awardPill || 'Gold'}</b>&nbsp;&nbsp;${img.award}</span>` : ''}
+                                                    ${img.award ? (() => { const pill = img.awardPill || 'Gold'; const pillOut = (pill === 'Gold' && I18N) ? I18N.t('project.award.gold') : pill; return `<span class="doc-award metal-text gold"><b class="doc-award-accent">${pillOut}</b>&nbsp;&nbsp;${img.award}</span>`; })() : ''}
                                                 </div>
                                             </div>
                                             <div class="doc-bottom">
                                                 <div class="doc-cta">
                                                     <div class="doc-cta-btn"><svg viewBox="0 0 24 24"><polygon points="6,4 6,20 20,12"/></svg></div>
-                                                    <span class="doc-cta-label">Watch documentary</span>
+                                                    <span class="doc-cta-label" data-i18n="project.doc.watch">Watch documentary</span>
                                                 </div>
                                                 <div class="doc-runtime">${img.runtime || ''}</div>
                                             </div>
                                         </div>
                                         <div class="doc-controls">
-                                            <button class="doc-btn doc-play" aria-label="Pause"><svg class="i-pause" viewBox="0 0 24 24"><rect x="7" y="5" width="3.2" height="14" rx=".6"/><rect x="13.8" y="5" width="3.2" height="14" rx=".6"/></svg><svg class="i-play" viewBox="0 0 24 24" style="display:none"><polygon points="7,5 7,19 19,12"/></svg></button>
-                                            <button class="doc-btn doc-mute" aria-label="Unmute"><svg class="i-muted" viewBox="0 0 24 24"><path d="M4 9v6h4l6 4V5L8 9H4z"/><line x1="16" y1="9" x2="22" y2="15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/><line x1="22" y1="9" x2="16" y2="15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg><svg class="i-sound" viewBox="0 0 24 24" style="display:none"><path d="M4 9v6h4l6 4V5L8 9H4z"/><path d="M17 8.5a5 5 0 0 1 0 7" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M19.5 6.5a8 8 0 0 1 0 11" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></button>
+                                            <button class="doc-btn doc-play" aria-label="Pause" data-i18n-attr="aria-label:project.doc.pauseAria"><svg class="i-pause" viewBox="0 0 24 24"><rect x="7" y="5" width="3.2" height="14" rx=".6"/><rect x="13.8" y="5" width="3.2" height="14" rx=".6"/></svg><svg class="i-play" viewBox="0 0 24 24" style="display:none"><polygon points="7,5 7,19 19,12"/></svg></button>
+                                            <button class="doc-btn doc-mute" aria-label="Unmute" data-i18n-attr="aria-label:project.doc.unmuteAria"><svg class="i-muted" viewBox="0 0 24 24"><path d="M4 9v6h4l6 4V5L8 9H4z"/><line x1="16" y1="9" x2="22" y2="15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/><line x1="22" y1="9" x2="16" y2="15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg><svg class="i-sound" viewBox="0 0 24 24" style="display:none"><path d="M4 9v6h4l6 4V5L8 9H4z"/><path d="M17 8.5a5 5 0 0 1 0 7" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M19.5 6.5a8 8 0 0 1 0 11" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></button>
                                             <div class="doc-progress"><div class="doc-progress-fill"></div></div>
                                             <div class="doc-time">00:00 / --:--</div>
                                         </div>
                                         <div class="doc-endcard">
-                                            <div class="doc-endcard-text">Thanks for watching.</div>
-                                            <div class="doc-endcard-sub">End</div>
-                                            <a href="/#work" class="mbtn" style="margin-top:28px" aria-label="Back to portfolio">
+                                            <div class="doc-endcard-text" data-i18n="project.doc.thanks">Thanks for watching.</div>
+                                            <div class="doc-endcard-sub" data-i18n="project.doc.end">End</div>
+                                            <a href="/#work" class="mbtn" style="margin-top:28px" aria-label="Back to portfolio" data-i18n-attr="aria-label:project.doc.backAria">
                                                 <span class="mbtn-circle" aria-hidden="true"></span>
                                                 <span class="mbtn-icon" aria-hidden="true">
                                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                                                 </span>
-                                                <span class="mbtn-label">View More Work</span>
+                                                <span class="mbtn-label" data-i18n="project.cta.viewMore">View More Work</span>
                                             </a>
                                         </div>
                                        </div>`
@@ -2468,7 +2512,8 @@
                                             ? `<img src="${img.imageSrc}" alt="${img.imageCaption || ''}" loading="lazy" decoding="async">`
                                             : `<div class="sbsp-placeholder">${placeholderSvg}<span>Image placeholder</span></div>`;
                                         const rightClass = img.imageSrc ? 'sbsp-card sbsp-card-image has-image' : 'sbsp-card sbsp-card-image';
-                                        const eyebrow = img.eyebrow != null ? img.eyebrow : 'Findings';
+                                        const eyebrowRaw = img.eyebrow != null ? img.eyebrow : 'Findings';
+                                        const eyebrow = (eyebrowRaw === 'Findings' && I18N) ? I18N.t('project.sb.findings') : eyebrowRaw;
                                         return `
                                             <div class="sbsp-card sbsp-card-stat">
                                                 ${eyebrow ? `<div class="sbsp-eyebrow">${eyebrow}</div>` : ''}
@@ -2495,16 +2540,19 @@
                                     ? (() => {
                                         const cellSvg = `<div class="ph-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-4.5-4.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg></div>`;
                                         const setA = Array.from({length: img.count || 8}, () => cellSvg).join('');
-                                        const kicker = img.kicker || 'Conceptual illustration';
-                                        const eyebrow = img.eyebrow != null ? img.eyebrow : 'For the campaign';
-                                        const cta = img.ctaText || 'See more of my personal work';
+                                        const kickerRaw = img.kicker || 'Conceptual illustration';
+                                        const kicker = (kickerRaw === 'Conceptual illustration' && I18N) ? I18N.t('project.ph.kicker') : kickerRaw;
+                                        const eyebrowRawPh = img.eyebrow != null ? img.eyebrow : 'For the campaign';
+                                        const eyebrow = (eyebrowRawPh === 'For the campaign' && I18N) ? I18N.t('project.ph.eyebrow') : eyebrowRawPh;
+                                        const ctaRaw = img.ctaText || 'See more of my personal work';
+                                        const cta = (ctaRaw === 'See more of my personal work' && I18N) ? I18N.t('project.ph.cta') : ctaRaw;
                                         const ctaHref = img.ctaHref || 'https://www.instagram.com/motagomes_/';
                                         const igHref = img.igHref || ctaHref;
                                         const igSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>`;
                                         const arrow = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13,6 19,12 13,18"/></svg>`;
                                         return `<div class="ph-kicker"><span>${kicker}</span>${eyebrow ? `<span>${eyebrow}</span>` : ''}</div>
                                                 <div class="showcase-placeholders"><div class="ph-track">${setA}${setA}</div></div>
-                                                <div class="ph-footer"><a class="ph-cta" href="${ctaHref}" target="_blank" rel="noopener">${cta} ${arrow}</a><a class="ph-ig" href="${igHref}" target="_blank" rel="noopener" aria-label="Instagram">${igSvg}</a></div>`;
+                                                <div class="ph-footer"><a class="ph-cta" href="${ctaHref}" target="_blank" rel="noopener">${cta} ${arrow}</a><a class="ph-ig" href="${igHref}" target="_blank" rel="noopener" aria-label="${I18N ? I18N.t('project.ph.igAria') : 'Instagram'}">${igSvg}</a></div>`;
                                     })()
                                     : img.type === 'colorstrip'
                                     ? `<div class="showcase-colorstrip">${img.colors.map((c, ci) => { const hex = c.replace('#',''); const r = parseInt(hex.substr(0,2),16); const g = parseInt(hex.substr(2,2),16); const b = parseInt(hex.substr(4,2),16); const lum = (r*299+g*587+b*114)/1000; const tc = lum > 140 ? '#000' : '#fff'; const pnt = img.pantones && img.pantones[ci] ? img.pantones[ci] : ''; const role = img.roles && img.roles[ci] ? img.roles[ci] : ''; return `<div style="background:${c};color:${tc}">${role ? `<div class="cs-role">${role}</div>` : ''}<div class="cs-meta">${c.toUpperCase()}${pnt ? '<br>' + pnt : ''}</div></div>`; }).join('')}</div>`
@@ -2518,18 +2566,28 @@
                 <!-- FOOTER NAVIGATION -->
                 <nav class="footer-nav">
                     <div class="footer-nav-inner">
-                        <a href="/#work" class="footer-nav-link">Back</a>
+                        <a href="/#work" class="footer-nav-link" data-i18n="project.cta.back">Back</a>
                         <a href="project.html?p=${prevSlug}" class="footer-nav-link">${prevProject.client}</a>
                         <a href="project.html?p=${nextSlug}" class="footer-nav-link">${nextProject.client}</a>
-                        <a href="/" class="footer-nav-link">Main Menu</a>
+                        <a href="/" class="footer-nav-link" data-i18n="project.cta.mainMenu">Main Menu</a>
                     </div>
                 </nav>
             </div>
         `;
 
+        // Apply i18n to the newly-rendered HTML
+        if (I18N) I18N.apply(page);
+
         // Observe sections for reveal animation
         initRevealObserver();
     }
+
+    // Re-render when language changes so dynamic values (metrics, category,
+    // services) get refreshed alongside the static labels.
+    document.addEventListener('i18n:languagechange', function () {
+        var slug = getSlug();
+        if (slug) renderProject(slug);
+    });
 
     /* ========================================
        SECTION REVEAL ON SCROLL

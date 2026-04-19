@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research — Pedro Gomes</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <script>(function(){try{var l=localStorage.getItem('mg_lang');if(l==='pt')document.documentElement.lang='pt-PT';}catch(e){}})();</script>
+    <script src="/i18n.js" defer></script>
     <style>
         :root {
             --sf-pro: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
@@ -205,6 +207,38 @@
             border-color: var(--text);
             color: var(--bg-black);
         }
+
+        /* Language toggle inside menu overlay */
+        .menu-overlay-lang {
+            margin-top: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: var(--sf-pro);
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+        }
+        .menu-overlay-lang button {
+            background: transparent;
+            border: none;
+            padding: 2px 4px;
+            font: inherit;
+            letter-spacing: inherit;
+            text-transform: inherit;
+            color: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: color 0.25s ease;
+        }
+        .menu-overlay-lang button:hover { color: rgba(255,255,255,0.85); }
+        .menu-overlay-lang button.is-active,
+        .menu-overlay-lang button[aria-pressed="true"] {
+            color: var(--text);
+        }
+        .menu-overlay-lang .ml-sep { opacity: 0.5; }
 
         .menu-overlay-footer {
             position: absolute;
@@ -728,14 +762,19 @@
             <span></span>
         </div>
         <div class="menu-overlay-items">
-            <a href="/#work" class="menu-overlay-link">Work</a>
-            <a href="/#research" class="menu-overlay-link">Research</a>
-            <a href="/#about" class="menu-overlay-link">About</a>
-            <a href="/dashboard/" class="menu-overlay-link">Dashboard</a>
-            <a href="mailto:hi@motagomes.com" class="menu-overlay-cta">Let's Talk</a>
+            <a href="/#work" class="menu-overlay-link" data-i18n="menu.work">Work</a>
+            <a href="/#research" class="menu-overlay-link" data-i18n="menu.research">Research</a>
+            <a href="/#about" class="menu-overlay-link" data-i18n="menu.about">About</a>
+            <a href="/dashboard/" class="menu-overlay-link" data-i18n="menu.dashboard">Dashboard</a>
+            <a href="mailto:hi@motagomes.com" class="menu-overlay-cta" data-i18n="menu.letstalk">Let's Talk</a>
+            <div class="menu-overlay-lang" role="group" aria-label="Language">
+                <button type="button" data-i18n-toggle="en" aria-pressed="true">EN</button>
+                <span class="ml-sep" aria-hidden="true">/</span>
+                <button type="button" data-i18n-toggle="pt" aria-pressed="false">PT</button>
+            </div>
         </div>
         <div class="menu-overlay-footer">
-            <a href="mailto:hi@motagomes.com">Email</a>
+            <a href="mailto:hi@motagomes.com" data-i18n="about.emailAria">Email</a>
             <a href="https://linkedin.com/in/pedraw" target="_blank" rel="noopener">LinkedIn</a>
         </div>
     </div>
@@ -848,17 +887,24 @@
         const slug = params.get('r');
         const container = document.getElementById('pageContent');
 
-        if (!slug || !RESEARCH[slug]) {
-            renderNotFound();
-        } else {
-            const data = RESEARCH[slug];
-            document.title = data.title + ' \u2014 Research \u2014 Pedro Gomes';
-            if (data.available) {
-                renderAvailable(data, slug);
+        function tr(k) { return window.MGI18n ? window.MGI18n.t(k) : k; }
+
+        function renderCurrent() {
+            if (!slug || !RESEARCH[slug]) {
+                renderNotFound();
             } else {
-                renderComingSoon(data, slug);
+                const data = RESEARCH[slug];
+                document.title = data.title + ' \u2014 ' + tr('meta.title.research').split(' — ')[0] + ' \u2014 Pedro Gomes';
+                if (data.available) {
+                    renderAvailable(data, slug);
+                } else {
+                    renderComingSoon(data, slug);
+                }
             }
+            if (window.MGI18n) window.MGI18n.apply(container);
         }
+        renderCurrent();
+        document.addEventListener('i18n:languagechange', renderCurrent);
 
         // ============================
         // RENDER: AVAILABLE RESEARCH
@@ -867,20 +913,20 @@
             var prevNext = getPrevNext(slug);
             container.innerHTML =
                 '<section class="research-hero">' +
-                    '<div class="research-hero-label fade-in">Research / Experiment</div>' +
+                    '<div class="research-hero-label fade-in" data-i18n="research.eyebrow">' + escHtml(tr('research.eyebrow')) + '</div>' +
                     '<h1 class="research-hero-title fade-in fade-in-delay-1">' + escHtml(data.title) + '</h1>' +
                     '<div class="research-hero-meta fade-in fade-in-delay-2">' +
                         '<div class="research-meta-item">' +
-                            '<span class="research-meta-label">Tech Stack</span>' +
+                            '<span class="research-meta-label" data-i18n="research.label.tech">' + escHtml(tr('research.label.tech')) + '</span>' +
                             '<span class="research-meta-value">' + escHtml(data.tech) + '</span>' +
                         '</div>' +
                         '<div class="research-meta-item">' +
-                            '<span class="research-meta-label">Year</span>' +
+                            '<span class="research-meta-label" data-i18n="research.label.year">' + escHtml(tr('research.label.year')) + '</span>' +
                             '<span class="research-meta-value">' + escHtml(data.year) + '</span>' +
                         '</div>' +
                         (data.tools ? (
                             '<div class="research-meta-item">' +
-                                '<span class="research-meta-label">Tools</span>' +
+                                '<span class="research-meta-label" data-i18n="research.label.tools">' + escHtml(tr('research.label.tools')) + '</span>' +
                                 '<span class="research-meta-value">' + escHtml(data.tools) + '</span>' +
                             '</div>'
                         ) : '') +
@@ -889,11 +935,11 @@
 
                 '<section class="research-body">' +
                     '<p class="research-description fade-in fade-in-delay-3">' + escHtml(data.description) + '</p>' +
-                    '<div class="research-section-label fade-in fade-in-delay-3">Approach & Methodology</div>' +
+                    '<div class="research-section-label fade-in fade-in-delay-3" data-i18n="research.approach">' + escHtml(tr('research.approach')) + '</div>' +
                     '<p class="research-approach fade-in fade-in-delay-4">' + escHtml(data.approach) + '</p>' +
-                    '<div class="research-tools fade-in fade-in-delay-4"><span>Built with:</span> ' + escHtml(data.tools) + '</div>' +
+                    '<div class="research-tools fade-in fade-in-delay-4"><span data-i18n="research.builtWith">' + escHtml(tr('research.builtWith')) + '</span> ' + escHtml(data.tools) + '</div>' +
                     '<div class="research-visual fade-in fade-in-delay-5">' +
-                        '<span class="research-visual-text">Experiment visualization coming soon</span>' +
+                        '<span class="research-visual-text" data-i18n="research.vizSoon">' + escHtml(tr('research.vizSoon')) + '</span>' +
                     '</div>' +
                 '</section>' +
 
@@ -907,23 +953,23 @@
             var prevNext = getPrevNext(slug);
             container.innerHTML =
                 '<section class="research-hero">' +
-                    '<div class="research-hero-label fade-in">Research / Experiment</div>' +
+                    '<div class="research-hero-label fade-in" data-i18n="research.eyebrow">' + escHtml(tr('research.eyebrow')) + '</div>' +
                     '<h1 class="research-hero-title fade-in fade-in-delay-1">' + escHtml(data.title) + '</h1>' +
                     '<div class="research-hero-meta fade-in fade-in-delay-2">' +
                         '<div class="research-meta-item">' +
-                            '<span class="research-meta-label">Tech Stack</span>' +
+                            '<span class="research-meta-label" data-i18n="research.label.tech">' + escHtml(tr('research.label.tech')) + '</span>' +
                             '<span class="research-meta-value">' + escHtml(data.tech) + '</span>' +
                         '</div>' +
                         '<div class="research-meta-item">' +
-                            '<span class="research-meta-label">Year</span>' +
+                            '<span class="research-meta-label" data-i18n="research.label.year">' + escHtml(tr('research.label.year')) + '</span>' +
                             '<span class="research-meta-value">' + escHtml(data.year) + '</span>' +
                         '</div>' +
                     '</div>' +
                 '</section>' +
 
                 '<section class="coming-soon-container fade-in fade-in-delay-3">' +
-                    '<div class="coming-soon-tag">Coming Soon</div>' +
-                    '<p class="coming-soon-subtitle">This experiment is being documented. Check back soon.</p>' +
+                    '<div class="coming-soon-tag" data-i18n="research.csTag">' + escHtml(tr('research.csTag')) + '</div>' +
+                    '<p class="coming-soon-subtitle" data-i18n="research.csSub">' + escHtml(tr('research.csSub')) + '</p>' +
                     '<div class="coming-soon-bar"></div>' +
                 '</section>' +
 
@@ -936,9 +982,9 @@
         function renderNotFound() {
             container.innerHTML =
                 '<div class="not-found">' +
-                    '<div class="not-found-code">404</div>' +
-                    '<div class="not-found-text">Research not found</div>' +
-                    '<a href="/#research" class="not-found-link">Back to research</a>' +
+                    '<div class="not-found-code" data-i18n="research.nfCode">' + escHtml(tr('research.nfCode')) + '</div>' +
+                    '<div class="not-found-text" data-i18n="research.nfText">' + escHtml(tr('research.nfText')) + '</div>' +
+                    '<a href="/#research" class="not-found-link" data-i18n="research.nfBack">' + escHtml(tr('research.nfBack')) + '</a>' +
                 '</div>';
         }
 
@@ -952,13 +998,13 @@
                         '<line x1="19" y1="12" x2="5" y2="12"></line>' +
                         '<polyline points="12 19 5 12 12 5"></polyline>' +
                     '</svg>' +
-                    'All Research' +
+                    '<span data-i18n="research.allResearch">' + escHtml(tr('research.allResearch')) + '</span>' +
                 '</a>' +
                 '<div class="research-prevnext">';
 
             if (prevNext.prev) {
                 html += '<a href="/research.html?r=' + prevNext.prev.slug + '" class="research-prevnext-item prev">' +
-                    '<span class="research-prevnext-label">Previous</span>' +
+                    '<span class="research-prevnext-label" data-i18n="research.prev">' + escHtml(tr('research.prev')) + '</span>' +
                     '<span class="research-prevnext-title">' + escHtml(prevNext.prev.title) + '</span>' +
                 '</a>';
             } else {
@@ -967,7 +1013,7 @@
 
             if (prevNext.next) {
                 html += '<a href="/research.html?r=' + prevNext.next.slug + '" class="research-prevnext-item next">' +
-                    '<span class="research-prevnext-label">Next</span>' +
+                    '<span class="research-prevnext-label" data-i18n="research.next">' + escHtml(tr('research.next')) + '</span>' +
                     '<span class="research-prevnext-title">' + escHtml(prevNext.next.title) + '</span>' +
                 '</a>';
             } else {
