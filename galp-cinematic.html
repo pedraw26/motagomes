@@ -276,17 +276,13 @@
         '-=0.8'
       )
       .to('.scroll-cue', { autoAlpha: 1, duration: 0.25, ease: 'power2.out' })
-      .to({}, { duration: 1.0 })
-      .to('.scroll-cue', { autoAlpha: 0, duration: 0.25, ease: 'power2.in' })
-      .to('.mockup-scroll-wrapper', { scale: 0.9, y: -40, z: -200, autoAlpha: 0, ease: 'power3.in', duration: 0.8 })
-      .to('.main-card', {
-        width:  isMobile ? '92vw' : '85vw',
-        height: isMobile ? '92vh' : '85vh',
-        borderRadius: isMobile ? '32px' : '40px',
-        ease: 'expo.inOut',
-        duration: 1.2
-      })
-      .to('.main-card', { y: -window.innerHeight - 300, ease: 'power3.in', duration: 1.0 });
+      .to({}, { duration: 1.6 })
+      .to('.scroll-cue', { autoAlpha: 0, duration: 0.25, ease: 'power2.in' });
+      /* Previously had phone-exit + card-shrink + card-exit-top here — they
+         caused an empty peach band to show between the iframe's phone-gone
+         state and the next slide. Removing them keeps the phone visible on
+         the full-screen purple card right up to the iframe's bottom edge,
+         so the handoff to the wrappers-loop slide is seamless. */
 
     /* Drive timeline from the parent window's scroll position.
        Same-origin iframe → we can read parent rect + scroll directly.
