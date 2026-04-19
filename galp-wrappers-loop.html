@@ -11,15 +11,21 @@
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
     height: 100%;
-    background: #000;
+    width: 100%;
+    /* transparent so any sub-pixel sliver of body doesn't show as a dark band
+       between this iframe and the one above it; the .stage supplies its own
+       background image. */
+    background: transparent;
   }
 
-  /* Standard 16:9 slide slot (matches other Galp slides).
-     Background: the pink-pattern Asset_4wrappers stage, cover-sized to fill. */
+  /* Stage fills 100% of whatever iframe box the parent gives us — the
+     showcase-item upstream is already aspect-ratio 16/9, so we don't need
+     to re-declare an aspect. That avoids sub-pixel mismatches that created
+     a hairline dark band between consecutive slides. */
   .stage {
     position: relative;
-    width: 100vw;
-    aspect-ratio: 16 / 9;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     background-image: url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1600,c_limit/v1776614659/Asset_4wrappers_b3j6pw.webp');
     background-size: cover;
@@ -39,7 +45,7 @@
     align-items: center;
     gap: clamp(56px, 7vw, 130px);            /* base rhythm between rolls */
     width: max-content;
-    height: 45%;                             /* images fill 45% of stage height (another 20% reduction: 56 × 0.8 ≈ 45) */
+    height: 50%;                             /* images fill 50% of stage height (+12% on 45 → 50.4 ≈ 50) */
     animation: scroll 50s linear infinite;
     will-change: transform;
   }
