@@ -3727,7 +3727,34 @@ margin-top: 3px;
                 </div>
 
                 <!-- Card 10: Amal Clooney Scholarship (password-protected) -->
+                <!-- Card 10: Candando -->
                 <div class="gallery-stacked-card" style="--card-index: 9; --card-offset: 50px;">
+                    <div class="gallery-stacked-card-inner">
+                        <div class="gallery-stacked-bar">
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-url">candando.com</div>
+                            <div class="gallery-stacked-nav">
+                                <span>Retail</span>
+                                <span>Brand</span>
+                                <span>Angola</span>
+                            </div>
+                        </div>
+                        <div class="gallery-stacked-hero gradient-emerald">
+                            <div class="card-coming-soon" data-i18n="card.comingSoon">Coming Soon</div>
+                            <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-label">Retail Branding</div>
+                                <div class="gallery-stacked-project-title">Candando</div>
+                                <a href="#" class="gallery-stacked-btn gallery-stacked-btn-outline" onclick="event.preventDefault();event.stopPropagation();"><span data-i18n="card.viewCase">View Case</span></a>
+                            </div>
+                            <div class="gallery-stacked-badge"><span data-i18n="card.viewProject">VIEW</span><br><span data-i18n="card.projectWord">PROJECT</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 11: Amal Clooney Scholarship (password-protected) -->
+                <div class="gallery-stacked-card" style="--card-index: 10; --card-offset: 50px;">
                     <div class="gallery-stacked-card-inner">
                         <div class="gallery-stacked-bar">
                             <div class="gallery-stacked-dot"></div>
@@ -4323,16 +4350,16 @@ margin-top: 3px;
         const galleryProgressFill = document.getElementById('galleryProgressFill');
         
         // Order must mirror the card order in the DOM above:
-        // standard-bank → galp → luandina → ras → lyft → one1x → moope → wammo → aura-studio → amal clooney
+        // standard-bank → galp → luandina → ras → lyft → one1x → moope → wammo → aura-studio → candando → amal clooney
         const galleryBrands = [
             'Standard Bank', 'Galp', 'Luandina',
             'RAS Real Estate', 'Lyft', 'One1x',
-            'Moope', 'Wammo', 'Aura Studio', 'ULaw'
+            'Moope', 'Wammo', 'Aura Studio', 'Candando', 'ULaw'
         ];
         const galleryProjects = [
             '360 Campaign', 'Christmas Campaign', 'Geo-Targeted Campaign',
             'Real Estate Branding', 'Illustration', 'Rebrand',
-            'UX Design', 'Retail Campaign', 'Brand & Web', 'Scholarship Initiative'
+            'UX Design', 'Retail Campaign', 'Brand & Web', 'Retail Branding', 'Scholarship Initiative'
         ];
         
         function updateActiveGalleryCard() {
