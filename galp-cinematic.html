@@ -288,9 +288,12 @@
       })
       .to('.main-card', { y: -window.innerHeight - 300, ease: 'power3.in', duration: 1.0 });
 
-    /* Drive timeline from the parent window's scroll position.
-       Same-origin iframe → we can read parent rect + scroll directly.
-       If embedded standalone (no parent), fall back to auto-play. */
+    /* Trigger the timeline ONCE when the iframe is centered in the parent
+       window's viewport. Timeline ends with the card exited above frame,
+       so after it plays only the wrapping-paper backdrop remains — the
+       viewer then scrolls past as normal. No scrub, no replay. */
+    tl.timeScale(2.1);                             /* snappier ~5s total run */
+
     let parentWin = null, frameEl = null;
     try {
       if (window.parent && window.parent !== window) {
@@ -301,25 +304,32 @@
     } catch (_) { parentWin = null; }
 
     if (parentWin && frameEl) {
-      let rafId = 0;
-      const update = () => {
+      let hasPlayed = false;
+      const check = () => {
+        if (hasPlayed) return;
         const rect = frameEl.getBoundingClientRect();
         const vh = parentWin.innerHeight;
-        /* progress 0 = iframe top at viewport bottom; progress 1 = iframe
-           bottom at viewport top. Effect peaks around 0.5 (iframe centered). */
-        const p = Math.max(0, Math.min(1, (vh - rect.top) / (vh + rect.height)));
-        tl.progress(p);
+        const iframeCenter   = rect.top + rect.height / 2;
+        const viewportCenter = vh / 2;
+        /* Play when the iframe's centre is within 12% of the viewport centre */
+        if (Math.abs(iframeCenter - viewportCenter) < vh * 0.12) {
+          hasPlayed = true;
+          tl.play();
+          parentWin.removeEventListener('scroll', onScroll);
+          parentWin.removeEventListener('resize', check);
+        }
       };
-      const onScrollOrResize = () => {
+      let rafId = 0;
+      const onScroll = () => {
         cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(update);
+        rafId = requestAnimationFrame(check);
       };
-      parentWin.addEventListener('scroll', onScrollOrResize, { passive: true });
-      parentWin.addEventListener('resize', onScrollOrResize);
-      update();
+      parentWin.addEventListener('scroll', onScroll, { passive: true });
+      parentWin.addEventListener('resize', check);
+      check();                                     /* initial in-view test */
     } else {
-      /* Standalone preview: auto-play the timeline linearly on a short loop */
-      tl.timeScale(0.7).play();
+      /* Standalone preview: auto-play on load */
+      tl.play();
     }
   </script>
 </body>
