@@ -45,6 +45,11 @@
             'gen.eyebrow': 'Gen Studio',
             'gen.subtitle': 'AI-assisted visual explorations',
             'gen.hint': 'Scroll or drag',
+            'menu.motion': 'Motion Design',
+            'motion.scrollPrompt': 'Scroll to Expand',
+            'motion.h1': 'Motion is where timing becomes voice.',
+            'motion.p1': 'A selection of short-form motion work — campaign films, living posters, product reveals, and sound-reactive experiments. Each piece is a study in pacing: when to hold a frame, when to cut, when to let a transition breathe.',
+            'motion.p2': 'Below: a sampling. Full reels and raw files available on request.',
 
             // Hero
             'hero.p1': 'Hybrid Designer',
@@ -161,6 +166,11 @@
             'gen.eyebrow': 'Gen Studio',
             'gen.subtitle': 'Explorações visuais assistidas por IA',
             'gen.hint': 'Roda ou arrasta',
+            'menu.motion': 'Motion Design',
+            'motion.scrollPrompt': 'Roda para expandir',
+            'motion.h1': 'Motion é onde o ritmo se torna voz.',
+            'motion.p1': 'Uma seleção de trabalho em motion — filmes de campanha, posters vivos, lançamentos de produto e experiências reativas a som. Cada peça é um estudo de ritmo: quando segurar um plano, quando cortar, quando deixar uma transição respirar.',
+            'motion.p2': 'Em baixo: uma amostra. Reels completos e ficheiros em bruto disponíveis mediante pedido.',
 
             // Hero
             'hero.p1': 'Designer Híbrido',
