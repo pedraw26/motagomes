@@ -46,7 +46,7 @@
             'hero.p1': 'Hybrid Designer',
             'hero.p2': 'focused on elevating brands',
             'hero.p2b': 'experiences',
-            'hero.p3': 'that balance aesthetics with purpose.',
+            'hero.p3': 'that balance aesthetics with purpose and results.',
             'hero.viewWork': 'View Work',
             'hero.scrollDown': 'Scroll Down ↓',
 
@@ -158,7 +158,7 @@
             'hero.p1': 'Designer Híbrido',
             'hero.p2': 'focado em elevar marcas',
             'hero.p2b': 'experiências',
-            'hero.p3': 'que equilibram estética e propósito.',
+            'hero.p3': 'que equilibram estética, propósito e resultados.',
             'hero.viewWork': 'Ver Trabalho',
             'hero.scrollDown': 'Descer ↓',
 
