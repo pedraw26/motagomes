@@ -1299,6 +1299,117 @@
             color: rgba(255, 255, 255, 0.4);
         }
 
+        /* Motion button — shared pill component also used on the hero of portfolio.html.
+           Circle on the left expands to fill the pill on hover; arrow shifts right; label inverts colour. */
+        .mbtn {
+            position: relative;
+            display: inline-block;
+            width: 212px;
+            height: 56px;
+            padding: 4px;
+            border-radius: 999px;
+            background: transparent;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+            outline: none;
+            pointer-events: auto;
+        }
+        .mbtn .mbtn-circle {
+            display: block;
+            width: 48px;
+            height: 48px;
+            border-radius: 999px;
+            background: #f5f3ee;
+            transition: width 0.5s cubic-bezier(.22, 1, .36, 1);
+        }
+        .mbtn:hover .mbtn-circle { width: 100%; }
+        .mbtn .mbtn-icon {
+            position: absolute;
+            top: 50%;
+            left: 16px;
+            transform: translate(0, -50%);
+            transition: transform 0.5s cubic-bezier(.22, 1, .36, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0c0c0c;
+            pointer-events: none;
+        }
+        .mbtn .mbtn-icon svg { width: 22px; height: 22px; stroke-width: 2; }
+        .mbtn:hover .mbtn-icon { transform: translate(6px, -50%); }
+        .mbtn .mbtn-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin-left: 16px;
+            font-family: var(--sf-pro);
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: -0.005em;
+            white-space: nowrap;
+            transition: color 0.5s cubic-bezier(.22, 1, .36, 1);
+            color: #f5f3ee;
+            pointer-events: none;
+        }
+        .mbtn:hover .mbtn-label { color: #0c0c0c; }
+
+        /* Site-refresh banner — identical treatment to portfolio.html so it feels unified across pages.
+           Dismissal is shared across pages via localStorage key 'sitebanner-refresh-v1'. */
+        .sitebanner {
+            position: relative;
+            width: 100%;
+            padding: 10px 20px;
+            background: #0a0a0a;
+            color: #f5f3ee;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            font-family: var(--sf-pro);
+            font-size: 13px;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            z-index: 1000;
+        }
+        .sitebanner[hidden] { display: none; }
+        .sitebanner-icon {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.6;
+            margin-top: 1px;
+        }
+        .sitebanner-icon svg { width: 16px; height: 16px; }
+        .sitebanner-text {
+            flex: 1 1 auto;
+            font-weight: 400;
+            color: rgba(245,243,238,0.88);
+        }
+        .sitebanner-text em { font-style: normal; color: #f5f3ee; font-weight: 500; }
+        .sitebanner-close {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            margin-right: -4px;
+            background: transparent;
+            border: none;
+            color: #f5f3ee;
+            opacity: 0.55;
+            cursor: pointer;
+            border-radius: 999px;
+            transition: opacity 0.2s, background 0.2s;
+        }
+        .sitebanner-close:hover { opacity: 1; background: rgba(255,255,255,0.06); }
+        .sitebanner-close svg { width: 14px; height: 14px; }
+        @media (max-width: 640px) {
+            .sitebanner { font-size: 12px; padding: 9px 14px; gap: 10px; }
+        }
+
         /* YouTube custom player */
         .yt-player {
             position: relative;
@@ -1714,6 +1825,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@100;200;300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Site-refresh banner. Dismissal shared with portfolio.html via localStorage key. -->
+    <div class="sitebanner" id="siteBanner" role="status" aria-label="Site notice">
+        <span class="sitebanner-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20"/></svg>
+        </span>
+        <span class="sitebanner-text"><em>Portfolio in refinement.</em> New case studies and refreshed layouts are rolling out over the coming days — a few sections may shift as the edit continues.</span>
+        <button class="sitebanner-close" type="button" id="siteBannerClose" aria-label="Dismiss notice">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+    </div>
 
     <!-- ========================================
          NAVIGATION HEADER
@@ -1752,6 +1873,19 @@
     <main id="projectPage"></main>
 
     <script>
+    // Site-refresh banner dismissal — shared localStorage key with portfolio.html.
+    (function initSiteBanner() {
+        const banner = document.getElementById('siteBanner');
+        const closeBtn = document.getElementById('siteBannerClose');
+        if (!banner || !closeBtn) return;
+        const key = 'sitebanner-refresh-v1';
+        try { if (localStorage.getItem(key) === 'dismissed') { banner.hidden = true; return; } } catch (_) {}
+        closeBtn.addEventListener('click', () => {
+            banner.hidden = true;
+            try { localStorage.setItem(key, 'dismissed'); } catch (_) {}
+        });
+    })();
+
     /* ========================================
        PROJECT DATA
        ======================================== */
@@ -2300,6 +2434,13 @@
                                         <div class="doc-endcard">
                                             <div class="doc-endcard-text">Thanks for watching.</div>
                                             <div class="doc-endcard-sub">End</div>
+                                            <a href="/#work" class="mbtn" style="margin-top:28px" aria-label="Back to portfolio">
+                                                <span class="mbtn-circle" aria-hidden="true"></span>
+                                                <span class="mbtn-icon" aria-hidden="true">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                                                </span>
+                                                <span class="mbtn-label">View More Work</span>
+                                            </a>
                                         </div>
                                        </div>`
                                     : img.type === 'video'
