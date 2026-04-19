@@ -7,7 +7,7 @@
 <style>
   :root {
     --color-foreground: #1a1a1a;
-    --card-purple: #f5b47d;                        /* pale campaign orange — softened from #ea5906 */
+    --card-purple: #ffe3d4;                        /* very pale peach per reference swatch */
 
     /* Bezel geometry — fully fluid now. Height tracks viewport height;
        the phone's 320:660 aspect-ratio keeps its shape. Radius and bezel
@@ -25,13 +25,12 @@
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    /* Wrapping-paper pattern tiled at a sensible size. background-size: cover
-       was enlarging the image so much the pattern was unreadable — swapped for
-       an explicit clamp-scaled tile that repeats, so the motif stays visible at
-       every viewport from tiny iframe up to desktop. */
-    background-image: url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1200,c_limit/v1776301771/Papel-embrulho1_dukbrt.jpg');
-    background-size: clamp(320px, 48vw, 640px) auto;
-    background-repeat: repeat;
+    /* Single wrapping-paper image filling the stage — no tiling.
+       cover fills the whole viewport; the image gets cropped as needed to
+       avoid letterboxing while keeping its aspect ratio. */
+    background-image: url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_2000,c_limit/v1776301771/Papel-embrulho1_dukbrt.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
     background-position: center center;
   }
 
