@@ -36,10 +36,7 @@
   .bg-layer {
     position: absolute;
     inset: -6%;
-    /* Uses the SAME Asset_4 pink stage as the wrappers-loop slide (5) so when
-       the card exits upward at the end of this slide, the visible backdrop
-       matches the next slide's background exactly — no visible seam. */
-    background-image: url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1600,c_limit/v1776614659/Asset_4wrappers_b3j6pw.webp');
+    background-image: url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1600,c_limit/v1776301771/Papel-embrulho1_dukbrt.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -279,14 +276,13 @@
         '-=0.8'
       )
       .to('.scroll-cue', { autoAlpha: 1, duration: 0.25, ease: 'power2.out' })
-      .to({}, { duration: 0.9 })
-      .to('.scroll-cue', { autoAlpha: 0, duration: 0.25, ease: 'power2.in' })
-      /* Exit sequence — card slides up and out, revealing the bg-layer
-         (which now uses Asset_4, the SAME pink stage as the next slide).
-         So the last frame of this iframe = the first frame of the next,
-         and the boundary between them disappears. */
-      .to('.mockup-scroll-wrapper', { scale: 0.92, y: -40, autoAlpha: 0, ease: 'power3.in', duration: 0.6 })
-      .to('.main-card', { y: -window.innerHeight - 300, ease: 'power3.in', duration: 1.0 });
+      .to({}, { duration: 1.6 })
+      .to('.scroll-cue', { autoAlpha: 0, duration: 0.25, ease: 'power2.in' });
+      /* Previously had phone-exit + card-shrink + card-exit-top here — they
+         caused an empty peach band to show between the iframe's phone-gone
+         state and the next slide. Removing them keeps the phone visible on
+         the full-screen purple card right up to the iframe's bottom edge,
+         so the handoff to the wrappers-loop slide is seamless. */
 
     /* Drive timeline from the parent window's scroll position.
        Same-origin iframe → we can read parent rect + scroll directly.
