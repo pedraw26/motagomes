@@ -7,7 +7,6 @@
 <style>
   :root {
     --color-foreground: #1a1a1a;
-    --color-background: #dcacd0;                   /* dusty pink per reference swatch */
     --card-purple: #55277a;                        /* flat royal purple per reference swatch */
 
     /* Bezel geometry — the source of truth.
@@ -21,11 +20,14 @@
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
-    background: var(--color-background);
     color: var(--color-foreground);
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    /* Festive wrapping-paper image becomes the stage backdrop, replacing the solid dusty-pink.
+       background-attachment: fixed keeps the paper locked while the hero content scrolls. */
+    background: url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_2000,c_limit/v1776301769/Papel-embrulho_wquff2.jpg') center/cover no-repeat;
+    background-attachment: fixed;
   }
 
   /* Pinned hero container */
