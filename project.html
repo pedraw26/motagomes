@@ -1258,6 +1258,43 @@
         /* hide the Vimeo iframe's pointer events so user can't click into it */
         .doc-player .doc-frame { pointer-events: none; }
 
+        /* End card — "Thanks for watching" shown after the documentary finishes.
+           Sits above the Vimeo iframe and covers Vimeo's native "More from creator" up-next grid. */
+        .doc-player .doc-endcard {
+            position: absolute;
+            inset: 0;
+            background: #050505;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s cubic-bezier(.22, 1, .36, 1), visibility 0.8s;
+            z-index: 6;
+            pointer-events: none;
+        }
+        .doc-player.ended .doc-endcard {
+            opacity: 1;
+            visibility: visible;
+        }
+        .doc-player .doc-endcard-text {
+            font-family: var(--sf-pro);
+            font-size: clamp(22px, 2.2vw, 34px);
+            font-weight: 300;
+            letter-spacing: -0.005em;
+            color: rgba(255, 255, 255, 0.92);
+        }
+        .doc-player .doc-endcard-sub {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
         /* YouTube custom player */
         .yt-player {
             position: relative;
@@ -2256,6 +2293,10 @@
                                             <div class="doc-progress"><div class="doc-progress-fill"></div></div>
                                             <div class="doc-time">00:00 / --:--</div>
                                         </div>
+                                        <div class="doc-endcard">
+                                            <div class="doc-endcard-text">Thanks for watching.</div>
+                                            <div class="doc-endcard-sub">End</div>
+                                        </div>
                                        </div>`
                                     : img.type === 'video'
                                     ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`
@@ -2574,9 +2615,9 @@
                         if (time) time.textContent = '00:00 / ' + fmtTime(duration);
                     }).catch(()=>{});
                 });
-                player.on('play',  () => setPlayUI(true));
+                player.on('play',  () => { setPlayUI(true); dp.classList.remove('ended'); });
                 player.on('pause', () => setPlayUI(false));
-                player.on('ended', () => setPlayUI(false));
+                player.on('ended', () => { setPlayUI(false); dp.classList.add('ended'); });
                 player.on('timeupdate', data => {
                     duration = data.duration || duration;
                     if (fill && duration) fill.style.width = (data.seconds / duration * 100) + '%';
