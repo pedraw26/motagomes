@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gen Studio — Mota Gomes</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <script>(function(){try{var l=localStorage.getItem('mg_lang');if(l==='pt')document.documentElement.lang='pt-PT';}catch(e){}})();</script>
+    <script src="/i18n.js" defer></script>
+    <style>
+        :root {
+            --sf-pro: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            --mono: 'SF Mono', 'Fira Code', 'Monaco', 'Menlo', monospace;
+            --bg-black: #0a0a0a;
+            --text: #ffffff;
+            --text-60: #999999;
+            --text-40: #666666;
+            --border-subtle: rgba(255, 255, 255, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            height: 100%;
+            background: var(--bg-black);
+            color: var(--text);
+            font-family: var(--sf-pro);
+            -webkit-font-smoothing: antialiased;
+            overflow: hidden;
+        }
+
+        /* ===== Header (shared look) ===== */
+        .header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: transparent;
+            transition: transform 0.4s ease;
+        }
+        .header-content {
+            width: 100%;
+            padding: 20px 80px;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+        }
+        .header-logo {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+        }
+        .header-logo::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--text);
+            display: inline-block;
+            animation: logoBreath 2.8s ease-in-out infinite;
+        }
+        @keyframes logoBreath {
+            0%, 100% { transform: scale(1); opacity: 0.55; }
+            50% { transform: scale(1.25); opacity: 1; }
+        }
+        .header-left {
+            display: inline-flex;
+            align-items: center;
+            gap: 36px;
+        }
+        .header-nav {
+            display: flex;
+            gap: 28px;
+        }
+        .header-nav a {
+            font-size: 0.75rem;
+            color: var(--text-60);
+            text-decoration: none;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        .header-nav a::before {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            width: 3px;
+            height: 3px;
+            background: var(--text);
+            border-radius: 50%;
+            transform: translateX(-50%) scale(0);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .header-nav a:hover { color: var(--text); }
+        .header-nav a:hover::before { transform: translateX(-50%) scale(1); }
+        .header-nav a.is-current { color: var(--text); }
+        .header-nav a.is-current::before { transform: translateX(-50%) scale(1); }
+
+        .header-center {
+            justify-self: center;
+            font-family: var(--sf-pro);
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            color: var(--text-40);
+            font-variant-numeric: tabular-nums;
+            text-transform: uppercase;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            justify-self: end;
+            gap: 16px;
+        }
+
+        /* Language toggle */
+        .header-lang {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-right: 16px;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+        }
+        .header-lang button {
+            background: transparent;
+            border: none;
+            padding: 2px 3px;
+            font: inherit;
+            letter-spacing: inherit;
+            text-transform: inherit;
+            color: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: color 0.25s ease;
+        }
+        .header-lang button:hover { color: rgba(255,255,255,0.85); }
+        .header-lang button.is-active,
+        .header-lang button[aria-pressed="true"] { color: var(--text); }
+        .header-lang .ml-sep { opacity: 0.45; }
+
+        .menu-icon {
+            width: 29px;
+            height: 29px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .menu-icon span {
+            display: block;
+            width: 20px;
+            height: 1px;
+            background: var(--text);
+            position: absolute;
+            transition: all 0.35s cubic-bezier(0.65, 0.05, 0.36, 1);
+        }
+        .menu-icon span:nth-child(1) { transform: translateY(-4px); }
+        .menu-icon span:nth-child(2) { transform: translateY(4px); }
+
+        /* Menu overlay */
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10,10,10,0.98);
+            backdrop-filter: blur(20px);
+            z-index: 99;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .menu-overlay-items {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 22px;
+        }
+        .menu-overlay-link {
+            font-size: 22px;
+            font-weight: 300;
+            color: var(--text-60);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .menu-overlay-link:hover { color: var(--text); }
+        .menu-overlay-cta {
+            margin-top: 20px;
+            padding: 9px 14px;
+            border: 1px solid rgba(255,255,255,0.34);
+            border-radius: 999px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 11px;
+        }
+        .menu-overlay-cta:hover { background: var(--text); color: var(--bg-black); }
+
+        /* Desktop vs mobile */
+        @media (max-width: 720px) {
+            .header-content { padding: 20px 24px; }
+            .header-nav { display: none; }
+            .header-left { gap: 0; }
+        }
+        @media (min-width: 721px) {
+            .menu-icon { display: none !important; }
+        }
+
+        /* ===== Gen Studio stack ===== */
+        .gen-stage {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ambient glow */
+        .gen-glow {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 640px;
+            height: 640px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: rgba(255,255,255,0.02);
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        /* left counter */
+        .gen-counter {
+            position: absolute;
+            left: 48px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .gen-counter-cur {
+            font-size: 32px;
+            font-weight: 300;
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+        }
+        .gen-counter-sep {
+            width: 28px;
+            height: 1px;
+            background: rgba(255,255,255,0.2);
+            margin: 10px 0;
+        }
+        .gen-counter-total {
+            font-size: 12px;
+            color: var(--text-60);
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* card stack viewport */
+        .gen-viewport {
+            position: relative;
+            width: 320px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1200px;
+            touch-action: none;
+        }
+
+        .gen-card {
+            position: absolute;
+            width: 280px;
+            height: 420px;
+            border-radius: 24px;
+            overflow: hidden;
+            background: #111;
+            cursor: grab;
+            transform-style: preserve-3d;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            transition:
+                transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 650ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 650ms cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform, opacity;
+        }
+        .gen-card.dragging {
+            transition: none;
+            cursor: grabbing;
+        }
+        .gen-card.is-current {
+            box-shadow:
+                0 25px 50px -12px rgba(0,0,0,0.65),
+                0 0 0 1px rgba(255,255,255,0.05);
+        }
+        .gen-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.08), transparent 40%);
+            z-index: 2;
+            pointer-events: none;
+        }
+        .gen-card::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; bottom: 0;
+            height: 128px;
+            background: linear-gradient(to top, rgba(10,10,10,0.6), transparent);
+            z-index: 2;
+            pointer-events: none;
+        }
+        .gen-card img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        .gen-card[data-pos="hidden"] {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* nav dots */
+        .gen-dots {
+            position: absolute;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 10;
+        }
+        .gen-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .gen-dot:hover { background: rgba(255,255,255,0.5); }
+        .gen-dot.is-active {
+            background: var(--text);
+            height: 24px;
+            border-radius: 4px;
+        }
+
+        /* hint */
+        .gen-hint {
+            position: absolute;
+            left: 50%;
+            bottom: 48px;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-60);
+            opacity: 0;
+            animation: genHintIn 0.6s ease 1s forwards;
+            pointer-events: none;
+        }
+        @keyframes genHintIn {
+            to { opacity: 1; }
+        }
+        .gen-hint-arrow {
+            width: 22px;
+            height: 22px;
+            animation: genArrowUp 1.5s ease-in-out infinite;
+        }
+        .gen-hint-arrow.down {
+            animation-name: genArrowDown;
+        }
+        @keyframes genArrowUp {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes genArrowDown {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+        .gen-hint-text {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+        }
+
+        /* page label */
+        .gen-label {
+            position: absolute;
+            top: 90px;
+            left: 80px;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            color: var(--text-40);
+            text-transform: uppercase;
+            z-index: 10;
+        }
+        .gen-label strong {
+            color: var(--text-60);
+            font-weight: 500;
+        }
+
+        @media (max-width: 720px) {
+            .gen-counter { left: 20px; }
+            .gen-dots { right: 20px; }
+            .gen-label { left: 24px; top: 76px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="/" class="header-logo"><span>MG</span></a>
+                <nav class="header-nav">
+                    <a href="/#work" data-i18n="menu.work">Work</a>
+                    <a href="/#research" data-i18n="menu.research">Research</a>
+                    <a href="/#about" data-i18n="menu.about">About</a>
+                    <a href="/gen-studio.html" class="is-current" data-i18n="menu.gen">Gen Studio</a>
+                </nav>
+            </div>
+            <div class="header-center" id="gmtTime">GMT 00:00</div>
+            <div class="header-right">
+                <div class="header-lang" role="group" aria-label="Language">
+                    <button type="button" data-i18n-toggle="en" aria-pressed="true">EN</button>
+                    <span class="ml-sep" aria-hidden="true">/</span>
+                    <button type="button" data-i18n-toggle="pt" aria-pressed="false">PT</button>
+                </div>
+                <div class="menu-icon" id="hamburger">
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile menu overlay -->
+    <div class="menu-overlay" id="menuOverlay">
+        <div class="menu-overlay-items">
+            <a href="/#work" class="menu-overlay-link" data-i18n="menu.work">Work</a>
+            <a href="/#research" class="menu-overlay-link" data-i18n="menu.research">Research</a>
+            <a href="/#about" class="menu-overlay-link" data-i18n="menu.about">About</a>
+            <a href="/gen-studio.html" class="menu-overlay-link" data-i18n="menu.gen">Gen Studio</a>
+            <a href="mailto:hi@motagomes.com" class="menu-overlay-cta" data-i18n="menu.letstalk">Let's Talk</a>
+        </div>
+    </div>
+
+    <!-- Main stage -->
+    <main class="gen-stage" id="genStage">
+        <div class="gen-glow"></div>
+
+        <div class="gen-label"><strong data-i18n="gen.eyebrow">Gen Studio</strong> · <span data-i18n="gen.subtitle">AI-assisted visual explorations</span></div>
+
+        <!-- Left counter -->
+        <div class="gen-counter">
+            <span class="gen-counter-cur" id="genCur">01</span>
+            <span class="gen-counter-sep"></span>
+            <span class="gen-counter-total" id="genTotal">05</span>
+        </div>
+
+        <!-- Card stack viewport -->
+        <div class="gen-viewport" id="genViewport">
+            <!-- Cards injected by JS -->
+        </div>
+
+        <!-- Dots -->
+        <div class="gen-dots" id="genDots"></div>
+
+        <!-- Hint -->
+        <div class="gen-hint">
+            <svg class="gen-hint-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14M5 12l7-7 7 7"/>
+            </svg>
+            <span class="gen-hint-text" data-i18n="gen.hint">Scroll or drag</span>
+            <svg class="gen-hint-arrow down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+        </div>
+    </main>
+
+    <script>
+    (function () {
+        // ===== Data =====
+        var IMAGES = [
+            { id: 1, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/luxury-black-sneaker-with-red-sole-on-grey-backgro-hj40sZT8MUUSeLz18VN7EjhcnV0kSD.jpg', alt: 'Black sneaker with red sole' },
+            { id: 2, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/white-minimalist-sneaker-on-light-background-xQxkXgGrSrAe6pvLPNC6yrh20Atqoa.jpg', alt: 'White minimalist sneaker' },
+            { id: 3, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/navy-blue-running-shoe-on-gradient-background-E1spqSK9gDvh3gTNwASkttEg76nZgm.jpg', alt: 'Navy blue running shoe' },
+            { id: 4, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/red-athletic-sneaker-on-dark-background-skamDX1NbCRW4jvHxijkfmCnHGr6NJ.jpg', alt: 'Red athletic sneaker' },
+            { id: 5, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/green-forest-hiking-boot-on-natural-background-T41PNLzI60G2u6rFIRxeCbKT6RWKOH.jpg', alt: 'Green hiking boot' }
+        ];
+
+        // ===== State =====
+        var currentIndex = 0;
+        var lastNavTime = 0;
+        var NAV_COOLDOWN = 400;
+        var viewport = document.getElementById('genViewport');
+        var dotsEl = document.getElementById('genDots');
+        var curEl = document.getElementById('genCur');
+        var totalEl = document.getElementById('genTotal');
+
+        var cards = [];
+
+        // ===== Build cards & dots =====
+        function build() {
+            viewport.innerHTML = '';
+            dotsEl.innerHTML = '';
+            cards = [];
+
+            IMAGES.forEach(function (img, i) {
+                var card = document.createElement('div');
+                card.className = 'gen-card';
+                card.setAttribute('data-index', i);
+                var im = document.createElement('img');
+                im.src = img.src;
+                im.alt = img.alt;
+                im.draggable = false;
+                im.loading = i === 0 ? 'eager' : 'lazy';
+                im.decoding = 'async';
+                card.appendChild(im);
+                viewport.appendChild(card);
+                cards.push(card);
+
+                var dot = document.createElement('button');
+                dot.className = 'gen-dot';
+                dot.setAttribute('aria-label', 'Go to image ' + (i + 1));
+                dot.addEventListener('click', function () {
+                    if (i !== currentIndex) {
+                        setIndex(i);
+                    }
+                });
+                dotsEl.appendChild(dot);
+            });
+
+            totalEl.textContent = String(IMAGES.length).padStart(2, '0');
+            layout();
+        }
+
+        // ===== Style a single card based on its distance from current =====
+        function styleFor(idx) {
+            var total = IMAGES.length;
+            var diff = idx - currentIndex;
+            if (diff > total / 2) diff -= total;
+            if (diff < -total / 2) diff += total;
+
+            if (diff === 0)      return { y:    0, scale: 1.00, opacity: 1.00, z: 5, rx:   0, hidden: false, current: true };
+            if (diff === -1)     return { y: -160, scale: 0.82, opacity: 0.60, z: 4, rx:   8, hidden: false, current: false };
+            if (diff === -2)     return { y: -280, scale: 0.70, opacity: 0.30, z: 3, rx:  15, hidden: false, current: false };
+            if (diff ===  1)     return { y:  160, scale: 0.82, opacity: 0.60, z: 4, rx:  -8, hidden: false, current: false };
+            if (diff ===  2)     return { y:  280, scale: 0.70, opacity: 0.30, z: 3, rx: -15, hidden: false, current: false };
+            return { y: diff > 0 ? 400 : -400, scale: 0.60, opacity: 0, z: 0, rx: diff > 0 ? -20 : 20, hidden: true, current: false };
+        }
+
+        // ===== Apply layout to all cards + dots + counter =====
+        function layout() {
+            cards.forEach(function (card, i) {
+                var s = styleFor(i);
+                card.style.transform = 'translateY(' + s.y + 'px) scale(' + s.scale + ') rotateX(' + s.rx + 'deg)';
+                card.style.opacity = s.opacity;
+                card.style.zIndex = s.z;
+                card.setAttribute('data-pos', s.hidden ? 'hidden' : 'visible');
+                card.classList.toggle('is-current', s.current);
+            });
+
+            Array.prototype.forEach.call(dotsEl.children, function (d, i) {
+                d.classList.toggle('is-active', i === currentIndex);
+            });
+
+            curEl.textContent = String(currentIndex + 1).padStart(2, '0');
+        }
+
+        // ===== Navigate =====
+        function navigate(dir) {
+            var now = Date.now();
+            if (now - lastNavTime < NAV_COOLDOWN) return;
+            lastNavTime = now;
+            var total = IMAGES.length;
+            if (dir > 0) {
+                currentIndex = currentIndex === total - 1 ? 0 : currentIndex + 1;
+            } else {
+                currentIndex = currentIndex === 0 ? total - 1 : currentIndex - 1;
+            }
+            layout();
+        }
+
+        function setIndex(i) {
+            var now = Date.now();
+            if (now - lastNavTime < NAV_COOLDOWN) return;
+            lastNavTime = now;
+            currentIndex = ((i % IMAGES.length) + IMAGES.length) % IMAGES.length;
+            layout();
+        }
+
+        // ===== Wheel =====
+        var wheelAccum = 0;
+        var wheelResetTimer = null;
+        window.addEventListener('wheel', function (e) {
+            if (Math.abs(e.deltaY) > 30) {
+                navigate(e.deltaY > 0 ? 1 : -1);
+            }
+        }, { passive: true });
+
+        // ===== Keyboard =====
+        window.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+                navigate(1);
+                e.preventDefault();
+            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                navigate(-1);
+                e.preventDefault();
+            }
+        });
+
+        // ===== Drag (pointer events) =====
+        var drag = { active: false, startY: 0, lastY: 0, card: null };
+        viewport.addEventListener('pointerdown', function (e) {
+            var currentCard = cards[currentIndex];
+            if (!currentCard) return;
+            drag.active = true;
+            drag.startY = e.clientY;
+            drag.lastY = e.clientY;
+            drag.card = currentCard;
+            currentCard.classList.add('dragging');
+            currentCard.setPointerCapture(e.pointerId);
+        });
+        viewport.addEventListener('pointermove', function (e) {
+            if (!drag.active || !drag.card) return;
+            var dy = e.clientY - drag.startY;
+            // Apply a dampened live transform to the current card only
+            var damp = dy * 0.5;
+            drag.card.style.transform = 'translateY(' + damp + 'px) scale(1) rotateX(0deg)';
+        });
+        function endDrag(e) {
+            if (!drag.active) return;
+            var dy = e.clientY - drag.startY;
+            drag.card.classList.remove('dragging');
+            drag.active = false;
+            if (dy < -50) {
+                layout(); // reset before navigate (animation will run)
+                navigate(1);
+            } else if (dy > 50) {
+                layout();
+                navigate(-1);
+            } else {
+                layout();
+            }
+            drag.card = null;
+        }
+        viewport.addEventListener('pointerup', endDrag);
+        viewport.addEventListener('pointercancel', endDrag);
+        viewport.addEventListener('pointerleave', function (e) {
+            if (drag.active) endDrag(e);
+        });
+
+        // ===== Touch-specific swipe fallback (for some mobile browsers) =====
+        var touchStartY = null;
+        viewport.addEventListener('touchstart', function (e) {
+            if (e.touches && e.touches[0]) touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        viewport.addEventListener('touchend', function (e) {
+            if (touchStartY === null) return;
+            var t = (e.changedTouches && e.changedTouches[0]) || null;
+            if (!t) return;
+            var dy = t.clientY - touchStartY;
+            if (Math.abs(dy) > 50) navigate(dy < 0 ? 1 : -1);
+            touchStartY = null;
+        }, { passive: true });
+
+        // ===== GMT clock =====
+        function tick() {
+            var el = document.getElementById('gmtTime');
+            if (!el) return;
+            var now = new Date();
+            var h = String(now.getUTCHours()).padStart(2, '0');
+            var m = String(now.getUTCMinutes()).padStart(2, '0');
+            el.textContent = 'GMT ' + h + ':' + m;
+        }
+        tick();
+        setInterval(tick, 10000);
+
+        // ===== Menu overlay (mobile) =====
+        var hamburger = document.getElementById('hamburger');
+        var overlay = document.getElementById('menuOverlay');
+        if (hamburger && overlay) {
+            hamburger.addEventListener('click', function () {
+                overlay.classList.add('active');
+            });
+            overlay.addEventListener('click', function (e) {
+                if (e.target === overlay) overlay.classList.remove('active');
+            });
+            Array.prototype.forEach.call(overlay.querySelectorAll('.menu-overlay-link, .menu-overlay-cta'), function (el) {
+                el.addEventListener('click', function () {
+                    overlay.classList.remove('active');
+                });
+            });
+        }
+
+        // ===== Init =====
+        build();
+    })();
+    </script>
+</body>
+</html>

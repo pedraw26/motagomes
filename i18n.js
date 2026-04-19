@@ -41,6 +41,10 @@
             'menu.letstalk': "Let's Talk",
             'menu.cv': 'Curriculum',
             'menu.lang': 'Language',
+            'menu.gen': 'Gen Studio',
+            'gen.eyebrow': 'Gen Studio',
+            'gen.subtitle': 'AI-assisted visual explorations',
+            'gen.hint': 'Scroll or drag',
 
             // Hero
             'hero.p1': 'Hybrid Designer',
@@ -153,6 +157,10 @@
             'menu.letstalk': 'Vamos Falar',
             'menu.cv': 'Currículo',
             'menu.lang': 'Idioma',
+            'menu.gen': 'Gen Studio',
+            'gen.eyebrow': 'Gen Studio',
+            'gen.subtitle': 'Explorações visuais assistidas por IA',
+            'gen.hint': 'Roda ou arrasta',
 
             // Hero
             'hero.p1': 'Designer Híbrido',
