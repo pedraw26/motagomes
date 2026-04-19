@@ -1964,7 +1964,7 @@
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1773865908/galp-card_vn3fdn.gif', caption: 'Festive campaign key visual — Christmas warmth meets brand identity', layout: 'full', style: 'transform: scale(1.10);' },
                 { type: 'html', src: '/galp-grid.html', caption: 'Festive card system — animated grid showcase', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776303437/bandeja_iajxem.jpg', caption: 'Festive product tray — seasonal packaging design', layout: 'full' },
-                { type: 'html', src: '/galp-cinematic.html', caption: 'Cinematic concept — phone mockup on royal-purple stage', layout: 'full' },
+                { type: 'html', src: '/galp-cinematic.html', scroll: true, caption: 'Cinematic concept — phone mockup on royal-purple stage', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776301769/Papel-embrulho_wquff2.jpg', caption: 'Wrapping paper design — festive brand pattern', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776301771/Papel-embrulho1_dukbrt.jpg', caption: 'Wrapping paper variant — holiday gift packaging', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776301788/poster2_god4h8.jpg', caption: 'Campaign poster — seasonal product showcase', layout: 'full' },
@@ -2405,7 +2405,7 @@
                                     : img.type === 'html' && img.html
                                     ? img.html
                                     : img.type === 'html'
-                                    ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}" scrolling="no"></iframe>`
+                                    ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}"${img.scroll ? '' : ' scrolling="no"'}></iframe>`
                                     : img.type === 'video' && img.poster
                                     ? `<div class="doc-player" data-src="${img.src}">
                                         <img class="doc-poster" src="${img.poster}" alt="${img.caption}" loading="lazy">
