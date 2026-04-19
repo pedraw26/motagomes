@@ -933,6 +933,19 @@
             transform-origin: center center;
         }
         .gallery-stacked-title .star svg { width: 100%; height: 100%; display: block; overflow: visible; }
+
+        .gallery-stacked-updated {
+            font-family: var(--sf-pro);
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            color: var(--text-40);
+            text-transform: uppercase;
+            white-space: nowrap;
+            padding-bottom: 0.4em; /* lifts it with the heading baseline */
+        }
+        @media (max-width: 720px) {
+            .gallery-stacked-updated { font-size: 9px; letter-spacing: 0.08em; }
+        }
         @keyframes star-spin {
             from { transform: rotate(0deg); }
             to   { transform: rotate(360deg); }
@@ -3374,7 +3387,6 @@ margin-top: 3px;
             <div class="header-center" id="navClock">GMT 00:00</div>
             
             <div class="header-right">
-                <span class="header-updated" data-i18n="nav.lastUpdated">Last updated · February 2026</span>
                 <a class="header-social" href="https://linkedin.com/in/pedraw" target="_blank" rel="noopener" aria-label="LinkedIn">
                     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zm1.78 13.02H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
                 </a>
@@ -3481,6 +3493,7 @@ margin-top: 3px;
         <section class="snap-section gallery-stacked" id="work">
             <div class="gallery-stacked-header">
                 <h2 class="gallery-stacked-title"><span data-i18n="work.title">Selected Projects</span><span class="star" aria-hidden="true"><svg viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="14" stroke-linecap="round" fill="none"><line x1="0" y1="-40" x2="0" y2="40"/><line x1="-34.64" y1="-20" x2="34.64" y2="20"/><line x1="-34.64" y1="20" x2="34.64" y2="-20"/></g></svg></span></h2>
+                <span class="gallery-stacked-updated" data-i18n="nav.lastUpdated">Last updated · February 2026</span>
             </div>
             
             <!-- Side indicators -->
