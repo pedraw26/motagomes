@@ -183,8 +183,8 @@
     box-shadow: 0 0 6px rgba(16, 185, 129, 0.7);
   }
 
-  /* Trailing spacer so ScrollTrigger has scroll distance to scrub */
-  .spacer { height: 200vh; }
+  /* No internal scroll needed now — the timeline is driven by the parent
+     window's scroll position via the script below. */
 
   /* Scroll cue — small uppercase text, bottom center of the purple full-screen state.
      Starts hidden; GSAP fades it in once the card fills the viewport, fades it out
@@ -236,18 +236,12 @@
     </div>
   </div>
 
-  <div class="spacer"></div>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script>
-    gsap.registerPlugin(ScrollTrigger);
-
-    /* Mouse parallax — phone tilts on rotateX/rotateY while the hero is in view */
+    /* Mouse parallax — phone tilts on rotateX/rotateY */
     const mockup = document.getElementById('mockup');
     let raf = 0;
     window.addEventListener('mousemove', (e) => {
-      if (window.scrollY > window.innerHeight * 2) return;
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         if (!mockup) return;
@@ -262,24 +256,17 @@
       });
     });
 
-    /* Scroll-scrubbed cinematic timeline — card rises, fills, phone reveals, card shrinks and exits */
+    /* Timeline stays paused; its progress is driven manually from the parent
+       window's scroll position so the effect peaks when the iframe sits at
+       the center of the browser viewport. Works at every viewport size
+       because progress is computed from rect.top / viewport height. */
     const isMobile = window.innerWidth < 768;
 
     gsap.set('.main-card', { y: window.innerHeight + 200, autoAlpha: 1 });
     gsap.set('.mockup-scroll-wrapper', { autoAlpha: 0 });
     gsap.set('.scroll-cue', { autoAlpha: 0 });
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: '#hero',
-        start: 'top top',
-        end: '+=6000',
-        pin: true,
-        scrub: 1,
-        anticipatePin: 1
-      }
-    });
-
+    const tl = gsap.timeline({ paused: true });
     tl
       .to('.main-card', { y: 0, ease: 'power3.inOut', duration: 2 }, 0)
       .to('.main-card', { width: '100%', height: '100%', borderRadius: '0px', ease: 'power3.inOut', duration: 1.5 })
@@ -288,14 +275,10 @@
         { y: 0, z: 0, rotationX: 0, rotationY: 0, autoAlpha: 1, scale: 1, ease: 'expo.out', duration: 2.5 },
         '-=0.8'
       )
-      /* Tightened post-phone sequence: cue lands quickly, shorter dwell,
-         cue fades out — less scroll between "phone visible" and exit. */
       .to('.scroll-cue', { autoAlpha: 1, duration: 0.25, ease: 'power2.out' })
       .to({}, { duration: 1.0 })
       .to('.scroll-cue', { autoAlpha: 0, duration: 0.25, ease: 'power2.in' })
-      .to('.mockup-scroll-wrapper', {
-        scale: 0.9, y: -40, z: -200, autoAlpha: 0, ease: 'power3.in', duration: 0.8
-      })
+      .to('.mockup-scroll-wrapper', { scale: 0.9, y: -40, z: -200, autoAlpha: 0, ease: 'power3.in', duration: 0.8 })
       .to('.main-card', {
         width:  isMobile ? '92vw' : '85vw',
         height: isMobile ? '92vh' : '85vh',
@@ -304,6 +287,40 @@
         duration: 1.2
       })
       .to('.main-card', { y: -window.innerHeight - 300, ease: 'power3.in', duration: 1.0 });
+
+    /* Drive timeline from the parent window's scroll position.
+       Same-origin iframe → we can read parent rect + scroll directly.
+       If embedded standalone (no parent), fall back to auto-play. */
+    let parentWin = null, frameEl = null;
+    try {
+      if (window.parent && window.parent !== window) {
+        window.parent.innerHeight;                  /* access-test: throws on cross-origin */
+        parentWin = window.parent;
+        frameEl = window.frameElement;
+      }
+    } catch (_) { parentWin = null; }
+
+    if (parentWin && frameEl) {
+      let rafId = 0;
+      const update = () => {
+        const rect = frameEl.getBoundingClientRect();
+        const vh = parentWin.innerHeight;
+        /* progress 0 = iframe top at viewport bottom; progress 1 = iframe
+           bottom at viewport top. Effect peaks around 0.5 (iframe centered). */
+        const p = Math.max(0, Math.min(1, (vh - rect.top) / (vh + rect.height)));
+        tl.progress(p);
+      };
+      const onScrollOrResize = () => {
+        cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(update);
+      };
+      parentWin.addEventListener('scroll', onScrollOrResize, { passive: true });
+      parentWin.addEventListener('resize', onScrollOrResize);
+      update();
+    } else {
+      /* Standalone preview: auto-play the timeline linearly on a short loop */
+      tl.timeScale(0.7).play();
+    }
   </script>
 </body>
 </html>
