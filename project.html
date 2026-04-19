@@ -414,7 +414,9 @@
         /* Zone 2: Statement */
         .overview__statement {
             padding: 80px 0 100px;
-            max-width: 70%;
+            /* max-width: 70% removed — was clamping the paragraph too narrow and leaving
+               the right half of the row empty. Now fills the same measure as the narrative
+               block below it. */
         }
 
         .overview__statement-text {
