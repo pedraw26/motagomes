@@ -16,30 +16,29 @@
             --text: #ffffff;
             --text-60: #999999;
             --text-40: #666666;
-            --border-subtle: rgba(255, 255, 255, 0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html, body {
-            height: 100%;
             background: var(--bg-black);
             color: var(--text);
             font-family: var(--sf-pro);
             -webkit-font-smoothing: antialiased;
-            overflow: hidden;
+        }
+        /* Native scroll-snap — matches the portfolio feel */
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
         }
 
-        /* ===== Header (shared look) ===== */
+        /* ===== Header (same shape as other pages) ===== */
         .header {
             position: fixed;
             top: 0; left: 0; right: 0;
             z-index: 100;
-            background: transparent;
-            transition: transform 0.4s ease;
         }
         .header-content {
-            width: 100%;
             padding: 20px 80px;
             display: grid;
             grid-template-columns: 1fr auto 1fr;
@@ -53,7 +52,6 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            position: relative;
         }
         .header-logo::before {
             content: '';
@@ -61,27 +59,18 @@
             height: 6px;
             border-radius: 50%;
             background: var(--text);
-            display: inline-block;
             animation: logoBreath 2.8s ease-in-out infinite;
         }
         @keyframes logoBreath {
             0%, 100% { transform: scale(1); opacity: 0.55; }
             50% { transform: scale(1.25); opacity: 1; }
         }
-        .header-left {
-            display: inline-flex;
-            align-items: center;
-            gap: 36px;
-        }
-        .header-nav {
-            display: flex;
-            gap: 28px;
-        }
+        .header-left { display: inline-flex; align-items: center; gap: 36px; }
+        .header-nav { display: flex; gap: 28px; }
         .header-nav a {
             font-size: 0.75rem;
             color: var(--text-60);
             text-decoration: none;
-            font-weight: 400;
             letter-spacing: 0.01em;
             transition: color 0.3s ease;
             position: relative;
@@ -99,27 +88,20 @@
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .header-nav a:hover { color: var(--text); }
-        .header-nav a:hover::before { transform: translateX(-50%) scale(1); }
-        .header-nav a.is-current { color: var(--text); }
+        .header-nav a:hover::before,
         .header-nav a.is-current::before { transform: translateX(-50%) scale(1); }
+        .header-nav a.is-current { color: var(--text); }
 
         .header-center {
             justify-self: center;
-            font-family: var(--sf-pro);
             font-size: 10px;
             letter-spacing: 0.1em;
             color: var(--text-40);
             font-variant-numeric: tabular-nums;
             text-transform: uppercase;
         }
-        .header-right {
-            display: flex;
-            align-items: center;
-            justify-self: end;
-            gap: 16px;
-        }
+        .header-right { display: flex; align-items: center; justify-self: end; gap: 16px; }
 
-        /* Language toggle */
         .header-lang {
             display: inline-flex;
             align-items: center;
@@ -147,30 +129,21 @@
         .header-lang button[aria-pressed="true"] { color: var(--text); }
         .header-lang .ml-sep { opacity: 0.45; }
 
-        .menu-icon {
-            width: 29px;
-            height: 29px;
-            position: relative;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .menu-icon { width: 29px; height: 29px; position: relative; cursor: pointer; }
         .menu-icon span {
             display: block;
             width: 20px;
             height: 1px;
             background: var(--text);
             position: absolute;
-            transition: all 0.35s cubic-bezier(0.65, 0.05, 0.36, 1);
+            top: 50%;
+            left: 50%;
         }
-        .menu-icon span:nth-child(1) { transform: translateY(-4px); }
-        .menu-icon span:nth-child(2) { transform: translateY(4px); }
+        .menu-icon span:nth-child(1) { transform: translate(-50%, -4px); }
+        .menu-icon span:nth-child(2) { transform: translate(-50%, 4px); }
 
-        /* Menu overlay */
         .menu-overlay {
-            position: fixed;
-            inset: 0;
+            position: fixed; inset: 0;
             background: rgba(10,10,10,0.98);
             backdrop-filter: blur(20px);
             z-index: 99;
@@ -178,26 +151,16 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            opacity: 0;
-            visibility: hidden;
+            opacity: 0; visibility: hidden;
             transition: opacity 0.4s ease, visibility 0.4s ease;
         }
-        .menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        .menu-overlay-items {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 22px;
-        }
+        .menu-overlay.active { opacity: 1; visibility: visible; }
+        .menu-overlay-items { display: flex; flex-direction: column; gap: 22px; align-items: center; }
         .menu-overlay-link {
             font-size: 22px;
             font-weight: 300;
             color: var(--text-60);
             text-decoration: none;
-            transition: color 0.3s ease;
         }
         .menu-overlay-link:hover { color: var(--text); }
         .menu-overlay-cta {
@@ -209,9 +172,7 @@
             text-decoration: none;
             font-size: 11px;
         }
-        .menu-overlay-cta:hover { background: var(--text); color: var(--bg-black); }
 
-        /* Desktop vs mobile */
         @media (max-width: 720px) {
             .header-content { padding: 20px 24px; }
             .header-nav { display: none; }
@@ -221,24 +182,23 @@
             .menu-icon { display: none !important; }
         }
 
-        /* ===== Gen Studio stack ===== */
+        /* ===== Gen Studio — fixed stage with scroll-snap markers ===== */
+
+        /* The stage is fixed on top of the page; it shows the current card stack */
         .gen-stage {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none; /* only viewport is interactive (for drag) */
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
-
-        /* ambient glow */
         .gen-glow {
             position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 640px;
-            height: 640px;
+            left: 50%; top: 50%;
+            width: 640px; height: 640px;
             transform: translate(-50%, -50%);
             border-radius: 50%;
             background: rgba(255,255,255,0.02);
@@ -246,7 +206,19 @@
             pointer-events: none;
         }
 
-        /* left counter */
+        .gen-label {
+            position: absolute;
+            top: 90px;
+            left: 80px;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            color: var(--text-40);
+            text-transform: uppercase;
+            z-index: 3;
+            pointer-events: none;
+        }
+        .gen-label strong { color: var(--text-60); font-weight: 500; }
+
         .gen-counter {
             position: absolute;
             left: 48px;
@@ -255,7 +227,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            z-index: 10;
+            z-index: 3;
             pointer-events: none;
         }
         .gen-counter-cur {
@@ -277,7 +249,6 @@
             font-variant-numeric: tabular-nums;
         }
 
-        /* card stack viewport */
         .gen-viewport {
             position: relative;
             width: 320px;
@@ -286,9 +257,10 @@
             align-items: center;
             justify-content: center;
             perspective: 1200px;
+            pointer-events: auto;
             touch-action: none;
+            z-index: 2;
         }
-
         .gen-card {
             position: absolute;
             width: 280px;
@@ -296,19 +268,16 @@
             border-radius: 24px;
             overflow: hidden;
             background: #111;
-            cursor: grab;
             transform-style: preserve-3d;
             box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
             transition:
-                transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
-                opacity 650ms cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow 650ms cubic-bezier(0.22, 1, 0.36, 1);
+                transform 700ms cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 700ms cubic-bezier(0.22, 1, 0.36, 1);
             will-change: transform, opacity;
+            cursor: grab;
         }
-        .gen-card.dragging {
-            transition: none;
-            cursor: grabbing;
-        }
+        .gen-card:active { cursor: grabbing; }
         .gen-card.is-current {
             box-shadow:
                 0 25px 50px -12px rgba(0,0,0,0.65),
@@ -316,8 +285,7 @@
         }
         .gen-card::before {
             content: '';
-            position: absolute;
-            inset: 0;
+            position: absolute; inset: 0;
             background: linear-gradient(to bottom, rgba(255,255,255,0.08), transparent 40%);
             z-index: 2;
             pointer-events: none;
@@ -334,8 +302,7 @@
         .gen-card img {
             position: absolute;
             inset: 0;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: cover;
             display: block;
             user-select: none;
@@ -346,94 +313,20 @@
             pointer-events: none;
         }
 
-        /* nav dots */
-        .gen-dots {
-            position: absolute;
-            right: 40px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            z-index: 10;
+        /* Scroll-snap markers: one invisible 100vh section per image.
+           Driving the stage via IntersectionObserver on these. */
+        .gen-track {
+            position: relative;
+            z-index: 2;
         }
-        .gen-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .gen-dot:hover { background: rgba(255,255,255,0.5); }
-        .gen-dot.is-active {
-            background: var(--text);
-            height: 24px;
-            border-radius: 4px;
-        }
-
-        /* hint */
-        .gen-hint {
-            position: absolute;
-            left: 50%;
-            bottom: 48px;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            color: var(--text-60);
-            opacity: 0;
-            animation: genHintIn 0.6s ease 1s forwards;
-            pointer-events: none;
-        }
-        @keyframes genHintIn {
-            to { opacity: 1; }
-        }
-        .gen-hint-arrow {
-            width: 22px;
-            height: 22px;
-            animation: genArrowUp 1.5s ease-in-out infinite;
-        }
-        .gen-hint-arrow.down {
-            animation-name: genArrowDown;
-        }
-        @keyframes genArrowUp {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-        @keyframes genArrowDown {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(8px); }
-        }
-        .gen-hint-text {
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: 0.24em;
-            text-transform: uppercase;
-        }
-
-        /* page label */
-        .gen-label {
-            position: absolute;
-            top: 90px;
-            left: 80px;
-            font-size: 10px;
-            letter-spacing: 0.2em;
-            color: var(--text-40);
-            text-transform: uppercase;
-            z-index: 10;
-        }
-        .gen-label strong {
-            color: var(--text-60);
-            font-weight: 500;
+        .gen-snap {
+            height: 100vh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
         }
 
         @media (max-width: 720px) {
             .gen-counter { left: 20px; }
-            .gen-dots { right: 20px; }
             .gen-label { left: 24px; top: 76px; }
         }
     </style>
@@ -479,42 +372,30 @@
         </div>
     </div>
 
-    <!-- Main stage -->
-    <main class="gen-stage" id="genStage">
+    <!-- Fixed stage that follows the active snap index -->
+    <div class="gen-stage">
         <div class="gen-glow"></div>
 
         <div class="gen-label"><strong data-i18n="gen.eyebrow">Gen Studio</strong> · <span data-i18n="gen.subtitle">AI-assisted visual explorations</span></div>
 
-        <!-- Left counter -->
         <div class="gen-counter">
             <span class="gen-counter-cur" id="genCur">01</span>
             <span class="gen-counter-sep"></span>
             <span class="gen-counter-total" id="genTotal">05</span>
         </div>
 
-        <!-- Card stack viewport -->
         <div class="gen-viewport" id="genViewport">
-            <!-- Cards injected by JS -->
+            <!-- Card stack injected by JS -->
         </div>
+    </div>
 
-        <!-- Dots -->
-        <div class="gen-dots" id="genDots"></div>
-
-        <!-- Hint -->
-        <div class="gen-hint">
-            <svg class="gen-hint-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 5v14M5 12l7-7 7 7"/>
-            </svg>
-            <span class="gen-hint-text" data-i18n="gen.hint">Scroll or drag</span>
-            <svg class="gen-hint-arrow down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 5v14M19 12l-7 7-7-7"/>
-            </svg>
-        </div>
+    <!-- Invisible snap track — native scroll-snap drives the stage -->
+    <main class="gen-track" id="genTrack">
+        <!-- One .gen-snap per image, injected by JS -->
     </main>
 
     <script>
     (function () {
-        // ===== Data =====
         var IMAGES = [
             { id: 1, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/luxury-black-sneaker-with-red-sole-on-grey-backgro-hj40sZT8MUUSeLz18VN7EjhcnV0kSD.jpg', alt: 'Black sneaker with red sole' },
             { id: 2, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/white-minimalist-sneaker-on-light-background-xQxkXgGrSrAe6pvLPNC6yrh20Atqoa.jpg', alt: 'White minimalist sneaker' },
@@ -523,23 +404,17 @@
             { id: 5, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/green-forest-hiking-boot-on-natural-background-T41PNLzI60G2u6rFIRxeCbKT6RWKOH.jpg', alt: 'Green hiking boot' }
         ];
 
-        // ===== State =====
-        var currentIndex = 0;
-        var lastNavTime = 0;
-        var NAV_COOLDOWN = 400;
         var viewport = document.getElementById('genViewport');
-        var dotsEl = document.getElementById('genDots');
-        var curEl = document.getElementById('genCur');
-        var totalEl = document.getElementById('genTotal');
+        var track    = document.getElementById('genTrack');
+        var curEl    = document.getElementById('genCur');
+        var totalEl  = document.getElementById('genTotal');
 
+        var currentIndex = 0;
         var cards = [];
+        var markers = [];
 
-        // ===== Build cards & dots =====
         function build() {
-            viewport.innerHTML = '';
-            dotsEl.innerHTML = '';
-            cards = [];
-
+            // Cards (stacked 3D visualization)
             IMAGES.forEach(function (img, i) {
                 var card = document.createElement('div');
                 card.className = 'gen-card';
@@ -553,38 +428,36 @@
                 card.appendChild(im);
                 viewport.appendChild(card);
                 cards.push(card);
+            });
 
-                var dot = document.createElement('button');
-                dot.className = 'gen-dot';
-                dot.setAttribute('aria-label', 'Go to image ' + (i + 1));
-                dot.addEventListener('click', function () {
-                    if (i !== currentIndex) {
-                        setIndex(i);
-                    }
-                });
-                dotsEl.appendChild(dot);
+            // Scroll-snap markers (one 100vh section per image — hidden stage above)
+            IMAGES.forEach(function (img, i) {
+                var m = document.createElement('section');
+                m.className = 'gen-snap';
+                m.setAttribute('data-index', i);
+                m.setAttribute('aria-label', 'Image ' + (i + 1) + ' of ' + IMAGES.length);
+                track.appendChild(m);
+                markers.push(m);
             });
 
             totalEl.textContent = String(IMAGES.length).padStart(2, '0');
             layout();
         }
 
-        // ===== Style a single card based on its distance from current =====
         function styleFor(idx) {
             var total = IMAGES.length;
             var diff = idx - currentIndex;
             if (diff > total / 2) diff -= total;
             if (diff < -total / 2) diff += total;
 
-            if (diff === 0)      return { y:    0, scale: 1.00, opacity: 1.00, z: 5, rx:   0, hidden: false, current: true };
-            if (diff === -1)     return { y: -160, scale: 0.82, opacity: 0.60, z: 4, rx:   8, hidden: false, current: false };
-            if (diff === -2)     return { y: -280, scale: 0.70, opacity: 0.30, z: 3, rx:  15, hidden: false, current: false };
-            if (diff ===  1)     return { y:  160, scale: 0.82, opacity: 0.60, z: 4, rx:  -8, hidden: false, current: false };
-            if (diff ===  2)     return { y:  280, scale: 0.70, opacity: 0.30, z: 3, rx: -15, hidden: false, current: false };
+            if (diff === 0)  return { y:    0, scale: 1.00, opacity: 1.00, z: 5, rx:   0, hidden: false, current: true };
+            if (diff === -1) return { y: -160, scale: 0.82, opacity: 0.60, z: 4, rx:   8, hidden: false, current: false };
+            if (diff === -2) return { y: -280, scale: 0.70, opacity: 0.30, z: 3, rx:  15, hidden: false, current: false };
+            if (diff ===  1) return { y:  160, scale: 0.82, opacity: 0.60, z: 4, rx:  -8, hidden: false, current: false };
+            if (diff ===  2) return { y:  280, scale: 0.70, opacity: 0.30, z: 3, rx: -15, hidden: false, current: false };
             return { y: diff > 0 ? 400 : -400, scale: 0.60, opacity: 0, z: 0, rx: diff > 0 ? -20 : 20, hidden: true, current: false };
         }
 
-        // ===== Apply layout to all cards + dots + counter =====
         function layout() {
             cards.forEach(function (card, i) {
                 var s = styleFor(i);
@@ -594,110 +467,85 @@
                 card.setAttribute('data-pos', s.hidden ? 'hidden' : 'visible');
                 card.classList.toggle('is-current', s.current);
             });
-
-            Array.prototype.forEach.call(dotsEl.children, function (d, i) {
-                d.classList.toggle('is-active', i === currentIndex);
-            });
-
             curEl.textContent = String(currentIndex + 1).padStart(2, '0');
         }
 
-        // ===== Navigate =====
-        function navigate(dir) {
-            var now = Date.now();
-            if (now - lastNavTime < NAV_COOLDOWN) return;
-            lastNavTime = now;
-            var total = IMAGES.length;
-            if (dir > 0) {
-                currentIndex = currentIndex === total - 1 ? 0 : currentIndex + 1;
-            } else {
-                currentIndex = currentIndex === 0 ? total - 1 : currentIndex - 1;
-            }
-            layout();
-        }
-
         function setIndex(i) {
-            var now = Date.now();
-            if (now - lastNavTime < NAV_COOLDOWN) return;
-            lastNavTime = now;
-            currentIndex = ((i % IMAGES.length) + IMAGES.length) % IMAGES.length;
+            i = Math.max(0, Math.min(IMAGES.length - 1, i));
+            if (i === currentIndex) return;
+            currentIndex = i;
             layout();
         }
 
-        // ===== Wheel =====
-        var wheelAccum = 0;
-        var wheelResetTimer = null;
-        window.addEventListener('wheel', function (e) {
-            if (Math.abs(e.deltaY) > 30) {
-                navigate(e.deltaY > 0 ? 1 : -1);
+        // IntersectionObserver on the snap markers: whichever marker is
+        // most in-view drives the stage. Native wheel/touch scroll-snap
+        // handles the actual scrolling feel — matches the rest of the site.
+        var io = new IntersectionObserver(function (entries) {
+            // Pick the entry with the highest intersection ratio
+            var best = null;
+            entries.forEach(function (e) {
+                if (!best || e.intersectionRatio > best.intersectionRatio) best = e;
+            });
+            if (best && best.isIntersecting) {
+                var idx = parseInt(best.target.getAttribute('data-index'), 10);
+                if (!isNaN(idx)) setIndex(idx);
             }
-        }, { passive: true });
+        }, {
+            threshold: [0.5, 0.75]
+        });
+
+        function observeAll() {
+            markers.forEach(function (m) { io.observe(m); });
+        }
 
         // ===== Keyboard =====
         window.addEventListener('keydown', function (e) {
+            var next = currentIndex;
             if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
-                navigate(1);
-                e.preventDefault();
+                next = Math.min(currentIndex + 1, IMAGES.length - 1);
             } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-                navigate(-1);
-                e.preventDefault();
+                next = Math.max(currentIndex - 1, 0);
+            } else {
+                return;
             }
+            e.preventDefault();
+            markers[next].scrollIntoView({ behavior: 'smooth' });
         });
 
-        // ===== Drag (pointer events) =====
-        var drag = { active: false, startY: 0, lastY: 0, card: null };
+        // ===== Drag on the card viewport — swipes to next/prev marker =====
+        var drag = { active: false, startY: 0, card: null, id: null };
         viewport.addEventListener('pointerdown', function (e) {
-            var currentCard = cards[currentIndex];
-            if (!currentCard) return;
+            var c = cards[currentIndex];
+            if (!c) return;
             drag.active = true;
             drag.startY = e.clientY;
-            drag.lastY = e.clientY;
-            drag.card = currentCard;
-            currentCard.classList.add('dragging');
-            currentCard.setPointerCapture(e.pointerId);
+            drag.card = c;
+            drag.id = e.pointerId;
+            c.style.transition = 'none';
+            try { c.setPointerCapture(e.pointerId); } catch (_) {}
         });
         viewport.addEventListener('pointermove', function (e) {
             if (!drag.active || !drag.card) return;
             var dy = e.clientY - drag.startY;
-            // Apply a dampened live transform to the current card only
-            var damp = dy * 0.5;
-            drag.card.style.transform = 'translateY(' + damp + 'px) scale(1) rotateX(0deg)';
+            drag.card.style.transform = 'translateY(' + (dy * 0.5) + 'px) scale(1) rotateX(0deg)';
         });
         function endDrag(e) {
             if (!drag.active) return;
             var dy = e.clientY - drag.startY;
-            drag.card.classList.remove('dragging');
+            drag.card.style.transition = '';
             drag.active = false;
-            if (dy < -50) {
-                layout(); // reset before navigate (animation will run)
-                navigate(1);
-            } else if (dy > 50) {
-                layout();
-                navigate(-1);
+            var next = currentIndex;
+            if (dy < -60)      next = Math.min(currentIndex + 1, IMAGES.length - 1);
+            else if (dy > 60)  next = Math.max(currentIndex - 1, 0);
+            if (next !== currentIndex && markers[next]) {
+                markers[next].scrollIntoView({ behavior: 'smooth' });
             } else {
-                layout();
+                layout(); // snap the card back
             }
             drag.card = null;
         }
         viewport.addEventListener('pointerup', endDrag);
         viewport.addEventListener('pointercancel', endDrag);
-        viewport.addEventListener('pointerleave', function (e) {
-            if (drag.active) endDrag(e);
-        });
-
-        // ===== Touch-specific swipe fallback (for some mobile browsers) =====
-        var touchStartY = null;
-        viewport.addEventListener('touchstart', function (e) {
-            if (e.touches && e.touches[0]) touchStartY = e.touches[0].clientY;
-        }, { passive: true });
-        viewport.addEventListener('touchend', function (e) {
-            if (touchStartY === null) return;
-            var t = (e.changedTouches && e.changedTouches[0]) || null;
-            if (!t) return;
-            var dy = t.clientY - touchStartY;
-            if (Math.abs(dy) > 50) navigate(dy < 0 ? 1 : -1);
-            touchStartY = null;
-        }, { passive: true });
 
         // ===== GMT clock =====
         function tick() {
@@ -711,25 +559,20 @@
         tick();
         setInterval(tick, 10000);
 
-        // ===== Menu overlay (mobile) =====
-        var hamburger = document.getElementById('hamburger');
-        var overlay = document.getElementById('menuOverlay');
-        if (hamburger && overlay) {
-            hamburger.addEventListener('click', function () {
-                overlay.classList.add('active');
-            });
-            overlay.addEventListener('click', function (e) {
-                if (e.target === overlay) overlay.classList.remove('active');
-            });
-            Array.prototype.forEach.call(overlay.querySelectorAll('.menu-overlay-link, .menu-overlay-cta'), function (el) {
-                el.addEventListener('click', function () {
-                    overlay.classList.remove('active');
-                });
+        // ===== Mobile menu =====
+        var ham = document.getElementById('hamburger');
+        var ov  = document.getElementById('menuOverlay');
+        if (ham && ov) {
+            ham.addEventListener('click', function () { ov.classList.add('active'); });
+            ov.addEventListener('click', function (e) { if (e.target === ov) ov.classList.remove('active'); });
+            Array.prototype.forEach.call(ov.querySelectorAll('.menu-overlay-link, .menu-overlay-cta'), function (el) {
+                el.addEventListener('click', function () { ov.classList.remove('active'); });
             });
         }
 
         // ===== Init =====
         build();
+        observeAll();
     })();
     </script>
 </body>
