@@ -3589,7 +3589,7 @@ margin-top: 3px;
                         <div class="gallery-stacked-hero gradient-midnight">
                             <div class="card-coming-soon">Coming Soon</div>
                             <div class="card-slideshow" data-interval="1500">
-                                <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773855922/sBbbbArtboard_1_o0eian.png" alt="RAS Real Estate" class="active">
+                                <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1774150046/Screenshot_2026-03-22_at_03.26.31_buypz6.png" alt="RAS Real Estate" class="active">
                             </div>
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-label">Real Estate Branding</div>
@@ -3702,7 +3702,7 @@ margin-top: 3px;
                 </div>
 
                 <!-- Card 9: Aura Studio -->
-                <div class="gallery-stacked-card" style="--card-index: 8; --card-offset: 50px;">
+                <div class="gallery-stacked-card" style="--card-index: 8; --card-offset: 50px;" hidden data-hidden-card>
                     <div class="gallery-stacked-card-inner">
                         <div class="gallery-stacked-bar">
                             <div class="gallery-stacked-dot"></div>
@@ -4340,8 +4340,8 @@ margin-top: 3px;
         // ========================================
         // STACKED GALLERY SCROLL TRACKING
         // ========================================
-        const galleryCards = document.querySelectorAll('.gallery-stacked-card');
-        const galleryCardInners = document.querySelectorAll('.gallery-stacked-card-inner');
+        const galleryCards = document.querySelectorAll('.gallery-stacked-card:not([hidden])');
+        const galleryCardInners = document.querySelectorAll('.gallery-stacked-card:not([hidden]) .gallery-stacked-card-inner');
         const galleryIndex = document.getElementById('galleryIndex');
         const galleryCategory = document.getElementById('galleryCategory');
         const galleryType = document.getElementById('galleryType');
@@ -4349,17 +4349,18 @@ margin-top: 3px;
         const gallerySides = document.querySelectorAll('.gallery-stacked-side');
         const galleryProgressFill = document.getElementById('galleryProgressFill');
         
-        // Order must mirror the card order in the DOM above:
-        // standard-bank → galp → luandina → ras → lyft → one1x → moope → wammo → aura-studio → candando → amal clooney
+        // Order must mirror the VISIBLE card order in the DOM above.
+        // Aura Studio is currently hidden via [hidden], so it's filtered out.
+        // standard-bank → galp → luandina → ras → lyft → one1x → moope → wammo → candando → amal clooney
         const galleryBrands = [
             'Standard Bank', 'Galp', 'Luandina',
             'RAS Real Estate', 'Lyft', 'One1x',
-            'Moope', 'Wammo', 'Aura Studio', 'Candando', 'ULaw'
+            'Moope', 'Wammo', 'Candando', 'ULaw'
         ];
         const galleryProjects = [
             '360 Campaign', 'Christmas Campaign', 'Geo-Targeted Campaign',
             'Real Estate Branding', 'Illustration', 'Rebrand',
-            'UX Design', 'Retail Campaign', 'Brand & Web', 'Retail Branding', 'Scholarship Initiative'
+            'UX Design', 'Retail Campaign', 'Retail Branding', 'Scholarship Initiative'
         ];
         
         function updateActiveGalleryCard() {
