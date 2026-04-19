@@ -1391,20 +1391,8 @@
             position: absolute;
             inset: 0;
             z-index: 0;
+            background: #000;
             transition: opacity 0.1s linear;
-        }
-        .motion-embed__bg video,
-        .motion-embed__bg img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        .motion-embed__bg::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.28);
         }
 
         /* Media box — centered, size set via JS as progress grows */
@@ -3746,9 +3734,7 @@ margin-top: 3px;
         <!-- MOTION DESIGN — scroll-expand media (embedded) -->
         <section class="motion-embed" id="motion">
             <div class="motion-embed__pin" id="motionPin">
-                <div class="motion-embed__bg" id="motionBg">
-                    <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1920,c_limit/v1776301788/poster2_god4h8.jpg" alt="">
-                </div>
+                <div class="motion-embed__bg" id="motionBg"></div>
 
                 <div class="motion-embed__media" id="motionMedia">
                     <video id="motionVideo"
