@@ -743,51 +743,13 @@
             background: #e8e2d0;                       /* blank photo paper cream before image develops */
             box-shadow: 0 22px 50px -22px rgba(0, 0, 0, 0.55);
         }
+        /* Images display static — no develop filter, no shine sweep. Keeps the V5 darkroom
+           layout (cream paper cells on royal blue) without the kinetic effect. */
         .showcase-item.has-sbdarkroom .sbd-cell img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
-            animation: sbd-develop 9s cubic-bezier(.4, 0, .2, 1) infinite;
-        }
-        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(1) img { animation-delay: 0s; }
-        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(2) img { animation-delay: .4s; }
-        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(3) img { animation-delay: .8s; }
-        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(4) img { animation-delay: 1.2s; }
-        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(5) img { animation-delay: 1.6s; }
-        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(6) img { animation-delay: 2s; }
-        @keyframes sbd-develop {
-            0%, 3%    { opacity: 0;  filter: invert(1)  contrast(2)   brightness(2)   sepia(.3); }
-            10%       { opacity: .4; filter: invert(.6) contrast(1.6) brightness(1.4) sepia(.2); }
-            25%       { opacity: .7; filter: invert(.2) contrast(1.2) brightness(1.1) sepia(.1); }
-            35%, 80%  { opacity: 1;  filter: invert(0)  contrast(1)   brightness(1)   sepia(0); }
-            95%, 100% { opacity: 1;  filter: invert(0)  contrast(1)   brightness(1)   sepia(0); }
-        }
-        /* Wet-paper sheen sweep, synced with each cell's develop delay */
-        .showcase-item.has-sbdarkroom .sbd-cell::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.3) 50%, transparent 60%);
-            opacity: 0;
-            animation: sbd-shine 9s ease-in-out infinite;
-            pointer-events: none;
-        }
-        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(1)::after { animation-delay: 0s; }
-        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(2)::after { animation-delay: .4s; }
-        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(3)::after { animation-delay: .8s; }
-        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(4)::after { animation-delay: 1.2s; }
-        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(5)::after { animation-delay: 1.6s; }
-        .showcase-item.has-sbdarkroom .sbd-cell:nth-child(6)::after { animation-delay: 2s; }
-        @keyframes sbd-shine {
-            0%, 8%    { opacity: 0;  transform: translateX(-100%); }
-            15%       { opacity: .7; transform: translateX(0); }
-            22%, 100% { opacity: 0;  transform: translateX(100%); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .showcase-item.has-sbdarkroom .sbd-cell img,
-            .showcase-item.has-sbdarkroom .sbd-cell::after { animation: none; }
-            .showcase-item.has-sbdarkroom .sbd-cell img { filter: none; opacity: 1; }
         }
         @media (max-width: 768px) {
             .showcase-item.has-sbdarkroom .sbd-grid { inset: 8% 4%; gap: 8px; }
@@ -833,10 +795,10 @@
             position: absolute;
             top: clamp(22px, 2.8vw, 40px);
             left: clamp(22px, 3vw, 44px);
-            font-family: var(--mono);
+            font-family: var(--sf-pro);
             font-size: 10px;
             font-weight: 500;
-            letter-spacing: 0.28em;
+            letter-spacing: 0.22em;
             text-transform: uppercase;
             color: rgba(255, 255, 255, 0.72);
             z-index: 2;
