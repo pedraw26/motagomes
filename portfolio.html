@@ -1449,41 +1449,45 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             text-align: center;
-            color: #b9cde8;
+            color: var(--text-60);
             pointer-events: none;
+            font-family: var(--sf-pro);
         }
         .motion-embed__meta .me-date {
-            font-size: 18px;
-            letter-spacing: 0.08em;
+            font-size: 12px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-40);
         }
         .motion-embed__meta .me-prompt {
-            font-size: 13px;
-            letter-spacing: 0.22em;
+            font-size: 10px;
+            letter-spacing: 0.28em;
             text-transform: uppercase;
             font-weight: 500;
-            opacity: 0.85;
+            color: var(--text-60);
         }
 
-        /* Split title */
+        /* Split title — matches portfolio philosophy weight/color */
         .motion-embed__title {
             position: relative;
             z-index: 5;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.3em;
+            gap: 0.12em;
             text-align: center;
-            color: #b9cde8;
+            color: #fff;
             mix-blend-mode: difference;
             pointer-events: none;
+            font-family: var(--sf-pro);
         }
         .motion-embed__title h2 {
-            font-size: clamp(44px, 7.4vw, 86px);
-            font-weight: 800;
-            line-height: 1;
-            letter-spacing: -0.02em;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
             transition: none;
         }
 
@@ -1504,18 +1508,21 @@
             transform: translateY(0);
         }
         .motion-embed__content h3 {
-            font-size: clamp(28px, 3.4vw, 44px);
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            margin-bottom: 18px;
+            font-family: var(--sf-pro);
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 22px;
             color: #fff;
         }
         .motion-embed__content p {
-            font-size: 16px;
+            font-family: var(--sf-pro);
+            font-size: 14px;
             line-height: 1.7;
             color: var(--text-60);
             max-width: 68ch;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
         .motion-embed__grid {
             display: grid;
@@ -1541,14 +1548,28 @@
             position: absolute;
             left: 14px;
             bottom: 14px;
-            font-size: 11px;
-            letter-spacing: 0.14em;
+            font-family: var(--sf-pro);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.9);
+            color: rgba(255,255,255,0.85);
             background: rgba(0,0,0,0.55);
             padding: 5px 9px;
-            border-radius: 6px;
+            border-radius: 4px;
             backdrop-filter: blur(6px);
+        }
+        .motion-embed__grid figure.is-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .motion-embed__grid figure.is-placeholder figcaption {
+            position: static;
+            background: transparent;
+            backdrop-filter: none;
+            color: var(--text-40);
+            letter-spacing: 0.24em;
         }
 
         @media (max-width: 720px) {
@@ -3760,14 +3781,11 @@ margin-top: 3px;
                             src="https://res.cloudinary.com/dzgqzeebg/video/upload/f_auto,q_auto,w_640,br_900k/v1776560394/old_1_tc3avv.mp4"></video>
                         <figcaption>Standard Bank · Living poster</figcaption>
                     </figure>
-                    <figure>
-                        <video autoplay muted loop playsinline preload="metadata"
-                            src="https://res.cloudinary.com/dzgqzeebg/video/upload/f_auto,q_auto,w_640,br_900k/v1776434638/kling_20260417_%E4%BD%9C%E5%93%81_____prompt_5508_0_avjval.mp4"></video>
-                        <figcaption>Luandina · Campaign film</figcaption>
+                    <figure class="is-placeholder" style="background:#1e1e1e">
+                        <figcaption data-i18n="motion.slotComing">Reel slot · Coming soon</figcaption>
                     </figure>
-                    <figure>
-                        <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800,c_limit/v1773865908/galp-card_vn3fdn.gif" alt="Galp campaign loop">
-                        <figcaption>Galp · Christmas loop</figcaption>
+                    <figure class="is-placeholder" style="background:#2a2a2a">
+                        <figcaption data-i18n="motion.slotComing">Reel slot · Coming soon</figcaption>
                     </figure>
                 </div>
             </div>
