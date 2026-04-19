@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galp · Wrappers Loop</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+    height: 100%;
+    background: #000;
+  }
+
+  /* Standard 16:9 slide slot (matches other Galp slides).
+     Background: the pink-pattern Asset_4wrappers stage, cover-sized to fill. */
+  .stage {
+    position: relative;
+    width: 100vw;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background-image: url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1600,c_limit/v1776614659/Asset_4wrappers_b3j6pw.webp');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+
+  /* Horizontal marquee track. Duplicated items → translateX(-50%) gives seamless loop.
+     width: max-content lets the track grow to fit whatever natural widths the
+     images land at (they keep their own aspect-ratio). */
+  .track {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: clamp(56px, 7vw, 130px);            /* base rhythm between rolls */
+    width: max-content;
+    height: 45%;                             /* images fill 45% of stage height (another 20% reduction: 56 × 0.8 ≈ 45) */
+    animation: scroll 50s linear infinite;
+    will-change: transform;
+  }
+  @keyframes scroll {
+    from { transform: translate(0, -50%); }
+    to   { transform: translate(-50%, -50%); }
+  }
+  /* Each image keeps its natural aspect-ratio: height is forced, width auto */
+  .track img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+  }
+  /* Per-item margin compensation — Asset_2 (odd positions) was cropped on its
+     front edge, so it visually sits closer to whatever comes before it. A bit
+     of extra left-margin on those items restores an even rhythm across the
+     loop. Asset_3 (even positions) stays on the base gap. */
+  .track img:nth-child(odd)  { margin-left: clamp(20px, 2.2vw, 48px); }
+  .track img:nth-child(even) { margin-left: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .track { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="stage">
+    <div class="track">
+      <!-- First pass: alternating image1 → image2 -->
+      <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800,c_limit/v1776615692/Asset_2wrappers_bu609r.webp" alt="" aria-hidden="true">
+      <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800,c_limit/v1776614660/Asset_3wrappers_xsorsu.webp" alt="" aria-hidden="true">
+      <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800,c_limit/v1776615692/Asset_2wrappers_bu609r.webp" alt="" aria-hidden="true">
+      <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800,c_limit/v1776614660/Asset_3wrappers_xsorsu.webp" alt="" aria-hidden="true">
+      <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800,c_limit/v1776615692/Asset_2wrappers_bu609r.webp" alt="" aria-hidden="true">
+      <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800,c_limit/v1776614660/Asset_3wrappers_xsorsu.webp" alt="" aria-hidden="true">
+      <!-- Duplicate — makes the translateX(-50%) loop seamless -->
+      <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800,c_limit/v1776615692/Asset_2wrappers_bu609r.webp" alt="" aria-hidden="true">
+      <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800,c_limit/v1776614660/Asset_3wrappers_xsorsu.webp" alt="" aria-hidden="true">
+      <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800,c_limit/v1776615692/Asset_2wrappers_bu609r.webp" alt="" aria-hidden="true">
+      <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800,c_limit/v1776614660/Asset_3wrappers_xsorsu.webp" alt="" aria-hidden="true">
+      <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800,c_limit/v1776615692/Asset_2wrappers_bu609r.webp" alt="" aria-hidden="true">
+      <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800,c_limit/v1776614660/Asset_3wrappers_xsorsu.webp" alt="" aria-hidden="true">
+    </div>
+  </div>
+
+</body>
+</html>
