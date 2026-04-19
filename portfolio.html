@@ -1484,7 +1484,7 @@
             position: relative;
             z-index: 2;
             width: 100%;
-            padding: 90px 40px 120px;
+            padding: clamp(180px, 28vh, 320px) 40px 140px;
             max-width: 1280px;
             margin: 0 auto;
             opacity: 0;
@@ -1561,7 +1561,7 @@
         }
 
         @media (max-width: 720px) {
-            .motion-embed__content { padding: 60px 24px 100px; }
+            .motion-embed__content { padding: clamp(120px, 22vh, 220px) 24px 100px; }
         }
 
         /* ========================================
