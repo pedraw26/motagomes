@@ -25,13 +25,33 @@
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    /* Single wrapping-paper image filling the stage — no tiling.
-       cover fills the whole viewport; the image gets cropped as needed to
-       avoid letterboxing while keeping its aspect ratio. */
-    background-image: url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_2000,c_limit/v1776301771/Papel-embrulho1_dukbrt.jpg');
+    background-color: #ffe3d4;                 /* fallback beneath the animated layer */
+  }
+
+  /* Animated wrapping-paper backdrop — its own layer inside .hero so we can
+     transform it without dragging the rest of the stage along. Responsive
+     size via cover + a slow Ken-Burns drift so the pattern breathes gently
+     instead of sitting dead-still. Inset -6% gives scale/translate buffer
+     so edges never expose fallback colour during the drift. */
+  .bg-layer {
+    position: absolute;
+    inset: -6%;
+    background-image: url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1600,c_limit/v1776301771/Papel-embrulho1_dukbrt.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    z-index: 0;
+    pointer-events: none;
+    animation: bg-drift 28s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  @keyframes bg-drift {
+    0%   { transform: scale(1.00) translate(-1%, -1%); }
+    50%  { transform: scale(1.04) translate(1%, 1%); }
+    100% { transform: scale(1.00) translate(1%, -1%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bg-layer { animation: none; }
   }
 
   /* Pinned hero container */
@@ -194,6 +214,7 @@
 <body>
 
   <div class="hero" id="hero">
+    <div class="bg-layer" aria-hidden="true"></div>
     <div class="scroll-cue" aria-hidden="true">Scroll</div>
     <div class="card-wrapper">
       <div class="main-card" id="mainCard">
