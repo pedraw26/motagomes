@@ -755,6 +755,24 @@
             .showcase-item.has-sbdarkroom .sbd-grid { inset: 8% 4%; gap: 8px; }
         }
 
+        /* Vimeo segment loop — embeds a Vimeo player that loops a precise start-to-end window
+           muted, chromeless, at 720p. No re-encode, no re-upload; the CDN does the work. */
+        .showcase-item.has-vimeoloop {
+            aspect-ratio: 16 / 9;
+            background: #000;
+            position: relative;
+            overflow: hidden;
+        }
+        .showcase-item.has-vimeoloop iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+            pointer-events: none;                    /* user can't click into Vimeo chrome */
+        }
+
         /* Standard Bank stat-pair — 2-card layout on a white background for contrast.
            Left: royal-blue card with animated % + body copy + SB shield.
            Right: image (or dark placeholder until artwork is supplied). */
@@ -1933,6 +1951,7 @@
                     'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1100,c_limit/v1776535799/3b_qketwt.jpg'
                 ], caption: 'Brand application — photo-paper develop sequence', layout: 'full' },
                 { type: 'sbstatpair', stat: 84, body: 'Audience reaction was overwhelmingly positive. 84% of viewers described the campaign as emotional and said they felt represented — a signal that the story had landed with the people it was meant to honour.', imageSrc: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776555893/Female_holding_ipad_vqopon.webp', imageCaption: 'Audience reaction — campaign reception', caption: 'Campaign impact — audience reception', layout: 'full' },
+                { type: 'vimeoloop', vimeoId: '260034770', startSec: 589, endSec: 591, caption: 'Documentary moment — looping teaser from 9:49–9:51', layout: 'full' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776532670/standart_bank_ccccopy_zfdzlv.jpg', caption: 'Standard Bank — campaign closer', layout: 'full' },
                 { type: 'video', src: 'https://player.vimeo.com/video/260034770', poster: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776312630/hf_20260416_040746_8c19b4cc-2c31-4a7b-a951-8dc72e210136_tfq8xi.png', label: '', title: 'The Voice of Experience', runtime: '10:20', year: '2018', awardPill: 'Gold', award: 'Meios & Publicidade 2018', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full' }
             ],
@@ -2253,7 +2272,7 @@
                 <section class="section section--showcase" data-reveal style="border-top:none; padding:0;">
                     <div class="showcase-gallery">
                         ${project.images.filter(img => !img.hidden).map(img => `
-                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube' || img.type === 'mp4') ? ' has-iframe has-video' : ''}${img.grain ? ' has-grain' : ''}${img.type === 'placeholders' ? ' has-placeholders' : ''}${img.type === 'bwsplit' ? ' has-bwsplit' : ''}${img.type === 'sbscreens' ? ' has-sbscreens' : ''}${img.type === 'sbcrossfade' ? ' has-sbcrossfade' : ''}${img.type === 'sbdarkroom' ? ' has-sbdarkroom' : ''}${img.type === 'sbstatpair' ? ' has-sbstatpair' : ''}"${img.bgStyle ? ` style="${img.bgStyle} display:flex; align-items:center; justify-content:center;"` : ''}>
+                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube' || img.type === 'mp4') ? ' has-iframe has-video' : ''}${img.grain ? ' has-grain' : ''}${img.type === 'placeholders' ? ' has-placeholders' : ''}${img.type === 'bwsplit' ? ' has-bwsplit' : ''}${img.type === 'sbscreens' ? ' has-sbscreens' : ''}${img.type === 'sbcrossfade' ? ' has-sbcrossfade' : ''}${img.type === 'sbdarkroom' ? ' has-sbdarkroom' : ''}${img.type === 'sbstatpair' ? ' has-sbstatpair' : ''}${img.type === 'vimeoloop' ? ' has-vimeoloop' : ''}"${img.bgStyle ? ` style="${img.bgStyle} display:flex; align-items:center; justify-content:center;"` : ''}>
                                 ${img.type === 'youtube'
                                     ? `<div class="yt-player" data-vid="${img.src}">
                                         <iframe id="yt-${img.src}" src="https://www.youtube.com/embed/${img.src}?enablejsapi=1&autoplay=0&loop=1&playlist=${img.src}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&start=10" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -2310,6 +2329,8 @@
                                     ? `<div class="sbx-stage">${(img.images || []).map(u => `<div class="sbx-frame"><img src="${u}" alt="" loading="lazy" decoding="async" fetchpriority="low"></div>`).join('')}</div>`
                                     : img.type === 'sbdarkroom'
                                     ? `<div class="sbd-grid">${(img.images || []).map(u => `<div class="sbd-cell"><img src="${u}" alt="" loading="lazy" decoding="async" fetchpriority="low"></div>`).join('')}</div>`
+                                    : img.type === 'vimeoloop'
+                                    ? `<iframe class="vloop-frame" src="https://player.vimeo.com/video/${img.vimeoId}?background=1&autoplay=1&muted=1&controls=0&dnt=1&quality=720p#t=${img.startSec}s" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" frameborder="0" data-start="${img.startSec}" data-end="${img.endSec}" title="${img.caption || ''}"></iframe>`
                                     : img.type === 'sbstatpair'
                                     ? (() => {
                                         const sbShield = `<img class="sbsp-logo" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_200,c_limit/v1776556065/logo_STB_dv8toe.webp" alt="Standard Bank" loading="lazy" decoding="async">`;
@@ -2702,6 +2723,39 @@
             }
         });
     });
+
+    // Vimeo segment-loop controller — loops a precise [start, end] window on each .vloop-frame.
+    // Muted background playback with no controls; quality pinned to 720p via URL param.
+    // Only initialised when the iframe scrolls into viewport (saves bandwidth on page load).
+    const vloopFrames = document.querySelectorAll('.vloop-frame');
+    if (vloopFrames.length && 'IntersectionObserver' in window) {
+        const vloopObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const frame = entry.target;
+                vloopObserver.unobserve(frame);
+                const start = parseFloat(frame.dataset.start) || 0;
+                const end   = parseFloat(frame.dataset.end)   || (start + 2);
+                loadVimeoSdk().then(() => {
+                    const player = new Vimeo.Player(frame);
+                    player.ready().then(() => {
+                        player.setCurrentTime(start).catch(()=>{});
+                        player.setVolume(0).catch(()=>{});
+                    });
+                    // Prefer 720p if available — otherwise whatever Vimeo's adaptive streamer picks
+                    if (typeof player.setQuality === 'function') {
+                        player.setQuality('720p').catch(()=>{});
+                    }
+                    player.on('timeupdate', (data) => {
+                        if (data.seconds >= end) player.setCurrentTime(start).catch(()=>{});
+                    });
+                    // Defensive: if the video ever ends (shouldn't with segment loop), restart
+                    player.on('ended', () => player.setCurrentTime(start).then(() => player.play()).catch(()=>{}));
+                }).catch(err => console.warn('Vimeo loop SDK failed', err));
+            });
+        }, { threshold: 0.15 });
+        vloopFrames.forEach(f => vloopObserver.observe(f));
+    }
 
     // Count-up animation for sbstatpair stat numbers (triggers once when scrolled into view).
     // Uses requestAnimationFrame + ease-out cubic for a smooth, restrained feel — no spring overshoot.
