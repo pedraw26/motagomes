@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galp · Cinematic Concept</title>
+<style>
+  :root {
+    --color-background: #dcacd0;
+    --card-purple: #55277a;
+    --bezel-w: 320px;
+    --bezel-h: 660px;
+    --bezel-radius: 3.2rem;
+    --bezel-inset: 7px;
+    --screen-radius: calc(var(--bezel-radius) - var(--bezel-inset));
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--color-background);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+    height: 100%;
+  }
+  .hero {
+    position: relative;
+    width: 100vw; height: 100vh;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    perspective: 1500px;
+  }
+  .main-card {
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    width: 85vw; height: 85vh;
+    border-radius: 40px;
+    background: var(--card-purple);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+  }
+  @media (max-width: 767px) { .main-card { width: 92vw; height: 92vh; border-radius: 32px; } }
+
+  .iphone-bezel {
+    position: relative;
+    width: var(--bezel-w); height: var(--bezel-h);
+    border-radius: var(--bezel-radius);
+    background: #c7c7c7;
+    padding: 2px;
+    box-shadow: 0 20px 40px -20px rgba(0,0,0,0.35);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .bezel-inner {
+    width: 100%; height: 100%;
+    border-radius: calc(var(--bezel-radius) - 2px);
+    background: #000;
+    padding: calc(var(--bezel-inset) - 2px);
+    overflow: hidden;
+  }
+  .screen {
+    position: relative;
+    width: 100%; height: 100%;
+    border-radius: var(--screen-radius);
+    background: #000;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .screen-gif {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    pointer-events: none;
+    border-radius: inherit;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform;
+  }
+  .notch {
+    position: absolute; top: 5px; left: 50%;
+    transform: translateX(-50%);
+    width: 100px; height: 28px;
+    background: #000;
+    border-radius: 999px;
+    z-index: 2;
+    display: flex; align-items: center; justify-content: flex-end;
+    padding: 0 12px;
+  }
+  .notch-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 6px rgba(16,185,129,0.7);
+  }
+
+  /* Scaling for smaller iframe viewports */
+  @media (max-width: 900px) { .iphone-bezel { transform: scale(0.75) translateZ(0); } }
+  @media (max-width: 600px) { .iphone-bezel { transform: scale(0.6) translateZ(0); } }
+</style>
+</head>
+<body>
+  <div class="hero">
+    <div class="main-card">
+      <div class="iphone-bezel" id="mockup">
+        <div class="bezel-inner">
+          <div class="screen">
+            <img class="screen-gif" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_900,c_limit/v1776600424/Snapinst.app_video_AQN764z3q6t8v-utzswUcfAzXUgONarG4UUC3HgbLE0xQdTD3SeOggvqui4tpemoPSYDYxX-PHxQ5lNY9SNxL85J-H8MB4m30kypMlk_lzep6q.gif" alt="" aria-hidden="true">
+            <div class="notch"><div class="notch-dot"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script>
+    /* Mouse parallax only — no scroll animation needed inside the iframe.
+       The phone already sits in its final state; cursor movement tilts it. */
+    const mockup = document.getElementById('mockup');
+    let raf = 0;
+    window.addEventListener('mousemove', (e) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        if (!mockup) return;
+        const xVal = (e.clientX / window.innerWidth  - 0.5) * 2;
+        const yVal = (e.clientY / window.innerHeight - 0.5) * 2;
+        gsap.to(mockup, {
+          rotationY:  xVal * 10,
+          rotationX: -yVal * 10,
+          ease: 'power3.out',
+          duration: 1.2
+        });
+      });
+    });
+  </script>
+</body>
+</html>
