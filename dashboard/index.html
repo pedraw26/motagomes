@@ -1073,40 +1073,186 @@
     </style>
 </head>
 <body>
-    <!-- Password Gate -->
+    <!-- Auth Gate — Passkey (Touch ID / Face ID) + password fallback -->
     <div id="authGate" style="position:fixed;inset:0;background:#000;z-index:9999;display:flex;align-items:center;justify-content:center;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;">
-        <div style="text-align:center;max-width:320px;width:100%;padding:0 24px;">
+        <div style="text-align:center;max-width:340px;width:100%;padding:0 24px;">
             <div style="margin:0 auto 24px;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5" width="32" height="32"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             </div>
             <h2 style="color:#fff;margin-bottom:8px;font-size:18px;font-weight:300;letter-spacing:-0.02em;">Portfolio Intelligence</h2>
-            <p style="color:#666;margin-bottom:28px;font-size:13px;font-weight:300;">Enter password to access your dashboard</p>
-            <input id="authInput" type="password" placeholder="Password" autofocus
-                style="width:100%;padding:12px 16px;border-radius:4px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#fff;font-size:14px;outline:none;margin-bottom:12px;font-family:inherit;font-weight:300;"
+            <p id="authSub" style="color:#666;margin-bottom:24px;font-size:13px;font-weight:300;">Unlock with Touch ID or enter password</p>
+
+            <!-- Passkey primary -->
+            <button id="passkeyBtn" onclick="pkAuth()"
+                style="width:100%;padding:12px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);background:#fff;color:#000;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;letter-spacing:0.04em;margin-bottom:10px;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform 0.15s ease;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15"><path d="M12 11a4 4 0 1 0-4-4m0 0v4m0 0h8m-4 7v-4m-4 4h8m-8 0v-3"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Unlock with Touch ID</span>
+            </button>
+
+            <div style="display:flex;align-items:center;gap:10px;margin:14px 0 10px;color:rgba(255,255,255,0.2);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;">
+                <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
+                <span>or</span>
+                <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
+            </div>
+
+            <input id="authInput" type="password" placeholder="Password"
+                style="width:100%;padding:12px 16px;border-radius:4px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#fff;font-size:14px;outline:none;margin-bottom:10px;font-family:inherit;font-weight:300;"
                 onkeydown="if(event.key==='Enter')document.getElementById('authBtn').click()">
             <button id="authBtn" onclick="checkAuth()"
-                style="width:100%;padding:12px;border-radius:4px;border:1px solid rgba(255,255,255,0.25);background:transparent;color:#fff;font-size:13px;font-weight:400;cursor:pointer;font-family:inherit;letter-spacing:0.05em;transition:all 0.3s ease;"
-                onmouseover="this.style.background='#fff';this.style.color='#000'"
-                onmouseout="this.style.background='transparent';this.style.color='#fff'">
-                Unlock
+                style="width:100%;padding:11px;border-radius:4px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#fff;font-size:12px;font-weight:400;cursor:pointer;font-family:inherit;letter-spacing:0.06em;transition:all 0.25s ease;"
+                onmouseover="this.style.background='rgba(255,255,255,0.06)'"
+                onmouseout="this.style.background='transparent'">
+                Unlock with password
             </button>
             <p id="authError" style="color:#fb7185;margin-top:12px;font-size:12px;display:none;">Incorrect password</p>
+            <p id="authInfo"  style="color:#999;  margin-top:12px;font-size:12px;display:none;"></p>
         </div>
     </div>
+
+    <!-- Post-login passkey enrollment prompt -->
+    <div id="pkEnrollPrompt" style="position:fixed;top:20px;right:20px;max-width:340px;z-index:9998;background:#111;border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:18px;display:none;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;box-shadow:0 20px 50px -10px rgba(0,0,0,0.6);">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.6" width="22" height="22" style="flex-shrink:0;margin-top:2px;"><path d="M12 11a4 4 0 1 0-4-4m0 0v4m0 0h8m-4 7v-4m-4 4h8m-8 0v-3"/><circle cx="12" cy="7" r="4"/></svg>
+            <div style="flex:1;">
+                <div style="color:#fff;font-size:13px;font-weight:500;margin-bottom:4px;">Enable Touch ID on this device</div>
+                <div style="color:#999;font-size:12px;line-height:1.5;margin-bottom:12px;">Skip the password next time — unlock your dashboard with Touch ID / Face ID.</div>
+                <div style="display:flex;gap:8px;">
+                    <button onclick="pkRegister()" style="flex:1;padding:8px 12px;border:none;background:#fff;color:#000;font-size:12px;font-weight:500;border-radius:4px;cursor:pointer;font-family:inherit;">Enable</button>
+                    <button onclick="document.getElementById('pkEnrollPrompt').style.display='none'" style="padding:8px 12px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#999;font-size:12px;border-radius:4px;cursor:pointer;font-family:inherit;">Not now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        const PK_ENDPOINT = '/api/passkey';
+        const authInfo  = document.getElementById('authInfo');
+        const authError = document.getElementById('authError');
+
+        // ── Session check ─────────────────────────────────────
+        const dashToken = localStorage.getItem('dash_token') || sessionStorage.getItem('dash_auth');
+        if (dashToken) document.getElementById('authGate').style.display = 'none';
+
+        // ── Helpers ───────────────────────────────────────────
+        function b64uToBuf(s){const pad='==='.slice((s.length+3)%4);const b=atob(s.replace(/-/g,'+').replace(/_/g,'/')+pad);const u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u.buffer;}
+        function bufToB64u(b){const u=new Uint8Array(b);let s='';for(let i=0;i<u.length;i++)s+=String.fromCharCode(u[i]);return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+        function note(el,msg,color){el.textContent=msg;el.style.color=color||'#999';el.style.display='block';}
+        function hide(el){el.style.display='none';}
+
+        // ── Password fallback ─────────────────────────────────
         function checkAuth(){
+            hide(authError);
             const hash=async s=>{const e=new TextEncoder().encode(s);const h=await crypto.subtle.digest('SHA-256',e);return Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,'0')).join('');};
-            hash(document.getElementById('authInput').value).then(h=>{
+            hash(document.getElementById('authInput').value).then(async h=>{
                 if(h==='34c90359b61832ca5fd0593f233058b0dcd66809ade65acb763ca7a82c3e7bc5'){
-                    document.getElementById('authGate').style.display='none';
                     sessionStorage.setItem('dash_auth','1');
+                    document.getElementById('authGate').style.display='none';
+                    // If no passkey yet on server, offer to enroll
+                    try {
+                        const r = await fetch(`${PK_ENDPOINT}?action=status`);
+                        const j = await r.json();
+                        if (!j.hasAny) document.getElementById('pkEnrollPrompt').style.display='block';
+                    } catch(_) {}
                 }else{
-                    document.getElementById('authError').style.display='block';
+                    authError.style.display='block';
                     document.getElementById('authInput').value='';
                 }
             });
         }
-        if(sessionStorage.getItem('dash_auth')==='1')document.getElementById('authGate').style.display='none';
+
+        // ── Passkey: unlock ───────────────────────────────────
+        async function pkAuth(){
+            hide(authError); hide(authInfo);
+            if (!window.PublicKeyCredential) { note(authInfo,'Touch ID not supported here — use password.'); return; }
+            try {
+                const r = await fetch(`${PK_ENDPOINT}?action=auth-options`);
+                const opts = await r.json();
+                if (!opts.anyRegistered) { note(authInfo,'No passkey registered yet — log in with password, then enable Touch ID.'); return; }
+                const publicKey = {
+                    ...opts,
+                    challenge: b64uToBuf(opts.challenge),
+                    allowCredentials: (opts.allowCredentials||[]).map(c => ({ ...c, id: b64uToBuf(c.id) })),
+                };
+                const assertion = await navigator.credentials.get({ publicKey });
+                const response = {
+                    id: assertion.id,
+                    rawId: bufToB64u(assertion.rawId),
+                    type: assertion.type,
+                    response: {
+                        clientDataJSON: bufToB64u(assertion.response.clientDataJSON),
+                        authenticatorData: bufToB64u(assertion.response.authenticatorData),
+                        signature: bufToB64u(assertion.response.signature),
+                        userHandle: assertion.response.userHandle ? bufToB64u(assertion.response.userHandle) : null,
+                    },
+                    clientExtensionResults: assertion.getClientExtensionResults?.() || {},
+                };
+                const v = await fetch(`${PK_ENDPOINT}?action=auth-verify`, {
+                    method:'POST', headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({ response, expectedChallenge: opts.challenge }),
+                }).then(r=>r.json());
+                if (v.verified) {
+                    localStorage.setItem('dash_token', v.session);
+                    document.getElementById('authGate').style.display='none';
+                } else {
+                    note(authError,'Touch ID verification failed.', '#fb7185');
+                }
+            } catch (e) {
+                note(authError, (e && e.message) || 'Touch ID cancelled.', '#fb7185');
+            }
+        }
+
+        // ── Passkey: register new device ─────────────────────
+        async function pkRegister(){
+            try {
+                const r = await fetch(`${PK_ENDPOINT}?action=register-options`);
+                const opts = await r.json();
+                const publicKey = {
+                    ...opts,
+                    challenge: b64uToBuf(opts.challenge),
+                    user: { ...opts.user, id: b64uToBuf(opts.user.id) },
+                    excludeCredentials: (opts.excludeCredentials||[]).map(c => ({ ...c, id: b64uToBuf(c.id) })),
+                };
+                const cred = await navigator.credentials.create({ publicKey });
+                const response = {
+                    id: cred.id,
+                    rawId: bufToB64u(cred.rawId),
+                    type: cred.type,
+                    response: {
+                        clientDataJSON: bufToB64u(cred.response.clientDataJSON),
+                        attestationObject: bufToB64u(cred.response.attestationObject),
+                        transports: cred.response.getTransports?.() || ['internal'],
+                    },
+                    clientExtensionResults: cred.getClientExtensionResults?.() || {},
+                };
+                const v = await fetch(`${PK_ENDPOINT}?action=register-verify`, {
+                    method:'POST', headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({ response, expectedChallenge: opts.challenge, label: navigator.userAgent.split(')')[0].split('(').pop() || 'Device' }),
+                }).then(r=>r.json());
+                if (v.verified) {
+                    localStorage.setItem('dash_token', v.session);
+                    document.getElementById('pkEnrollPrompt').style.display='none';
+                    alert('Touch ID enabled on this device.');
+                }
+            } catch (e) {
+                alert('Could not enable Touch ID: ' + ((e && e.message) || 'cancelled'));
+            }
+        }
+
+        // If browser supports platform auth + we have a registered passkey, auto-prompt on load
+        (async function autoPromptPasskey(){
+            if (dashToken) return;
+            if (!window.PublicKeyCredential) return;
+            try {
+                const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable?.();
+                if (!available) return;
+                const r = await fetch(`${PK_ENDPOINT}?action=status`);
+                const j = await r.json();
+                if (j.hasAny) {
+                    // Don't auto-trigger the UV prompt — just focus the button. User taps to confirm.
+                    document.getElementById('passkeyBtn').focus();
+                }
+            } catch(_) {}
+        })();
     </script>
 
     <div class="dashboard" id="dashboard">
