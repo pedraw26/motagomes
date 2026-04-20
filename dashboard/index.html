@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio Intelligence</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif&display=swap" rel="stylesheet">
+    <!-- Uses the system SF Pro stack (same as the rest of the site). No remote web fonts. -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -1676,7 +1674,7 @@
         // ========== UI Controls ==========
         const themeToggle = document.getElementById('themeToggle');
         const dashboard = document.getElementById('dashboard');
-        let isDark = true;
+        let isDark = false;
 
         themeToggle.addEventListener('click', () => {
             settings.darkMode = !settings.darkMode;
@@ -1688,26 +1686,26 @@
         });
 
         const collapseBtn = document.getElementById('collapseBtn');
-        collapseBtn.addEventListener('click', () => dashboard.classList.toggle('collapsed'));
+        collapseBtn?.addEventListener('click', () => dashboard.classList.toggle('collapsed'));
 
-        // Mobile menu
+        // Mobile menu — legacy sidebar bits, kept null-safe for the new top nav layout
         const sidebar = document.getElementById('sidebar');
         const mobileOverlay = document.getElementById('mobileOverlay');
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 
         function openMobileMenu() {
-            sidebar.classList.add('mobile-open');
-            mobileOverlay.classList.add('active');
+            sidebar?.classList.add('mobile-open');
+            mobileOverlay?.classList.add('active');
         }
         function closeMobileMenu() {
-            sidebar.classList.remove('mobile-open');
-            mobileOverlay.classList.remove('active');
+            sidebar?.classList.remove('mobile-open');
+            mobileOverlay?.classList.remove('active');
         }
-        mobileMenuBtn.addEventListener('click', () => {
-            if (sidebar.classList.contains('mobile-open')) closeMobileMenu();
+        mobileMenuBtn?.addEventListener('click', () => {
+            if (sidebar?.classList.contains('mobile-open')) closeMobileMenu();
             else openMobileMenu();
         });
-        mobileOverlay.addEventListener('click', closeMobileMenu);
+        mobileOverlay?.addEventListener('click', closeMobileMenu);
 
         // Navigation
         const navItems = document.querySelectorAll('.nav-item[data-page]');
@@ -1741,7 +1739,7 @@
             try { return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {}; } catch { return {}; }
         }
         function saveSettings(s) { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); }
-        const settings = Object.assign({ darkMode: true, compactSidebar: true, autoRefresh: true, showLive: true, emailNotif: false }, loadSettings());
+        const settings = Object.assign({ darkMode: false, compactSidebar: false, autoRefresh: true, showLive: true, emailNotif: false }, loadSettings());
 
         function applySettings() {
             // Dark mode
