@@ -76,6 +76,8 @@
             // Research landing
             'research.landingTitle': 'Research & Experiments',
             'testimonials.eyebrow': 'Kind words',
+            'collabs.title': 'Collaborated with',
+            'collabs.count': '11 brands · 6 markets',
             'philosophy.l1': 'Design is research made visible —',
             'philosophy.l2': 'every pixel carries intent,',
             'philosophy.l3': 'every interaction tells a story.',
@@ -205,6 +207,8 @@
             // Research landing
             'research.landingTitle': 'Investigação & Experiências',
             'testimonials.eyebrow': 'Palavras gentis',
+            'collabs.title': 'Colaborações',
+            'collabs.count': '11 marcas · 6 mercados',
             'philosophy.l1': 'Design é investigação tornada visível —',
             'philosophy.l2': 'cada pixel tem intenção,',
             'philosophy.l3': 'cada interação conta uma história.',

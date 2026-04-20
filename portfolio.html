@@ -1515,6 +1515,93 @@
         
 
         /* ========================================
+           COLLABORATED WITH — typography-led logo strip
+           ======================================== */
+        .collabs {
+            min-height: 60vh;
+            background: var(--bg-black);
+            padding: 120px 0 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .collabs-header {
+            padding: 0 80px;
+            margin-bottom: 56px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .collabs-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            color: var(--text);
+        }
+        .collabs-title .star {
+            display: inline-block;
+            width: 0.52em;
+            height: 0.52em;
+            margin-left: 0.04em;
+            vertical-align: 0.32em;
+            color: currentColor;
+            animation: star-spin 9s linear infinite;
+            transform-origin: center center;
+        }
+        .collabs-title .star svg { width: 100%; height: 100%; display: block; overflow: visible; }
+        .collabs-count {
+            font-family: var(--sf-pro);
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            color: var(--text-40);
+            text-transform: uppercase;
+            padding-bottom: 0.4em;
+            white-space: nowrap;
+        }
+        .collabs-marquee {
+            position: relative;
+            mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+        }
+        .collabs-track {
+            display: flex;
+            gap: 56px;
+            width: max-content;
+            animation: collabsMarquee 36s linear infinite;
+            align-items: center;
+        }
+        .collabs-marquee:hover .collabs-track { animation-play-state: paused; }
+        .collabs-track span.name {
+            font-family: var(--sf-pro);
+            font-size: clamp(2.2rem, 4.8vw, 4rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            color: rgba(255,255,255,0.55);
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+        .collabs-track span.name:hover { color: var(--text); }
+        .collabs-track span.dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            flex-shrink: 0;
+        }
+        @keyframes collabsMarquee {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+        @media (max-width: 720px) {
+            .collabs { padding: 80px 0 60px; }
+            .collabs-header { padding: 0 24px; margin-bottom: 40px; }
+            .collabs-track { gap: 36px; animation-duration: 28s; }
+            .collabs-count { font-size: 9px; letter-spacing: 0.08em; }
+        }
+
+        /* ========================================
            TESTIMONIALS — matches the portfolio section language
            ======================================== */
         .testimonials {
@@ -4166,7 +4253,7 @@ margin-top: 3px;
 
         <!-- SECTION: TESTIMONIALS -->
         <section class="snap-section testimonials" id="testimonials">
-            <div class="testimonials-header">
+            <div class="testimonials-header" hidden style="display:none">
                 <h2 class="testimonials-title"><span data-i18n="testimonials.eyebrow">Kind words</span><span class="star" aria-hidden="true"><svg viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="14" stroke-linecap="round" fill="none"><line x1="0" y1="-40" x2="0" y2="40"/><line x1="-34.64" y1="-20" x2="34.64" y2="20"/><line x1="-34.64" y1="20" x2="34.64" y2="-20"/></g></svg></span></h2>
                 <span class="testimonials-count">03 · Selected reviews</span>
             </div>
@@ -4207,6 +4294,42 @@ margin-top: 3px;
                             <span class="author-role">Founder at Notion</span>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: COLLABORATED WITH — typography marquee -->
+        <section class="snap-section collabs" id="collabs">
+            <div class="collabs-header">
+                <h2 class="collabs-title"><span data-i18n="collabs.title">Collaborated with</span><span class="star" aria-hidden="true"><svg viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="14" stroke-linecap="round" fill="none"><line x1="0" y1="-40" x2="0" y2="40"/><line x1="-34.64" y1="-20" x2="34.64" y2="20"/><line x1="-34.64" y1="20" x2="34.64" y2="-20"/></g></svg></span></h2>
+                <span class="collabs-count" data-i18n="collabs.count">11 brands · 6 markets</span>
+            </div>
+            <div class="collabs-marquee" aria-label="Brands collaborated with">
+                <div class="collabs-track">
+                    <!-- First loop -->
+                    <span class="name">Standard Bank</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name">Galp</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name">Candando</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name">Lyft</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name">University of Law</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name">Luandina</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name">One1x</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name">Moope</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name">Wammo</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name">RAS Real Estate</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name">Aura Studio</span><span class="dot" aria-hidden="true"></span>
+                    <!-- Duplicate for seamless loop -->
+                    <span class="name" aria-hidden="true">Standard Bank</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name" aria-hidden="true">Galp</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name" aria-hidden="true">Candando</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name" aria-hidden="true">Lyft</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name" aria-hidden="true">University of Law</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name" aria-hidden="true">Luandina</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name" aria-hidden="true">One1x</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name" aria-hidden="true">Moope</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name" aria-hidden="true">Wammo</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name" aria-hidden="true">RAS Real Estate</span><span class="dot" aria-hidden="true"></span>
+                    <span class="name" aria-hidden="true">Aura Studio</span><span class="dot" aria-hidden="true"></span>
                 </div>
             </div>
         </section>
