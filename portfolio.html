@@ -1029,6 +1029,36 @@
             gap: 16px;
             margin-left: 16px;
         }
+
+        /* Project status pill — sits inside .gallery-stacked-info, above the label */
+        .gallery-stacked-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-family: var(--sf-pro);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.82);
+            margin-bottom: 14px;
+            padding: 5px 11px 5px 10px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 999px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            width: fit-content;
+        }
+        .gallery-stacked-status .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .status-launched .status-dot { background: #28c840; box-shadow: 0 0 8px rgba(40,200,64,0.55); }
+        .status-progress .status-dot { background: #ffbd2e; box-shadow: 0 0 6px rgba(255,189,46,0.45); }
+        .status-coming   .status-dot { background: rgba(255,255,255,0.45); }
+        .status-archived .status-dot { background: rgba(255,255,255,0.28); }
         
         .gallery-stacked-nav span {
             font-size: 9px;
@@ -3525,6 +3555,7 @@ margin-top: 3px;
                         </div>
                         <div class="gallery-stacked-hero gradient-emerald" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776558077/logo_giant_ycehuz.webp') center/cover no-repeat;">
                             <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">The Voice of Experience · 360 Campaign</div>
                                 <div class="gallery-stacked-project-title">Standard Bank</div>
                                 <div class="gallery-stacked-award"><b>Gold</b>&nbsp;&nbsp;Prémios Lusófonos</div>
@@ -3551,6 +3582,7 @@ margin-top: 3px;
                         </div>
                         <div class="gallery-stacked-hero gradient-midnight" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776641568/sBbbbArtboard_1-100_xmas_tbygvj.jpg') center/cover no-repeat;">
                             <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">Christmas Campaign</div>
                                 <div class="gallery-stacked-project-title">Galp Christmas</div>
                                 <a href="/project.html?p=galp" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
@@ -3576,6 +3608,7 @@ margin-top: 3px;
                         </div>
                         <div class="gallery-stacked-hero gradient-emerald" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776640918/sBbbbArtboard_1-100_pzfngu.jpg') center/cover no-repeat;">
                             <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">Retail Branding</div>
                                 <div class="gallery-stacked-project-title">Candando</div>
                                 <a href="#" class="gallery-stacked-btn gallery-stacked-btn-outline" onclick="event.preventDefault();event.stopPropagation();"><span data-i18n="card.viewCase">View Case</span></a>
@@ -3605,6 +3638,7 @@ margin-top: 3px;
                                 <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776388803/hf_20260417_002633_f4bad765-7958-423d-a7c2-44e8e83ebae8_ebotvv.png" alt="RAS Real Estate" class="active">
                             </div>
                             <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-status status-progress"><span class="status-dot"></span><span data-i18n="status.inProgress">In Progress</span></div>
                                 <div class="gallery-stacked-label">Real Estate Branding</div>
                                 <div class="gallery-stacked-project-title">RAS Real Estate</div>
                                 <a href="/project.html?p=ras" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
@@ -3630,6 +3664,7 @@ margin-top: 3px;
                         </div>
                         <div class="gallery-stacked-hero gradient-slate" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773859317/sBbbbArtboard_10_vqlchs.png') center/cover no-repeat;">
                             <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">Illustration</div>
                                 <div class="gallery-stacked-project-title">Lyft Illustrations</div>
                                 <a href="/project.html?p=lyft" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
@@ -3655,6 +3690,7 @@ margin-top: 3px;
                         </div>
                         <div class="gallery-stacked-hero gradient-obsidian" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773843097/Screenshot_2026-03-18_at_14.11.02_xh4n3n.png') center/cover no-repeat;">
                             <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">Rebrand</div>
                                 <div class="gallery-stacked-project-title">One1x</div>
                                 <a href="/project.html?p=one1x" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
@@ -3680,6 +3716,7 @@ margin-top: 3px;
                         </div>
                         <div class="gallery-stacked-hero" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776527014/lluandina_copy_azce8t.jpg') center/cover no-repeat;">
                             <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">Geo-Targeted Campaign</div>
                                 <div class="gallery-stacked-project-title">Luandina —<br>A Nossa</div>
                                 <a href="/project.html?p=luandina" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
@@ -3705,6 +3742,7 @@ margin-top: 3px;
                         </div>
                         <div class="gallery-stacked-hero gradient-sunset" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773804627/Moope_kb7fve.jpg') center/cover no-repeat;">
                             <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">UX Design</div>
                                 <div class="gallery-stacked-project-title">Moope</div>
                                 <a href="/project.html?p=moope" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
@@ -3730,6 +3768,7 @@ margin-top: 3px;
                         </div>
                         <div class="gallery-stacked-hero gradient-gold" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776561788/Asset_1_3x_rgzddx.webp') center/cover no-repeat;">
                             <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">Retail Campaign</div>
                                 <div class="gallery-stacked-project-title">Wammo<br>World Cup</div>
                                 <a href="/project.html?p=wammo" class="gallery-stacked-btn gallery-stacked-btn-fill"><span data-i18n="card.viewCase">View Case</span></a>
@@ -3755,6 +3794,7 @@ margin-top: 3px;
                         </div>
                         <div class="gallery-stacked-hero gradient-crimson">
                             <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">Brand & Web</div>
                                 <div class="gallery-stacked-project-title">Digital Presence<br>Redefined</div>
                                 <a href="/project.html?p=aura-studio" class="gallery-stacked-btn gallery-stacked-btn-fill"><span data-i18n="card.viewCase">View Case</span></a>
@@ -3780,6 +3820,7 @@ margin-top: 3px;
                         </div>
                         <div class="gallery-stacked-hero gradient-ocean" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773804309/Amal_Clooney_mucx8j.jpg') center/cover no-repeat;">
                             <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">Scholarship Initiative</div>
                                 <div class="gallery-stacked-project-title">Amal Clooney<br>Scholarship</div>
                                 <a href="#" class="gallery-stacked-btn gallery-stacked-btn-fill" onclick="event.preventDefault();event.stopPropagation();openPwModal()"><span data-i18n="card.viewCase">View Case</span></a>

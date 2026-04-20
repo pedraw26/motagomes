@@ -68,6 +68,10 @@
             'card.viewProject': 'VIEW',
             'card.projectWord': 'PROJECT',
             'card.comingSoon': 'Coming Soon',
+            'status.launched': 'Launched',
+            'status.inProgress': 'In Progress',
+            'status.comingSoon': 'Coming Soon',
+            'status.archived': 'Archived',
 
             // Research landing
             'research.landingTitle': 'Research & Experiments',
@@ -192,6 +196,10 @@
             'card.viewProject': 'VER',
             'card.projectWord': 'PROJETO',
             'card.comingSoon': 'Em Breve',
+            'status.launched': 'Lançado',
+            'status.inProgress': 'Em Curso',
+            'status.comingSoon': 'Em Breve',
+            'status.archived': 'Arquivado',
 
             // Research landing
             'research.landingTitle': 'Investigação & Experiências',
