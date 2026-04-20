@@ -125,47 +125,71 @@
         }
         .topnav-items::-webkit-scrollbar { display: none; }
 
+        /* Matches the portfolio nav type exactly: 0.95rem / weight 400 /
+           grey -> primary on hover + 1px underline growing from center. */
         .nav-item {
+            position: relative;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 12px;
-            border-radius: var(--radius-md);
+            padding: 8px 4px;
+            margin: 0 8px;
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all var(--transition-fast);
+            font-size: 0.95rem;
+            font-weight: 400;
+            letter-spacing: -0.005em;
+            transition: color 0.3s ease;
             cursor: pointer;
             white-space: nowrap;
             border: none;
             background: transparent;
-            letter-spacing: -0.005em;
+            border-radius: 0;
+        }
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 4px;
+            right: 4px;
+            height: 1px;
+            background: currentColor;
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .nav-item:hover {
-            background: var(--bg-hover);
+            background: transparent;
             color: var(--text-primary);
         }
+        .nav-item:hover::before,
+        .nav-item.active::before {
+            transform: scaleX(1);
+        }
         .nav-item.active {
-            background: var(--text-primary);
-            color: var(--bg-elevated);
+            background: transparent;
+            color: var(--text-primary);
         }
         .nav-item svg {
-            width: 16px;
-            height: 16px;
+            width: 15px;
+            height: 15px;
             flex-shrink: 0;
-            stroke-width: 1.8;
+            stroke-width: 1.6;
+            opacity: 0.85;
         }
 
         /* Right side of top bar */
         .topnav-right {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
             flex-shrink: 0;
             margin-left: auto;
         }
-        .topnav-right .nav-item { font-size: 12px; color: var(--text-muted); }
+        .topnav-right .nav-item {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
         .topnav-right .nav-item:hover { color: var(--text-primary); }
 
         /* Hide legacy sidebar-only chrome if anything references it */
