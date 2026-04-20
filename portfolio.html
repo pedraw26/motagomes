@@ -1515,48 +1515,73 @@
         
 
         /* ========================================
-           TESTIMONIALS
+           TESTIMONIALS — matches the portfolio section language
            ======================================== */
         .testimonials {
             min-height: 100vh;
             background: var(--bg-black);
+            padding: 140px 80px 120px;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            padding: 120px 40px;
         }
-        .testimonials-inner {
-            width: 100%;
-            max-width: 640px;
-            margin: 0 auto;
+        .testimonials-header {
+            margin-bottom: 100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
         }
-        .testimonials-eyebrow {
+        .testimonials-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            color: var(--text);
+        }
+        /* Mirror the spinning asterisk used in Selected Projects */
+        .testimonials-title .star {
+            display: inline-block;
+            width: 0.52em;
+            height: 0.52em;
+            margin-left: 0.04em;
+            vertical-align: 0.32em;
+            color: currentColor;
+            animation: star-spin 9s linear infinite;
+            transform-origin: center center;
+        }
+        .testimonials-title .star svg { width: 100%; height: 100%; display: block; overflow: visible; }
+        .testimonials-count {
             font-family: var(--sf-pro);
-            font-size: 10px;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.12em;
             color: var(--text-40);
-            margin-bottom: 40px;
+            text-transform: uppercase;
+            padding-bottom: 0.4em;
+            white-space: nowrap;
+        }
+        .testimonials-body {
+            width: 100%;
+            max-width: 900px;
         }
         .testimonials-quote-area {
             position: relative;
-            min-height: 120px;
-            margin-bottom: 48px;
+            min-height: 160px;
+            margin-bottom: 56px;
         }
         .testimonial-quote {
             position: absolute;
             inset: 0;
             font-family: var(--sf-pro);
-            font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+            font-size: clamp(1.6rem, 2.6vw, 2.1rem);
             font-weight: 300;
-            line-height: 1.5;
-            letter-spacing: -0.01em;
+            line-height: 1.4;
+            letter-spacing: -0.02em;
             color: var(--text);
             opacity: 0;
             transform: translateY(16px);
             filter: blur(4px);
             transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
             pointer-events: none;
+            max-width: 24ch;
         }
         .testimonial-quote.is-active {
             opacity: 1;
@@ -1569,9 +1594,7 @@
             align-items: center;
             gap: 24px;
         }
-        .testimonials-avatars {
-            display: flex;
-        }
+        .testimonials-avatars { display: flex; }
         .testimonial-avatar {
             width: 40px;
             height: 40px;
@@ -1584,26 +1607,15 @@
             cursor: pointer;
             filter: grayscale(100%);
             transform: scale(1);
-            transition: filter 0.3s ease, transform 0.3s ease, z-index 0s;
+            transition: filter 0.3s ease, transform 0.3s ease;
             position: relative;
             z-index: 1;
         }
         .testimonial-avatar:first-child { margin-left: 0; }
-        .testimonial-avatar:hover {
-            filter: grayscale(0);
-            transform: scale(1.05);
-        }
-        .testimonial-avatar.is-active {
-            filter: grayscale(0);
-            transform: scale(1.10);
-            z-index: 3;
-        }
-        .testimonial-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+        .testimonial-avatar:hover { filter: grayscale(0); transform: scale(1.05); }
+        .testimonial-avatar.is-active { filter: grayscale(0); transform: scale(1.10); z-index: 3; }
+        .testimonial-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
         .testimonials-divider {
             width: 1px;
             height: 32px;
@@ -1626,11 +1638,7 @@
             transition: opacity 0.4s ease, transform 0.4s ease;
             pointer-events: none;
         }
-        .author-info.is-active {
-            opacity: 1;
-            transform: translateX(0);
-            pointer-events: auto;
-        }
+        .author-info.is-active { opacity: 1; transform: translateX(0); pointer-events: auto; }
         .author-name {
             font-family: var(--sf-pro);
             font-size: 14px;
@@ -1647,9 +1655,12 @@
         }
 
         @media (max-width: 720px) {
-            .testimonials { padding: 80px 24px; }
+            .testimonials { padding: 100px 24px 80px; }
+            .testimonials-header { margin-bottom: 60px; }
+            .testimonials-quote-area { min-height: 220px; margin-bottom: 40px; }
             .testimonials-authors { gap: 16px; }
             .testimonials-divider { height: 28px; }
+            .testimonials-count { font-size: 9px; letter-spacing: 0.08em; }
         }
 
         /* ========================================
@@ -4155,13 +4166,16 @@ margin-top: 3px;
 
         <!-- SECTION: TESTIMONIALS -->
         <section class="snap-section testimonials" id="testimonials">
-            <div class="testimonials-inner">
-                <div class="testimonials-eyebrow" data-i18n="testimonials.eyebrow">Kind words</div>
+            <div class="testimonials-header">
+                <h2 class="testimonials-title"><span data-i18n="testimonials.eyebrow">Kind words</span><span class="star" aria-hidden="true"><svg viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="14" stroke-linecap="round" fill="none"><line x1="0" y1="-40" x2="0" y2="40"/><line x1="-34.64" y1="-20" x2="34.64" y2="20"/><line x1="-34.64" y1="20" x2="34.64" y2="-20"/></g></svg></span></h2>
+                <span class="testimonials-count">03 · Selected reviews</span>
+            </div>
 
+            <div class="testimonials-body">
                 <div class="testimonials-quote-area" id="testimonialsQuotes">
-                    <p class="testimonial-quote is-active" data-index="0">"Working with Pedro transformed our entire brand identity. The attention to detail was exceptional — strategic thinking married to flawless execution."</p>
-                    <p class="testimonial-quote" data-index="1">"A rare talent who understands both the craft and the commercial. We shipped on time, on brand, and with room to breathe."</p>
-                    <p class="testimonial-quote" data-index="2">"The most seamless collaboration I've had on a launch this size. He treats every pixel like the whole campaign depends on it."</p>
+                    <p class="testimonial-quote is-active" data-index="0">“Working with Pedro transformed our entire brand identity. The attention to detail was exceptional — strategic thinking married to flawless execution.”</p>
+                    <p class="testimonial-quote" data-index="1">“A rare talent who understands both the craft and the commercial. We shipped on time, on brand, and with room to breathe.”</p>
+                    <p class="testimonial-quote" data-index="2">“The most seamless collaboration I've had on a launch this size. He treats every pixel like the whole campaign depends on it.”</p>
                 </div>
 
                 <div class="testimonials-authors">
