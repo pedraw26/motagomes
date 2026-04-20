@@ -1139,25 +1139,39 @@
         function note(el,msg,color){el.textContent=msg;el.style.color=color||'#999';el.style.display='block';}
         function hide(el){el.style.display='none';}
 
-        // ── Password fallback ─────────────────────────────────
-        function checkAuth(){
-            hide(authError);
-            const hash=async s=>{const e=new TextEncoder().encode(s);const h=await crypto.subtle.digest('SHA-256',e);return Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,'0')).join('');};
-            hash(document.getElementById('authInput').value).then(async h=>{
-                if(h==='34c90359b61832ca5fd0593f233058b0dcd66809ade65acb763ca7a82c3e7bc5'){
-                    sessionStorage.setItem('dash_auth','1');
-                    document.getElementById('authGate').style.display='none';
-                    // If no passkey yet on server, offer to enroll
-                    try {
-                        const r = await fetch(`${PK_ENDPOINT}?action=status`);
-                        const j = await r.json();
-                        if (!j.hasAny) document.getElementById('pkEnrollPrompt').style.display='block';
-                    } catch(_) {}
-                }else{
-                    authError.style.display='block';
-                    document.getElementById('authInput').value='';
+        // ── Password fallback (bulletproof — hides gate synchronously on match,
+        //    never depends on the passkey endpoint) ──────────────
+        async function sha256Hex(s) {
+            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+            return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+        }
+        async function checkAuth(){
+            try {
+                if (authError) authError.style.display = 'none';
+                const val = document.getElementById('authInput').value || '';
+                const h = await sha256Hex(val);
+                if (h === '34c90359b61832ca5fd0593f233058b0dcd66809ade65acb763ca7a82c3e7bc5') {
+                    sessionStorage.setItem('dash_auth', '1');
+                    document.getElementById('authGate').style.display = 'none';
+                    // Offer passkey enrollment AFTER gate hides — non-blocking, errors swallowed
+                    setTimeout(async () => {
+                        try {
+                            const r = await fetch(`${PK_ENDPOINT}?action=status`, { cache: 'no-store' });
+                            if (!r.ok) return;
+                            const j = await r.json();
+                            if (j && j.hasAny === false) {
+                                const el = document.getElementById('pkEnrollPrompt');
+                                if (el) el.style.display = 'block';
+                            }
+                        } catch (_) {}
+                    }, 300);
+                } else {
+                    if (authError) authError.style.display = 'block';
+                    document.getElementById('authInput').value = '';
                 }
-            });
+            } catch (e) {
+                if (authError) { authError.textContent = 'Error: ' + (e.message || 'unknown'); authError.style.display = 'block'; }
+            }
         }
 
         // ── Passkey: unlock ───────────────────────────────────
@@ -1238,21 +1252,23 @@
             }
         }
 
-        // If browser supports platform auth + we have a registered passkey, auto-prompt on load
-        (async function autoPromptPasskey(){
-            if (dashToken) return;
-            if (!window.PublicKeyCredential) return;
-            try {
-                const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable?.();
-                if (!available) return;
-                const r = await fetch(`${PK_ENDPOINT}?action=status`);
-                const j = await r.json();
-                if (j.hasAny) {
-                    // Don't auto-trigger the UV prompt — just focus the button. User taps to confirm.
-                    document.getElementById('passkeyBtn').focus();
-                }
-            } catch(_) {}
-        })();
+        // Optional: focus Touch ID button if we detect a registered passkey.
+        // Strictly non-blocking — any error is swallowed so the password
+        // path always remains available.
+        setTimeout(() => {
+            (async function autoPromptPasskey(){
+                try {
+                    if (dashToken) return;
+                    if (!window.PublicKeyCredential) return;
+                    const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable?.();
+                    if (!available) return;
+                    const r = await fetch(`${PK_ENDPOINT}?action=status`, { cache: 'no-store' });
+                    if (!r.ok) return;
+                    const j = await r.json();
+                    if (j && j.hasAny) document.getElementById('passkeyBtn')?.focus();
+                } catch (_) {}
+            })();
+        }, 400);
     </script>
 
     <div class="dashboard" id="dashboard">
