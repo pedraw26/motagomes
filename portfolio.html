@@ -255,10 +255,11 @@
         }
         
         .header-nav a {
-            font-size: 0.75rem;
+            font-size: 0.95rem;
             color: var(--text-60);
             text-decoration: none;
             font-weight: 400;
+            letter-spacing: -0.005em;
             transition: color 0.3s ease;
             position: relative;
         }
@@ -1031,49 +1032,52 @@
         }
 
         /* ========================================
-           AWARD BADGE — gold reflection (Standard Bank top-right corner)
+           AWARD BADGE — gold pill (Standard Bank top-right corner)
            ======================================== */
         .award-badge {
             position: absolute;
             top: 16px;
             right: 16px;
-            width: clamp(130px, 14vw, 170px);
             z-index: 6;
             cursor: pointer;
             pointer-events: auto;
             text-decoration: none;
-            display: block;
+            display: inline-block;
         }
         .award-badge__inner {
+            display: inline-block;
+            padding: 9px 14px;
+            background: linear-gradient(135deg, #f9e5b3 0%, #e7c66d 45%, #b8902e 100%);
+            border-radius: 10px;
+            color: #3f2b0b;
+            filter: drop-shadow(0 6px 18px rgba(0,0,0,0.35));
             transform: perspective(700px) rotateX(0) rotateY(0);
             transform-origin: center center;
             transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
             will-change: transform;
-            filter: drop-shadow(0 6px 18px rgba(0,0,0,0.35));
+            font-family: var(--sf-pro);
+            line-height: 1;
+            text-align: left;
         }
-        .award-badge svg { width: 100%; height: auto; display: block; }
-
-        @keyframes awardOverlay1  { 0%,100%{transform:rotate(0deg);} 50%{transform:rotate(10deg);} }
-        @keyframes awardOverlay2  { 0%,100%{transform:rotate(10deg);} 50%{transform:rotate(20deg);} }
-        @keyframes awardOverlay3  { 0%,100%{transform:rotate(20deg);} 50%{transform:rotate(30deg);} }
-        @keyframes awardOverlay4  { 0%,100%{transform:rotate(30deg);} 50%{transform:rotate(40deg);} }
-        @keyframes awardOverlay5  { 0%,100%{transform:rotate(40deg);} 50%{transform:rotate(50deg);} }
-        @keyframes awardOverlay6  { 0%,100%{transform:rotate(50deg);} 50%{transform:rotate(60deg);} }
-        @keyframes awardOverlay7  { 0%,100%{transform:rotate(60deg);} 50%{transform:rotate(70deg);} }
-        @keyframes awardOverlay8  { 0%,100%{transform:rotate(70deg);} 50%{transform:rotate(80deg);} }
-
-        .award-badge svg .aov { transform-origin: center center; will-change: transform; }
-        .award-badge svg .aov-1 { animation: awardOverlay1 5s infinite; }
-        .award-badge svg .aov-2 { animation: awardOverlay2 5s infinite; }
-        .award-badge svg .aov-3 { animation: awardOverlay3 5s infinite; }
-        .award-badge svg .aov-4 { animation: awardOverlay4 5s infinite; }
-        .award-badge svg .aov-5 { animation: awardOverlay5 5s infinite; }
-        .award-badge svg .aov-6 { animation: awardOverlay6 5s infinite; }
-        .award-badge svg .aov-7 { animation: awardOverlay7 5s infinite; }
-        .award-badge svg .aov-8 { animation: awardOverlay8 5s infinite; }
+        .award-badge__eyebrow {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
+            white-space: nowrap;
+        }
+        .award-badge__title {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+        }
 
         @media (max-width: 720px) {
-            .award-badge { top: 10px; right: 10px; width: 110px; }
+            .award-badge { top: 10px; right: 10px; }
+            .award-badge__inner { padding: 7px 11px; }
+            .award-badge__eyebrow { font-size: 8px; margin-bottom: 4px; }
+            .award-badge__title { font-size: 12px; }
         }
 
         /* Project status pill — sits inside .gallery-stacked-info, above the label */
@@ -3609,31 +3613,8 @@ margin-top: 3px;
                             </div>
                             <a href="/project.html?p=standard-bank" class="award-badge" id="sbAwardBadge" aria-label="Prémios Lusófonos — Gold 2018">
                                 <div class="award-badge__inner">
-                                    <svg viewBox="0 0 180 54" xmlns="http://www.w3.org/2000/svg">
-                                        <defs>
-                                            <filter id="awardBlur"><feGaussianBlur in="SourceGraphic" stdDeviation="3"/></filter>
-                                            <mask id="awardBadgeMask"><rect width="180" height="54" fill="white" rx="10"/></mask>
-                                            <linearGradient id="awardGoldBg" x1="0" y1="0" x2="1" y2="1">
-                                                <stop offset="0%"   stop-color="#f9e5b3"/>
-                                                <stop offset="45%"  stop-color="#e7c66d"/>
-                                                <stop offset="100%" stop-color="#b8902e"/>
-                                            </linearGradient>
-                                        </defs>
-                                        <rect width="180" height="54" rx="10" fill="url(#awardGoldBg)"/>
-                                        <text font-family="-apple-system, 'SF Pro Display', Helvetica, sans-serif" font-size="9" font-weight="700" fill="#3f2b0b" letter-spacing="0.8" x="14" y="20">PRÉMIOS LUSÓFONOS</text>
-                                        <text font-family="-apple-system, 'SF Pro Display', Helvetica, sans-serif" font-size="16" font-weight="700" fill="#3f2b0b" x="14" y="40">Gold · 2018</text>
-                                        <!-- Gold-family animated sheen overlays -->
-                                        <g style="mix-blend-mode: overlay" mask="url(#awardBadgeMask)">
-                                            <g class="aov aov-1"><polygon points="0,0 180,54 180,0 0,54" fill="hsl(48, 100%, 85%)" filter="url(#awardBlur)" opacity="0.55"/></g>
-                                            <g class="aov aov-2"><polygon points="0,0 180,54 180,0 0,54" fill="hsl(42, 100%, 65%)" filter="url(#awardBlur)" opacity="0.55"/></g>
-                                            <g class="aov aov-3"><polygon points="0,0 180,54 180,0 0,54" fill="hsl(36, 95%, 55%)"  filter="url(#awardBlur)" opacity="0.5"/></g>
-                                            <g class="aov aov-4"><polygon points="0,0 180,54 180,0 0,54" fill="hsl(28, 80%, 45%)"  filter="url(#awardBlur)" opacity="0.45"/></g>
-                                            <g class="aov aov-5"><polygon points="0,0 180,54 180,0 0,54" fill="hsl(22, 60%, 35%)"  filter="url(#awardBlur)" opacity="0.35"/></g>
-                                            <g class="aov aov-6"><polygon points="0,0 180,54 180,0 0,54" fill="hsl(50, 100%, 90%)" filter="url(#awardBlur)" opacity="0.5"/></g>
-                                            <g class="aov aov-7"><polygon points="0,0 180,54 180,0 0,54" fill="#ffffff"             filter="url(#awardBlur)" opacity="0.35"/></g>
-                                            <g class="aov aov-8"><polygon points="0,0 180,54 180,0 0,54" fill="hsl(45, 100%, 75%)" filter="url(#awardBlur)" opacity="0.5"/></g>
-                                        </g>
-                                    </svg>
+                                    <div class="award-badge__eyebrow">PRÉMIOS LUSÓFONOS</div>
+                                    <div class="award-badge__title">Gold · 2018</div>
                                 </div>
                             </a>
                         </div>
