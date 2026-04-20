@@ -1030,6 +1030,52 @@
             margin-left: 16px;
         }
 
+        /* ========================================
+           AWARD BADGE — gold reflection (Standard Bank top-right corner)
+           ======================================== */
+        .award-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: clamp(160px, 18vw, 220px);
+            z-index: 6;
+            cursor: pointer;
+            pointer-events: auto;
+            text-decoration: none;
+            display: block;
+        }
+        .award-badge__inner {
+            transform: perspective(700px) rotateX(0) rotateY(0);
+            transform-origin: center center;
+            transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+            filter: drop-shadow(0 6px 18px rgba(0,0,0,0.35));
+        }
+        .award-badge svg { width: 100%; height: auto; display: block; }
+
+        @keyframes awardOverlay1  { 0%,100%{transform:rotate(0deg);} 50%{transform:rotate(10deg);} }
+        @keyframes awardOverlay2  { 0%,100%{transform:rotate(10deg);} 50%{transform:rotate(20deg);} }
+        @keyframes awardOverlay3  { 0%,100%{transform:rotate(20deg);} 50%{transform:rotate(30deg);} }
+        @keyframes awardOverlay4  { 0%,100%{transform:rotate(30deg);} 50%{transform:rotate(40deg);} }
+        @keyframes awardOverlay5  { 0%,100%{transform:rotate(40deg);} 50%{transform:rotate(50deg);} }
+        @keyframes awardOverlay6  { 0%,100%{transform:rotate(50deg);} 50%{transform:rotate(60deg);} }
+        @keyframes awardOverlay7  { 0%,100%{transform:rotate(60deg);} 50%{transform:rotate(70deg);} }
+        @keyframes awardOverlay8  { 0%,100%{transform:rotate(70deg);} 50%{transform:rotate(80deg);} }
+
+        .award-badge svg .aov { transform-origin: center center; will-change: transform; }
+        .award-badge svg .aov-1 { animation: awardOverlay1 5s infinite; }
+        .award-badge svg .aov-2 { animation: awardOverlay2 5s infinite; }
+        .award-badge svg .aov-3 { animation: awardOverlay3 5s infinite; }
+        .award-badge svg .aov-4 { animation: awardOverlay4 5s infinite; }
+        .award-badge svg .aov-5 { animation: awardOverlay5 5s infinite; }
+        .award-badge svg .aov-6 { animation: awardOverlay6 5s infinite; }
+        .award-badge svg .aov-7 { animation: awardOverlay7 5s infinite; }
+        .award-badge svg .aov-8 { animation: awardOverlay8 5s infinite; }
+
+        @media (max-width: 720px) {
+            .award-badge { top: 10px; right: 10px; width: 140px; }
+        }
+
         /* Project status pill — sits inside .gallery-stacked-info, above the label */
         .gallery-stacked-status {
             display: inline-flex;
@@ -3561,7 +3607,40 @@ margin-top: 3px;
                                 <div class="gallery-stacked-award"><b>Gold</b>&nbsp;&nbsp;Prémios Lusófonos</div>
                                 <a href="/project.html?p=standard-bank" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
                             </div>
-                            <div class="gallery-stacked-badge"><span data-i18n="card.viewProject">VIEW</span><br><span data-i18n="card.projectWord">PROJECT</span></div>
+                            <a href="/project.html?p=standard-bank" class="award-badge" id="sbAwardBadge" aria-label="Prémios Lusófonos — Gold 2018">
+                                <div class="award-badge__inner">
+                                    <svg viewBox="0 0 260 54" xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <filter id="awardBlur"><feGaussianBlur in="SourceGraphic" stdDeviation="3"/></filter>
+                                            <mask id="awardBadgeMask"><rect width="260" height="54" fill="white" rx="10"/></mask>
+                                            <linearGradient id="awardGoldBg" x1="0" y1="0" x2="1" y2="1">
+                                                <stop offset="0%"   stop-color="#f9e5b3"/>
+                                                <stop offset="45%"  stop-color="#e7c66d"/>
+                                                <stop offset="100%" stop-color="#b8902e"/>
+                                            </linearGradient>
+                                        </defs>
+                                        <rect width="260" height="54" rx="10" fill="url(#awardGoldBg)"/>
+                                        <rect x="4" y="4" width="252" height="46" rx="8" fill="transparent" stroke="rgba(60,40,10,0.28)" stroke-width="1"/>
+                                        <!-- Laurel / trophy mark on the left -->
+                                        <g transform="translate(12, 14)" fill="#3f2b0b">
+                                            <path d="M13 0 L15.3 7.8 L23.4 7.8 L16.9 12.6 L19.2 20.4 L13 15.6 L6.8 20.4 L9.1 12.6 L2.6 7.8 L10.7 7.8 Z"/>
+                                        </g>
+                                        <text font-family="-apple-system, 'SF Pro Display', Helvetica, sans-serif" font-size="9" font-weight="700" fill="#3f2b0b" letter-spacing="0.8" x="46" y="20">PRÉMIOS LUSÓFONOS</text>
+                                        <text font-family="-apple-system, 'SF Pro Display', Helvetica, sans-serif" font-size="16" font-weight="700" fill="#3f2b0b" x="46" y="40">Gold · 2018</text>
+                                        <!-- Gold-family animated sheen overlays -->
+                                        <g style="mix-blend-mode: overlay" mask="url(#awardBadgeMask)">
+                                            <g class="aov aov-1"><polygon points="0,0 260,54 260,0 0,54" fill="hsl(48, 100%, 85%)" filter="url(#awardBlur)" opacity="0.55"/></g>
+                                            <g class="aov aov-2"><polygon points="0,0 260,54 260,0 0,54" fill="hsl(42, 100%, 65%)" filter="url(#awardBlur)" opacity="0.55"/></g>
+                                            <g class="aov aov-3"><polygon points="0,0 260,54 260,0 0,54" fill="hsl(36, 95%, 55%)"  filter="url(#awardBlur)" opacity="0.5"/></g>
+                                            <g class="aov aov-4"><polygon points="0,0 260,54 260,0 0,54" fill="hsl(28, 80%, 45%)"  filter="url(#awardBlur)" opacity="0.45"/></g>
+                                            <g class="aov aov-5"><polygon points="0,0 260,54 260,0 0,54" fill="hsl(22, 60%, 35%)"  filter="url(#awardBlur)" opacity="0.35"/></g>
+                                            <g class="aov aov-6"><polygon points="0,0 260,54 260,0 0,54" fill="hsl(50, 100%, 90%)" filter="url(#awardBlur)" opacity="0.5"/></g>
+                                            <g class="aov aov-7"><polygon points="0,0 260,54 260,0 0,54" fill="#ffffff"             filter="url(#awardBlur)" opacity="0.35"/></g>
+                                            <g class="aov aov-8"><polygon points="0,0 260,54 260,0 0,54" fill="hsl(45, 100%, 75%)" filter="url(#awardBlur)" opacity="0.5"/></g>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -4510,6 +4589,33 @@ margin-top: 3px;
         scrollContainer.addEventListener('scroll', () => requestAnimationFrame(updateHeroInlineShift), { passive: true });
         window.addEventListener('resize', updateHeroInlineShift);
         updateHeroInlineShift();
+
+        // ========================================
+        // AWARD BADGE — 3D tilt on hover (Standard Bank card)
+        // ========================================
+        (function initAwardBadge() {
+            const badge = document.getElementById('sbAwardBadge');
+            if (!badge) return;
+            const inner = badge.querySelector('.award-badge__inner');
+            if (!inner) return;
+
+            function onMove(e) {
+                const r = badge.getBoundingClientRect();
+                const px = (e.clientX - r.left) / r.width;   // 0..1
+                const py = (e.clientY - r.top)  / r.height;  // 0..1
+                const rotY = (px - 0.5) * 22;                // left-right tilt
+                const rotX = (0.5 - py) * 18;                // up-down tilt
+                inner.style.transform =
+                    `perspective(700px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.03)`;
+            }
+            function onLeave() {
+                inner.style.transform = 'perspective(700px) rotateX(0deg) rotateY(0deg) scale(1)';
+            }
+            badge.addEventListener('mousemove', onMove);
+            badge.addEventListener('mouseleave', onLeave);
+            // Click swallowing: the outer <a> already routes to the project;
+            // just stop the parent card's scroll-effect handlers if needed.
+        })();
 
         // ========================================
         // MOTION DESIGN — scroll-expand media
