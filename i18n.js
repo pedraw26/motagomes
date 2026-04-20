@@ -75,6 +75,7 @@
 
             // Research landing
             'research.landingTitle': 'Research & Experiments',
+            'testimonials.eyebrow': 'Kind words',
             'philosophy.l1': 'Design is research made visible —',
             'philosophy.l2': 'every pixel carries intent,',
             'philosophy.l3': 'every interaction tells a story.',
@@ -203,6 +204,7 @@
 
             // Research landing
             'research.landingTitle': 'Investigação & Experiências',
+            'testimonials.eyebrow': 'Palavras gentis',
             'philosophy.l1': 'Design é investigação tornada visível —',
             'philosophy.l2': 'cada pixel tem intenção,',
             'philosophy.l3': 'cada interação conta uma história.',

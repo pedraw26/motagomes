@@ -1515,6 +1515,144 @@
         
 
         /* ========================================
+           TESTIMONIALS
+           ======================================== */
+        .testimonials {
+            min-height: 100vh;
+            background: var(--bg-black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 40px;
+        }
+        .testimonials-inner {
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+        .testimonials-eyebrow {
+            font-family: var(--sf-pro);
+            font-size: 10px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            margin-bottom: 40px;
+        }
+        .testimonials-quote-area {
+            position: relative;
+            min-height: 120px;
+            margin-bottom: 48px;
+        }
+        .testimonial-quote {
+            position: absolute;
+            inset: 0;
+            font-family: var(--sf-pro);
+            font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+            font-weight: 300;
+            line-height: 1.5;
+            letter-spacing: -0.01em;
+            color: var(--text);
+            opacity: 0;
+            transform: translateY(16px);
+            filter: blur(4px);
+            transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+            pointer-events: none;
+        }
+        .testimonial-quote.is-active {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+            pointer-events: auto;
+        }
+        .testimonials-authors {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .testimonials-avatars {
+            display: flex;
+        }
+        .testimonial-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            padding: 0;
+            border: 2px solid var(--bg-black);
+            margin-left: -8px;
+            background: #222;
+            cursor: pointer;
+            filter: grayscale(100%);
+            transform: scale(1);
+            transition: filter 0.3s ease, transform 0.3s ease, z-index 0s;
+            position: relative;
+            z-index: 1;
+        }
+        .testimonial-avatar:first-child { margin-left: 0; }
+        .testimonial-avatar:hover {
+            filter: grayscale(0);
+            transform: scale(1.05);
+        }
+        .testimonial-avatar.is-active {
+            filter: grayscale(0);
+            transform: scale(1.10);
+            z-index: 3;
+        }
+        .testimonial-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .testimonials-divider {
+            width: 1px;
+            height: 32px;
+            background: rgba(255,255,255,0.18);
+            flex-shrink: 0;
+        }
+        .testimonials-author-info {
+            position: relative;
+            flex: 1;
+            min-height: 44px;
+        }
+        .author-info {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(-8px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            pointer-events: none;
+        }
+        .author-info.is-active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+        .author-name {
+            font-family: var(--sf-pro);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+            line-height: 1.2;
+        }
+        .author-role {
+            font-family: var(--sf-pro);
+            font-size: 12px;
+            color: var(--text-60);
+            line-height: 1.2;
+            margin-top: 2px;
+        }
+
+        @media (max-width: 720px) {
+            .testimonials { padding: 80px 24px; }
+            .testimonials-authors { gap: 16px; }
+            .testimonials-divider { height: 28px; }
+        }
+
+        /* ========================================
            MOTION DESIGN — scroll-expand media (embedded)
            ======================================== */
         .motion-embed {
@@ -4015,6 +4153,50 @@ margin-top: 3px;
             
         </section>
 
+        <!-- SECTION: TESTIMONIALS -->
+        <section class="snap-section testimonials" id="testimonials">
+            <div class="testimonials-inner">
+                <div class="testimonials-eyebrow" data-i18n="testimonials.eyebrow">Kind words</div>
+
+                <div class="testimonials-quote-area" id="testimonialsQuotes">
+                    <p class="testimonial-quote is-active" data-index="0">"Working with Pedro transformed our entire brand identity. The attention to detail was exceptional — strategic thinking married to flawless execution."</p>
+                    <p class="testimonial-quote" data-index="1">"A rare talent who understands both the craft and the commercial. We shipped on time, on brand, and with room to breathe."</p>
+                    <p class="testimonial-quote" data-index="2">"The most seamless collaboration I've had on a launch this size. He treats every pixel like the whole campaign depends on it."</p>
+                </div>
+
+                <div class="testimonials-authors">
+                    <div class="testimonials-avatars" id="testimonialsAvatars">
+                        <button type="button" class="testimonial-avatar is-active" data-index="0" aria-label="Select testimonial 1">
+                            <img src="https://images.unsplash.com/photo-1701615004837-40d8573b6652?w=160&auto=format&fit=crop&q=70" alt="">
+                        </button>
+                        <button type="button" class="testimonial-avatar" data-index="1" aria-label="Select testimonial 2">
+                            <img src="https://images.unsplash.com/photo-1639149888905-fb39731f2e6c?w=160&auto=format&fit=crop&q=70" alt="">
+                        </button>
+                        <button type="button" class="testimonial-avatar" data-index="2" aria-label="Select testimonial 3">
+                            <img src="https://plus.unsplash.com/premium_photo-1689977830819-d00b3a9b7363?w=160&auto=format&fit=crop&q=70" alt="">
+                        </button>
+                    </div>
+
+                    <div class="testimonials-divider" aria-hidden="true"></div>
+
+                    <div class="testimonials-author-info" id="testimonialsAuthors">
+                        <div class="author-info is-active" data-index="0">
+                            <span class="author-name">Sarah Chen</span>
+                            <span class="author-role">CEO at Stripe</span>
+                        </div>
+                        <div class="author-info" data-index="1">
+                            <span class="author-name">Marcus Johnson</span>
+                            <span class="author-role">Design Lead at Linear</span>
+                        </div>
+                        <div class="author-info" data-index="2">
+                            <span class="author-name">Elena Voss</span>
+                            <span class="author-role">Founder at Notion</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- SECTION: ABOUT (V3 Split) -->
         <section class="snap-section about-v3" id="about" hidden style="display:none">
           <div class="about-v3-left">
@@ -4596,6 +4778,25 @@ margin-top: 3px;
         scrollContainer.addEventListener('scroll', () => requestAnimationFrame(updateHeroInlineShift), { passive: true });
         window.addEventListener('resize', updateHeroInlineShift);
         updateHeroInlineShift();
+
+        // ========================================
+        // TESTIMONIALS — avatar-driven carousel
+        // ========================================
+        (function initTestimonials() {
+            const avatars = document.querySelectorAll('#testimonialsAvatars .testimonial-avatar');
+            const quotes  = document.querySelectorAll('#testimonialsQuotes .testimonial-quote');
+            const authors = document.querySelectorAll('#testimonialsAuthors .author-info');
+            if (!avatars.length) return;
+
+            function setActive(i) {
+                avatars.forEach((el, idx) => el.classList.toggle('is-active', idx === i));
+                quotes .forEach((el, idx) => el.classList.toggle('is-active', idx === i));
+                authors.forEach((el, idx) => el.classList.toggle('is-active', idx === i));
+            }
+            avatars.forEach((btn, i) => {
+                btn.addEventListener('click', () => setActive(i));
+            });
+        })();
 
         // ========================================
         // AWARD BADGE — 3D tilt on hover (Standard Bank card)
