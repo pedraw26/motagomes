@@ -135,11 +135,11 @@
             .ui-title { animation: none; }
         }
 
-        /* ====== Top-right: GMT clock ====== */
+        /* ====== Bottom-right: GMT clock (swapped with Exit) ====== */
         .ui-clock {
             position: fixed;
-            top: 30px;
-            right: 32px;
+            bottom: 40px;
+            right: 40px;
             z-index: 10;
             font-size: 11px;
             letter-spacing: 0.22em;
@@ -148,7 +148,7 @@
             pointer-events: none;
         }
 
-        /* ====== Bottom-right: Exit — sophisticated hover animation ======
+        /* ====== Top-right: Exit (swapped with clock) — sophisticated hover animation ======
            - Pill with frosted backdrop
            - Text slides up and is replaced by a duplicate from below (marquee reveal)
            - A liquid fill sweeps in from the left behind the text
@@ -157,7 +157,7 @@
         .ui-back {
             --h: 14px;                     /* line height of the EXIT label */
             position: fixed;
-            bottom: 32px;
+            top: 22px;
             right: 32px;
             z-index: 10;
             display: inline-flex;
