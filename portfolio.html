@@ -775,13 +775,9 @@
             bottom: 0;
             width: 100%;
             padding: 10px 20px;
-            /* Same animated gradient as the Gen Studio label — banner background only */
-            background-image: linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);
-            background-size: 200% 100%;
-            background-repeat: repeat;
-            animation: aislop-gradient 6s linear infinite;
+            background: #0a0a0a;
             color: #ffffff;
-            border-top: 1px solid rgba(255,255,255,0.15);
+            border-top: 1px solid rgba(255,255,255,0.08);
             font-family: var(--sf-pro);
             font-size: 13px;
             line-height: 1.5;
@@ -803,9 +799,17 @@
         .sitebanner-text {
             flex: 1 1 auto;
             font-weight: 400;
-            color: #ffffff;
+            /* Rainbow gradient applied to the letters themselves */
+            background-image: linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);
+            background-size: 200% 100%;
+            background-repeat: repeat;
+            -webkit-background-clip: text;
+                    background-clip: text;
+            -webkit-text-fill-color: transparent;
+                    color: transparent;
+            animation: aislop-gradient 6s linear infinite;
         }
-        .sitebanner-text em { font-style: normal; color: #ffffff; font-weight: 500; }
+        .sitebanner-text em { font-style: normal; font-weight: 500; color: inherit; }
         .sitebanner-close {
             flex-shrink: 0;
             display: inline-flex;
