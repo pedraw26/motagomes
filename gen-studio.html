@@ -261,8 +261,8 @@
 
         .gen-viewport {
             position: relative;
-            width: 320px;
-            height: 500px;
+            width: 440px;
+            height: 400px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -271,13 +271,14 @@
             touch-action: none;
             z-index: 2;
         }
+        /* 4:3 card, no image — solid dark surface with a subtle top sheen */
         .gen-card {
             position: absolute;
-            width: 280px;
-            height: 420px;
-            border-radius: 24px;
+            width: 400px;
+            aspect-ratio: 4 / 3;
+            border-radius: 18px;
             overflow: hidden;
-            background: #111;
+            background: linear-gradient(180deg, #151515 0%, #0c0c0c 100%);
             transform-style: preserve-3d;
             box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
             transition:
@@ -291,36 +292,23 @@
         .gen-card.is-current {
             box-shadow:
                 0 25px 50px -12px rgba(0,0,0,0.65),
-                0 0 0 1px rgba(255,255,255,0.05);
+                0 0 0 1px rgba(255,255,255,0.06);
         }
         .gen-card::before {
             content: '';
             position: absolute; inset: 0;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.08), transparent 40%);
+            background: linear-gradient(to bottom, rgba(255,255,255,0.06), transparent 40%);
             z-index: 2;
             pointer-events: none;
-        }
-        .gen-card::after {
-            content: '';
-            position: absolute;
-            left: 0; right: 0; bottom: 0;
-            height: 128px;
-            background: linear-gradient(to top, rgba(10,10,10,0.6), transparent);
-            z-index: 2;
-            pointer-events: none;
-        }
-        .gen-card img {
-            position: absolute;
-            inset: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            display: block;
-            user-select: none;
-            -webkit-user-drag: none;
         }
         .gen-card[data-pos="hidden"] {
             opacity: 0;
             pointer-events: none;
+        }
+
+        @media (max-width: 720px) {
+            .gen-viewport { width: 88vw; height: 320px; }
+            .gen-card { width: 80vw; }
         }
 
         /* Scroll-snap markers: one invisible 100vh section per image.
@@ -410,13 +398,8 @@
 
     <script>
     (function () {
-        var IMAGES = [
-            { id: 1, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/luxury-black-sneaker-with-red-sole-on-grey-backgro-hj40sZT8MUUSeLz18VN7EjhcnV0kSD.jpg', alt: 'Black sneaker with red sole' },
-            { id: 2, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/white-minimalist-sneaker-on-light-background-xQxkXgGrSrAe6pvLPNC6yrh20Atqoa.jpg', alt: 'White minimalist sneaker' },
-            { id: 3, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/navy-blue-running-shoe-on-gradient-background-E1spqSK9gDvh3gTNwASkttEg76nZgm.jpg', alt: 'Navy blue running shoe' },
-            { id: 4, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/red-athletic-sneaker-on-dark-background-skamDX1NbCRW4jvHxijkfmCnHGr6NJ.jpg', alt: 'Red athletic sneaker' },
-            { id: 5, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/green-forest-hiking-boot-on-natural-background-T41PNLzI60G2u6rFIRxeCbKT6RWKOH.jpg', alt: 'Green hiking boot' }
-        ];
+        // 5 empty card slots — images removed; ready to be filled later.
+        var IMAGES = [ { id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 } ];
 
         var viewport = document.getElementById('genViewport');
         var track    = document.getElementById('genTrack');
@@ -428,18 +411,11 @@
         var markers = [];
 
         function build() {
-            // Cards (stacked 3D visualization)
-            IMAGES.forEach(function (img, i) {
+            // Cards only — no images, just clean 4:3 surfaces
+            IMAGES.forEach(function (_, i) {
                 var card = document.createElement('div');
                 card.className = 'gen-card';
                 card.setAttribute('data-index', i);
-                var im = document.createElement('img');
-                im.src = img.src;
-                im.alt = img.alt;
-                im.draggable = false;
-                im.loading = i === 0 ? 'eager' : 'lazy';
-                im.decoding = 'async';
-                card.appendChild(im);
                 viewport.appendChild(card);
                 cards.push(card);
             });
@@ -449,7 +425,7 @@
                 var m = document.createElement('section');
                 m.className = 'gen-snap';
                 m.setAttribute('data-index', i);
-                m.setAttribute('aria-label', 'Image ' + (i + 1) + ' of ' + IMAGES.length);
+                m.setAttribute('aria-label', 'Slot ' + (i + 1) + ' of ' + IMAGES.length);
                 track.appendChild(m);
                 markers.push(m);
             });
