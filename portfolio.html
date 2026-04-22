@@ -4924,6 +4924,79 @@ margin-top: 3px;
         }
 
         // ================================================================
+        // RETURN FLIGHT — if user came back from Gen Studio via Exit,
+        // fly a clone from the title position back into the nav link.
+        // ================================================================
+        (function playReturnFlight() {
+            var raw;
+            try { raw = sessionStorage.getItem('gs-return'); } catch (e) { return; }
+            if (!raw) return;
+            try { sessionStorage.removeItem('gs-return'); } catch (e) {}
+
+            var info;
+            try { info = JSON.parse(raw); } catch (e) { return; }
+            if (!info || typeof info.left !== 'number') return;
+
+            var link = document.querySelector('.header-nav a[data-i18n="menu.gen"]');
+            if (!link) return;
+
+            // Hide the real nav link during the flight
+            var prevVis = link.style.visibility;
+            link.style.visibility = 'hidden';
+
+            // Build the flying clone at the gen-studio title position
+            var clone = document.createElement('span');
+            clone.textContent = info.text || 'Gen Studio';
+            function setS(prop, val) { clone.style.setProperty(prop, val); }
+            setS('position', 'fixed');
+            setS('top',  info.top  + 'px');
+            setS('left', info.left + 'px');
+            setS('z-index', '9999');
+            setS('pointer-events', 'none');
+            setS('white-space', 'nowrap');
+            setS('font-family',     info.fontFamily     || '-apple-system, sans-serif');
+            setS('font-size',       info.fontSize       || '13px');
+            setS('font-weight',     info.fontWeight     || '400');
+            setS('letter-spacing',  info.letterSpacing  || '0.04em');
+            setS('line-height',     info.lineHeight     || '1');
+            setS('background-image', 'linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a)');
+            setS('background-size', '200% 100%');
+            setS('background-repeat', 'repeat');
+            setS('-webkit-background-clip', 'text');
+            setS('background-clip', 'text');
+            setS('-webkit-text-fill-color', 'transparent');
+            setS('color', 'transparent');
+            setS('animation', 'aislop-gradient 6s linear infinite');
+            setS('transform-origin', 'left center');
+            setS('will-change', 'transform');
+            document.body.appendChild(clone);
+
+            // Measure destination (the real nav link)
+            var destRect = link.getBoundingClientRect();
+            var dx = destRect.left - info.left;
+            var dy = destRect.top  - info.top;
+            var scaleX = destRect.width  / info.width;
+            var scaleY = destRect.height / info.height;
+            var scale  = (scaleX + scaleY) / 2;
+
+            var anim = clone.animate([
+                { transform: 'translate(0, 0) scale(1)' },
+                { transform: 'translate(' + dx + 'px, ' + dy + 'px) scale(' + scale + ')' }
+            ], {
+                duration: 1500,
+                easing: 'cubic-bezier(0.83, 0, 0.17, 1)',
+                fill: 'forwards'
+            });
+
+            function finish() {
+                link.style.visibility = prevVis || '';
+                if (clone.parentNode) clone.parentNode.removeChild(clone);
+            }
+            anim.onfinish = finish;
+            setTimeout(finish, 1800);
+        })();
+
+        // ================================================================
         // GEN STUDIO TRANSITION — capture the nav link's position & style
         // on click so gen-studio.html can fly the text in from that spot.
         // Attach to every Gen Studio link (desktop nav + mobile overlay).

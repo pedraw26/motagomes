@@ -477,7 +477,7 @@
         </svg>
     </a>
 
-    <a href="/" class="ui-back" aria-label="Exit">
+    <a href="/portfolio.html" class="ui-back" aria-label="Exit">
         <span class="ui-back-stack" aria-hidden="true">
             <span>Exit</span>
             <span>Exit</span>
@@ -689,13 +689,13 @@
             var scaleY = destRect.height / info.height;
             var scale  = (scaleX + scaleY) / 2;
 
-            // Animate: fast-start, soft-landing (ease-out), 1500ms
+            // Animate: slow → fast → slow (ease-in-out), 1500ms
             var anim = clone.animate([
                 { transform: 'translate(0, 0) scale(1)' },
                 { transform: 'translate(' + dx + 'px, ' + dy + 'px) scale(' + scale + ')' }
             ], {
                 duration: 1500,
-                easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                easing: 'cubic-bezier(0.83, 0, 0.17, 1)',
                 fill: 'forwards'
             });
 
@@ -708,6 +708,33 @@
                 title.style.visibility = prevVis || '';
                 if (clone.parentNode) clone.parentNode.removeChild(clone);
             }, 1800);
+        })();
+
+        // ===== Exit → fly the label back into the nav position =====
+        (function setupReturnHandoff() {
+            var exit = document.querySelector('.ui-back');
+            if (!exit) return;
+            exit.addEventListener('click', function (e) {
+                var title = document.querySelector('.ui-title');
+                if (!title) return;
+                var rect = title.getBoundingClientRect();
+                var cs   = window.getComputedStyle(title);
+                try {
+                    sessionStorage.setItem('gs-return', JSON.stringify({
+                        top: rect.top,
+                        left: rect.left,
+                        width: rect.width,
+                        height: rect.height,
+                        fontSize: cs.fontSize,
+                        fontWeight: cs.fontWeight,
+                        fontFamily: cs.fontFamily,
+                        letterSpacing: cs.letterSpacing,
+                        lineHeight: cs.lineHeight,
+                        text: (title.textContent || 'Gen Studio').trim()
+                    }));
+                } catch (err) {}
+                // Let navigation proceed — portfolio picks up the marker
+            });
         })();
 
         // ===== Init =====
