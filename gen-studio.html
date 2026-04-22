@@ -387,10 +387,6 @@
         <span class="caption-total" id="capTotal">05</span>
     </div>
 
-    <div class="hint" id="hint" aria-hidden="true">
-        <span>Scroll</span>
-        <span class="hint-arrow"></span>
-    </div>
 
     <script>
     (function () {
@@ -453,7 +449,7 @@
         function dismissHint() {
             if (hintDismissed) return;
             hintDismissed = true;
-            hint.classList.add('is-dismissed');
+            if (hint) hint.classList.add('is-dismissed');
         }
 
         // ===== Wheel =====
