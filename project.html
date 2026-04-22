@@ -77,11 +77,14 @@
 
         .header-logo {
             font-size: 16px;
-            font-weight: 700;
-            letter-spacing: 0.01em;
+            font-weight: 400;
+            letter-spacing: 0.04em;
             color: var(--text);
             text-decoration: none;
+            opacity: 0.92;
+            transition: opacity 200ms ease;
         }
+        .header-logo:hover { opacity: 1; }
         .mg-g {
             font-size: 1.22em;
             line-height: 1;
@@ -1980,7 +1983,7 @@
                     <a href="/gen-studio.html" data-i18n="menu.gen">Gen Studio</a>
                 </nav>
                 <span class="header-updated" data-i18n="nav.lastUpdated">Last updated · February 2026</span>
-                <div class="header-lang" role="group" aria-label="Language">
+                <div class="header-lang" role="group" aria-label="Language" hidden style="display:none">
                     <button type="button" data-i18n-toggle="en" aria-pressed="true">EN</button>
                     <span class="ml-sep" aria-hidden="true">/</span>
                     <button type="button" data-i18n-toggle="pt" aria-pressed="false">PT</button>
