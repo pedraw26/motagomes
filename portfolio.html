@@ -208,16 +208,21 @@
         /* ===== Cross-document View Transitions — morph into Gen Studio ===== */
         @view-transition { navigation: auto; }
         ::view-transition-group(*) {
-            animation-duration: 700ms;
-            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+            animation-duration: 1200ms;
+            animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
         }
         ::view-transition-old(root),
         ::view-transition-new(root) {
-            animation-duration: 500ms;
-            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+            animation-duration: 1000ms;
+            animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
         }
 
         .header-logo {
+            /* Pinned to match Gen Studio's MG position pixel-for-pixel */
+            position: fixed;
+            top: 28px;
+            left: 32px;
+            z-index: 1001;
             font-size: 16px;
             font-weight: 400;
             letter-spacing: 0.04em;
@@ -227,7 +232,6 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            position: relative;
             opacity: 0.92;
             transition: opacity 200ms ease;
             view-transition-name: site-logo;
