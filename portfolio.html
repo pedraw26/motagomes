@@ -326,8 +326,22 @@
                     color: transparent;
             animation: aislop-gradient 6s linear infinite;
         }
-        /* gen-label is handled by a JS-driven flight animation (see bottom of file) —
-           view-transition-name removed so the capture doesn't fight the JS clone. */
+        /* ================================================================
+           "Gen Studio" nav link — pinned to the SAME viewport coordinates
+           as the Gen Studio page title (top:32px right:32px, font 15.2px,
+           line-height:1). Natural nav flow can't hit that pixel exactly, so
+           the link is taken out of flow. Work/Motion/Research keep their
+           places; Gen Studio floats at the identical position across pages.
+           ================================================================ */
+        .header-nav a[data-i18n="menu.gen"] {
+            position: fixed;
+            top: 32px;
+            right: 32px;
+            z-index: 1001;
+            font-size: 15.2px;
+            letter-spacing: -0.005em;
+            line-height: 1;
+        }
         @keyframes aislop-gradient {
             from { background-position: 0% 50%; }
             to   { background-position: -200% 50%; }
