@@ -769,7 +769,10 @@
         /* Site-refresh banner — sticky at the top of the document, dismissible (remembered via localStorage).
            Dark/muted variant with small eclipse icon, editorial copy, and a close button. */
         .sitebanner {
-            position: relative;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
             width: 100%;
             padding: 10px 20px;
             /* Same animated gradient as the Gen Studio label — banner background only */
@@ -778,7 +781,7 @@
             background-repeat: repeat;
             animation: aislop-gradient 6s linear infinite;
             color: #ffffff;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
+            border-top: 1px solid rgba(255,255,255,0.15);
             font-family: var(--sf-pro);
             font-size: 13px;
             line-height: 1.5;
