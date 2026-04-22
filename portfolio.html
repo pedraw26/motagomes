@@ -165,7 +165,15 @@
             height: 100vh;
             overflow-y: scroll;
             scroll-behavior: smooth;
+            scrollbar-width: none;              /* Firefox */
+            -ms-overflow-style: none;           /* IE / Edge legacy */
         }
+        .scroll-container::-webkit-scrollbar { display: none; } /* WebKit */
+
+        /* Also hide any top-level page scrollbar */
+        html, body { scrollbar-width: none; -ms-overflow-style: none; }
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar { display: none; }
         
         .snap-section {
             min-height: 100vh;
