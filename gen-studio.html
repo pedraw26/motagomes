@@ -261,8 +261,8 @@
 
         .gen-viewport {
             position: relative;
-            width: 440px;
-            height: 400px;
+            width: 620px;        /* +40% */
+            height: 560px;       /* +40% — fits the stacked cards above/below */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -274,7 +274,7 @@
         /* 4:3 card, no image — solid dark surface with a subtle top sheen */
         .gen-card {
             position: absolute;
-            width: 400px;
+            width: 560px;        /* +40% — 400 → 560 */
             aspect-ratio: 4 / 3;
             border-radius: 18px;
             overflow: hidden;
@@ -307,8 +307,8 @@
         }
 
         @media (max-width: 720px) {
-            .gen-viewport { width: 88vw; height: 320px; }
-            .gen-card { width: 80vw; }
+            .gen-viewport { width: 92vw; height: 440px; }
+            .gen-card { width: 88vw; }
         }
 
         /* Scroll-snap markers: one invisible 100vh section per image.
