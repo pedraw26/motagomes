@@ -222,6 +222,13 @@
             display: inline-block;
             animation: logoDrift 6s ease-in-out infinite;
         }
+        /* Ⓖ sized to match M cap-height */
+        .mg-g {
+            font-size: 1.22em;
+            line-height: 1;
+            vertical-align: -0.08em;
+            animation: none !important;
+        }
 
         @keyframes logoDrift {
             0%, 100% { letter-spacing: 0.01em; opacity: 0.95; }
@@ -288,12 +295,12 @@
         }
         .header-nav a.is-current { color: var(--text); }
 
-        /* Animated gradient on the "AI slop" nav link */
+        /* Animated gradient on the "AI slop" nav link — seamless continuous loop */
         .header-nav a[data-i18n="menu.gen"],
         .menu-overlay-link[data-i18n="menu.gen"] {
             background-image: linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);
-            background-size: 300% 100%;
-            background-repeat: no-repeat;
+            background-size: 200% 100%;
+            background-repeat: repeat;
             -webkit-background-clip: text;
                     background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -302,7 +309,7 @@
         }
         @keyframes aislop-gradient {
             from { background-position: 0% 50%; }
-            to   { background-position: -300% 50%; }
+            to   { background-position: -200% 50%; }
         }
         @media (prefers-reduced-motion: reduce) {
             .header-nav a[data-i18n="menu.gen"],
@@ -3744,7 +3751,7 @@ margin-top: 3px;
     <header class="header" id="header">
         <div class="header-content">
             <div class="header-left">
-                <a href="javascript:void(0)" class="header-logo" onclick="scrollToTop()"><span>MG</span></a>
+                <a href="javascript:void(0)" class="header-logo" onclick="scrollToTop()"><span>M<span class="mg-g">Ⓖ</span></span></a>
                 <nav class="header-nav">
                     <a href="#work" data-i18n="menu.work">Work</a>
                     <a href="#motion" data-i18n="menu.motion">Motion Design</a>
