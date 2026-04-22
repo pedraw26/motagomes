@@ -810,6 +810,35 @@
             animation: aislop-gradient 6s linear infinite;
         }
         .sitebanner-text em { font-style: normal; font-weight: 500; color: inherit; }
+        /* Minimal privacy / cookies notice cluster (right side of the banner) */
+        .sitebanner-privacy {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: auto;                /* pushes it to the right */
+            font-size: 11px;
+            letter-spacing: 0.02em;
+            color: rgba(255,255,255,0.55);
+        }
+        .sitebanner-privacy-note {
+            white-space: nowrap;
+        }
+        .sitebanner-privacy-link {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.25);
+            padding-bottom: 1px;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+        .sitebanner-privacy-link:hover {
+            color: #ffffff;
+            border-color: rgba(255,255,255,0.7);
+        }
+        @media (max-width: 640px) {
+            .sitebanner-privacy-note { display: none; }
+        }
+
         .sitebanner-close {
             flex-shrink: 0;
             display: inline-flex;
@@ -3777,6 +3806,10 @@ margin-top: 3px;
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20"/></svg>
         </span>
         <span class="sitebanner-text"><em data-i18n="banner.textEm">Portfolio in refinement.</em><span data-i18n="banner.textRest"> New case studies and refreshed layouts are rolling out over the coming days — a few sections may shift as the edit continues.</span></span>
+        <span class="sitebanner-privacy" aria-label="Privacy notice">
+            <span class="sitebanner-privacy-note">This site uses cookies &amp; analytics.</span>
+            <a href="/privacy" class="sitebanner-privacy-link">Privacy</a>
+        </span>
         <button class="sitebanner-close" type="button" id="siteBannerClose" aria-label="Dismiss notice" data-i18n-attr="aria-label:banner.dismiss">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
