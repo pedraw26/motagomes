@@ -339,6 +339,81 @@
             .gen-counter { left: 20px; }
             .gen-label { left: 24px; top: 76px; }
         }
+
+        /* ===== Gen Studio — placeholder state ===== */
+        .gen-placeholder {
+            position: relative;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 120px 32px 80px;
+            overflow: hidden;
+        }
+        .gen-placeholder .gen-glow {
+            position: absolute;
+            left: 50%; top: 50%;
+            width: 720px; height: 720px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: rgba(255,255,255,0.025);
+            filter: blur(80px);
+            pointer-events: none;
+        }
+        .gen-placeholder-inner {
+            position: relative;
+            text-align: center;
+            max-width: 560px;
+        }
+        .gen-eyebrow {
+            font-family: var(--sf-pro);
+            font-size: 10px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            margin-bottom: 28px;
+        }
+        .gen-title {
+            font-family: var(--sf-pro);
+            font-size: clamp(2rem, 5vw, 3.6rem);
+            font-weight: 300;
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            margin-bottom: 22px;
+        }
+        .gen-copy {
+            font-family: var(--sf-pro);
+            font-size: 15px;
+            line-height: 1.65;
+            color: var(--text-60);
+            margin-bottom: 40px;
+        }
+        .gen-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .gen-cta {
+            padding: 12px 20px;
+            border-radius: 999px;
+            background: #fff;
+            color: #050505;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            text-decoration: none;
+            transition: transform 0.25s ease;
+        }
+        .gen-cta:hover { transform: translateY(-1px); }
+        .gen-link {
+            font-size: 12px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-60);
+            text-decoration: none;
+            transition: color 0.25s ease;
+        }
+        .gen-link:hover { color: var(--text); }
     </style>
 </head>
 <body>
@@ -386,180 +461,24 @@
         </div>
     </div>
 
-    <!-- Fixed stage that follows the active snap index -->
-    <div class="gen-stage">
-        <div class="gen-glow"></div>
-
-        <div class="gen-label"><strong data-i18n="gen.eyebrow">Gen Studio</strong> · <span data-i18n="gen.subtitle">AI-assisted visual explorations</span></div>
-
-        <div class="gen-counter">
-            <span class="gen-counter-cur" id="genCur">01</span>
-            <span class="gen-counter-sep"></span>
-            <span class="gen-counter-total" id="genTotal">05</span>
+    <!-- Placeholder — the gallery is being rebuilt with real work. -->
+    <main class="gen-placeholder">
+        <div class="gen-glow" aria-hidden="true"></div>
+        <div class="gen-placeholder-inner">
+            <div class="gen-eyebrow" data-i18n="gen.eyebrow">Gen Studio</div>
+            <h1 class="gen-title">Reel being curated.</h1>
+            <p class="gen-copy">A selection of AI-assisted visual work is in the edit. Come back shortly — or reach out for the in-progress set.</p>
+            <div class="gen-actions">
+                <a href="mailto:hi@motagomes.com" class="gen-cta">Request the set</a>
+                <a href="/" class="gen-link">Back to portfolio</a>
+            </div>
         </div>
-
-        <div class="gen-viewport" id="genViewport">
-            <!-- Card stack injected by JS -->
-        </div>
-    </div>
-
-    <!-- Invisible snap track — native scroll-snap drives the stage -->
-    <main class="gen-track" id="genTrack">
-        <!-- One .gen-snap per image, injected by JS -->
     </main>
 
     <script>
     (function () {
-        var IMAGES = [
-            { id: 1, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/luxury-black-sneaker-with-red-sole-on-grey-backgro-hj40sZT8MUUSeLz18VN7EjhcnV0kSD.jpg', alt: 'Black sneaker with red sole' },
-            { id: 2, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/white-minimalist-sneaker-on-light-background-xQxkXgGrSrAe6pvLPNC6yrh20Atqoa.jpg', alt: 'White minimalist sneaker' },
-            { id: 3, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/navy-blue-running-shoe-on-gradient-background-E1spqSK9gDvh3gTNwASkttEg76nZgm.jpg', alt: 'Navy blue running shoe' },
-            { id: 4, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/red-athletic-sneaker-on-dark-background-skamDX1NbCRW4jvHxijkfmCnHGr6NJ.jpg', alt: 'Red athletic sneaker' },
-            { id: 5, src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/green-forest-hiking-boot-on-natural-background-T41PNLzI60G2u6rFIRxeCbKT6RWKOH.jpg', alt: 'Green hiking boot' }
-        ];
-
-        var viewport = document.getElementById('genViewport');
-        var track    = document.getElementById('genTrack');
-        var curEl    = document.getElementById('genCur');
-        var totalEl  = document.getElementById('genTotal');
-
-        var currentIndex = 0;
-        var cards = [];
-        var markers = [];
-
-        function build() {
-            // Cards (stacked 3D visualization)
-            IMAGES.forEach(function (img, i) {
-                var card = document.createElement('div');
-                card.className = 'gen-card';
-                card.setAttribute('data-index', i);
-                var im = document.createElement('img');
-                im.src = img.src;
-                im.alt = img.alt;
-                im.draggable = false;
-                im.loading = i === 0 ? 'eager' : 'lazy';
-                im.decoding = 'async';
-                card.appendChild(im);
-                viewport.appendChild(card);
-                cards.push(card);
-            });
-
-            // Scroll-snap markers (one 100vh section per image — hidden stage above)
-            IMAGES.forEach(function (img, i) {
-                var m = document.createElement('section');
-                m.className = 'gen-snap';
-                m.setAttribute('data-index', i);
-                m.setAttribute('aria-label', 'Image ' + (i + 1) + ' of ' + IMAGES.length);
-                track.appendChild(m);
-                markers.push(m);
-            });
-
-            totalEl.textContent = String(IMAGES.length).padStart(2, '0');
-            layout();
-        }
-
-        function styleFor(idx) {
-            var total = IMAGES.length;
-            var diff = idx - currentIndex;
-            if (diff > total / 2) diff -= total;
-            if (diff < -total / 2) diff += total;
-
-            if (diff === 0)  return { y:    0, scale: 1.00, opacity: 1.00, z: 5, rx:   0, hidden: false, current: true };
-            if (diff === -1) return { y: -160, scale: 0.82, opacity: 0.60, z: 4, rx:   8, hidden: false, current: false };
-            if (diff === -2) return { y: -280, scale: 0.70, opacity: 0.30, z: 3, rx:  15, hidden: false, current: false };
-            if (diff ===  1) return { y:  160, scale: 0.82, opacity: 0.60, z: 4, rx:  -8, hidden: false, current: false };
-            if (diff ===  2) return { y:  280, scale: 0.70, opacity: 0.30, z: 3, rx: -15, hidden: false, current: false };
-            return { y: diff > 0 ? 400 : -400, scale: 0.60, opacity: 0, z: 0, rx: diff > 0 ? -20 : 20, hidden: true, current: false };
-        }
-
-        function layout() {
-            cards.forEach(function (card, i) {
-                var s = styleFor(i);
-                card.style.transform = 'translateY(' + s.y + 'px) scale(' + s.scale + ') rotateX(' + s.rx + 'deg)';
-                card.style.opacity = s.opacity;
-                card.style.zIndex = s.z;
-                card.setAttribute('data-pos', s.hidden ? 'hidden' : 'visible');
-                card.classList.toggle('is-current', s.current);
-            });
-            curEl.textContent = String(currentIndex + 1).padStart(2, '0');
-        }
-
-        function setIndex(i) {
-            i = Math.max(0, Math.min(IMAGES.length - 1, i));
-            if (i === currentIndex) return;
-            currentIndex = i;
-            layout();
-        }
-
-        // IntersectionObserver on the snap markers: whichever marker is
-        // most in-view drives the stage. Native wheel/touch scroll-snap
-        // handles the actual scrolling feel — matches the rest of the site.
-        var io = new IntersectionObserver(function (entries) {
-            // Pick the entry with the highest intersection ratio
-            var best = null;
-            entries.forEach(function (e) {
-                if (!best || e.intersectionRatio > best.intersectionRatio) best = e;
-            });
-            if (best && best.isIntersecting) {
-                var idx = parseInt(best.target.getAttribute('data-index'), 10);
-                if (!isNaN(idx)) setIndex(idx);
-            }
-        }, {
-            threshold: [0.5, 0.75]
-        });
-
-        function observeAll() {
-            markers.forEach(function (m) { io.observe(m); });
-        }
-
-        // ===== Keyboard =====
-        window.addEventListener('keydown', function (e) {
-            var next = currentIndex;
-            if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
-                next = Math.min(currentIndex + 1, IMAGES.length - 1);
-            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-                next = Math.max(currentIndex - 1, 0);
-            } else {
-                return;
-            }
-            e.preventDefault();
-            markers[next].scrollIntoView({ behavior: 'smooth' });
-        });
-
-        // ===== Drag on the card viewport — swipes to next/prev marker =====
-        var drag = { active: false, startY: 0, card: null, id: null };
-        viewport.addEventListener('pointerdown', function (e) {
-            var c = cards[currentIndex];
-            if (!c) return;
-            drag.active = true;
-            drag.startY = e.clientY;
-            drag.card = c;
-            drag.id = e.pointerId;
-            c.style.transition = 'none';
-            try { c.setPointerCapture(e.pointerId); } catch (_) {}
-        });
-        viewport.addEventListener('pointermove', function (e) {
-            if (!drag.active || !drag.card) return;
-            var dy = e.clientY - drag.startY;
-            drag.card.style.transform = 'translateY(' + (dy * 0.5) + 'px) scale(1) rotateX(0deg)';
-        });
-        function endDrag(e) {
-            if (!drag.active) return;
-            var dy = e.clientY - drag.startY;
-            drag.card.style.transition = '';
-            drag.active = false;
-            var next = currentIndex;
-            if (dy < -60)      next = Math.min(currentIndex + 1, IMAGES.length - 1);
-            else if (dy > 60)  next = Math.max(currentIndex - 1, 0);
-            if (next !== currentIndex && markers[next]) {
-                markers[next].scrollIntoView({ behavior: 'smooth' });
-            } else {
-                layout(); // snap the card back
-            }
-            drag.card = null;
-        }
-        viewport.addEventListener('pointerup', endDrag);
-        viewport.addEventListener('pointercancel', endDrag);
+        /* Gen Studio carousel has been retired while the real reel is
+           curated. Kept the page shell + clock + mobile menu wiring. */
 
         // ===== GMT clock =====
         function tick() {
@@ -584,9 +503,6 @@
             });
         }
 
-        // ===== Init =====
-        build();
-        observeAll();
     })();
     </script>
 </body>
