@@ -642,6 +642,8 @@
             var title = document.querySelector('.ui-title');
             if (!title) return;
 
+            // Remember original visibility BEFORE we hide the title
+            var prevTitleVis = title.style.visibility || '';
             // Hide the real title until the flight lands
             title.style.visibility = 'hidden';
 
@@ -677,7 +679,6 @@
             try { console.log('[gen-studio] label flight:', info); } catch (e) {}
 
             // Measure destination from the real title (make it briefly visible to measure)
-            var prevVis = title.style.visibility;
             title.style.visibility = 'visible';
             var destRect = title.getBoundingClientRect();
             title.style.visibility = 'hidden';
@@ -699,15 +700,14 @@
                 fill: 'forwards'
             });
 
-            anim.onfinish = function () {
-                title.style.visibility = prevVis || '';
-                clone.remove();
-            };
-            // Safety timeout in case onfinish never fires
-            setTimeout(function () {
-                title.style.visibility = prevVis || '';
+            function landClone() {
+                // Reset to the ORIGINAL visibility (not the 'hidden' we set)
+                title.style.visibility = prevTitleVis;
                 if (clone.parentNode) clone.parentNode.removeChild(clone);
-            }, 1800);
+            }
+            anim.onfinish = landClone;
+            // Safety timeout in case onfinish never fires
+            setTimeout(landClone, 1800);
         })();
 
         // ===== Exit → fly the label back into the nav position =====
