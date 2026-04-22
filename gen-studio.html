@@ -170,16 +170,15 @@
             vertical-align: -0.08em;
         }
 
-        /* ====== Top-center: Gen Studio animated gradient title ====== */
+        /* ====== Top-right: Gen Studio animated gradient title (matches nav position) ====== */
         .ui-title {
             position: fixed;
-            top: 26px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 32px;
+            right: 32px;
             z-index: 10;
-            font-size: 13px;
+            font-size: 15.2px;            /* matches .header-nav a (0.95rem) */
             font-weight: 400;
-            letter-spacing: 0.04em;
+            letter-spacing: -0.005em;
             pointer-events: none;
             background-image: linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);
             background-size: 200% 100%;
@@ -199,18 +198,8 @@
             .ui-title { animation: none; }
         }
 
-        /* ====== Bottom-right: GMT clock (swapped with Exit) ====== */
-        .ui-clock {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            z-index: 10;
-            font-size: 11px;
-            letter-spacing: 0.22em;
-            color: var(--text-60);
-            font-variant-numeric: tabular-nums;
-            pointer-events: none;
-        }
+        /* ====== GMT clock — hidden (requested) ====== */
+        .ui-clock { display: none; }
 
         /* ====== Top-right: Exit (swapped with clock) — sophisticated hover animation ======
            - Pill with frosted backdrop
@@ -221,7 +210,7 @@
         .ui-back {
             --h: 14px;                     /* line height of the EXIT label */
             position: fixed;
-            top: 22px;
+            bottom: 32px;
             right: 32px;
             z-index: 10;
             display: inline-flex;
@@ -626,89 +615,9 @@
             setInterval(tick, 10000);
         })();
 
-        // ===== Gen Studio label flight (right → center-top, ease-out) =====
-        // Portfolio stores the nav link's rect in sessionStorage on click; we
-        // fly a clone of the label from there to the real .ui-title position.
-        (function flyGenLabel() {
-            var raw;
-            try { raw = sessionStorage.getItem('gs-transition'); } catch (e) { return; }
-            if (!raw) return;
-            try { sessionStorage.removeItem('gs-transition'); } catch (e) {}
-
-            var info;
-            try { info = JSON.parse(raw); } catch (e) { return; }
-            if (!info || typeof info.left !== 'number') return;
-
-            var title = document.querySelector('.ui-title');
-            if (!title) return;
-
-            // Remember original visibility BEFORE we hide the title
-            var prevTitleVis = title.style.visibility || '';
-            // Hide the real title until the flight lands
-            title.style.visibility = 'hidden';
-
-            // Build the flying clone — same gradient treatment as target.
-            // Use setProperty for each style so quoted font-family values don't break cssText parsing.
-            var clone = document.createElement('span');
-            clone.textContent = info.text || 'Gen Studio';
-            function setS(prop, val) { clone.style.setProperty(prop, val); }
-            setS('position', 'fixed');
-            setS('top',  info.top  + 'px');
-            setS('left', info.left + 'px');
-            setS('z-index', '9999');
-            setS('pointer-events', 'none');
-            setS('white-space', 'nowrap');
-            setS('font-family',     info.fontFamily     || '-apple-system, sans-serif');
-            setS('font-size',       info.fontSize       || '13px');
-            setS('font-weight',     info.fontWeight     || '400');
-            setS('letter-spacing',  info.letterSpacing  || '0.04em');
-            setS('line-height',     info.lineHeight     || '1');
-            setS('background-image', 'linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a)');
-            setS('background-size', '200% 100%');
-            setS('background-repeat', 'repeat');
-            setS('-webkit-background-clip', 'text');
-            setS('background-clip', 'text');
-            setS('-webkit-text-fill-color', 'transparent');
-            setS('color', 'transparent');
-            setS('animation', 'ui-title-gradient 6s linear infinite');
-            setS('transform-origin', 'left center');
-            setS('will-change', 'transform');
-            document.body.appendChild(clone);
-
-            // Debug marker so we can verify the clone is being spawned
-            try { console.log('[gen-studio] label flight:', info); } catch (e) {}
-
-            // Measure destination from the real title (make it briefly visible to measure)
-            title.style.visibility = 'visible';
-            var destRect = title.getBoundingClientRect();
-            title.style.visibility = 'hidden';
-
-            // Compute translate + scale so clone lands exactly on the destination box
-            var dx = destRect.left - info.left;
-            var dy = destRect.top  - info.top;
-            var scaleX = destRect.width  / info.width;
-            var scaleY = destRect.height / info.height;
-            var scale  = (scaleX + scaleY) / 2;
-
-            // Animate: slow → fast → slow (ease-in-out), 1500ms
-            var anim = clone.animate([
-                { transform: 'translate(0, 0) scale(1)' },
-                { transform: 'translate(' + dx + 'px, ' + dy + 'px) scale(' + scale + ')' }
-            ], {
-                duration: 1500,
-                easing: 'cubic-bezier(0.83, 0, 0.17, 1)',
-                fill: 'forwards'
-            });
-
-            function landClone() {
-                // Reset to the ORIGINAL visibility (not the 'hidden' we set)
-                title.style.visibility = prevTitleVis;
-                if (clone.parentNode) clone.parentNode.removeChild(clone);
-            }
-            anim.onfinish = landClone;
-            // Safety timeout in case onfinish never fires
-            setTimeout(landClone, 1800);
-        })();
+        // Label sits at top-right on both pages now — no flight animation needed.
+        // Clean up any stale sessionStorage just in case.
+        try { sessionStorage.removeItem('gs-transition'); } catch (e) {}
 
         // ===== Exit → fly the label back into the nav position =====
         (function setupReturnHandoff() {
