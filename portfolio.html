@@ -205,6 +205,18 @@
             align-items: center;
         }
         
+        /* ===== Cross-document View Transitions — morph into Gen Studio ===== */
+        @view-transition { navigation: auto; }
+        ::view-transition-group(*) {
+            animation-duration: 700ms;
+            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation-duration: 500ms;
+            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
         .header-logo {
             font-size: 16px;
             font-weight: 400;
@@ -218,6 +230,7 @@
             position: relative;
             opacity: 0.92;
             transition: opacity 200ms ease;
+            view-transition-name: site-logo;
         }
         .header-logo:hover { opacity: 1; }
 
@@ -308,6 +321,10 @@
             -webkit-text-fill-color: transparent;
                     color: transparent;
             animation: aislop-gradient 6s linear infinite;
+        }
+        /* Morph target — only the visible desktop nav link is named */
+        .header-nav a[data-i18n="menu.gen"] {
+            view-transition-name: gen-label;
         }
         @keyframes aislop-gradient {
             from { background-position: 0% 50%; }

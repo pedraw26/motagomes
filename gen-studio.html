@@ -73,6 +73,18 @@
         }
 
         /* ====== Top-left: MG logo ====== */
+        /* ===== Cross-document View Transitions — enter from portfolio ===== */
+        @view-transition { navigation: auto; }
+        ::view-transition-group(*) {
+            animation-duration: 700ms;
+            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation-duration: 500ms;
+            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
         .ui-logo {
             position: fixed;
             top: 28px;
@@ -85,6 +97,7 @@
             font-size: 16px;
             opacity: 0.92;
             transition: opacity 200ms ease;
+            view-transition-name: site-logo;
         }
         .ui-logo:hover { opacity: 1; }
         .ui-logo .mg-g {
@@ -112,6 +125,7 @@
             -webkit-text-fill-color: transparent;
                     color: transparent;
             animation: ui-title-gradient 6s linear infinite;
+            view-transition-name: gen-label;
         }
         @keyframes ui-title-gradient {
             from { background-position: 0% 50%; }
