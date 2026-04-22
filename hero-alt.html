@@ -37,6 +37,33 @@
         flex-direction: column;
         overflow: hidden;
         isolation: isolate;
+        transition: transform 0.65s cubic-bezier(0.7, 0, 0.2, 1),
+                    opacity    0.55s ease;
+        will-change: transform, opacity;
+    }
+    /* Leaving state — hero slides down out of the viewport, revealing
+       the next page behind it. Set when the CTA is clicked. */
+    .hero.is-leaving {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+
+    /* Arrival state — hero starts slightly below + invisible on load,
+       then settles in. Gives the page-in transition on return visits. */
+    @keyframes heroArrive {
+        from { transform: translateY(24px); opacity: 0; }
+        to   { transform: translateY(0);    opacity: 1; }
+    }
+    .hero { animation: heroArrive 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+
+    /* Under-layer that flashes through as the hero slides — the black
+       next-page the user is heading toward. Just a solid fill for now. */
+    .under {
+        position: fixed;
+        inset: 0;
+        background: #050505;
+        z-index: -3;
+        pointer-events: none;
     }
     .hero::before {
         content: "";
@@ -370,6 +397,40 @@
     </div>
 
 </section>
+
+<!-- Solid under-layer so the slide-down reveals darkness, not a white flash -->
+<div class="under" aria-hidden="true"></div>
+
+<script>
+    // Click the CTA (or any nav pill link) → play the slide-down then
+    // navigate to portfolio.html. Internal hash-only on the destination
+    // is preserved. Held CMD/CTRL-click or middle-click opens in a new
+    // tab without hijacking.
+    (function () {
+        var hero = document.querySelector('.hero');
+        if (!hero) return;
+
+        function animateAwayThenNavigate(href) {
+            hero.classList.add('is-leaving');
+            // Match the CSS transition duration
+            setTimeout(function () { window.location.href = href; }, 620);
+        }
+
+        document.querySelectorAll('a.cta-core, .nav-pill a').forEach(function (a) {
+            a.addEventListener('click', function (e) {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return; // new tab / background
+                var href = a.getAttribute('href');
+                if (!href || href.indexOf('mailto:') === 0 || href.charAt(0) === '#') return;
+                e.preventDefault();
+                animateAwayThenNavigate(href);
+            });
+        });
+
+        // If the user comes back via the back button, the cached page
+        // might still have the .is-leaving class. Clear it on pageshow.
+        window.addEventListener('pageshow', function () { hero.classList.remove('is-leaving'); });
+    })();
+</script>
 
 </body>
 </html>
