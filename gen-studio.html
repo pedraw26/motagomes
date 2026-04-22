@@ -78,11 +78,6 @@
             animation-duration: 1000ms;
             animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
         }
-        /* Gen Studio label travel — fast start, soft landing (ease-out) */
-        ::view-transition-group(gen-label) {
-            animation-duration: 1200ms;
-            animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-        }
         ::view-transition-old(root),
         ::view-transition-new(root) {
             animation-duration: 600ms;
@@ -194,7 +189,7 @@
             -webkit-text-fill-color: transparent;
                     color: transparent;
             animation: ui-title-gradient 6s linear infinite;
-            view-transition-name: gen-label;
+            /* gen-label flight is handled by JS (see init script) */
         }
         @keyframes ui-title-gradient {
             from { background-position: 0% 50%; }
@@ -629,6 +624,86 @@
             }
             tick();
             setInterval(tick, 10000);
+        })();
+
+        // ===== Gen Studio label flight (right → center-top, ease-out) =====
+        // Portfolio stores the nav link's rect in sessionStorage on click; we
+        // fly a clone of the label from there to the real .ui-title position.
+        (function flyGenLabel() {
+            var raw;
+            try { raw = sessionStorage.getItem('gs-transition'); } catch (e) { return; }
+            if (!raw) return;
+            try { sessionStorage.removeItem('gs-transition'); } catch (e) {}
+
+            var info;
+            try { info = JSON.parse(raw); } catch (e) { return; }
+            if (!info || typeof info.left !== 'number') return;
+
+            var title = document.querySelector('.ui-title');
+            if (!title) return;
+
+            // Hide the real title until the flight lands
+            title.style.visibility = 'hidden';
+
+            // Build the flying clone — same gradient treatment as target
+            var clone = document.createElement('span');
+            clone.textContent = info.text || 'Gen Studio';
+            clone.style.cssText =
+                'position:fixed;' +
+                'top:' + info.top + 'px;' +
+                'left:' + info.left + 'px;' +
+                'z-index:9999;' +
+                'pointer-events:none;' +
+                'font-family:' + info.fontFamily + ';' +
+                'font-size:' + info.fontSize + ';' +
+                'font-weight:' + info.fontWeight + ';' +
+                'letter-spacing:' + info.letterSpacing + ';' +
+                'line-height:' + info.lineHeight + ';' +
+                'white-space:nowrap;' +
+                'background-image:linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);' +
+                'background-size:200% 100%;' +
+                'background-repeat:repeat;' +
+                '-webkit-background-clip:text;' +
+                'background-clip:text;' +
+                '-webkit-text-fill-color:transparent;' +
+                'color:transparent;' +
+                'animation:ui-title-gradient 6s linear infinite;' +
+                'transform-origin:left center;' +
+                'will-change:transform;';
+            document.body.appendChild(clone);
+
+            // Measure destination from the real title (make it briefly visible to measure)
+            var prevVis = title.style.visibility;
+            title.style.visibility = 'visible';
+            var destRect = title.getBoundingClientRect();
+            title.style.visibility = 'hidden';
+
+            // Compute translate + scale so clone lands exactly on the destination box
+            var dx = destRect.left - info.left;
+            var dy = destRect.top  - info.top;
+            var scaleX = destRect.width  / info.width;
+            var scaleY = destRect.height / info.height;
+            var scale  = (scaleX + scaleY) / 2;
+
+            // Animate: fast-start, soft-landing (ease-out), 1500ms
+            var anim = clone.animate([
+                { transform: 'translate(0, 0) scale(1)' },
+                { transform: 'translate(' + dx + 'px, ' + dy + 'px) scale(' + scale + ')' }
+            ], {
+                duration: 1500,
+                easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                fill: 'forwards'
+            });
+
+            anim.onfinish = function () {
+                title.style.visibility = prevVis || '';
+                clone.remove();
+            };
+            // Safety timeout in case onfinish never fires
+            setTimeout(function () {
+                title.style.visibility = prevVis || '';
+                if (clone.parentNode) clone.parentNode.removeChild(clone);
+            }, 1800);
         })();
 
         // ===== Init =====

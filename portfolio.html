@@ -211,11 +211,6 @@
             animation-duration: 1000ms;
             animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
         }
-        /* Gen Studio label travel — fast start, soft landing (ease-out) */
-        ::view-transition-group(gen-label) {
-            animation-duration: 1200ms;
-            animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-        }
         ::view-transition-old(root),
         ::view-transition-new(root) {
             animation-duration: 600ms;
@@ -331,10 +326,8 @@
                     color: transparent;
             animation: aislop-gradient 6s linear infinite;
         }
-        /* Morph target — only the visible desktop nav link is named */
-        .header-nav a[data-i18n="menu.gen"] {
-            view-transition-name: gen-label;
-        }
+        /* gen-label is handled by a JS-driven flight animation (see bottom of file) —
+           view-transition-name removed so the capture doesn't fight the JS clone. */
         @keyframes aislop-gradient {
             from { background-position: 0% 50%; }
             to   { background-position: -200% 50%; }
@@ -4929,6 +4922,33 @@ margin-top: 3px;
                 behavior: 'smooth'
             });
         }
+
+        // ================================================================
+        // GEN STUDIO TRANSITION — capture the nav link's position & style
+        // on click so gen-studio.html can fly the text in from that spot.
+        // ================================================================
+        (function setupGenStudioHandoff() {
+            var link = document.querySelector('.header-nav a[data-i18n="menu.gen"]');
+            if (!link) return;
+            link.addEventListener('click', function () {
+                var rect = link.getBoundingClientRect();
+                var cs   = window.getComputedStyle(link);
+                try {
+                    sessionStorage.setItem('gs-transition', JSON.stringify({
+                        top: rect.top,
+                        left: rect.left,
+                        width: rect.width,
+                        height: rect.height,
+                        fontSize: cs.fontSize,
+                        fontWeight: cs.fontWeight,
+                        fontFamily: cs.fontFamily,
+                        letterSpacing: cs.letterSpacing,
+                        lineHeight: cs.lineHeight,
+                        text: link.textContent
+                    }));
+                } catch (e) { /* storage may be blocked — navigation still proceeds */ }
+            });
+        })();
         
         // ========================================
         // RESEARCH HOVER REVEALER
