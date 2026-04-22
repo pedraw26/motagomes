@@ -72,17 +72,81 @@
             background: linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0));
         }
 
-        /* ====== Top-left: MG logo ====== */
-        /* ===== Cross-document View Transitions — enter from portfolio ===== */
+        /* ===== Cross-document View Transitions — fast morph, then cinematic UI cascade takes over ===== */
         @view-transition { navigation: auto; }
         ::view-transition-group(*) {
-            animation-duration: 1200ms;
+            animation-duration: 1000ms;
             animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
         }
         ::view-transition-old(root),
         ::view-transition-new(root) {
-            animation-duration: 1000ms;
+            animation-duration: 600ms;
             animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        /* =========================================================
+           CINEMATIC ENTRANCE — image fades first, UI cascades in
+           over ~3s. Fires on every page load. Soft ease throughout.
+           ========================================================= */
+        @keyframes cine-fade {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        @keyframes cine-rise {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes cine-rise-x {
+            from { opacity: 0; transform: translate(-50%, 6px); }
+            to   { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+        /* Apply opacity:0 baseline + animation; fill-forwards so final state sticks */
+        .stage,
+        .rail,
+        .caption,
+        .ui-back,
+        .ui-clock {
+            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+            animation-fill-mode: both;
+        }
+
+        /* 1 · Image layer: slow, generous fade from black (2.4s) */
+        .stage      { animation-name: cine-fade; animation-duration: 2400ms; animation-delay: 0ms;    }
+
+        /* 2 · Right rail fades in as the image settles */
+        .rail       { animation-name: cine-fade; animation-duration: 900ms;  animation-delay: 1400ms; }
+
+        /* 3 · Bottom-left counter rises softly */
+        .caption    { animation-name: cine-rise; animation-duration: 900ms;  animation-delay: 1700ms; }
+
+        /* 4 · Top-right Exit */
+        .ui-back    { animation-name: cine-rise; animation-duration: 900ms;  animation-delay: 2000ms; }
+
+        /* 5 · Bottom-right clock — last to appear */
+        .ui-clock   { animation-name: cine-rise; animation-duration: 900ms;  animation-delay: 2300ms; }
+
+        /* Stagger individual rail items for extra texture */
+        .rail-item {
+            opacity: 0;
+            animation-name: cine-fade;
+            animation-duration: 700ms;
+            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+            animation-fill-mode: both;
+        }
+        .rail-item:nth-child(1) { animation-delay: 1500ms; }
+        .rail-item:nth-child(2) { animation-delay: 1580ms; }
+        .rail-item:nth-child(3) { animation-delay: 1660ms; }
+        .rail-item:nth-child(4) { animation-delay: 1740ms; }
+        .rail-item:nth-child(5) { animation-delay: 1820ms; }
+        .rail-item:nth-child(6) { animation-delay: 1900ms; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .stage, .rail, .caption, .ui-back, .ui-clock, .rail-item {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
         }
 
         .ui-logo {
