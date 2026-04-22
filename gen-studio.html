@@ -27,10 +27,10 @@
             font-family: var(--sf-pro);
             -webkit-font-smoothing: antialiased;
         }
-        /* Native scroll-snap — matches the portfolio feel */
-        html {
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
+        /* Single-screen slideshow: wheel/keyboard/drag drive the stage with wrap-around */
+        html, body {
+            overflow: hidden;
+            height: 100%;
         }
 
         /* ===== Header (same shape as other pages) ===== */
@@ -218,16 +218,63 @@
 
         .gen-label {
             position: absolute;
-            top: 90px;
-            left: 80px;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
             font-size: 10px;
             letter-spacing: 0.2em;
             color: var(--text-40);
             text-transform: uppercase;
             z-index: 3;
             pointer-events: none;
+            white-space: nowrap;
         }
         .gen-label strong { color: var(--text-60); font-weight: 500; }
+
+        /* Mota Gomes signature — sits just above the gen-label */
+        .gen-signature {
+            position: absolute;
+            bottom: 68px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: auto;
+            color: var(--text, #ffffff);
+            opacity: .95;
+            z-index: 3;
+            pointer-events: none;
+        }
+        .gen-signature svg { width: 100%; height: auto; display: block; }
+        .gen-signature svg path { fill: currentColor; }
+
+        /* Right-side scroll progress bar — matches portfolio .gallery-stacked-progress */
+        .gen-progress {
+            position: absolute;
+            right: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 120px;
+            background: rgba(255,255,255,0.08);
+            overflow: hidden;
+            z-index: 3;
+            pointer-events: none;
+        }
+        .gen-progress-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: #ffffff;
+            transition: height 0.3s ease;
+        }
+        @media (max-width: 1024px) {
+            .gen-progress { right: 24px; }
+        }
+        @media (max-width: 768px) {
+            .gen-progress { display: none; }
+        }
 
         .gen-counter {
             position: absolute;
@@ -261,8 +308,8 @@
 
         .gen-viewport {
             position: relative;
-            width: 620px;        /* +40% */
-            height: 560px;       /* +40% — fits the stacked cards above/below */
+            width: 716px;        /* +10% */
+            height: 647px;       /* +10% */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -274,7 +321,7 @@
         /* 4:3 card, no image — solid dark surface with a subtle top sheen */
         .gen-card {
             position: absolute;
-            width: 560px;        /* +40% — 400 → 560 */
+            width: 647px;        /* +10% */
             aspect-ratio: 4 / 3;
             border-radius: 18px;
             overflow: hidden;
@@ -325,7 +372,7 @@
 
         @media (max-width: 720px) {
             .gen-counter { left: 20px; }
-            .gen-label { left: 24px; top: 76px; }
+            .gen-label { bottom: 24px; left: 50%; top: auto; }
         }
     </style>
 </head>
@@ -333,32 +380,11 @@
     <!-- Header -->
     <header class="header" id="header">
         <div class="header-content">
-            <div class="header-left">
-                <a href="/" class="header-logo"><span>MG</span></a>
-                <nav class="header-nav">
-                    <a href="/#work" data-i18n="menu.work">Work</a>
-                    <a href="/#motion" data-i18n="menu.motion">Motion Design</a>
-                    <a href="/#research" data-i18n="menu.research">Research</a>
-                    <a href="/#about" data-i18n="menu.about" hidden style="display:none">About</a>
-                    <a href="/gen-studio.html" class="is-current" data-i18n="menu.gen">AI slop</a>
-                </nav>
+            <div class="header-left"></div>
+            <div class="header-center">
+                <a href="/" class="header-logo" aria-label="Home"><span>MG</span></a>
             </div>
-            <div class="header-center" id="gmtTime">GMT 00:00</div>
-            <div class="header-right">
-                <span class="header-updated" data-i18n="nav.lastUpdated">Last updated · February 2026</span>
-                <div class="header-lang" role="group" aria-label="Language">
-                    <button type="button" data-i18n-toggle="en" aria-pressed="true">EN</button>
-                    <span class="ml-sep" aria-hidden="true">/</span>
-                    <button type="button" data-i18n-toggle="pt" aria-pressed="false">PT</button>
-                </div>
-                <div class="menu-icon" id="hamburger">
-                    <span></span>
-                    <span></span>
-                </div>
-                <a class="header-social" href="https://linkedin.com/in/pedraw" target="_blank" rel="noopener" aria-label="LinkedIn">
-                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zm1.78 13.02H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
-                </a>
-            </div>
+            <div class="header-right"></div>
         </div>
     </header>
 
@@ -378,12 +404,21 @@
     <div class="gen-stage">
         <div class="gen-glow"></div>
 
-        <div class="gen-label"><strong data-i18n="gen.eyebrow">AI slop</strong> · <span data-i18n="gen.subtitle">AI-assisted visual explorations</span></div>
+        <div class="gen-signature" aria-label="Pedro Mota Gomes signature">
+            <svg viewBox="0 0 1127.36 305.38" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                <path d="M491.97,75.6l39.86-36.67c3.67-3.31,8.32-5.44,11.69-4.78,4.34.85,6.6,5.66,2.3,11.67-2.21,3.09-5.75,5.75-8.65,8.21-6.58,5.6-13.16,11.19-19.74,16.79-.94.8-2.58,2.38-3.48,3.3-2.07,2.11,1.99,1.65,7.81,1.95,8.91.46,15.65.44,23.47.65,2.07.06,4.18.12,6.15.77,5.16,1.7,7.8,9.92,1.65,12.36-1.52.6-3.2.56-4.83.5-7.77-.26-15.55-.52-23.32-.78-7.59-.25-17.09-.78-24.65-.16-3.04.25-3.96.13-6.05,2.27-3.25,3.33-4.45,4.51-6.91,6.87-4.97,4.77-10.05,10.2-14.95,15.03-5.92,5.83-9.72,10.71-15.1,16.76-1.88,2.12-3.47,4.64-4.23,5.74-1.04,1.5-1.11,1.83-2.18,3.59-.24.39-.52.76-.61,1.21s.05.97.44,1.2c.24.14.23.73,2.16.63,5.9-.29,10.95-3.98,16.29-6.31,5.84-2.55,11.61-5.26,17.63-7.37,11.11-3.89,40.99-14.98,35.14,7.35,26.73-7.66,53.48-6.53,81.06-6.24,6.32-11.81,13.98-22.97,22.3-33.48C657.57,55.81,723.99-2.37,779.27.07c55.4,2.45,50.96,52.35,47.42,92.45-1.53,17.35-19.85,18.57-23.6,9.53-2.49-5.99,1.53-25.52,1.86-33.22.73-17.07,3.95-42.65-15.06-50.02-28.94-11.22-71.98,15.37-94.94,32.27-29.15,21.46-54.2,48.4-73.5,79.02.18-.29,3.47.12,3.81.13,3.12.11,6.24.22,9.35.32,3.72.13,7.43.26,11.15.39,3.77.13,7.85-.03,11.55.63,3.8.69,8.48,3.74,6.89,8.18-1.37,3.82-6.03,5.66-9.73,6.08-13.15,1.5-28.18-1.36-41.42-.53-14.3,26.33-30.45,76.08,7.36,90.15,37.3,13.89,75.59-13.09,103.22-35.13,17.05-13.61,33.44-28.72,49.82-42.95-.5.01-1.06-.13-1.55,0-14.15,4-29.42,15.93-42.82,21.13-5.4,2.1-12.57,4.55-17.99,1.96-2.48-1.19-4.21-4.88-3.97-7.75.33-3.86,3-7.72,6.58-9.19,1.58-.65,3.21-1.08,4.75-1.8.92-.43,1.96-.7,2.92-1.05,6.57-2.4,13.1-4.94,19.63-7.45,7.5-2.88,13.71-5.7,21.27-8.4,7.86-2.82,14.02-5.29,22.03-7.66,7.67-2.26,16.63-4.7,24.5-6.12,6.95-1.26,14.28-2.47,21.35-2.3,5.84.14,13.36.16,18.37,3.23,5.76,3.53,5.18,6,5.82,6.38,0,0,26.2-14.16,40.37-13.95,6.7.1,10.13,5.22,5.59,9.89,7.95-1.78,26.62-7.54,33.49-2.55,6.58,4.78-6.75,10.19-9.33,12.69-.17.17-.35.38-.31.61.05.31.42.44.72.49.28.05.56.08.84.03,3.59-.58,7.11-2.12,10.43-3.64,3.79-1.73,7.49-3.66,11.22-5.51,6.69-3.32,14.11-7.27,21.75-7.46,1.56-.04,3.13.12,4.63.58,8.67,2.67-.7,8.84,1,11.06,6.45-2.4,13.58-4.48,20.45-5.22,5.67-.61,11.37-1.05,17.06-1.37,11.12-.63,22.26-.82,33.39-.9,11.25-.09,22.5-.06,33.75-.24,10.99-.17,21.97-.82,32.94-1.07,3.53-.08,7.03-.06,10.45.9.42.12,1.54.42,2.43,1.1.97.74,1.6,1.6,1.89,2.79.39,1.57.32,2.88.01,4.43-1.61,8.31-22.29,6.05-29.25,5.92-31.68-.61-68.01-2.21-99.54-.03-2.89.2-8.75.72-11.3,1.28-10.05,2.18-29.26,14.74-29.9-4.01-14.94,1.84-29.79,13.43-44.81,12.2-2.37-.19-4.75-.29-6.6-2.01-1.76-1.63-1.57-4.09-.44-5.77,1.85-2.63,4.01-4.9,6.77-6.56.33-.2.66-.39.94-.65,1.13-1.08,0-1.84-1.15-1.81-.95.02-1.87.3-2.78.58-2.46.78-4.89,1.65-7.29,2.61-2.22.89-4.47,1.67-6.69,2.58-4.88,2-24.47,14.95-27.1,6.05-1.36-4.61,2.43-6.33,5.06-9.22.15-.8-.96-.63-1.57-.53-4.32.72-14.79,7.42-19.73,9.63-1.9.85-3.77,1.78-5.65,2.68-4.63,2.21-10.58,5.64-15.92,5.06-5.99-.66-5.38-10.33-2.26-13.57,1.86-1.93-.83-1.86-2.17-1.83-2.26.05-4.51.27-6.74.64-2.49.41-4.95,1.02-7.35,1.82-1.71.57-4.29,1.02-5.02,2.87-.81,2.07-3.08,8.85-10.39,22.89-14.4,27.65-28.67,42.31-35.37,75.69,23.28,1.33,10.85,24.45-5.99,21.14-11.49-2.26-9.31-20.12-7.34-27.65,6.05-23.11,19.18-43.32,29.05-64.77-34.92,26.35-66.52,63.95-111.08,73.94-25.63,5.74-56.01,2.9-73.39-18.92-19.42-24.38-8.5-60.87,3.12-86.45-6.46-.15-12.97.15-19.44.03-11.88-.22-23.07-1.08-35.11,1.49-9.42,2.01-34.3,14.66-40.9,3.24-2.25-3.89.45-5.3-.46-8.95-14.04,3.5-31.63,15.64-45.36,17.54-17.39,2.4-22.46-4.49-20.7-12.9,2.27-10.82,15.25-24.88,21.52-32.4,5.65-6.78,8.19-8.83,13.85-14.87,3.31-3.53,6.33-6.65,8.6-8.72l-25.4-.38c-10.17,11.37-21.81,21.92-31.71,33.35-1.37,1.58-6.81,8.19-7.3,9.48-1.08,2.87.75,1.89,8.47.81,6.09-.86,8.67,5.61,4.72,10.28-3.61,4.27-27.74,5.04-34.16,7.25l15.17,10.49c33.44,25.71,47.93,67.55,28.37,106.96-16.28,32.8-63.62,48.93-95.62,29.48-41.83-25.42-30.51-95.4-21.32-135.41-65.41,9.9-130.89,20.76-196.68,28.17-24.24,2.73-88.19,11.58-108.35,3.78-12.63-4.89-16.46-15.51-11.02-27.76,9.62-21.67,50.25-37.25,71.81-43.51,48.71-14.14,100.42-15.68,150.75-13.33l54.27-84.62c3.74-6.22,11.86-6.02,13.12,1.48-4.01,24.64-13.1,52.33-10.45,77.46,2.01,19.03,11.26,11.09,21.77,3.17,15.58-11.75,31.52-30.91,44.11-46.04,10.26-12.33,21.05-29.88,31.51-40.82,4.82-5.04,12.17-5.46,12.64,2.05.27,4.37-10.51,20.43-13.23,25.67-13.73,26.44-26.61,53.48-36.15,81.78l16.5,5.51,5,1.67c-3.14-20.22,18.29-29.32,34.99-25.7,4.22.91,8.99,5.38,7.14,11.57,9.53-10.66,14.56-17.11,19.14-22.32,3.79-4.32,4.85-5.61,8.17-9.19,1.83-1.98.32-2.45-.78-2.41l-34.91.69s-4.89.21-6.89-.27c-1.76-.42-2.48-1.34-2.74-1.74-.68-1.03-.91-2.29-.75-3.53.11-.88.7-2.95,3.03-3.89,3.52-1.41,9.25-1.55,9.25-1.55l46.71-1.7c10.08-8.78,20.33-17.42,30.36-26.25,5.25-4.62,15.66-15.64,23.14-15.41,5.99.18,8.55,6.12,1.89,12.14l-33.44,28.94h23.59ZM270.25,113.34c-4.22-17.13.04-34.31.53-51.37l-30.93,48.22,30.4,3.15ZM329.98,124.88l15.74-40.89-36.66,35.12c-.01,1.8,18.26,4.5,20.92,5.77ZM215.73,121.73c-52.93-1.18-108.69.49-158.55,20.17-12.06,4.76-29.15,13.27-38.03,22.78-18.83,20.19,13.11,19.28,26.22,18.88,41.38-1.24,87.51-8.34,128.81-13.77,49.33-6.48,98.48-14.69,147.7-21.87l3.93-10.46c-30.38-7.62-61.49-11.98-92.72-14.71-1.65.02-2.19,1.2-3.15,2.18-6.15,6.24-12.26,21.32-18.4,28.77-5.81,7.04-14.3,3.48-12.36-5.01.71-3.1,17.75-25.92,16.56-26.96ZM380.63,139.97c6.63.04,18.59-5.95,24.86-16.85,0,0-7.13,8.08-14.18,12.6-4.06,2.6-10.67,4.25-10.67,4.25ZM369.35,153.7c-4.54-.25-26.96,3.68-32.23,5.02-1.42.36-3.61.58-4.48,1.81-11.61,39.59-24.74,131.87,38.78,131.87,57.14,0,76.35-66.92,41.95-107.78-6.5-7.72-34.76-30.4-44.01-30.91Z"/>
+            </svg>
+        </div>
+        <div class="gen-label" hidden style="display:none"><strong data-i18n="gen.eyebrow">AI slop</strong> · <span data-i18n="gen.subtitle">AI-assisted visual explorations</span></div>
 
         <div class="gen-counter">
             <span class="gen-counter-cur" id="genCur">01</span>
             <span class="gen-counter-sep"></span>
             <span class="gen-counter-total" id="genTotal">05</span>
+        </div>
+
+        <div class="gen-progress" aria-hidden="true">
+            <div class="gen-progress-fill" id="genProgressFill"></div>
         </div>
 
         <div class="gen-viewport" id="genViewport">
@@ -398,8 +433,14 @@
 
     <script>
     (function () {
-        // 5 empty card slots — images removed; ready to be filled later.
-        var IMAGES = [ { id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 } ];
+        // 5 card slots — fill by adding a `url` to a slot.
+        var IMAGES = [
+            { id: 1, url: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776862617/gym_xntulz.jpg' },
+            { id: 2, url: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776862668/hf_20260422_105448_b208b2f7-9e39-4cfe-bf08-9800ec9459ff_2_wwyo7c.png' },
+            { id: 3, url: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776862663/hf_20260422_020335_b52c4512-e9c9-4e50-870a-df8ee0862ec9_b8vzjs.png' },
+            { id: 4, url: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776863789/hf_20260421_063353_f2544b10-1ce8-472e-84af-fb5e2a33d3b8_trsdfi.jpg' },
+            { id: 5, url: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776863789/hf_20260421_041502_7dce3cee-7fa8-4657-bf08-7552d1d66e5c_tjbrwq.jpg' }
+        ];
 
         var viewport = document.getElementById('genViewport');
         var track    = document.getElementById('genTrack');
@@ -411,23 +452,21 @@
         var markers = [];
 
         function build() {
-            // Cards only — no images, just clean 4:3 surfaces
-            IMAGES.forEach(function (_, i) {
+            // Cards — render image if a url is provided, otherwise clean 4:3 surface
+            IMAGES.forEach(function (item, i) {
                 var card = document.createElement('div');
                 card.className = 'gen-card';
                 card.setAttribute('data-index', i);
+                if (item && item.url) {
+                    var img = document.createElement('img');
+                    img.src = item.url;
+                    img.alt = 'AI slop ' + (i + 1);
+                    img.loading = 'lazy';
+                    img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
+                    card.appendChild(img);
+                }
                 viewport.appendChild(card);
                 cards.push(card);
-            });
-
-            // Scroll-snap markers (one 100vh section per image — hidden stage above)
-            IMAGES.forEach(function (img, i) {
-                var m = document.createElement('section');
-                m.className = 'gen-snap';
-                m.setAttribute('data-index', i);
-                m.setAttribute('aria-label', 'Slot ' + (i + 1) + ' of ' + IMAGES.length);
-                track.appendChild(m);
-                markers.push(m);
             });
 
             totalEl.textContent = String(IMAGES.length).padStart(2, '0');
@@ -461,48 +500,39 @@
         }
 
         function setIndex(i) {
-            i = Math.max(0, Math.min(IMAGES.length - 1, i));
+            // Wrap into [0, IMAGES.length)
+            var n = IMAGES.length;
+            i = ((i % n) + n) % n;
             if (i === currentIndex) return;
             currentIndex = i;
             layout();
+            var fill = document.getElementById('genProgressFill');
+            if (fill) fill.style.height = (((i + 1) / n) * 100) + '%';
         }
 
-        // IntersectionObserver on the snap markers: whichever marker is
-        // most in-view drives the stage. Native wheel/touch scroll-snap
-        // handles the actual scrolling feel — matches the rest of the site.
-        var io = new IntersectionObserver(function (entries) {
-            // Pick the entry with the highest intersection ratio
-            var best = null;
-            entries.forEach(function (e) {
-                if (!best || e.intersectionRatio > best.intersectionRatio) best = e;
-            });
-            if (best && best.isIntersecting) {
-                var idx = parseInt(best.target.getAttribute('data-index'), 10);
-                if (!isNaN(idx)) setIndex(idx);
-            }
-        }, {
-            threshold: [0.5, 0.75]
-        });
-
-        function observeAll() {
-            markers.forEach(function (m) { io.observe(m); });
-        }
+        // ===== Continuous wheel navigation: no page scroll, wraps infinitely =====
+        var wheelCooldown = false;
+        window.addEventListener('wheel', function (e) {
+            e.preventDefault();
+            if (wheelCooldown) return;
+            if (Math.abs(e.deltaY) < 8) return;
+            wheelCooldown = true;
+            setIndex(currentIndex + (e.deltaY > 0 ? 1 : -1));
+            setTimeout(function () { wheelCooldown = false; }, 420);
+        }, { passive: false });
 
         // ===== Keyboard =====
         window.addEventListener('keydown', function (e) {
-            var next = currentIndex;
             if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
-                next = Math.min(currentIndex + 1, IMAGES.length - 1);
+                e.preventDefault();
+                setIndex(currentIndex + 1);
             } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-                next = Math.max(currentIndex - 1, 0);
-            } else {
-                return;
+                e.preventDefault();
+                setIndex(currentIndex - 1);
             }
-            e.preventDefault();
-            markers[next].scrollIntoView({ behavior: 'smooth' });
         });
 
-        // ===== Drag on the card viewport — swipes to next/prev marker =====
+        // ===== Drag on the card viewport — swipes to next/prev =====
         var drag = { active: false, startY: 0, card: null, id: null };
         viewport.addEventListener('pointerdown', function (e) {
             var c = cards[currentIndex];
@@ -524,18 +554,30 @@
             var dy = e.clientY - drag.startY;
             drag.card.style.transition = '';
             drag.active = false;
-            var next = currentIndex;
-            if (dy < -60)      next = Math.min(currentIndex + 1, IMAGES.length - 1);
-            else if (dy > 60)  next = Math.max(currentIndex - 1, 0);
-            if (next !== currentIndex && markers[next]) {
-                markers[next].scrollIntoView({ behavior: 'smooth' });
-            } else {
-                layout(); // snap the card back
-            }
+            if (dy < -60)      setIndex(currentIndex + 1);
+            else if (dy > 60)  setIndex(currentIndex - 1);
+            else               layout(); // snap back
             drag.card = null;
         }
         viewport.addEventListener('pointerup', endDrag);
         viewport.addEventListener('pointercancel', endDrag);
+
+        // ===== Touch (mobile swipe) =====
+        var touchStartY = null;
+        window.addEventListener('touchstart', function (e) {
+            if (e.touches && e.touches[0]) touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        window.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+        }, { passive: false });
+        window.addEventListener('touchend', function (e) {
+            if (touchStartY == null) return;
+            var endY = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientY : touchStartY;
+            var dy = endY - touchStartY;
+            touchStartY = null;
+            if (dy < -40)      setIndex(currentIndex + 1);
+            else if (dy > 40)  setIndex(currentIndex - 1);
+        });
 
         // ===== GMT clock =====
         function tick() {
@@ -562,7 +604,8 @@
 
         // ===== Init =====
         build();
-        observeAll();
+        var fill = document.getElementById('genProgressFill');
+        if (fill) fill.style.height = ((1 / IMAGES.length) * 100) + '%';
     })();
     </script>
 </body>
