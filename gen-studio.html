@@ -645,32 +645,36 @@
             // Hide the real title until the flight lands
             title.style.visibility = 'hidden';
 
-            // Build the flying clone — same gradient treatment as target
+            // Build the flying clone — same gradient treatment as target.
+            // Use setProperty for each style so quoted font-family values don't break cssText parsing.
             var clone = document.createElement('span');
             clone.textContent = info.text || 'Gen Studio';
-            clone.style.cssText =
-                'position:fixed;' +
-                'top:' + info.top + 'px;' +
-                'left:' + info.left + 'px;' +
-                'z-index:9999;' +
-                'pointer-events:none;' +
-                'font-family:' + info.fontFamily + ';' +
-                'font-size:' + info.fontSize + ';' +
-                'font-weight:' + info.fontWeight + ';' +
-                'letter-spacing:' + info.letterSpacing + ';' +
-                'line-height:' + info.lineHeight + ';' +
-                'white-space:nowrap;' +
-                'background-image:linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);' +
-                'background-size:200% 100%;' +
-                'background-repeat:repeat;' +
-                '-webkit-background-clip:text;' +
-                'background-clip:text;' +
-                '-webkit-text-fill-color:transparent;' +
-                'color:transparent;' +
-                'animation:ui-title-gradient 6s linear infinite;' +
-                'transform-origin:left center;' +
-                'will-change:transform;';
+            function setS(prop, val) { clone.style.setProperty(prop, val); }
+            setS('position', 'fixed');
+            setS('top',  info.top  + 'px');
+            setS('left', info.left + 'px');
+            setS('z-index', '9999');
+            setS('pointer-events', 'none');
+            setS('white-space', 'nowrap');
+            setS('font-family',     info.fontFamily     || '-apple-system, sans-serif');
+            setS('font-size',       info.fontSize       || '13px');
+            setS('font-weight',     info.fontWeight     || '400');
+            setS('letter-spacing',  info.letterSpacing  || '0.04em');
+            setS('line-height',     info.lineHeight     || '1');
+            setS('background-image', 'linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a)');
+            setS('background-size', '200% 100%');
+            setS('background-repeat', 'repeat');
+            setS('-webkit-background-clip', 'text');
+            setS('background-clip', 'text');
+            setS('-webkit-text-fill-color', 'transparent');
+            setS('color', 'transparent');
+            setS('animation', 'ui-title-gradient 6s linear infinite');
+            setS('transform-origin', 'left center');
+            setS('will-change', 'transform');
             document.body.appendChild(clone);
+
+            // Debug marker so we can verify the clone is being spawned
+            try { console.log('[gen-studio] label flight:', info); } catch (e) {}
 
             // Measure destination from the real title (make it briefly visible to measure)
             var prevVis = title.style.visibility;

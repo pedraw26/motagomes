@@ -4926,15 +4926,16 @@ margin-top: 3px;
         // ================================================================
         // GEN STUDIO TRANSITION — capture the nav link's position & style
         // on click so gen-studio.html can fly the text in from that spot.
+        // Attach to every Gen Studio link (desktop nav + mobile overlay).
         // ================================================================
         (function setupGenStudioHandoff() {
-            var link = document.querySelector('.header-nav a[data-i18n="menu.gen"]');
-            if (!link) return;
-            link.addEventListener('click', function () {
-                var rect = link.getBoundingClientRect();
-                var cs   = window.getComputedStyle(link);
-                try {
-                    sessionStorage.setItem('gs-transition', JSON.stringify({
+            var links = document.querySelectorAll('a[data-i18n="menu.gen"]');
+            console.log('[portfolio] gen-studio links found:', links.length);
+            links.forEach(function (link) {
+                link.addEventListener('click', function () {
+                    var rect = link.getBoundingClientRect();
+                    var cs   = window.getComputedStyle(link);
+                    var payload = {
                         top: rect.top,
                         left: rect.left,
                         width: rect.width,
@@ -4944,9 +4945,15 @@ margin-top: 3px;
                         fontFamily: cs.fontFamily,
                         letterSpacing: cs.letterSpacing,
                         lineHeight: cs.lineHeight,
-                        text: link.textContent
-                    }));
-                } catch (e) { /* storage may be blocked — navigation still proceeds */ }
+                        text: (link.textContent || 'Gen Studio').trim()
+                    };
+                    try {
+                        sessionStorage.setItem('gs-transition', JSON.stringify(payload));
+                        console.log('[portfolio] stored gs-transition:', payload);
+                    } catch (e) {
+                        console.warn('[portfolio] sessionStorage blocked:', e);
+                    }
+                });
             });
         })();
         
