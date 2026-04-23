@@ -4988,6 +4988,9 @@ margin-top: 3px;
                 overflow: hidden;
                 background: #000;
             }
+            /* One gradient across the whole 'MⒼ' mark (unigraphic). Each
+               letter shows its own slice of the SAME gradient based on its
+               layout position — same technique as the Gen Studies link. */
             .mgf-mark {
                 font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
                 font-weight: 200;
@@ -4996,24 +4999,24 @@ margin-top: 3px;
                 letter-spacing: -0.04em;
                 user-select: none;
                 white-space: nowrap;
-            }
-            /* Each letter gets its own gradient so the text-clip mask travels
-               with the letter while it's animating (prevents cropped/blank
-               frames during the slide-in). */
-            .mgf-mark .mgf-m-sym,
-            .mgf-mark .mgf-g-sym {
-                display: inline-block;
-                line-height: 1;
                 background-image: linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);
                 background-size: 200% 100%;
+                background-repeat: repeat;
                 -webkit-background-clip: text;
                         background-clip: text;
                 -webkit-text-fill-color: transparent;
                         color: transparent;
                 animation: mgf-slide 12s linear infinite;
+            }
+            /* Child spans inherit the parent's text-clip gradient. They only
+               animate transform + opacity; no background/color of their own,
+               so the gradient flows across both letters as one mark. */
+            .mgf-mark .mgf-m-sym,
+            .mgf-mark .mgf-g-sym {
+                display: inline-block;
+                line-height: 1;
                 will-change: transform, opacity;
                 opacity: 0;
-                /* Longer duration + gentler easing for a smoother landing. */
                 transition:
                     transform 1.6s cubic-bezier(.16, 1, .3, 1),
                     opacity 0.9s ease-out;
