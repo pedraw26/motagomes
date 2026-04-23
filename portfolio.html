@@ -389,33 +389,27 @@
             to   { opacity: 1; transform: translateX(0); }
         }
 
-        /* Vertical bar that separates Gen Studies from the Call CTA */
-        .nav-sep {
-            width: 1px;
-            height: 14px;
-            background: rgba(255,255,255,0.25);
-            align-self: center;
-            flex-shrink: 0;
+        /* ================================================================
+           "Gen Studies" nav link — pinned to the SAME viewport coordinates
+           as the Gen Studies page title (top:32px right:32px, font 15.2px,
+           line-height:1) so the View Transition across pages hands off
+           cleanly. Natural nav flow can't hit that pixel exactly, so the
+           link is taken out of flow.
+           ================================================================ */
+        .header-nav a.nav-gen {
+            position: fixed;
+            top: 32px;
+            right: 32px;
+            z-index: 1001;
+            font-size: 15.2px;
+            letter-spacing: -0.005em;
+            line-height: 1;
         }
-        .nav-sep--overlay {
-            height: 28px;
-            margin: 8px 0;
+        /* Reserve horizontal space in the nav so Work / About / Blog don't
+           slide into the pinned Gen Studies label's territory. */
+        .header-nav {
+            padding-right: 130px;
         }
-
-        /* "Call me" CTA — phone icon, no label in the header nav */
-        .nav-call {
-            display: inline-flex !important;
-            align-items: center;
-            color: rgba(255,255,255,0.75);
-            transition: color 0.2s ease;
-        }
-        .nav-call svg { display: block; }
-        .header-nav a.nav-call:hover,
-        .menu-overlay-link.nav-call:hover {
-            color: #fff;
-        }
-        /* Defeat the underline hover marker on the icon-only CTA */
-        .header-nav a.nav-call::before { display: none; }
 
         /* NDA menu item: inline lock icon after the label */
         .header-nav a.menu-nda,
@@ -4035,8 +4029,6 @@ margin-top: 3px;
                     <a href="javascript:void(0)" data-i18n="menu.research" hidden style="display:none">Research</a>
                     <a href="javascript:void(0)" class="menu-nda" onclick="event.preventDefault();openPwModal()" aria-label="NDA-protected work" hidden style="display:none"><span data-i18n="menu.nda">NDA</span><svg class="menu-nda-lock" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></a>
                     <a href="/gen-studio.html" class="nav-gen"><span data-i18n="menu.gen">Gen Studies</span></a>
-                    <span class="nav-sep" aria-hidden="true"></span>
-                    <a href="tel:+351000000000" class="nav-call" aria-label="Call me"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.8 12.8 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.8 12.8 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
                 </nav>
                 <div class="header-lang" role="group" aria-label="Language" hidden style="display:none">
                     <button type="button" data-i18n-toggle="en" aria-pressed="true">EN</button>
@@ -4066,8 +4058,6 @@ margin-top: 3px;
             <a href="javascript:void(0)" class="menu-overlay-link" data-i18n="menu.research" hidden style="display:none">Research</a>
             <a href="javascript:void(0)" class="menu-overlay-link menu-nda" onclick="event.preventDefault();openPwModal()" aria-label="NDA-protected work" hidden style="display:none"><span data-i18n="menu.nda">NDA</span><svg class="menu-nda-lock" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></a>
             <a href="/gen-studio.html" class="menu-overlay-link nav-gen"><span data-i18n="menu.gen">Gen Studies</span></a>
-            <span class="nav-sep nav-sep--overlay" aria-hidden="true"></span>
-            <a href="tel:+351000000000" class="menu-overlay-link nav-call" aria-label="Call me"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.8 12.8 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.8 12.8 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
             <a href="mailto:hi@motagomes.com" class="menu-overlay-cta" data-i18n="menu.letstalk">Let's Talk</a>
             <a href="/cv.pdf" download class="menu-overlay-cv">
                 <span data-i18n="menu.cv">Curriculum</span>
