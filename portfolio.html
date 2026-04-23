@@ -12,7 +12,11 @@
     <style>
         :root {
             --sf-pro: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
-            --mono: 'SF Mono', 'Fira Code', 'Monaco', 'Menlo', monospace;
+            /* Site rule: no monospaced fonts — --mono aliases the sans stack
+               so every legacy 'font-family: var(--mono)' declaration still
+               resolves, but renders in SF Pro. Keep the variable name to
+               avoid touching every call site. */
+            --mono: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
             --scrollbar-comp: 0px;
             
             --bg-black: #000000;
@@ -1117,22 +1121,26 @@
         .journal-head {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 56px;
+            align-items: flex-end;
+            margin-bottom: 72px;
+            gap: 32px;
         }
-        .journal-eyebrow {
+        .journal-title {
             font-family: var(--sf-pro);
-            font-size: 12px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: rgba(10,10,10,0.5);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 1;
+            color: #0a0a0a;
+            text-align: left;
+            margin: 0;
         }
         .journal-meta {
-            font-family: var(--mono);
-            font-size: 10px;
-            letter-spacing: 0.16em;
+            font-family: var(--sf-pro);
+            font-size: 12px;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
-            color: rgba(10,10,10,0.45);
+            color: rgba(10,10,10,0.5);
         }
 
         .journal-grid {
@@ -1196,7 +1204,7 @@
             .journal-grid { grid-template-columns: 1fr; }
             .j-box { min-height: 240px; }
         }
-        .gallery-stacked .gallery-stacked-title { color: rgba(10,10,10,0.5); }
+        .gallery-stacked .gallery-stacked-title { color: #0a0a0a; }
         .gallery-stacked .gallery-see-more__btn {
             color: rgba(10,10,10,0.85);
             border-color: rgba(10,10,10,0.25);
@@ -1213,15 +1221,11 @@
             align-items: flex-end;
         }
         
-        /* Matches the motion section's '.me-date' treatment so both
-           sections read with the same quiet label tone. */
         .gallery-stacked-title {
             font-family: var(--sf-pro);
-            font-size: 12px;
+            font-size: clamp(2rem, 4vw, 3rem);
             font-weight: 400;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: var(--text-40);
+            letter-spacing: -0.02em;
         }
         /* Asterisk reads as part of the "Selected Projects" wordmark —
            inherits color/size from the heading; SVG keeps rotation clean. */
@@ -4567,7 +4571,7 @@ margin-top: 3px;
         <section class="journal" id="journal">
             <div class="journal-inner">
                 <header class="journal-head">
-                    <span class="journal-eyebrow">Journal</span>
+                    <h2 class="journal-title">Journey</h2>
                     <span class="journal-meta">03 Notes · 2026</span>
                 </header>
 
