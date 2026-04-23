@@ -191,10 +191,11 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            background: rgba(0, 0, 0, 0.9);
+            background: transparent;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-subtle);
+            -webkit-mask-image: linear-gradient(to bottom, #000 55%, rgba(0,0,0,0) 100%);
+                    mask-image: linear-gradient(to bottom, #000 55%, rgba(0,0,0,0) 100%);
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
         }
         
@@ -1022,15 +1023,16 @@
         .gallery-stacked {
             min-height: 100vh;
             background: var(--bg-black);
-            padding: 140px 80px 0px;
+            padding: 140px 0 0px;
             position: relative;
         }
-        
+
         .gallery-stacked-header {
             margin-bottom: 60px;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
+            padding: 0 80px;
         }
         
         .gallery-stacked-title {
@@ -1078,11 +1080,11 @@
         
         .gallery-stacked-container {
             position: relative;
-            max-width: 1000px;
-            margin: 0 auto;
+            max-width: none;
+            margin: 0;
             padding-bottom: calc(8 * 22px);
         }
-        
+
         .gallery-stacked-card {
             position: sticky;
             top: 40px;
@@ -1091,13 +1093,13 @@
             cursor: pointer;
             z-index: calc(1 + var(--card-index, 0));
         }
-        
+
         .gallery-stacked-card-inner {
             /* Lock aspect ratio so cards look identical on every viewport:
-               desktop 1000×500, tablet 768×384, mobile 375×188 — all 2:1. */
+               all 2:1. */
             aspect-ratio: 2 / 1;
             width: 100%;
-            border-radius: 12px;
+            border-radius: 0;
             overflow: hidden;
             box-shadow: 0 -10px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
             transform-origin: center top;
@@ -1105,6 +1107,37 @@
             display: flex;
             flex-direction: column;
             transition: transform 0.2s ease-out, box-shadow 0.3s ease;
+        }
+
+        /* Edge labels — replace the old outside side indicators */
+        .gallery-edge {
+            position: absolute;
+            top: 50%;
+            z-index: 3;
+            font-family: var(--sf-pro);
+            color: rgba(255,255,255,0.9);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-size: 10px;
+            font-weight: 400;
+            white-space: nowrap;
+            pointer-events: none;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+        }
+        .gallery-edge-left {
+            left: 18px;
+            transform: translateY(-50%) rotate(-90deg);
+            transform-origin: left center;
+        }
+        .gallery-edge-right {
+            right: 18px;
+            transform: translateY(-50%) rotate(90deg);
+            transform-origin: right center;
+        }
+        @media (max-width: 768px) {
+            .gallery-edge { font-size: 9px; letter-spacing: 0.1em; }
+            .gallery-edge-left { left: 10px; }
+            .gallery-edge-right { right: 10px; }
         }
         
         .gallery-stacked-card-inner:hover {
@@ -1563,6 +1596,7 @@
         
         .gallery-stacked-side-left {
             left: 80px;
+            display: none !important; /* text moved inside each card as edge labels */
         }
         
         .gallery-stacked-side-right {
@@ -3397,9 +3431,9 @@ margin-top: 3px;
 
         /* Responsive */
         /* Hide stacked-gallery side labels below viewport widths
-           where they would collide with the 1000px card container.
-           Container (1000) + 2× (80px pad + ~180px label) ≈ 1320px safe */
-        @media (max-width: 1320px) {
+           where they would collide with the 1400px card container.
+           Container (1400) + 2× (80px pad + ~60px progress) ≈ 1680px safe */
+        @media (max-width: 1680px) {
             .gallery-stacked-side {
                 display: none;
             }
@@ -3850,7 +3884,6 @@ margin-top: 3px;
             <div class="header-right">
                 <nav class="header-nav">
                     <a href="#work" data-i18n="menu.work">Work</a>
-                    <a href="#motion" data-i18n="menu.motion">Motion Design</a>
                     <a href="javascript:void(0)" data-i18n="menu.research">Research</a>
                     <a href="#about" data-i18n="menu.about" hidden style="display:none">About</a>
                     <a href="/gen-studio.html" data-i18n="menu.gen">Gen Studio</a>
@@ -3878,7 +3911,6 @@ margin-top: 3px;
         </button>
         <div class="menu-overlay-items">
             <a href="#work" class="menu-overlay-link" data-i18n="menu.work">Work</a>
-            <a href="#motion" class="menu-overlay-link" data-i18n="menu.motion">Motion Design</a>
             <a href="javascript:void(0)" class="menu-overlay-link" data-i18n="menu.research">Research</a>
             <a href="#about" class="menu-overlay-link" data-i18n="menu.about" hidden style="display:none">About</a>
             <a href="/gen-studio.html" class="menu-overlay-link" data-i18n="menu.gen">Gen Studio</a>
@@ -3962,10 +3994,6 @@ margin-top: 3px;
             </div>
             
             <!-- Side indicators -->
-            <div class="gallery-stacked-side gallery-stacked-side-left">
-                <div class="gallery-stacked-category" id="galleryCategory">Standard Bank</div>
-                <div class="gallery-stacked-type" id="galleryType">360 Campaign</div>
-            </div>
             <div class="gallery-stacked-side gallery-stacked-side-right">
                 <div class="gallery-stacked-scroll-label"></div>
                 <div class="gallery-stacked-progress">
@@ -5099,7 +5127,22 @@ margin-top: 3px;
             'Real Estate Branding', 'Illustration', 'Rebrand',
             'Geo-Targeted Campaign', 'UX Design', 'Retail Campaign', 'Scholarship Initiative'
         ];
-        
+
+        // Inject edge labels (left = brand, right = project type) into each visible card.
+        galleryCardInners.forEach((inner, i) => {
+            if (inner.querySelector('.gallery-edge-left')) return; // idempotent
+            const brand = galleryBrands[i] || '';
+            const type = galleryProjects[i] || '';
+            const left = document.createElement('span');
+            left.className = 'gallery-edge gallery-edge-left';
+            left.textContent = brand;
+            const right = document.createElement('span');
+            right.className = 'gallery-edge gallery-edge-right';
+            right.textContent = type;
+            inner.appendChild(left);
+            inner.appendChild(right);
+        });
+
         function updateActiveGalleryCard() {
             let active = 0;
             const vh = window.innerHeight;
