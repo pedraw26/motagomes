@@ -36,14 +36,19 @@
         
         html {
             scroll-behavior: smooth;
+            /* Hard cap horizontal overflow at the root — prevents any
+               rogue wide child (pattern-scroll tracks, translateX MG
+               letters, etc.) from pushing the viewport sideways. */
+            overflow-x: clip;
         }
-        
+
         body {
             font-family: var(--sf-pro);
             background: var(--bg-black);
             color: var(--text);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            overflow-x: clip;
         }
 
         /* ========================================
