@@ -1102,172 +1102,99 @@
         }
 
         /* ================================================================
-           JOURNAL (blog) — editorial typography section under the gallery.
-           Black stage, oversized display title, 3 post teasers in column.
+           JOURNAL (blog) — minimal 3-box grid on cream (matches gallery bg).
            ================================================================ */
         .journal {
-            background: #0a0a0a;
-            color: #fafafa;
-            padding: 180px 80px 160px;
+            background: #f5f5f0;
+            color: #0a0a0a;
+            padding: 140px 80px 160px;
             position: relative;
         }
         .journal-inner {
             max-width: 1400px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 120px;
-            align-items: start;
         }
         .journal-head {
-            position: sticky;
-            top: 140px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 56px;
         }
         .journal-eyebrow {
-            font-family: var(--mono);
-            font-size: 11px;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.4);
-            margin-bottom: 40px;
-            display: block;
-        }
-        .journal-eyebrow::before {
-            content: '';
-            display: inline-block;
-            width: 28px;
-            height: 1px;
-            background: rgba(255,255,255,0.4);
-            vertical-align: middle;
-            margin-right: 16px;
-        }
-        .journal-kicker {
             font-family: var(--sf-pro);
-            font-size: clamp(2.8rem, 5.4vw, 5.2rem);
-            font-weight: 200;
-            line-height: 0.98;
-            letter-spacing: -0.035em;
-            color: #fafafa;
-        }
-        .journal-kicker em {
-            font-style: italic;
-            font-weight: 300;
-            color: rgba(255,255,255,0.55);
-        }
-        .journal-kicker .j-mark {
-            display: inline-block;
-            width: 0.42em;
-            height: 0.42em;
-            background: #ffe66d;
-            vertical-align: 0.05em;
-            margin-left: 0.04em;
+            font-size: 12px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: rgba(10,10,10,0.5);
         }
         .journal-meta {
-            margin-top: 48px;
-            display: flex;
-            gap: 24px;
             font-family: var(--mono);
             font-size: 10px;
             letter-spacing: 0.16em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.35);
-        }
-        .journal-meta span + span::before {
-            content: '·';
-            margin-right: 24px;
-            opacity: 0.6;
+            color: rgba(10,10,10,0.45);
         }
 
-        /* Post list */
-        .journal-list {
+        .journal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .j-box {
             display: flex;
             flex-direction: column;
-            border-top: 1px solid rgba(255,255,255,0.12);
+            justify-content: space-between;
+            min-height: 360px;
+            padding: 32px;
+            border: 1px solid rgba(10,10,10,0.14);
+            background: transparent;
+            color: inherit;
+            text-decoration: none;
+            transition: border-color 0.3s ease, background 0.3s ease, transform 0.4s cubic-bezier(.7,0,.3,1);
         }
-        .post {
-            display: grid;
-            grid-template-columns: 96px 1fr auto;
-            align-items: start;
-            gap: 32px;
-            padding: 40px 0 44px;
-            border-bottom: 1px solid rgba(255,255,255,0.12);
-            position: relative;
-            transition: padding 0.45s cubic-bezier(.7,0,.3,1);
+        .j-box:hover {
+            border-color: rgba(10,10,10,0.5);
+            background: rgba(10,10,10,0.03);
+            transform: translateY(-4px);
         }
-        .post:hover {
-            padding-left: 16px;
-            padding-right: 16px;
-        }
-        .post-num {
-            font-family: var(--mono);
-            font-size: 10px;
-            letter-spacing: 0.18em;
-            color: rgba(255,255,255,0.35);
-            padding-top: 10px;
-        }
-        .post-body {
-            min-width: 0;
-        }
-        .post-kicker {
-            font-family: var(--mono);
-            font-size: 10px;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.45);
-            margin-bottom: 14px;
-            display: block;
-        }
-        .post-title {
-            font-size: clamp(1.6rem, 2.4vw, 2.2rem);
-            font-weight: 300;
-            line-height: 1.15;
-            letter-spacing: -0.025em;
-            margin-bottom: 14px;
-            color: #fafafa;
-            transition: color 0.3s ease;
-        }
-        .post-title em {
-            font-style: italic;
-            color: rgba(255,255,255,0.55);
-        }
-        .post-dek {
-            font-size: 15px;
-            line-height: 1.55;
-            color: rgba(255,255,255,0.6);
-            max-width: 56ch;
-        }
-        .post-meta {
+        .j-box-top,
+        .j-box-bot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             font-family: var(--mono);
             font-size: 10px;
             letter-spacing: 0.16em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.35);
-            padding-top: 10px;
-            white-space: nowrap;
+            color: rgba(10,10,10,0.5);
         }
-        .post-arrow {
-            position: absolute;
-            right: 0;
-            bottom: 44px;
-            width: 18px;
+        .j-box-title {
+            font-family: var(--sf-pro);
+            font-size: clamp(1.4rem, 1.8vw, 1.7rem);
+            font-weight: 300;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            color: #0a0a0a;
+            margin: 28px 0 40px;
+            max-width: 22ch;
+        }
+        .j-box-title em { font-style: italic; color: rgba(10,10,10,0.55); }
+        .j-box-arrow {
+            width: 20px;
             height: 10px;
-            opacity: 0;
-            transform: translateX(-8px);
-            transition: opacity 0.35s ease, transform 0.35s cubic-bezier(.7,0,.3,1);
-            color: #ffe66d;
+            color: rgba(10,10,10,0.45);
+            transition: transform 0.3s ease, color 0.3s ease;
         }
-        .post:hover .post-arrow { opacity: 1; transform: translateX(0); }
-        .post:hover .post-title { color: #ffe66d; }
+        .j-box:hover .j-box-arrow {
+            transform: translateX(6px);
+            color: #002FA7;
+        }
 
         @media (max-width: 900px) {
-            .journal { padding: 100px 24px; }
-            .journal-inner { grid-template-columns: 1fr; gap: 64px; }
-            .journal-head { position: static; }
-            .post {
-                grid-template-columns: 48px 1fr;
-                gap: 16px;
-            }
-            .post-meta { grid-column: 1 / -1; padding-top: 0; }
+            .journal { padding: 96px 24px 120px; }
+            .journal-head { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .journal-grid { grid-template-columns: 1fr; }
+            .j-box { min-height: 240px; }
         }
         .gallery-stacked .gallery-stacked-title { color: rgba(10,10,10,0.5); }
         .gallery-stacked .gallery-see-more__btn {
@@ -4640,51 +4567,38 @@ margin-top: 3px;
         <section class="journal" id="journal">
             <div class="journal-inner">
                 <header class="journal-head">
-                    <span class="journal-eyebrow">Journal · Notes on craft</span>
-                    <h2 class="journal-kicker">
-                        Design is a <em>conversation</em><br>
-                        with what comes next<span class="j-mark" aria-hidden="true"></span>
-                    </h2>
-                    <div class="journal-meta">
-                        <span>03 Essays</span>
-                        <span>2026 — Ongoing</span>
-                    </div>
+                    <span class="journal-eyebrow">Journal</span>
+                    <span class="journal-meta">03 Notes · 2026</span>
                 </header>
 
-                <ol class="journal-list">
-                    <li class="post">
-                        <span class="post-num">N° 01</span>
-                        <div class="post-body">
-                            <span class="post-kicker">Essay · Typography</span>
-                            <h3 class="post-title">On the <em>honest weight</em> of a headline</h3>
-                            <p class="post-dek">A column-width is a promise. Why the grid you inherit secretly governs the voice you end up writing in.</p>
+                <div class="journal-grid">
+                    <a href="/blog.html" class="j-box">
+                        <div class="j-box-top"><span>N° 01</span><span>Essay</span></div>
+                        <h3 class="j-box-title">On the <em>honest weight</em> of a headline</h3>
+                        <div class="j-box-bot">
+                            <span>8 min · Apr 2026</span>
+                            <svg class="j-box-arrow" viewBox="0 0 20 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h18M14 1l5 4-5 4"/></svg>
                         </div>
-                        <span class="post-meta">8 min · Apr 2026</span>
-                        <svg class="post-arrow" viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h16M12 1l5 4-5 4"/></svg>
-                    </li>
+                    </a>
 
-                    <li class="post">
-                        <span class="post-num">N° 02</span>
-                        <div class="post-body">
-                            <span class="post-kicker">Process · Motion</span>
-                            <h3 class="post-title">Pacing is a <em>moral</em> decision</h3>
-                            <p class="post-dek">When to hold a frame, when to cut, and why the easing curve you pick says more about you than any palette ever will.</p>
+                    <a href="/blog.html" class="j-box">
+                        <div class="j-box-top"><span>N° 02</span><span>Process</span></div>
+                        <h3 class="j-box-title">Pacing is a <em>moral</em> decision</h3>
+                        <div class="j-box-bot">
+                            <span>6 min · Mar 2026</span>
+                            <svg class="j-box-arrow" viewBox="0 0 20 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h18M14 1l5 4-5 4"/></svg>
                         </div>
-                        <span class="post-meta">6 min · Mar 2026</span>
-                        <svg class="post-arrow" viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h16M12 1l5 4-5 4"/></svg>
-                    </li>
+                    </a>
 
-                    <li class="post">
-                        <span class="post-num">N° 03</span>
-                        <div class="post-body">
-                            <span class="post-kicker">Field notes · Brand</span>
-                            <h3 class="post-title">The <em>quietest</em> identity wins the room</h3>
-                            <p class="post-dek">Restraint is not a style; it's an argument. Three recent projects where pulling back did more work than pushing forward ever could.</p>
+                    <a href="/blog.html" class="j-box">
+                        <div class="j-box-top"><span>N° 03</span><span>Field notes</span></div>
+                        <h3 class="j-box-title">The <em>quietest</em> identity wins the room</h3>
+                        <div class="j-box-bot">
+                            <span>5 min · Feb 2026</span>
+                            <svg class="j-box-arrow" viewBox="0 0 20 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h18M14 1l5 4-5 4"/></svg>
                         </div>
-                        <span class="post-meta">5 min · Feb 2026</span>
-                        <svg class="post-arrow" viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h16M12 1l5 4-5 4"/></svg>
-                    </li>
-                </ol>
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -4935,40 +4849,43 @@ margin-top: 3px;
                 font-size: clamp(240px, 44vw, 720px);
                 line-height: 0.8;
                 letter-spacing: -0.04em;
+                user-select: none;
+                white-space: nowrap;
+            }
+            /* Each letter gets its own gradient so the text-clip mask travels
+               with the letter while it's animating (prevents cropped/blank
+               frames during the slide-in). */
+            .mgf-mark .mgf-m-sym,
+            .mgf-mark .mgf-g-sym {
+                display: inline-block;
+                line-height: 1;
                 background-image: linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);
                 background-size: 200% 100%;
-                background-repeat: repeat;
                 -webkit-background-clip: text;
                         background-clip: text;
                 -webkit-text-fill-color: transparent;
                         color: transparent;
                 animation: mgf-slide 12s linear infinite;
-                user-select: none;
-            }
-            .mgf-mark .mgf-m-sym,
-            .mgf-mark .mgf-g-sym {
-                display: inline-block;
-                line-height: 1;
                 will-change: transform, opacity;
-                /* Start off-screen; animate home once the mark hits centre. */
                 opacity: 0;
+                /* Longer duration + gentler easing for a smoother landing. */
                 transition:
-                    transform 1.1s cubic-bezier(.2,.9,.2,1),
-                    opacity 0.6s ease;
+                    transform 1.6s cubic-bezier(.16, 1, .3, 1),
+                    opacity 0.9s ease-out;
             }
             .mgf-mark .mgf-m-sym {
-                transform: translateX(-110vw) rotate(-6deg);
+                transform: translateX(-80vw);
             }
             .mgf-mark .mgf-g-sym {
                 font-size: 1.22em;
                 vertical-align: -0.08em;
-                transform: translateX(110vw) rotate(6deg);
-                transition-delay: 0.08s;
+                transform: translateX(80vw);
+                transition-delay: 0.12s;
             }
             .mgf-mark.is-reveal .mgf-m-sym,
             .mgf-mark.is-reveal .mgf-g-sym {
                 opacity: 1;
-                transform: translateX(0) rotate(0);
+                transform: translateX(0);
             }
             @media (prefers-reduced-motion: reduce) {
                 .mgf-mark .mgf-m-sym,
