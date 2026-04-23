@@ -1059,10 +1059,15 @@
             align-items: flex-end;
         }
         
+        /* Matches the motion section's '.me-date' treatment so both
+           sections read with the same quiet label tone. */
         .gallery-stacked-title {
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-family: var(--sf-pro);
+            font-size: 12px;
             font-weight: 400;
-            letter-spacing: -0.02em;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-40);
         }
         /* Asterisk reads as part of the "Selected Projects" wordmark —
            inherits color/size from the heading; SVG keeps rotation clean. */
@@ -1154,7 +1159,8 @@
             .gallery-edge-right { right: 18px; }
         }
 
-        /* Large "See more" button under the stacked gallery */
+        /* "See all work" — plain-text CTA styled like the motion section's
+           '.me-prompt' label. No button chrome, no border, no background. */
         .gallery-see-more {
             display: flex;
             justify-content: center;
@@ -1164,24 +1170,23 @@
         .gallery-see-more__btn {
             appearance: none;
             background: transparent;
-            color: rgba(255,255,255,0.95);
-            border: 1px solid rgba(255,255,255,0.25);
-            padding: 28px 72px;
+            border: 0;
+            padding: 8px 0;
             font-family: var(--sf-pro);
-            font-size: clamp(1.4rem, 2.2vw, 2rem);
-            font-weight: 400;
-            letter-spacing: 0.01em;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--text-60);
             cursor: pointer;
-            transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+            transition: color 0.2s ease;
         }
         .gallery-see-more__btn:hover {
-            border-color: rgba(255,255,255,0.6);
-            background: rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.95);
         }
         .gallery-see-more.is-expanded { display: none; }
         @media (max-width: 768px) {
             .gallery-see-more { padding: 0 24px; margin-top: 48px; }
-            .gallery-see-more__btn { padding: 20px 48px; }
         }
 
         .gallery-stacked-card-inner:hover {
