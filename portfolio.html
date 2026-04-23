@@ -1208,29 +1208,34 @@
             background-size: 22px 22px;
         }
 
-        /* ── Candando — pattern scrolls right→left in a seamless loop ── */
+        /* ── Candando — pattern scrolls right→left in a seamless loop ──
+           Two identical <img>s in a row; track moves by exactly -50%, which
+           is one image-width, so the reset is pixel-identical and no seam
+           ever enters the viewport. */
         .gallery-stacked-hero.hero-candando {
-            background: #0a0a0a;
+            background: #c4152b;
             overflow: hidden;
         }
         .pattern-scroll {
             position: absolute;
             inset: 0;
             display: flex;
-            animation: pattern-scroll-left 40s linear infinite;
+            width: max-content;
+            animation: pattern-scroll-left 45s linear infinite;
             will-change: transform;
         }
-        .pattern-row {
-            flex-shrink: 0;
-            width: 100%;
+        .pattern-scroll img {
+            display: block;
             height: 100%;
-            /* Cloudinary auto-rasterises the .ai file; f_auto + h_ fits it
-               to the card height while keeping the pattern crisp. */
-            background: url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,h_800,c_limit/v1776979530/pyofnjny9lxn2h5ecvnf.jpg') center/contain repeat-x;
+            width: auto;
+            flex-shrink: 0;
+            user-select: none;
+            -webkit-user-drag: none;
+            pointer-events: none;
         }
         @keyframes pattern-scroll-left {
             from { transform: translateX(0); }
-            to   { transform: translateX(-100%); }
+            to   { transform: translateX(-50%); }
         }
         @media (prefers-reduced-motion: reduce) {
             .pattern-scroll { animation: none; }
@@ -4456,8 +4461,8 @@ margin-top: 3px;
                         </div>
                         <div class="gallery-stacked-hero hero-candando">
                             <div class="pattern-scroll" aria-hidden="true">
-                                <div class="pattern-row"></div>
-                                <div class="pattern-row"></div>
+                                <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,h_800/v1776979530/pyofnjny9lxn2h5ecvnf.jpg" alt="">
+                                <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,h_800/v1776979530/pyofnjny9lxn2h5ecvnf.jpg" alt="">
                             </div>
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
