@@ -1272,16 +1272,59 @@
             z-index: 1;
         }
 
-        /* ── Retinol label — 1:1 match with preview.html (Arial stack,
-           identical font-size / letter-spacing / margin clamp values). */
+        /* ── Retinol card — drifting sage gradient + auto-spawning
+           water-ripple blooms. Gradient stops are mirrored so the
+           background-position shift wraps seamlessly. ── */
         .gallery-stacked-hero.hero-retinol {
             background: linear-gradient(90deg,
                 #607753 0%,
-                #7d9568 30%,
-                #96ad7f 58%,
-                #c9d3bf 82%,
-                #d9dfcf 100%);
+                #7d9568 12%,
+                #96ad7f 22%,
+                #c9d3bf 33%,
+                #d9dfcf 50%,
+                #c9d3bf 67%,
+                #96ad7f 78%,
+                #7d9568 88%,
+                #607753 100%);
+            background-size: 220% 100%;
+            background-position: 0% 50%;
+            animation: retinol-drift 22s ease-in-out infinite alternate;
             color: #f3f4ee;
+            overflow: hidden;
+        }
+        @keyframes retinol-drift {
+            from { background-position:   0% 50%; }
+            to   { background-position: 100% 50%; }
+        }
+        /* Water-ripple bloom — JS spawns one of these at a random spot
+           every ~1s. Radial fade, screen blend, no ring stroke. */
+        .retinol-ripple {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            margin: -20px 0 0 -20px;
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                rgba(255,255,255,0.60) 0%,
+                rgba(255,255,255,0.30) 35%,
+                rgba(255,255,255,0.10) 65%,
+                transparent 100%);
+            mix-blend-mode: screen;
+            transform: scale(0);
+            opacity: 0;
+            pointer-events: none;
+            will-change: transform, opacity;
+            animation: retinol-ripple-bloom var(--dur, 3s) cubic-bezier(.22,1,.36,1) forwards;
+            z-index: 1;
+        }
+        @keyframes retinol-ripple-bloom {
+            0%   { transform: scale(0); opacity: 0; }
+            12%  { opacity: var(--peak, 0.4); }
+            100% { transform: scale(var(--end, 16)); opacity: 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .gallery-stacked-hero.hero-retinol { animation: none; }
+            .retinol-ripple { animation: none !important; }
         }
         .retinol-label {
             position: absolute;
@@ -5589,6 +5632,38 @@ margin-top: 3px;
             });
             mgfObs.observe(mgfMark);
         }
+
+        // ========================================
+        // RETINOL CARD — water-ripple blooms spawn at random spots on
+        // the sage stage, MAX 1 active at a time so no overlap glitch.
+        // ========================================
+        (() => {
+            const card = document.querySelector('.gallery-stacked-hero.hero-retinol');
+            if (!card) return;
+            const rand = (min, max) => min + Math.random() * (max - min);
+            const MAX_ACTIVE = 1;
+            let active = 0;
+
+            function spawn() {
+                if (active >= MAX_ACTIVE) return;
+                active++;
+                const el = document.createElement('span');
+                const dur = rand(2.2, 3.2);
+                el.className = 'retinol-ripple';
+                el.style.left = rand(18, 82) + '%';
+                el.style.top  = rand(22, 78) + '%';
+                el.style.setProperty('--dur',  dur + 's');
+                el.style.setProperty('--end',  rand(12, 18));
+                el.style.setProperty('--peak', rand(0.30, 0.50));
+                card.appendChild(el);
+                const cleanup = () => { el.remove(); active = Math.max(0, active - 1); };
+                el.addEventListener('animationend', cleanup, { once: true });
+                setTimeout(cleanup, dur * 1000 + 600);
+            }
+            function loop() { spawn(); setTimeout(loop, rand(900, 1700)); }
+            setTimeout(spawn, 400);
+            setTimeout(loop, 1400);
+        })();
 
         // ========================================
         // NAV EXPAND — reveal About / Blog inline
