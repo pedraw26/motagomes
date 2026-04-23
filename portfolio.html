@@ -437,6 +437,40 @@
             .header-nav a.nav-gen,
             .menu-overlay-link.nav-gen { animation: none; }
         }
+
+        /* Hover-swap: 'Gen Studies' → 'No AI-Slop' with a smooth slide-fade.
+           The default label drives the width; the hover label is absolutely
+           positioned on top and crossfades in as the default slides up. */
+        .nav-gen-swap {
+            position: relative;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        .nav-gen-default,
+        .nav-gen-hover {
+            display: inline-block;
+            transition:
+                opacity 0.35s cubic-bezier(.7,0,.3,1),
+                transform 0.45s cubic-bezier(.7,0,.3,1);
+        }
+        .nav-gen-hover {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        .nav-gen:hover .nav-gen-default {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+        .nav-gen:hover .nav-gen-hover {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .nav-gen-default,
+            .nav-gen-hover { transition: opacity 0.2s linear; transform: none !important; }
+        }
         
         .header-right {
             display: flex;
@@ -4198,7 +4232,7 @@ margin-top: 3px;
                     <a href="/blog.html" class="nav-extra" data-i18n="menu.blog">Blog</a>
                     <a href="javascript:void(0)" data-i18n="menu.research" hidden style="display:none">Research</a>
                     <a href="javascript:void(0)" class="menu-nda" onclick="event.preventDefault();openPwModal()" aria-label="NDA-protected work" hidden style="display:none"><span data-i18n="menu.nda">NDA</span><svg class="menu-nda-lock" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></a>
-                    <a href="/gen-studio.html" class="nav-gen"><span data-i18n="menu.gen">Gen Studies</span></a>
+                    <a href="/gen-studio.html" class="nav-gen"><span class="nav-gen-swap"><span class="nav-gen-default" data-i18n="menu.gen">Gen Studies</span><span class="nav-gen-hover" aria-hidden="true">No AI-Slop</span></span></a>
                 </nav>
                 <div class="header-lang" role="group" aria-label="Language" hidden style="display:none">
                     <button type="button" data-i18n-toggle="en" aria-pressed="true">EN</button>
@@ -4227,7 +4261,7 @@ margin-top: 3px;
             <a href="/blog.html" class="menu-overlay-link" data-i18n="menu.blog">Blog</a>
             <a href="javascript:void(0)" class="menu-overlay-link" data-i18n="menu.research" hidden style="display:none">Research</a>
             <a href="javascript:void(0)" class="menu-overlay-link menu-nda" onclick="event.preventDefault();openPwModal()" aria-label="NDA-protected work" hidden style="display:none"><span data-i18n="menu.nda">NDA</span><svg class="menu-nda-lock" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></a>
-            <a href="/gen-studio.html" class="menu-overlay-link nav-gen"><span data-i18n="menu.gen">Gen Studies</span></a>
+            <a href="/gen-studio.html" class="menu-overlay-link nav-gen"><span class="nav-gen-swap"><span class="nav-gen-default" data-i18n="menu.gen">Gen Studies</span><span class="nav-gen-hover" aria-hidden="true">No AI-Slop</span></span></a>
             <a href="mailto:hi@motagomes.com" class="menu-overlay-cta" data-i18n="menu.letstalk">Let's Talk</a>
             <a href="/cv.pdf" download class="menu-overlay-cv">
                 <span data-i18n="menu.cv">Curriculum</span>
