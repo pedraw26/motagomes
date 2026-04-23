@@ -1219,10 +1219,11 @@
            each tile ends up. translateX 0 → -50% = one card-width shift;
            because the background is tileable, that reset is visually silent. */
         .gallery-stacked-hero.hero-candando {
-            /* Match the pattern's baked-in red so the bottom strip (where
-               the 'Candando' / 'Retail Branding' labels live) reads as
-               one continuous red with the pattern area above. */
-            background: #d71727;
+            /* Exact pattern red — sampled from the cropped asset
+               (RGB 210,15,49 is the dominant pixel in the Cloudinary
+               delivery). Card bg matches the pattern area pixel-perfect,
+               so no edge is visible where the pattern strip ends. */
+            background: #D20F31;
             overflow: hidden;
         }
         .pattern-scroll {
