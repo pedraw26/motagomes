@@ -53,10 +53,11 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            background: rgba(0, 0, 0, 0.9);
+            background: transparent;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-subtle);
+            -webkit-mask-image: linear-gradient(to bottom, #000 55%, rgba(0,0,0,0) 100%);
+                    mask-image: linear-gradient(to bottom, #000 55%, rgba(0,0,0,0) 100%);
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
         }
 
@@ -1977,10 +1978,9 @@
             <div class="header-right">
                 <nav class="header-nav">
                     <a href="/#work" data-i18n="menu.work">Work</a>
-                    <a href="/#motion" data-i18n="menu.motion">Motion Design</a>
                     <a href="/#research" data-i18n="menu.research">Research</a>
                     <a href="/#about" data-i18n="menu.about" hidden style="display:none">About</a>
-                    <a href="/gen-studio.html" data-i18n="menu.gen">Gen Studio</a>
+                    <a href="/gen-studio.html" data-i18n="menu.gen">Gen Studies</a>
                 </nav>
                 <span class="header-updated" data-i18n="nav.lastUpdated" hidden style="display:none">Last updated · February 2026</span>
                 <div class="header-lang" role="group" aria-label="Language" hidden style="display:none">
@@ -2000,10 +2000,9 @@
     <div class="menu-overlay" id="menuOverlay">
         <div class="menu-overlay-items">
             <a href="/#work" class="menu-overlay-link" data-i18n="menu.work">Work</a>
-            <a href="/#motion" class="menu-overlay-link" data-i18n="menu.motion">Motion Design</a>
             <a href="/#research" class="menu-overlay-link" data-i18n="menu.research">Research</a>
             <a href="/#about" class="menu-overlay-link" data-i18n="menu.about" hidden style="display:none">About</a>
-            <a href="/gen-studio.html" class="menu-overlay-link" data-i18n="menu.gen">Gen Studio</a>
+            <a href="/gen-studio.html" class="menu-overlay-link" data-i18n="menu.gen">Gen Studies</a>
             <a href="/dashboard/" class="menu-overlay-link" data-i18n="menu.dashboard">Dashboard</a>
             <a href="mailto:hi@motagomes.com" class="menu-overlay-cta" data-i18n="menu.letstalk">Let's Talk</a>
         </div>
