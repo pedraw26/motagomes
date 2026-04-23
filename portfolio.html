@@ -1128,6 +1128,36 @@
             .gallery-edge-right { right: 18px; }
         }
 
+        /* Large "See more" button under the stacked gallery */
+        .gallery-see-more {
+            display: flex;
+            justify-content: center;
+            margin: 80px auto 0;
+            padding: 0 80px;
+        }
+        .gallery-see-more__btn {
+            appearance: none;
+            background: transparent;
+            color: rgba(255,255,255,0.95);
+            border: 1px solid rgba(255,255,255,0.25);
+            padding: 28px 72px;
+            font-family: var(--sf-pro);
+            font-size: clamp(1.4rem, 2.2vw, 2rem);
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+        }
+        .gallery-see-more__btn:hover {
+            border-color: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.04);
+        }
+        .gallery-see-more.is-expanded { display: none; }
+        @media (max-width: 768px) {
+            .gallery-see-more { padding: 0 24px; margin-top: 48px; }
+            .gallery-see-more__btn { padding: 20px 48px; }
+        }
+
         .gallery-stacked-card-inner:hover {
             box-shadow: 0 -20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.1);
         }
@@ -3979,7 +4009,7 @@ margin-top: 3px;
         <!-- SECTION 2: GALLERY STACKED WITH GRADIENTS -->
         <section class="snap-section gallery-stacked" id="work">
             <div class="gallery-stacked-header">
-                <h2 class="gallery-stacked-title"><span data-i18n="work.title">Selected Projects</span><span class="star" aria-hidden="true"><svg viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="14" stroke-linecap="round" fill="none"><line x1="0" y1="-40" x2="0" y2="40"/><line x1="-34.64" y1="-20" x2="34.64" y2="20"/><line x1="-34.64" y1="20" x2="34.64" y2="-20"/></g></svg></span></h2>
+                <h2 class="gallery-stacked-title"><span data-i18n="work.title">Selected Projects</span></h2>
                 <span class="gallery-stacked-updated" data-i18n="nav.lastUpdated" hidden style="display:none">Last updated · February 2026</span>
             </div>
             
@@ -4189,7 +4219,7 @@ margin-top: 3px;
                 </div>
 
                 <!-- Card 8: Moope -->
-                <div class="gallery-stacked-card" style="--card-index: 7; --card-offset: 50px;">
+                <div class="gallery-stacked-card" style="--card-index: 7; --card-offset: 50px;" hidden data-hidden-card>
                     <div class="gallery-stacked-card-inner">
                         <div class="gallery-stacked-bar">
                             <div class="gallery-stacked-dot"></div>
@@ -4215,7 +4245,7 @@ margin-top: 3px;
                 </div>
 
                 <!-- Card 9: Wammo -->
-                <div class="gallery-stacked-card" style="--card-index: 8; --card-offset: 50px;">
+                <div class="gallery-stacked-card" style="--card-index: 8; --card-offset: 50px;" hidden data-hidden-card>
                     <div class="gallery-stacked-card-inner">
                         <div class="gallery-stacked-bar">
                             <div class="gallery-stacked-dot"></div>
@@ -4267,7 +4297,7 @@ margin-top: 3px;
                 </div>
 
                 <!-- Card 11: Amal Clooney Scholarship (password-protected) -->
-                <div class="gallery-stacked-card" style="--card-index: 10; --card-offset: 50px;">
+                <div class="gallery-stacked-card" style="--card-index: 10; --card-offset: 50px;" hidden data-hidden-card>
                     <div class="gallery-stacked-card-inner">
                         <div class="gallery-stacked-bar">
                             <div class="gallery-stacked-dot"></div>
@@ -4292,6 +4322,11 @@ margin-top: 3px;
                     </div>
                 </div>
 
+            </div>
+
+            <!-- See more: reveals hidden cards -->
+            <div class="gallery-see-more" id="gallerySeeMore">
+                <button type="button" class="gallery-see-more__btn" id="gallerySeeMoreBtn">See more</button>
             </div>
         </section>
 
@@ -5123,19 +5158,37 @@ margin-top: 3px;
         ];
 
         // Inject bottom-corner labels inside each card (brand bottom-left, type bottom-right)
-        galleryCardInners.forEach((inner, i) => {
-            if (inner.querySelector('.gallery-edge-left')) return; // idempotent
-            const brand = galleryBrands[i] || '';
-            const type = galleryProjects[i] || '';
-            const left = document.createElement('span');
-            left.className = 'gallery-edge gallery-edge-left';
-            left.textContent = brand;
-            const right = document.createElement('span');
-            right.className = 'gallery-edge gallery-edge-right';
-            right.textContent = type;
-            inner.appendChild(left);
-            inner.appendChild(right);
-        });
+        function injectEdgeLabels(inners) {
+            inners.forEach((inner, i) => {
+                if (inner.querySelector('.gallery-edge-left')) return; // idempotent
+                const brand = galleryBrands[i] || '';
+                const type = galleryProjects[i] || '';
+                const left = document.createElement('span');
+                left.className = 'gallery-edge gallery-edge-left';
+                left.textContent = brand;
+                const right = document.createElement('span');
+                right.className = 'gallery-edge gallery-edge-right';
+                right.textContent = type;
+                inner.appendChild(left);
+                inner.appendChild(right);
+            });
+        }
+        injectEdgeLabels(galleryCardInners);
+
+        // "See more" — reveal hidden cards and refresh tracking
+        const seeMoreWrap = document.getElementById('gallerySeeMore');
+        const seeMoreBtn = document.getElementById('gallerySeeMoreBtn');
+        if (seeMoreBtn) {
+            seeMoreBtn.addEventListener('click', () => {
+                document.querySelectorAll('.gallery-stacked-card[data-hidden-card]').forEach(card => {
+                    card.removeAttribute('hidden');
+                });
+                // Re-query the now-visible cards so scroll tracking covers them too
+                const newInners = document.querySelectorAll('.gallery-stacked-card:not([hidden]) .gallery-stacked-card-inner');
+                injectEdgeLabels(newInners);
+                if (seeMoreWrap) seeMoreWrap.classList.add('is-expanded');
+            });
+        }
 
         function updateActiveGalleryCard() {
             let active = 0;
