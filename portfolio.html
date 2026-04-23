@@ -1208,40 +1208,7 @@
             background-size: 22px 22px;
         }
 
-        /* ── Candando — pattern scrolls right→left in a seamless loop ──
-           Two identical <img>s in a row; track moves by exactly -50%, which
-           is one image-width, so the reset is pixel-identical and no seam
-           ever enters the viewport. */
-        .gallery-stacked-hero.hero-candando {
-            background: #c4152b;
-            overflow: hidden;
-        }
-        .pattern-scroll {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            width: max-content;
-            animation: pattern-scroll-left 45s linear infinite;
-            will-change: transform;
-        }
-        .pattern-scroll img {
-            display: block;
-            height: 100%;
-            width: auto;
-            flex-shrink: 0;
-            user-select: none;
-            -webkit-user-drag: none;
-            pointer-events: none;
-        }
-        @keyframes pattern-scroll-left {
-            from { transform: translateX(0); }
-            to   { transform: translateX(-50%); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .pattern-scroll { animation: none; }
-        }
-
-        /* ── Retinol label — 1:1 match with preview.html (Arial stack,
+/* ── Retinol label — 1:1 match with preview.html (Arial stack,
            identical font-size / letter-spacing / margin clamp values). */
         .gallery-stacked-hero.hero-retinol {
             background: linear-gradient(90deg,
@@ -4458,11 +4425,7 @@ margin-top: 3px;
                                 <span>Angola</span>
                             </div>
                         </div>
-                        <div class="gallery-stacked-hero hero-candando">
-                            <div class="pattern-scroll" aria-hidden="true">
-                                <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/e_trim:10/f_auto,q_auto,h_900/v1776979530/pyofnjny9lxn2h5ecvnf.jpg" alt="">
-                                <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/e_trim:10/f_auto,q_auto,h_900/v1776979530/pyofnjny9lxn2h5ecvnf.jpg" alt="">
-                            </div>
+                        <div class="gallery-stacked-hero gradient-emerald" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776640918/sBbbbArtboard_1-100_pzfngu.jpg') center/cover no-repeat;">
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">Retail Branding</div>
