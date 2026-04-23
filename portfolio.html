@@ -277,6 +277,7 @@
 
         .header-nav {
             display: flex;
+            align-items: center;
             gap: 28px;
         }
 
@@ -334,22 +335,16 @@
                     color: transparent;
             animation: aislop-gradient 6s linear infinite;
         }
-        /* Alien head sits inline after "Gen Studies". The parent link uses
-           background-clip:text + transparent color for the animated gradient,
-           which would also clip an emoji glyph — reset it on the emoji span
-           so 👽 renders as a normal color glyph. */
-        .nav-gen .nav-gen-wand {
-            display: inline-block;
-            margin-left: 0.35em;
-            vertical-align: -0.08em;
-            font-size: 0.95em;
+        /* Benzene-ring glyph before "Gen Studies". Uses the same gradient
+           as the label so it reads as part of the word. */
+        .nav-gen {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35em;
+        }
+        .nav-gen-glyph {
             line-height: 1;
-            background: none;
-            -webkit-background-clip: initial;
-                    background-clip: initial;
-            -webkit-text-fill-color: initial;
-                    color: initial;
-            animation: none;
+            display: inline-block;
         }
 
         /* NDA menu item: inline lock icon after the label */
@@ -367,34 +362,13 @@
         .menu-overlay-link.menu-nda:hover .menu-nda-lock {
             opacity: 1;
         }
-        /* ================================================================
-           "Gen Studio" nav link — pinned to the SAME viewport coordinates
-           as the Gen Studio page title (top:32px right:32px, font 15.2px,
-           line-height:1). Natural nav flow can't hit that pixel exactly, so
-           the link is taken out of flow. Work/Motion/Research keep their
-           places; Gen Studio floats at the identical position across pages.
-           ================================================================ */
-        .header-nav a[data-i18n="menu.gen"] {
-            position: fixed;
-            top: 32px;
-            right: 32px;
-            z-index: 1001;
-            font-size: 15.2px;
-            letter-spacing: -0.005em;
-            line-height: 1;
-        }
-        /* Reserve horizontal space in the nav so Work/Motion/Research don't slide
-           into the pinned "Gen Studio" label's territory. */
-        .header-nav {
-            padding-right: 130px;
-        }
         @keyframes aislop-gradient {
             from { background-position: 0% 50%; }
             to   { background-position: -200% 50%; }
         }
         @media (prefers-reduced-motion: reduce) {
-            .header-nav a[data-i18n="menu.gen"],
-            .menu-overlay-link[data-i18n="menu.gen"] { animation: none; }
+            .header-nav a.nav-gen,
+            .menu-overlay-link.nav-gen { animation: none; }
         }
         
         .header-right {
@@ -3989,7 +3963,7 @@ margin-top: 3px;
                     <a href="javascript:void(0)" data-i18n="menu.research">Research</a>
                     <a href="#about" data-i18n="menu.about" hidden style="display:none">About</a>
                     <a href="javascript:void(0)" class="menu-nda" onclick="event.preventDefault();openPwModal()" aria-label="NDA-protected work"><span data-i18n="menu.nda">NDA</span><svg class="menu-nda-lock" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></a>
-                    <a href="/gen-studio.html" class="nav-gen"><span data-i18n="menu.gen">Gen Studies</span><span class="nav-gen-wand" aria-hidden="true">👽</span></a>
+                    <a href="/gen-studio.html" class="nav-gen"><span class="nav-gen-glyph" aria-hidden="true">⏣</span><span data-i18n="menu.gen">Gen Studies</span></a>
                 </nav>
                 <div class="header-lang" role="group" aria-label="Language" hidden style="display:none">
                     <button type="button" data-i18n-toggle="en" aria-pressed="true">EN</button>
@@ -4017,7 +3991,7 @@ margin-top: 3px;
             <a href="javascript:void(0)" class="menu-overlay-link" data-i18n="menu.research">Research</a>
             <a href="#about" class="menu-overlay-link" data-i18n="menu.about" hidden style="display:none">About</a>
             <a href="javascript:void(0)" class="menu-overlay-link menu-nda" onclick="event.preventDefault();openPwModal()" aria-label="NDA-protected work"><span data-i18n="menu.nda">NDA</span><svg class="menu-nda-lock" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></a>
-            <a href="/gen-studio.html" class="menu-overlay-link nav-gen"><span data-i18n="menu.gen">Gen Studies</span><span class="nav-gen-wand" aria-hidden="true">👽</span></a>
+            <a href="/gen-studio.html" class="menu-overlay-link nav-gen"><span class="nav-gen-glyph" aria-hidden="true">⏣</span><span data-i18n="menu.gen">Gen Studies</span></a>
             <a href="mailto:hi@motagomes.com" class="menu-overlay-cta" data-i18n="menu.letstalk">Let's Talk</a>
             <a href="/cv.pdf" download class="menu-overlay-cv">
                 <span data-i18n="menu.cv">Curriculum</span>
