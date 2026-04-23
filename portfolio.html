@@ -1174,8 +1174,8 @@
             background-size: 22px 22px;
         }
 
-        /* ── Retinol label cover ───────────────────────────────── */
-        .j-cover--retinol {
+        /* ── Retinol label — lives inside the One1x Selected Works card ── */
+        .gallery-stacked-hero.hero-retinol {
             background: linear-gradient(90deg,
                 #607753 0%,
                 #7d9568 30%,
@@ -1183,35 +1183,41 @@
                 #c9d3bf 82%,
                 #d9dfcf 100%);
             color: #f3f4ee;
+        }
+        .retinol-label {
+            position: absolute;
+            inset: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 10% 8%;
+            padding: 8% 6%;
             text-align: center;
             font-family: Arial, Helvetica, sans-serif;
+            color: #f3f4ee;
+            pointer-events: none;
         }
-        .j-cover--retinol .rtn-kicker,
-        .j-cover--retinol .rtn-foot {
-            font-size: clamp(8px, 1vw, 12px);
+        .retinol-label .rtn-kicker,
+        .retinol-label .rtn-foot {
+            font-size: clamp(12px, 1.3vw, 20px);
             letter-spacing: 0.34em;
             text-transform: uppercase;
             margin: 0;
             font-weight: 400;
         }
-        .j-cover--retinol .rtn-title {
-            font-size: clamp(22px, 3.6vw, 48px);
+        .retinol-label .rtn-title {
+            font-size: clamp(38px, 5.5vw, 96px);
             letter-spacing: 0.16em;
             font-weight: 300;
             text-transform: uppercase;
             line-height: 1;
-            margin: 0.3em 0;
+            margin: 0.35em 0;
         }
-        .j-cover--retinol .rtn-divider {
-            width: clamp(30px, 4vw, 60px);
+        .retinol-label .rtn-divider {
+            width: clamp(40px, 5vw, 80px);
             height: 2px;
             background: rgba(243,244,238,0.9);
-            margin: 1.4% 0 1.4%;
+            margin: 1.4% 0 1.6%;
         }
         .j-post:hover .j-cover {
             border-color: rgba(10,10,10,0.55);
@@ -4468,7 +4474,13 @@ margin-top: 3px;
                                 <span>Strategy</span>
                             </div>
                         </div>
-                        <div class="gallery-stacked-hero gradient-obsidian" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773843097/Screenshot_2026-03-18_at_14.11.02_xh4n3n.png') center/cover no-repeat;">
+                        <div class="gallery-stacked-hero hero-retinol">
+                            <div class="retinol-label" aria-hidden="true">
+                                <p class="rtn-kicker">PURE</p>
+                                <h4 class="rtn-title">RETINOL</h4>
+                                <div class="rtn-divider"></div>
+                                <p class="rtn-foot">SERUM</p>
+                            </div>
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">Rebrand</div>
@@ -4628,16 +4640,11 @@ margin-top: 3px;
 
                 <div class="journal-grid">
                     <a href="/blog.html" class="j-post">
-                        <div class="j-cover j-cover--retinol" aria-hidden="true">
-                            <p class="rtn-kicker">PURE</p>
-                            <h4 class="rtn-title">RETINOL</h4>
-                            <div class="rtn-divider"></div>
-                            <p class="rtn-foot">SERUM</p>
-                        </div>
-                        <div class="j-top"><span>N° 01</span><span>Packaging</span></div>
-                        <h3 class="j-title">Retinol — <em>a label in five</em> quiet words</h3>
+                        <div class="j-cover" aria-hidden="true"></div>
+                        <div class="j-top"><span>N° 01</span><span>Essay</span></div>
+                        <h3 class="j-title">On the <em>honest weight</em> of a headline</h3>
                         <div class="j-bot">
-                            <span>6 min · Apr 2026</span>
+                            <span>8 min · Apr 2026</span>
                             <svg class="j-arrow" viewBox="0 0 20 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h18M14 1l5 4-5 4"/></svg>
                         </div>
                     </a>
