@@ -1163,9 +1163,8 @@
             overflow: hidden;
             transition: border-color 0.35s ease, transform 0.45s cubic-bezier(.7,0,.3,1);
         }
-        .j-cover::after {
-            /* Diagonal-hatch placeholder so an empty cover still reads as a
-               considered surface. Swap for a real <img> later. */
+        /* Hatch placeholder only when cover has no content */
+        .j-cover:empty::after {
             content: '';
             position: absolute;
             inset: 0;
@@ -1173,6 +1172,46 @@
                 linear-gradient(135deg, rgba(10,10,10,0.04) 25%, transparent 25%),
                 linear-gradient(225deg, rgba(10,10,10,0.04) 25%, transparent 25%);
             background-size: 22px 22px;
+        }
+
+        /* ── Retinol label cover ───────────────────────────────── */
+        .j-cover--retinol {
+            background: linear-gradient(90deg,
+                #607753 0%,
+                #7d9568 30%,
+                #96ad7f 58%,
+                #c9d3bf 82%,
+                #d9dfcf 100%);
+            color: #f3f4ee;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10% 8%;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .j-cover--retinol .rtn-kicker,
+        .j-cover--retinol .rtn-foot {
+            font-size: clamp(8px, 1vw, 12px);
+            letter-spacing: 0.34em;
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 400;
+        }
+        .j-cover--retinol .rtn-title {
+            font-size: clamp(22px, 3.6vw, 48px);
+            letter-spacing: 0.16em;
+            font-weight: 300;
+            text-transform: uppercase;
+            line-height: 1;
+            margin: 0.3em 0;
+        }
+        .j-cover--retinol .rtn-divider {
+            width: clamp(30px, 4vw, 60px);
+            height: 2px;
+            background: rgba(243,244,238,0.9);
+            margin: 1.4% 0 1.4%;
         }
         .j-post:hover .j-cover {
             border-color: rgba(10,10,10,0.55);
@@ -4589,11 +4628,16 @@ margin-top: 3px;
 
                 <div class="journal-grid">
                     <a href="/blog.html" class="j-post">
-                        <div class="j-cover" aria-hidden="true"></div>
-                        <div class="j-top"><span>N° 01</span><span>Essay</span></div>
-                        <h3 class="j-title">On the <em>honest weight</em> of a headline</h3>
+                        <div class="j-cover j-cover--retinol" aria-hidden="true">
+                            <p class="rtn-kicker">PURE</p>
+                            <h4 class="rtn-title">RETINOL</h4>
+                            <div class="rtn-divider"></div>
+                            <p class="rtn-foot">SERUM</p>
+                        </div>
+                        <div class="j-top"><span>N° 01</span><span>Packaging</span></div>
+                        <h3 class="j-title">Retinol — <em>a label in five</em> quiet words</h3>
                         <div class="j-bot">
-                            <span>8 min · Apr 2026</span>
+                            <span>6 min · Apr 2026</span>
                             <svg class="j-arrow" viewBox="0 0 20 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h18M14 1l5 4-5 4"/></svg>
                         </div>
                     </a>
