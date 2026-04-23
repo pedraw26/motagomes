@@ -5297,7 +5297,7 @@ margin-top: 3px;
             const banner = document.getElementById('siteBanner');
             const closeBtn = document.getElementById('siteBannerClose');
             if (!banner || !closeBtn) return;
-            const key = 'sitebanner-refresh-v1';
+            const key = 'sitebanner-refresh-v2';
             try { if (localStorage.getItem(key) === 'dismissed') { banner.hidden = true; return; } } catch (_) {}
             closeBtn.addEventListener('click', () => {
                 banner.hidden = true;
