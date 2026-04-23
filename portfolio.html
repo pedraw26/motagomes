@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="meta.title.portfolio">Mota Gomes - Portfolio</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <script>(function(){try{var l=localStorage.getItem('mg_lang');if(l==='pt')document.documentElement.lang='pt-PT';}catch(e){}})();</script>
     <script src="/i18n.js" defer></script>
     <script src="/guard.js" defer></script>
@@ -1254,22 +1257,40 @@
             .pattern-scroll { animation: none; }
         }
 
-        /* ── Luandina card — royal blue stage with a centred 5-point
-           yellow star (classic Angolan / pan-African beer mark). ── */
+        /* ── Luandina card — royal blue stage with a small rounded-point
+           yellow star stacked above 'A NOSSA' in Bebas Neue. Scales
+           match the Retinol card's kicker/title so both cards read
+           with the same typographic weight. ── */
         .gallery-stacked-hero.hero-luandina {
             background: #1E40AF;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .luandina-mark {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(8px, 1.2vh, 18px);
+            z-index: 1;
+            pointer-events: none;
         }
         .luandina-star {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 52%;
+            width: clamp(36px, 5vw, 68px);
             height: auto;
             aspect-ratio: 1 / 1;
-            filter: drop-shadow(0 0 24px rgba(255,215,0,0.18));
-            z-index: 1;
+            display: block;
+        }
+        .luandina-text {
+            font-family: 'Bebas Neue', Impact, 'Helvetica Neue Condensed', sans-serif;
+            font-size: clamp(32px, 5vw, 72px);
+            letter-spacing: 0.16em;
+            line-height: 0.95;
+            font-weight: 400;
+            color: #FFD700;
+            text-transform: uppercase;
         }
 
         /* ── Retinol card — drifting sage gradient + auto-spawning
@@ -4648,9 +4669,18 @@ margin-top: 3px;
                             </div>
                         </div>
                         <div class="gallery-stacked-hero hero-luandina">
-                            <svg class="luandina-star" viewBox="0 0 100 100" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
-                                <polygon points="50,6 61.8,38.2 95.5,38.2 68.3,58.3 78.5,91.5 50,71.2 21.5,91.5 31.7,58.3 4.5,38.2 38.2,38.2" fill="#FFD700"/>
-                            </svg>
+                            <div class="luandina-mark" aria-hidden="true">
+                                <svg class="luandina-star" viewBox="-8 -8 116 116" preserveAspectRatio="xMidYMid meet">
+                                    <polygon
+                                        points="50,6 61.8,38.2 95.5,38.2 68.3,58.3 78.5,91.5 50,71.2 21.5,91.5 31.7,58.3 4.5,38.2 38.2,38.2"
+                                        fill="#FFD700"
+                                        stroke="#FFD700"
+                                        stroke-width="12"
+                                        stroke-linejoin="round"
+                                        stroke-linecap="round"/>
+                                </svg>
+                                <span class="luandina-text">A NOSSA</span>
+                            </div>
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">Geo-Targeted Campaign</div>
