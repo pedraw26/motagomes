@@ -340,17 +340,32 @@
                     color: transparent;
             animation: aislop-gradient 6s linear infinite;
         }
-        /* Expand icon before "Work" — minimal corner-arrows "maximize" glyph */
-        .nav-work { gap: 0.45em; }
-        .nav-work-icon {
-            flex-shrink: 0;
-            display: block;
-            opacity: 0.7;
-            transition: opacity 0.2s ease;
+        /* Expand button (corner arrows) — toggles extra nav items (.nav-extra) */
+        .nav-expand {
+            appearance: none;
+            background: transparent;
+            border: 0;
+            padding: 4px;
+            margin-right: -4px; /* keep visual gap consistent with text links */
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: color 0.2s ease;
         }
-        .header-nav a.nav-work:hover .nav-work-icon,
-        .menu-overlay-link.nav-work:hover .nav-work-icon {
-            opacity: 1;
+        .nav-expand:hover { color: #fff; }
+        .nav-expand-icon { display: block; transition: transform 0.25s ease; }
+        .header-nav.is-expanded .nav-expand-icon { transform: rotate(180deg); }
+
+        /* Extra items stay collapsed until the expand button is clicked */
+        .nav-extra { display: none !important; }
+        .header-nav.is-expanded .nav-extra {
+            display: inline-flex !important;
+            animation: nav-extra-in 0.3s ease forwards;
+        }
+        @keyframes nav-extra-in {
+            from { opacity: 0; transform: translateX(-6px); }
+            to   { opacity: 1; transform: translateX(0); }
         }
 
         /* Vertical bar that separates Gen Studies from the Call CTA */
@@ -1173,8 +1188,7 @@
             .gallery-edge-right { right: 18px; }
         }
 
-        /* "See all work" — plain-text CTA styled like the motion section's
-           '.me-prompt' label. No button chrome, no border, no background. */
+        /* Large "See all work" button under the stacked gallery */
         .gallery-see-more {
             display: flex;
             justify-content: center;
@@ -1184,23 +1198,24 @@
         .gallery-see-more__btn {
             appearance: none;
             background: transparent;
-            border: 0;
-            padding: 8px 0;
+            color: rgba(255,255,255,0.95);
+            border: 1px solid rgba(255,255,255,0.25);
+            padding: 28px 72px;
             font-family: var(--sf-pro);
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 0.28em;
-            text-transform: uppercase;
-            color: var(--text-60);
+            font-size: clamp(1.4rem, 2.2vw, 2rem);
+            font-weight: 400;
+            letter-spacing: 0.01em;
             cursor: pointer;
-            transition: color 0.2s ease;
+            transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
         }
         .gallery-see-more__btn:hover {
-            color: rgba(255,255,255,0.95);
+            border-color: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.04);
         }
         .gallery-see-more.is-expanded { display: none; }
         @media (max-width: 768px) {
             .gallery-see-more { padding: 0 24px; margin-top: 48px; }
+            .gallery-see-more__btn { padding: 20px 48px; }
         }
 
         .gallery-stacked-card-inner:hover {
@@ -3992,9 +4007,11 @@ margin-top: 3px;
 
             <div class="header-right">
                 <nav class="header-nav">
-                    <a href="#work" class="nav-work"><svg class="nav-work-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg><span data-i18n="menu.work">Work</span></a>
+                    <button type="button" class="nav-expand" id="navExpand" aria-label="Expand menu" aria-expanded="false"><svg class="nav-expand-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
+                    <a href="#work" data-i18n="menu.work">Work</a>
+                    <a href="#about" class="nav-extra" data-i18n="menu.about">About</a>
+                    <a href="/blog.html" class="nav-extra" data-i18n="menu.blog">Blog</a>
                     <a href="javascript:void(0)" data-i18n="menu.research" hidden style="display:none">Research</a>
-                    <a href="#about" data-i18n="menu.about" hidden style="display:none">About</a>
                     <a href="javascript:void(0)" class="menu-nda" onclick="event.preventDefault();openPwModal()" aria-label="NDA-protected work" hidden style="display:none"><span data-i18n="menu.nda">NDA</span><svg class="menu-nda-lock" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></a>
                     <a href="/gen-studio.html" class="nav-gen"><span data-i18n="menu.gen">Gen Studies</span></a>
                     <span class="nav-sep" aria-hidden="true"></span>
@@ -4022,9 +4039,10 @@ margin-top: 3px;
             </svg>
         </button>
         <div class="menu-overlay-items">
-            <a href="#work" class="menu-overlay-link nav-work"><svg class="nav-work-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg><span data-i18n="menu.work">Work</span></a>
+            <a href="#work" class="menu-overlay-link" data-i18n="menu.work">Work</a>
+            <a href="#about" class="menu-overlay-link" data-i18n="menu.about">About</a>
+            <a href="/blog.html" class="menu-overlay-link" data-i18n="menu.blog">Blog</a>
             <a href="javascript:void(0)" class="menu-overlay-link" data-i18n="menu.research" hidden style="display:none">Research</a>
-            <a href="#about" class="menu-overlay-link" data-i18n="menu.about" hidden style="display:none">About</a>
             <a href="javascript:void(0)" class="menu-overlay-link menu-nda" onclick="event.preventDefault();openPwModal()" aria-label="NDA-protected work" hidden style="display:none"><span data-i18n="menu.nda">NDA</span><svg class="menu-nda-lock" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></a>
             <a href="/gen-studio.html" class="menu-overlay-link nav-gen"><span data-i18n="menu.gen">Gen Studies</span></a>
             <span class="nav-sep nav-sep--overlay" aria-hidden="true"></span>
@@ -5215,6 +5233,19 @@ margin-top: 3px;
                 menuOverlay.classList.remove('active');
             });
         });
+
+        // ========================================
+        // NAV EXPAND — reveal About / Blog inline
+        // ========================================
+        const navExpand = document.getElementById('navExpand');
+        const headerNav = document.querySelector('.header-nav');
+        if (navExpand && headerNav) {
+            navExpand.addEventListener('click', () => {
+                const expanded = headerNav.classList.toggle('is-expanded');
+                navExpand.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+                navExpand.setAttribute('aria-label', expanded ? 'Collapse menu' : 'Expand menu');
+            });
+        }
         
         // ========================================
         // MAKE ENTIRE CARD CLICKABLE
