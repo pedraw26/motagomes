@@ -1286,11 +1286,16 @@
         .luandina-text {
             font-family: 'Bebas Neue', Impact, 'Helvetica Neue Condensed', sans-serif;
             font-size: clamp(64px, 10vw, 144px);
-            letter-spacing: 0.03em;
+            letter-spacing: -0.01em; /* tight — letters nearly touch */
             line-height: 0.95;
             font-weight: 400;
-            color: #FFD700;
+            color: #ffffff;
             text-transform: uppercase;
+            /* Subtle corner-rounding via feGaussianBlur + feColorMatrix.
+               stdDeviation=0.9 + high alpha recovery softens the angular
+               corners of Bebas Neue just a hair without blurring the
+               strokes. */
+            filter: url(#luandina-round);
         }
 
         /* ── Retinol card — drifting sage gradient + auto-spawning
@@ -4304,6 +4309,18 @@ margin-top: 3px;
     </style>
 </head>
 <body>
+    <!-- Shared SVG filter defs (Luandina text corner rounding, etc.) -->
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none;">
+        <defs>
+            <!-- Luandina 'A NOSSA' slight corner rounding. Higher stdDeviation
+                 = more melt; tighten the alpha recovery (last row of the
+                 matrix) if the text starts losing stroke weight. -->
+            <filter id="luandina-round" x="-5%" y="-5%" width="110%" height="110%">
+                <feGaussianBlur stdDeviation="0.9"/>
+                <feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 32 -15"/>
+            </filter>
+        </defs>
+    </svg>
     <!-- Site-refresh banner. Dismissal persisted in localStorage under 'sitebanner-refresh-v1'. -->
     <div class="sitebanner" id="siteBanner" role="status" aria-label="Site notice" data-i18n-attr="aria-label:banner.aria">
         <span class="sitebanner-icon" aria-hidden="true">
