@@ -1254,6 +1254,24 @@
             .pattern-scroll { animation: none; }
         }
 
+        /* ── Luandina card — royal blue stage with a centred 5-point
+           yellow star (classic Angolan / pan-African beer mark). ── */
+        .gallery-stacked-hero.hero-luandina {
+            background: #1E40AF;
+            overflow: hidden;
+        }
+        .luandina-star {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 52%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            filter: drop-shadow(0 0 24px rgba(255,215,0,0.18));
+            z-index: 1;
+        }
+
         /* ── Retinol label — 1:1 match with preview.html (Arial stack,
            identical font-size / letter-spacing / margin clamp values). */
         .gallery-stacked-hero.hero-retinol {
@@ -4586,7 +4604,10 @@ margin-top: 3px;
                                 <span>Angola</span>
                             </div>
                         </div>
-                        <div class="gallery-stacked-hero" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776527014/lluandina_copy_azce8t.jpg') center/cover no-repeat;">
+                        <div class="gallery-stacked-hero hero-luandina">
+                            <svg class="luandina-star" viewBox="0 0 100 100" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+                                <polygon points="50,6 61.8,38.2 95.5,38.2 68.3,58.3 78.5,91.5 50,71.2 21.5,91.5 31.7,58.3 4.5,38.2 38.2,38.2" fill="#FFD700"/>
+                            </svg>
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">Geo-Targeted Campaign</div>
