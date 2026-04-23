@@ -443,9 +443,10 @@
             .menu-overlay-link.nav-gen { animation: none; }
         }
 
-        /* Hover-swap: 'Gen Studies' → 'No AI-Slop' with a smooth slide-fade.
-           The default label drives the width; the hover label is absolutely
-           positioned on top and crossfades in as the default slides up. */
+        /* Hover-swap: 'Gen Studies' ↔ 'No AI-Slop' — pure opacity crossfade.
+           Both labels inherit the parent .nav-gen's animated rainbow gradient
+           via background-clip:text, so the colour tone is identical on both
+           words — only the letters fade through. */
         .nav-gen-swap {
             position: relative;
             display: inline-block;
@@ -454,27 +455,18 @@
         .nav-gen-default,
         .nav-gen-hover {
             display: inline-block;
-            transition:
-                opacity 0.35s cubic-bezier(.7,0,.3,1),
-                transform 0.45s cubic-bezier(.7,0,.3,1);
+            transition: opacity 0.4s ease;
         }
         .nav-gen-hover {
             position: absolute;
             inset: 0;
             opacity: 0;
-            transform: translateY(8px);
         }
-        .nav-gen:hover .nav-gen-default {
-            opacity: 0;
-            transform: translateY(-8px);
-        }
-        .nav-gen:hover .nav-gen-hover {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .nav-gen:hover .nav-gen-default { opacity: 0; }
+        .nav-gen:hover .nav-gen-hover   { opacity: 1; }
         @media (prefers-reduced-motion: reduce) {
             .nav-gen-default,
-            .nav-gen-hover { transition: opacity 0.2s linear; transform: none !important; }
+            .nav-gen-hover { transition: opacity 0.2s linear; }
         }
         
         .header-right {
