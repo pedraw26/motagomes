@@ -1208,6 +1208,34 @@
             background-size: 22px 22px;
         }
 
+        /* ── Candando — pattern scrolls right→left in a seamless loop ── */
+        .gallery-stacked-hero.hero-candando {
+            background: #0a0a0a;
+            overflow: hidden;
+        }
+        .pattern-scroll {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            animation: pattern-scroll-left 40s linear infinite;
+            will-change: transform;
+        }
+        .pattern-row {
+            flex-shrink: 0;
+            width: 100%;
+            height: 100%;
+            /* Cloudinary auto-rasterises the .ai file; f_auto + h_ fits it
+               to the card height while keeping the pattern crisp. */
+            background: url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,h_800,c_limit/v1776979530/pyofnjny9lxn2h5ecvnf.jpg') center/contain repeat-x;
+        }
+        @keyframes pattern-scroll-left {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-100%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .pattern-scroll { animation: none; }
+        }
+
         /* ── Retinol label — lives inside the One1x Selected Works card ── */
         .gallery-stacked-hero.hero-retinol {
             background: linear-gradient(90deg,
@@ -4426,7 +4454,11 @@ margin-top: 3px;
                                 <span>Angola</span>
                             </div>
                         </div>
-                        <div class="gallery-stacked-hero gradient-emerald" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776640918/sBbbbArtboard_1-100_pzfngu.jpg') center/cover no-repeat;">
+                        <div class="gallery-stacked-hero hero-candando">
+                            <div class="pattern-scroll" aria-hidden="true">
+                                <div class="pattern-row"></div>
+                                <div class="pattern-row"></div>
+                            </div>
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">Retail Branding</div>
