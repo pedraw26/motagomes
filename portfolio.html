@@ -1226,7 +1226,11 @@
             position: absolute;
             top: 0;
             left: 0;
-            height: 100%;
+            /* Nudge the pattern band up so it clears the 'Candando' /
+               'Retail Branding' edge labels pinned at the bottom of the
+               card. Labels sit around bottom:28px with ~20px type, so
+               ~72px of clearance keeps them breathing. */
+            bottom: 72px;
             width: 200%;
             background-image: url('https://res.cloudinary.com/dzgqzeebg/image/upload/c_crop,w_0.45,h_0.8,g_center/f_auto,q_auto,h_800/v1776979530/pyofnjny9lxn2h5ecvnf.jpg');
             background-repeat: repeat-x;
