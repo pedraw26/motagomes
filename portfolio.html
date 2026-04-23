@@ -1078,7 +1078,7 @@
         
         .gallery-stacked-container {
             position: relative;
-            max-width: 1000px;
+            max-width: 1600px;
             margin: 0 auto;
             padding-bottom: calc(8 * 22px);
         }
@@ -1093,11 +1093,10 @@
         }
         
         .gallery-stacked-card-inner {
-            /* Lock aspect ratio so cards look identical on every viewport:
-               desktop 1000×500, tablet 768×384, mobile 375×188 — all 2:1. */
+            /* Lock aspect ratio so cards look identical on every viewport — all 2:1. */
             aspect-ratio: 2 / 1;
             width: 100%;
-            border-radius: 12px;
+            border-radius: 0;
             overflow: hidden;
             box-shadow: 0 -10px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
             transform-origin: center top;
@@ -1106,7 +1105,29 @@
             flex-direction: column;
             transition: transform 0.2s ease-out, box-shadow 0.3s ease;
         }
-        
+
+        /* Bottom-corner labels inside each card (brand left, type right) */
+        .gallery-edge {
+            position: absolute;
+            bottom: 28px;
+            z-index: 3;
+            font-family: var(--sf-pro);
+            color: rgba(255,255,255,0.95);
+            letter-spacing: 0.04em;
+            font-size: 16px;
+            font-weight: 500;
+            white-space: nowrap;
+            pointer-events: none;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+        .gallery-edge-left { left: 32px; }
+        .gallery-edge-right { right: 32px; font-weight: 400; }
+        @media (max-width: 768px) {
+            .gallery-edge { font-size: 12px; bottom: 18px; }
+            .gallery-edge-left { left: 18px; }
+            .gallery-edge-right { right: 18px; }
+        }
+
         .gallery-stacked-card-inner:hover {
             box-shadow: 0 -20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.1);
         }
@@ -1563,6 +1584,7 @@
         
         .gallery-stacked-side-left {
             left: 80px;
+            display: none !important; /* text moved inside each card as bottom-corner labels */
         }
         
         .gallery-stacked-side-right {
@@ -5099,7 +5121,22 @@ margin-top: 3px;
             'Real Estate Branding', 'Illustration', 'Rebrand',
             'Geo-Targeted Campaign', 'UX Design', 'Retail Campaign', 'Scholarship Initiative'
         ];
-        
+
+        // Inject bottom-corner labels inside each card (brand bottom-left, type bottom-right)
+        galleryCardInners.forEach((inner, i) => {
+            if (inner.querySelector('.gallery-edge-left')) return; // idempotent
+            const brand = galleryBrands[i] || '';
+            const type = galleryProjects[i] || '';
+            const left = document.createElement('span');
+            left.className = 'gallery-edge gallery-edge-left';
+            left.textContent = brand;
+            const right = document.createElement('span');
+            right.className = 'gallery-edge gallery-edge-right';
+            right.textContent = type;
+            inner.appendChild(left);
+            inner.appendChild(right);
+        });
+
         function updateActiveGalleryCard() {
             let active = 0;
             const vh = window.innerHeight;
