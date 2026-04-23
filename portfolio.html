@@ -340,13 +340,15 @@
                     color: transparent;
             animation: aislop-gradient 6s linear infinite;
         }
-        /* Expand button (corner arrows) — toggles extra nav items (.nav-extra) */
+        /* Expand button — chevron that nudges to signal it's clickable.
+           Collapsed: '‹' points away from the nav items; expanded: rotates
+           180° to '›', pointing toward the now-visible items. */
         .nav-expand {
             appearance: none;
             background: transparent;
             border: 0;
             padding: 4px;
-            margin-right: -4px; /* keep visual gap consistent with text links */
+            margin-right: -4px;
             color: rgba(255,255,255,0.7);
             cursor: pointer;
             display: inline-flex;
@@ -354,8 +356,27 @@
             transition: color 0.2s ease;
         }
         .nav-expand:hover { color: #fff; }
-        .nav-expand-icon { display: block; transition: transform 0.25s ease; }
-        .header-nav.is-expanded .nav-expand-icon { transform: rotate(180deg); }
+        .nav-expand-icon {
+            display: block;
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            animation: nav-expand-nudge 2.4s ease-in-out infinite;
+        }
+        /* Nudge loop: tiny horizontal wiggle on the collapsed chevron. */
+        @keyframes nav-expand-nudge {
+            0%, 60%, 100% { transform: translateX(0); }
+            70% { transform: translateX(-3px); }
+            80% { transform: translateX(0); }
+            90% { transform: translateX(-2px); }
+        }
+        .nav-expand:hover .nav-expand-icon { animation-play-state: paused; }
+        /* Once expanded, lock the rotation and stop the nudge. */
+        .header-nav.is-expanded .nav-expand-icon {
+            transform: rotate(180deg);
+            animation: none;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .nav-expand-icon { animation: none; }
+        }
 
         /* Extra items stay collapsed until the expand button is clicked */
         .nav-extra { display: none !important; }
@@ -4007,7 +4028,7 @@ margin-top: 3px;
 
             <div class="header-right">
                 <nav class="header-nav">
-                    <button type="button" class="nav-expand" id="navExpand" aria-label="Expand menu" aria-expanded="false"><svg class="nav-expand-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
+                    <button type="button" class="nav-expand" id="navExpand" aria-label="Expand menu" aria-expanded="false"><svg class="nav-expand-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 6 9 12 15 18"/></svg></button>
                     <a href="#work" data-i18n="menu.work">Work</a>
                     <a href="#about" class="nav-extra" data-i18n="menu.about">About</a>
                     <a href="/blog.html" class="nav-extra" data-i18n="menu.blog">Blog</a>
