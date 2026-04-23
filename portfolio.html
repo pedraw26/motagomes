@@ -1241,7 +1241,8 @@
             .pattern-scroll { animation: none; }
         }
 
-        /* ── Retinol label — lives inside the One1x Selected Works card ── */
+        /* ── Retinol label — 1:1 match with preview.html (Arial stack,
+           identical font-size / letter-spacing / margin clamp values). */
         .gallery-stacked-hero.hero-retinol {
             background: linear-gradient(90deg,
                 #607753 0%,
@@ -1258,7 +1259,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 8% 6%;
+            padding: 6vh 4vw;
             text-align: center;
             font-family: Arial, Helvetica, sans-serif;
             color: #f3f4ee;
@@ -1266,25 +1267,23 @@
         }
         .retinol-label .rtn-kicker,
         .retinol-label .rtn-foot {
-            font-size: clamp(12px, 1.3vw, 20px);
+            font-size: clamp(14px, 1.4vw, 20px);
             letter-spacing: 0.34em;
             text-transform: uppercase;
             margin: 0;
-            font-weight: 400;
         }
         .retinol-label .rtn-title {
-            font-size: clamp(38px, 5.5vw, 96px);
+            font-size: clamp(32px, 5vw, 72px);
             letter-spacing: 0.16em;
             font-weight: 300;
             text-transform: uppercase;
-            line-height: 1;
-            margin: 0.35em 0;
+            margin: 0;
         }
         .retinol-label .rtn-divider {
-            width: clamp(40px, 5vw, 80px);
+            width: clamp(40px, 6vw, 90px);
             height: 2px;
-            background: rgba(243,244,238,0.9);
-            margin: 1.4% 0 1.6%;
+            background: rgba(243, 244, 238, 0.9);
+            margin: 2.2vh 0 2vh;
         }
         .j-post:hover .j-cover {
             border-color: rgba(10,10,10,0.55);
