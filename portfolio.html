@@ -1146,63 +1146,75 @@
         .journal-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 32px;
         }
-        .j-box {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 360px;
-            padding: 32px;
-            border: 1px solid rgba(10,10,10,0.14);
-            background: transparent;
+        /* A post = bordered cover box (image only) + caption stack below */
+        .j-post {
+            display: block;
             color: inherit;
             text-decoration: none;
-            transition: border-color 0.3s ease, background 0.3s ease, transform 0.4s cubic-bezier(.7,0,.3,1);
+            cursor: pointer;
         }
-        .j-box:hover {
-            border-color: rgba(10,10,10,0.5);
-            background: rgba(10,10,10,0.03);
+        .j-cover {
+            position: relative;
+            aspect-ratio: 4 / 3;
+            border: 1px solid rgba(10,10,10,0.14);
+            background: #eaeadf;
+            overflow: hidden;
+            transition: border-color 0.35s ease, transform 0.45s cubic-bezier(.7,0,.3,1);
+        }
+        .j-cover::after {
+            /* Diagonal-hatch placeholder so an empty cover still reads as a
+               considered surface. Swap for a real <img> later. */
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(135deg, rgba(10,10,10,0.04) 25%, transparent 25%),
+                linear-gradient(225deg, rgba(10,10,10,0.04) 25%, transparent 25%);
+            background-size: 22px 22px;
+        }
+        .j-post:hover .j-cover {
+            border-color: rgba(10,10,10,0.55);
             transform: translateY(-4px);
         }
-        .j-box-top,
-        .j-box-bot {
+
+        .j-top,
+        .j-bot {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-family: var(--mono);
-            font-size: 10px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: rgba(10,10,10,0.5);
-        }
-        .j-box-title {
             font-family: var(--sf-pro);
-            font-size: clamp(1.4rem, 1.8vw, 1.7rem);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            color: rgba(10,10,10,0.55);
+        }
+        .j-top { margin-top: 20px; }
+        .j-title {
+            font-family: var(--sf-pro);
+            font-size: clamp(1.3rem, 1.7vw, 1.6rem);
             font-weight: 300;
-            line-height: 1.2;
+            line-height: 1.22;
             letter-spacing: -0.02em;
             color: #0a0a0a;
-            margin: 28px 0 40px;
-            max-width: 22ch;
+            margin: 12px 0 18px;
+            max-width: 24ch;
+            transition: color 0.3s ease;
         }
-        .j-box-title em { font-style: italic; color: rgba(10,10,10,0.55); }
-        .j-box-arrow {
+        .j-title em { font-style: italic; color: rgba(10,10,10,0.55); }
+        .j-arrow {
             width: 20px;
             height: 10px;
             color: rgba(10,10,10,0.45);
             transition: transform 0.3s ease, color 0.3s ease;
         }
-        .j-box:hover .j-box-arrow {
-            transform: translateX(6px);
-            color: #002FA7;
-        }
+        .j-post:hover .j-title { color: #002FA7; }
+        .j-post:hover .j-arrow { transform: translateX(6px); color: #002FA7; }
 
         @media (max-width: 900px) {
             .journal { padding: 96px 24px 120px; }
             .journal-head { flex-direction: column; align-items: flex-start; gap: 12px; }
-            .journal-grid { grid-template-columns: 1fr; }
-            .j-box { min-height: 240px; }
+            .journal-grid { grid-template-columns: 1fr; gap: 48px; }
         }
         .gallery-stacked .gallery-stacked-title { color: #0a0a0a; }
         .gallery-stacked .gallery-see-more__btn {
@@ -4576,30 +4588,33 @@ margin-top: 3px;
                 </header>
 
                 <div class="journal-grid">
-                    <a href="/blog.html" class="j-box">
-                        <div class="j-box-top"><span>N° 01</span><span>Essay</span></div>
-                        <h3 class="j-box-title">On the <em>honest weight</em> of a headline</h3>
-                        <div class="j-box-bot">
+                    <a href="/blog.html" class="j-post">
+                        <div class="j-cover" aria-hidden="true"></div>
+                        <div class="j-top"><span>N° 01</span><span>Essay</span></div>
+                        <h3 class="j-title">On the <em>honest weight</em> of a headline</h3>
+                        <div class="j-bot">
                             <span>8 min · Apr 2026</span>
-                            <svg class="j-box-arrow" viewBox="0 0 20 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h18M14 1l5 4-5 4"/></svg>
+                            <svg class="j-arrow" viewBox="0 0 20 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h18M14 1l5 4-5 4"/></svg>
                         </div>
                     </a>
 
-                    <a href="/blog.html" class="j-box">
-                        <div class="j-box-top"><span>N° 02</span><span>Process</span></div>
-                        <h3 class="j-box-title">Pacing is a <em>moral</em> decision</h3>
-                        <div class="j-box-bot">
+                    <a href="/blog.html" class="j-post">
+                        <div class="j-cover" aria-hidden="true"></div>
+                        <div class="j-top"><span>N° 02</span><span>Process</span></div>
+                        <h3 class="j-title">Pacing is a <em>moral</em> decision</h3>
+                        <div class="j-bot">
                             <span>6 min · Mar 2026</span>
-                            <svg class="j-box-arrow" viewBox="0 0 20 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h18M14 1l5 4-5 4"/></svg>
+                            <svg class="j-arrow" viewBox="0 0 20 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h18M14 1l5 4-5 4"/></svg>
                         </div>
                     </a>
 
-                    <a href="/blog.html" class="j-box">
-                        <div class="j-box-top"><span>N° 03</span><span>Field notes</span></div>
-                        <h3 class="j-box-title">The <em>quietest</em> identity wins the room</h3>
-                        <div class="j-box-bot">
+                    <a href="/blog.html" class="j-post">
+                        <div class="j-cover" aria-hidden="true"></div>
+                        <div class="j-top"><span>N° 03</span><span>Field notes</span></div>
+                        <h3 class="j-title">The <em>quietest</em> identity wins the room</h3>
+                        <div class="j-bot">
                             <span>5 min · Feb 2026</span>
-                            <svg class="j-box-arrow" viewBox="0 0 20 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h18M14 1l5 4-5 4"/></svg>
+                            <svg class="j-arrow" viewBox="0 0 20 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h18M14 1l5 4-5 4"/></svg>
                         </div>
                     </a>
                 </div>
