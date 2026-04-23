@@ -443,10 +443,10 @@
             .menu-overlay-link.nav-gen { animation: none; }
         }
 
-        /* Hover-swap: 'Gen Studies' ↔ 'No AI-Slop' — pure opacity crossfade.
-           Both labels inherit the parent .nav-gen's animated rainbow gradient
-           via background-clip:text, so the colour tone is identical on both
-           words — only the letters fade through. */
+        /* Hover-swap: 'Gen Studies' ↔ 'No AI-Slop'. Each label fades in
+           AFTER the other has finished fading out, so they never overlap
+           mid-transition (no double-word blur). Both inherit the parent
+           .nav-gen's animated gradient so the colour tone is identical. */
         .nav-gen-swap {
             position: relative;
             display: inline-block;
@@ -455,18 +455,29 @@
         .nav-gen-default,
         .nav-gen-hover {
             display: inline-block;
-            transition: opacity 0.4s ease;
         }
         .nav-gen-hover {
             position: absolute;
             inset: 0;
             opacity: 0;
+            /* Off-state: wait for default to vanish first */
+            transition: opacity 0.2s ease 0s;
         }
-        .nav-gen:hover .nav-gen-default { opacity: 0; }
-        .nav-gen:hover .nav-gen-hover   { opacity: 1; }
+        .nav-gen-default {
+            /* Off-state (return): wait for hover to vanish first */
+            transition: opacity 0.2s ease 0.2s;
+        }
+        .nav-gen:hover .nav-gen-default {
+            opacity: 0;
+            transition-delay: 0s;
+        }
+        .nav-gen:hover .nav-gen-hover {
+            opacity: 1;
+            transition-delay: 0.2s;
+        }
         @media (prefers-reduced-motion: reduce) {
             .nav-gen-default,
-            .nav-gen-hover { transition: opacity 0.2s linear; }
+            .nav-gen-hover { transition: opacity 0.15s linear !important; }
         }
         
         .header-right {
