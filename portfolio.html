@@ -1356,12 +1356,12 @@
             width: 100%;
             border-radius: 0;
             overflow: hidden;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+            box-shadow: none;
             transform-origin: center top;
             will-change: transform;
             display: flex;
             flex-direction: column;
-            transition: transform 0.2s ease-out, box-shadow 0.3s ease;
+            transition: transform 0.2s ease-out;
         }
 
         /* Bottom-corner labels inside each card (brand left, type right) */
@@ -1416,7 +1416,7 @@
         }
 
         .gallery-stacked-card-inner:hover {
-            box-shadow: 0 -20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.1);
+            box-shadow: none;
         }
         
         /* Browser bar */
