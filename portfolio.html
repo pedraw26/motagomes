@@ -323,8 +323,8 @@
         .header-nav a.is-current { color: var(--text); }
 
         /* Animated gradient on the "AI slop" nav link — seamless continuous loop */
-        .header-nav a[data-i18n="menu.gen"],
-        .menu-overlay-link[data-i18n="menu.gen"] {
+        .header-nav a.nav-gen,
+        .menu-overlay-link.nav-gen {
             background-image: linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);
             background-size: 200% 100%;
             background-repeat: repeat;
@@ -333,6 +333,32 @@
             -webkit-text-fill-color: transparent;
                     color: transparent;
             animation: aislop-gradient 6s linear infinite;
+        }
+        /* Magic wand sits inline with "Gen Studies" and inherits the same
+           animated gradient via SVG stroke + mask so it reads as one word. */
+        .nav-gen .nav-gen-wand {
+            display: inline-block;
+            margin-left: 0.35em;
+            vertical-align: -0.12em;
+            color: #ffb347;
+            -webkit-text-fill-color: currentColor;
+            stroke: currentColor;
+        }
+
+        /* NDA menu item: inline lock icon after the label */
+        .header-nav a.menu-nda,
+        .menu-overlay-link.menu-nda {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45em;
+        }
+        .menu-nda-lock {
+            opacity: 0.7;
+            flex-shrink: 0;
+        }
+        .header-nav a.menu-nda:hover .menu-nda-lock,
+        .menu-overlay-link.menu-nda:hover .menu-nda-lock {
+            opacity: 1;
         }
         /* ================================================================
            "Gen Studio" nav link — pinned to the SAME viewport coordinates
@@ -3948,10 +3974,10 @@ margin-top: 3px;
             <div class="header-right">
                 <nav class="header-nav">
                     <a href="#work" data-i18n="menu.work">Work</a>
-                    <a href="#motion" data-i18n="menu.motion">Motion Design</a>
                     <a href="javascript:void(0)" data-i18n="menu.research">Research</a>
                     <a href="#about" data-i18n="menu.about" hidden style="display:none">About</a>
-                    <a href="/gen-studio.html" data-i18n="menu.gen">Gen Studies</a>
+                    <a href="/gen-studio.html" class="nav-gen"><span data-i18n="menu.gen">Gen Studies</span><svg class="nav-gen-wand" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4 4 15l5 5L20 9z"/><path d="M14 5l5 5"/><path d="M19 3v2"/><path d="M19 4h2"/><path d="M4 5v2"/><path d="M4 6h2"/><path d="M20 17v2"/><path d="M20 18h2"/></svg></a>
+                    <a href="javascript:void(0)" class="menu-nda" onclick="event.preventDefault();openPwModal()" aria-label="NDA-protected work"><span data-i18n="menu.nda">NDA</span><svg class="menu-nda-lock" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></a>
                 </nav>
                 <div class="header-lang" role="group" aria-label="Language" hidden style="display:none">
                     <button type="button" data-i18n-toggle="en" aria-pressed="true">EN</button>
@@ -3976,10 +4002,10 @@ margin-top: 3px;
         </button>
         <div class="menu-overlay-items">
             <a href="#work" class="menu-overlay-link" data-i18n="menu.work">Work</a>
-            <a href="#motion" class="menu-overlay-link" data-i18n="menu.motion">Motion Design</a>
             <a href="javascript:void(0)" class="menu-overlay-link" data-i18n="menu.research">Research</a>
             <a href="#about" class="menu-overlay-link" data-i18n="menu.about" hidden style="display:none">About</a>
-            <a href="/gen-studio.html" class="menu-overlay-link" data-i18n="menu.gen">Gen Studies</a>
+            <a href="/gen-studio.html" class="menu-overlay-link nav-gen"><span data-i18n="menu.gen">Gen Studies</span><svg class="nav-gen-wand" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4 4 15l5 5L20 9z"/><path d="M14 5l5 5"/><path d="M19 3v2"/><path d="M19 4h2"/><path d="M4 5v2"/><path d="M4 6h2"/><path d="M20 17v2"/><path d="M20 18h2"/></svg></a>
+            <a href="javascript:void(0)" class="menu-overlay-link menu-nda" onclick="event.preventDefault();openPwModal()" aria-label="NDA-protected work"><span data-i18n="menu.nda">NDA</span><svg class="menu-nda-lock" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></a>
             <a href="mailto:hi@motagomes.com" class="menu-overlay-cta" data-i18n="menu.letstalk">Let's Talk</a>
             <a href="/cv.pdf" download class="menu-overlay-cv">
                 <span data-i18n="menu.cv">Curriculum</span>
