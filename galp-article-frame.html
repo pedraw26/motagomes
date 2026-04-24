@@ -13,19 +13,28 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
     height: 100%;
+    min-height: 100%;
+    width: 100%;
     background: var(--galp-orange);
     font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
-    display: grid;
-    place-items: center;
+  }
+  /* Flex centering on body — more reliable than grid place-items
+     when this page is loaded inside a fixed-height iframe. */
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  /* Stage stacks the frame and the scroll-mouse hint vertically. */
+  /* Stage stacks the frame and the scroll-mouse hint vertically,
+     and the whole stack is what gets centred by body's flex. */
   .stage {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 18px;
   }
 
