@@ -5763,9 +5763,13 @@ margin-top: 3px;
                 el.addEventListener('animationend', cleanup, { once: true });
                 setTimeout(cleanup, dur * 1000 + 600);
             }
-            function loop() { spawn(); setTimeout(loop, rand(900, 1700)); }
-            setTimeout(spawn, 400);
-            setTimeout(loop, 1400);
+            /* Sparser cadence — one drop at a time, long gaps
+               between. Previously spawned every 0.9–1.7s which
+               read as near-continuous; now 5–9s so each ripple
+               feels like a deliberate event, not a stream. */
+            function loop() { spawn(); setTimeout(loop, rand(5000, 9000)); }
+            setTimeout(spawn, 800);
+            setTimeout(loop, 6000);
         })();
 
         // ========================================
