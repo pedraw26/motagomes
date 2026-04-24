@@ -1260,14 +1260,40 @@
         /* ── Luandina card — royal blue stage with a small rounded-point
            yellow star stacked above 'A NOSSA' in Bebas Neue. Scales
            match the Retinol card's kicker/title so both cards read
-           with the same typographic weight. ── */
+           with the same typographic weight.
+
+           Cinematic loop (minimal, always on):
+             · stage key-light drifts diagonally (18s, alternate)
+             · star breathes with micro-rotation (5.4s)
+             · specular shimmer sweeps across 'A NOSSA' (7.5s)
+             · subtle 35mm grain riding on top in overlay blend
+           On first reveal (triggers when the card enters the
+           viewport) the star rotates in from -12° and the letters
+           stagger-rise with a blur-to-sharp focus pull. ── */
         .gallery-stacked-hero.hero-luandina {
-            background: #1E40AF;
+            /* Two stacked backgrounds: a soft drifting key-light
+               ellipse painted in white with low alpha, and a base
+               radial corner vignette darkening the edges. */
+            background:
+                radial-gradient(ellipse 80% 120% at 30% 20%,
+                    rgba(255,255,255,0.08) 0%,
+                    rgba(255,255,255,0)   55%),
+                radial-gradient(ellipse 95% 130% at 50% 50%,
+                    #1E40AF 40%,
+                    #173299 100%);
+            background-size: 180% 180%, 100% 100%;
+            background-position: 0% 0%, 50% 50%;
+            animation: luandina-drift 18s ease-in-out infinite alternate;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+        @keyframes luandina-drift {
+            from { background-position:   0%   0%, 50% 50%; }
+            to   { background-position: 100% 100%, 50% 50%; }
+        }
+
         .luandina-mark {
             display: flex;
             flex-direction: column;
@@ -1277,25 +1303,135 @@
             z-index: 1;
             pointer-events: none;
         }
+
+        /* Star — entry rotate-in on reveal, then a slow breathe
+           with a whisper of rotation so its highlight stays alive. */
         .luandina-star {
             width: clamp(72px, 10vw, 136px);
             height: auto;
             aspect-ratio: 1 / 1;
             display: block;
+            transform-origin: center;
+            filter: drop-shadow(0 6px 24px rgba(0,0,0,0.25));
+            /* Breathing loop runs continuously. Entry is handled by
+               .is-reveal added via IntersectionObserver below. */
+            animation: luandina-star-breathe 5.4s ease-in-out infinite alternate;
         }
+        @keyframes luandina-star-breathe {
+            0%   { transform: rotate(0deg)   scale(1);    }
+            100% { transform: rotate(0.6deg) scale(1.03); }
+        }
+        /* Entry state — the star starts folded away; .is-reveal
+           fires the rotate-in, then the breathe loop takes over. */
+        .gallery-stacked-hero.hero-luandina:not(.is-reveal) .luandina-star {
+            opacity: 0;
+            transform: rotate(-12deg) scale(0.78);
+            animation: none;
+        }
+        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-star {
+            animation:
+                luandina-star-entry   1.4s cubic-bezier(.22, 1, .36, 1) 0.1s both,
+                luandina-star-breathe 5.4s ease-in-out 1.6s infinite alternate;
+        }
+        @keyframes luandina-star-entry {
+            0%   { opacity: 0; transform: rotate(-12deg) scale(0.78); }
+            100% { opacity: 1; transform: rotate(0deg)   scale(1);    }
+        }
+
+        /* Text — letters stagger-rise on reveal, then the whole
+           word carries a repeating specular shimmer. */
         .luandina-text {
             font-family: 'Bebas Neue', Impact, 'Helvetica Neue Condensed', sans-serif;
             font-size: clamp(64px, 10vw, 144px);
-            letter-spacing: -0.01em; /* tight — letters nearly touch */
+            letter-spacing: -0.01em;
             line-height: 0.95;
             font-weight: 400;
             color: #ffffff;
             text-transform: uppercase;
-            /* Subtle corner-rounding via feGaussianBlur + feColorMatrix.
-               stdDeviation=0.9 + high alpha recovery softens the angular
-               corners of Bebas Neue just a hair without blurring the
-               strokes. */
             filter: url(#luandina-round);
+            display: inline-flex;
+            gap: 0.02em;
+        }
+        .luandina-text .luandina-letter {
+            display: inline-block;
+            opacity: 1;
+            /* Shimmer — a 260% linear gradient clipped to each
+               letter, drifting across every 7.5s. The base is pure
+               white so between sweeps the text reads as plain
+               white; mid-sweep a subtle warm highlight passes. */
+            background: linear-gradient(110deg,
+                rgba(255,255,255,1)    0%,
+                rgba(255,255,255,1)   42%,
+                rgba(255,255,210,1)   50%,
+                rgba(255,255,255,1)   58%,
+                rgba(255,255,255,1)  100%);
+            background-size: 260% 100%;
+            background-position: 100% 0%;
+            -webkit-background-clip: text;
+                    background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: luandina-shimmer 7.5s ease-in-out 2.2s infinite;
+        }
+        @keyframes luandina-shimmer {
+            0%   { background-position: 100% 0%; }
+            55%  { background-position:   0% 0%; }
+            100% { background-position: -80% 0%; }
+        }
+        /* Pre-reveal state on each letter — hidden, lowered, blurred */
+        .gallery-stacked-hero.hero-luandina:not(.is-reveal) .luandina-letter {
+            opacity: 0;
+            transform: translateY(22%);
+            filter: blur(6px);
+            animation: none;
+        }
+        /* Reveal — staggered rise-in, then pick up the shimmer loop */
+        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-letter {
+            animation:
+                luandina-letter-rise 0.9s cubic-bezier(.22, 1, .36, 1) both,
+                luandina-shimmer 7.5s ease-in-out 2.2s infinite;
+        }
+        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-letter:nth-child(1) { animation-delay: 0.35s, 2.2s; }
+        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-letter:nth-child(2) { animation-delay: 0.45s, 2.2s; }
+        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-letter:nth-child(3) { animation-delay: 0.55s, 2.2s; }
+        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-letter:nth-child(4) { animation-delay: 0.65s, 2.2s; }
+        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-letter:nth-child(5) { animation-delay: 0.75s, 2.2s; }
+        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-letter:nth-child(6) { animation-delay: 0.85s, 2.2s; }
+        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-letter:nth-child(7) { animation-delay: 0.95s, 2.2s; }
+        @keyframes luandina-letter-rise {
+            0%   { opacity: 0; transform: translateY(22%); filter: blur(6px); }
+            100% { opacity: 1; transform: translateY(0);   filter: blur(0);   }
+        }
+
+        /* 35mm grain — subtle overlay riding above the stage but
+           below the info/badge (which live at z-index 1). */
+        .luandina-grain {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280'><filter id='n'><feTurbulence baseFrequency='1.15' numOctaves='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.8 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+            background-repeat: repeat;
+            background-size: 280px 280px;
+            mix-blend-mode: overlay;
+            opacity: 0.22;
+            animation: luandina-grain 0.12s steps(1) infinite;
+        }
+        @keyframes luandina-grain {
+            0%   { background-position:   0px   0px; }
+            20%  { background-position: -40px -80px; }
+            40%  { background-position:  60px -30px; }
+            60%  { background-position: -90px  50px; }
+            80%  { background-position:  20px 110px; }
+            100% { background-position:   0px   0px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .gallery-stacked-hero.hero-luandina,
+            .luandina-star,
+            .luandina-letter,
+            .luandina-grain { animation: none !important; }
+            .gallery-stacked-hero.hero-luandina .luandina-letter { opacity: 1; transform: none; filter: none; }
         }
 
         /* ── Retinol card — drifting sage gradient + auto-spawning
@@ -4742,13 +4878,27 @@ margin-top: 3px;
                             </div>
                         </div>
                         <div class="gallery-stacked-hero hero-luandina">
+                            <!-- 35mm grain layer — sits under the info/badge but
+                                 above the stage gradient for a cinematic plate feel. -->
+                            <div class="luandina-grain" aria-hidden="true"></div>
                             <div class="luandina-mark" aria-hidden="true">
                                 <svg class="luandina-star" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
                                     <polygon
                                         points="50,6 61.8,38.2 95.5,38.2 68.3,58.3 78.5,91.5 50,71.2 21.5,91.5 31.7,58.3 4.5,38.2 38.2,38.2"
                                         fill="#FFD700"/>
                                 </svg>
-                                <span class="luandina-text">A NOSSA</span>
+                                <!-- Each glyph is its own span so letters can
+                                     stagger-rise independently on reveal, and
+                                     each carries the shimmer sweep loop. -->
+                                <span class="luandina-text" aria-label="A NOSSA">
+                                    <span class="luandina-letter">A</span>
+                                    <span class="luandina-letter">&nbsp;</span>
+                                    <span class="luandina-letter">N</span>
+                                    <span class="luandina-letter">O</span>
+                                    <span class="luandina-letter">S</span>
+                                    <span class="luandina-letter">S</span>
+                                    <span class="luandina-letter">A</span>
+                                </span>
                             </div>
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
@@ -5770,6 +5920,32 @@ margin-top: 3px;
             function loop() { spawn(); setTimeout(loop, rand(5000, 9000)); }
             setTimeout(spawn, 800);
             setTimeout(loop, 6000);
+        })();
+
+        // ========================================
+        // LUANDINA CARD — reveal trigger. When the card first
+        // enters the viewport, add .is-reveal so the star rotates
+        // in and the letters stagger-rise with the blur-to-sharp
+        // focus pull. One-shot — we unobserve after firing so the
+        // loop animations (breathe, shimmer, drift, grain) can run
+        // uninterrupted.
+        // ========================================
+        (() => {
+            const card = document.querySelector('.gallery-stacked-hero.hero-luandina');
+            if (!card || !('IntersectionObserver' in window)) {
+                // No support → show the mark immediately.
+                card && card.classList.add('is-reveal');
+                return;
+            }
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        card.classList.add('is-reveal');
+                        obs.unobserve(card);
+                    }
+                });
+            }, { threshold: 0.35 });
+            obs.observe(card);
         })();
 
         // ========================================
