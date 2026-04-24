@@ -1434,86 +1434,6 @@
             .gallery-stacked-hero.hero-luandina .luandina-letter { opacity: 1; transform: none; filter: none; }
         }
 
-        /* ── Galp card — orange stage + 16:9 black-bezel "monitor"
-           with the actual Christmas-article screenshot scrolling
-           inside it. The bezel is the .gallery-stacked-hero with
-           inset .galp-screen; scroll events land in the screen
-           first, then chain to the page once at top/bottom. ── */
-        .gallery-stacked-hero.hero-galp {
-            background: #FF6700;          /* Galp brand orange */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
-            padding: 22px 0;
-            overflow: hidden;
-        }
-        .galp-frame {
-            /* Sized so 16:9 fits inside the 2:1 card with room
-               below for the scroll mouse icon. */
-            height: calc(100% - 60px);
-            aspect-ratio: 16 / 9;
-            max-width: 88%;
-            background: #0a0a0a;
-            border-radius: 4px;
-            overflow: hidden;
-            position: relative;
-        }
-        .galp-screen {
-            position: absolute;
-            inset: clamp(6px, 1vw, 14px);
-            overflow-y: auto;
-            overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
-            background: #fff;
-            border-radius: 1px;
-            box-shadow:
-                inset 0 0 0 1px rgba(0, 0, 0, 0.9),
-                0 0 0 2px #000;
-        }
-        .galp-screen img {
-            display: block;
-            width: 100%;
-            height: auto;
-            user-select: none;
-            -webkit-user-drag: none;
-        }
-        .galp-screen::-webkit-scrollbar { width: 6px; }
-        .galp-screen::-webkit-scrollbar-track { background: transparent; }
-        .galp-screen::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 3px;
-        }
-        /* Reuse the existing .scroll-mouse vector with darker
-           strokes so it reads on orange. */
-        .galp-scroll-hint {
-            width: 18px;
-            height: 30px;
-            display: block;
-            color: rgba(0, 0, 0, 0.6);
-            flex-shrink: 0;
-        }
-        .galp-scroll-hint__body {
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 1.5;
-        }
-        .galp-scroll-hint__dot {
-            fill: currentColor;
-            transform-origin: center;
-            animation: galp-scroll-dot 1.8s cubic-bezier(.4, 0, .2, 1) infinite;
-        }
-        @keyframes galp-scroll-dot {
-            0%   { transform: translateY(0);    opacity: 0; }
-            15%  { opacity: 1; }
-            70%  { transform: translateY(8px);  opacity: 0; }
-            100% { transform: translateY(0);    opacity: 0; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .galp-scroll-hint__dot { animation: none; opacity: 1; }
-        }
-
         /* ── Retinol card — drifting sage gradient + auto-spawning
            water-ripple blooms. Two stacked layers:
              1. A radial "green pool" (STATIC) centred on the card
@@ -4816,24 +4736,14 @@ margin-top: 3px;
                                 <span>360°</span>
                             </div>
                         </div>
-                        <div class="gallery-stacked-hero hero-galp">
-                            <!-- 16:9 monitor frame with the Galp Christmas
-                                 article rendered as a scrollable PNG. Scroll
-                                 events land in the screen first; once the
-                                 inner reaches top/bottom they chain back to
-                                 the page. -->
-                            <div class="galp-frame">
-                                <div class="galp-screen" aria-label="Galp Christmas article — scroll inside to read">
-                                    <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1600,c_limit/v1777074228/m4wvh9tnwv4vvvhhzxyf.png"
-                                         alt="Galp blog: Este ano o Natal tem mais sabor e novidades quentinhas"
-                                         draggable="false">
-                                </div>
+                        <div class="gallery-stacked-hero gradient-midnight" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776641568/sBbbbArtboard_1-100_xmas_tbygvj.jpg') center/cover no-repeat;">
+                            <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
+                                <div class="gallery-stacked-label">Christmas Campaign</div>
+                                <div class="gallery-stacked-project-title">Galp Christmas</div>
+                                <a href="/project.html?p=galp" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
                             </div>
-                            <!-- Scroll hint mouse icon below the screen -->
-                            <svg class="galp-scroll-hint" viewBox="0 0 22 36" aria-label="Scroll inside the screen" role="img">
-                                <rect class="galp-scroll-hint__body" x="1" y="1" width="20" height="34" rx="10" ry="10"/>
-                                <circle class="galp-scroll-hint__dot" cx="11" cy="10" r="1.8"/>
-                            </svg>
+                            <div class="gallery-stacked-badge"><span data-i18n="card.viewProject">VIEW</span><br><span data-i18n="card.projectWord">PROJECT</span></div>
                         </div>
                     </div>
                 </div>
