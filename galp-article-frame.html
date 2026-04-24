@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galp — Christmas article frame</title>
+<style>
+  :root {
+    --galp-orange: #FF6700;
+    --bezel:       #0a0a0a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: var(--galp-orange);
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+  }
+
+  /* Stage stacks the frame and the scroll-mouse hint vertically. */
+  .stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+
+  /* 16:9 frame — the whole rectangle is the black bezel; the
+     screen sits inset inside it with a hard inner edge. */
+  .frame {
+    width: min(92vw, calc(86vh * 16 / 9));
+    aspect-ratio: 16 / 9;
+    background: var(--bezel);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: none;
+    position: relative;
+  }
+
+  /* Scroll container — inset from frame edges so the black
+     surround reads as the bezel. */
+  .screen {
+    position: absolute;
+    inset: clamp(8px, 1.4vw, 18px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    background: #fff;
+    border-radius: 1px;
+    box-shadow:
+      inset 0 0 0 1px rgba(0, 0, 0, 0.9),
+      0 0 0 2px #000;
+  }
+  .screen img {
+    display: block;
+    width: 100%;
+    height: auto;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .screen::-webkit-scrollbar { width: 8px; }
+  .screen::-webkit-scrollbar-track { background: transparent; }
+  .screen::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+  }
+  .screen::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.4); }
+
+  /* Mouse-pill scroll hint — same vector as the portfolio's
+     Selected Reels marker, dark on the orange. */
+  .scroll-mouse {
+    width: 22px;
+    height: 36px;
+    display: block;
+    color: rgba(0, 0, 0, 0.55);
+  }
+  .scroll-mouse__body {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+  }
+  .scroll-mouse__dot {
+    fill: currentColor;
+    transform-origin: center;
+    animation: scroll-mouse-dot 1.8s cubic-bezier(.4, 0, .2, 1) infinite;
+  }
+  @keyframes scroll-mouse-dot {
+    0%   { transform: translateY(0);    opacity: 0; }
+    15%  { opacity: 1; }
+    70%  { transform: translateY(10px); opacity: 0; }
+    100% { transform: translateY(0);    opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-mouse__dot { animation: none; opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="frame">
+    <div class="screen" aria-label="Galp Christmas article — scroll inside to read">
+      <!-- Full-page screenshot of the live Galp article. Galp blocks
+           cross-origin iframe embedding (X-Frame-Options: SAMEORIGIN),
+           so we render their page as a tall PNG and let CSS overflow
+           handle the scrolling. -->
+      <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1600,c_limit/v1777074228/m4wvh9tnwv4vvvhhzxyf.png"
+           alt="Galp blog: Este ano o Natal tem mais sabor e novidades quentinhas"
+           draggable="false">
+    </div>
+  </div>
+
+  <svg class="scroll-mouse" viewBox="0 0 22 36" aria-label="Scroll inside the frame" role="img">
+    <rect class="scroll-mouse__body" x="1" y="1" width="20" height="34" rx="10" ry="10" />
+    <circle class="scroll-mouse__dot" cx="11" cy="10" r="1.8" />
+  </svg>
+</div>
+
+</body>
+</html>
