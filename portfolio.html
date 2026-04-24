@@ -2464,6 +2464,34 @@
             font-weight: 500;
             color: var(--text-60);
         }
+        /* Mouse-scroll indicator — pill keyline with a small dot
+           that drops from the top, fades, then resets. Classic
+           "scroll to see more" idiom, no text needed. */
+        .scroll-mouse {
+            width: 22px;
+            height: 36px;
+            display: block;
+            color: var(--text-40);
+        }
+        .scroll-mouse__body {
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+        }
+        .scroll-mouse__dot {
+            fill: currentColor;
+            transform-origin: center;
+            animation: scroll-mouse-dot 1.8s cubic-bezier(.4,0,.2,1) infinite;
+        }
+        @keyframes scroll-mouse-dot {
+            0%   { transform: translateY(0);   opacity: 0; }
+            15%  { opacity: 1; }
+            70%  { transform: translateY(10px); opacity: 0; }
+            100% { transform: translateY(0);    opacity: 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .scroll-mouse__dot { animation: none; opacity: 1; }
+        }
 
         /* Split title — matches portfolio philosophy weight/color */
         .motion-embed__title {
@@ -4852,7 +4880,12 @@ margin-top: 3px;
                 </div>
 
                 <div class="motion-embed__meta">
-                    <p class="me-date" id="motionDate">Selected Reels · 2022 — 2026</p>
+                    <!-- Mouse-scroll indicator — pill keyline with a dot
+                         that drops to hint at scrolling for more reels. -->
+                    <svg class="scroll-mouse" viewBox="0 0 22 36" aria-label="Scroll" role="img">
+                        <rect class="scroll-mouse__body" x="1" y="1" width="20" height="34" rx="10" ry="10" />
+                        <circle class="scroll-mouse__dot" cx="11" cy="10" r="1.8" />
+                    </svg>
                 </div>
 
                 <div class="motion-embed__title">
