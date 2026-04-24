@@ -1299,28 +1299,49 @@
         }
 
         /* ── Retinol card — drifting sage gradient + auto-spawning
-           water-ripple blooms. Gradient stops are mirrored so the
-           background-position shift wraps seamlessly. ── */
+           water-ripple blooms. Two stacked layers:
+             1. A radial "green pool" (STATIC) centred on the card
+                that stays dark sage where the lettering sits, so
+                the label never falls onto light stops and washes
+                out. Alpha fades to transparent near the edges.
+             2. The drifting horizontal light-to-dark gradient
+                (ANIMATED) underneath — visible only at the edges
+                where the pool's alpha has faded away. Motion is
+                preserved around the perimeter.
+           Mirrored stops on layer 2 keep the 220% loop seamless. */
         .gallery-stacked-hero.hero-retinol {
-            background: linear-gradient(90deg,
-                #607753 0%,
-                #7d9568 12%,
-                #96ad7f 22%,
-                #c9d3bf 33%,
-                #d9dfcf 50%,
-                #c9d3bf 67%,
-                #96ad7f 78%,
-                #7d9568 88%,
-                #607753 100%);
-            background-size: 220% 100%;
-            background-position: 0% 50%;
+            background:
+                radial-gradient(ellipse 56% 74% at 50% 50%,
+                    rgba(96, 119, 83, 1)    0%,
+                    rgba(96, 119, 83, 0.96) 40%,
+                    rgba(96, 119, 83, 0.60) 62%,
+                    rgba(96, 119, 83, 0.20) 78%,
+                    rgba(96, 119, 83, 0)    92%),
+                linear-gradient(90deg,
+                    #607753 0%,
+                    #7d9568 12%,
+                    #96ad7f 22%,
+                    #c9d3bf 33%,
+                    #d9dfcf 50%,
+                    #c9d3bf 67%,
+                    #96ad7f 78%,
+                    #7d9568 88%,
+                    #607753 100%);
+            /* Radial pool is static; only the linear layer drifts.
+               Safari honours per-layer background-size lists, so
+               layer 1 stays at 100% 100% (pinned) while layer 2
+               runs at 220% 100% for the slide. */
+            background-size: 100% 100%, 220% 100%;
+            background-position: 50% 50%, 0% 50%;
             animation: retinol-drift 22s ease-in-out infinite alternate;
             color: #f3f4ee;
             overflow: hidden;
         }
         @keyframes retinol-drift {
-            from { background-position:   0% 50%; }
-            to   { background-position: 100% 50%; }
+            /* Only the second bg-position (linear layer) animates;
+               the first (radial pool) stays pinned at 50% 50%. */
+            from { background-position: 50% 50%,   0% 50%; }
+            to   { background-position: 50% 50%, 100% 50%; }
         }
         /* Water-ripple bloom — JS spawns one of these at a random spot
            every ~1s. Radial fade, screen blend, no ring stroke. */
