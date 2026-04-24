@@ -1362,68 +1362,28 @@
             padding: 6vh 4vw;
             text-align: center;
             font-family: Arial, Helvetica, sans-serif;
+            color: #f3f4ee;
             pointer-events: none;
         }
-
-        /* ── Real-silver 3D text for PURE RETINOL SERUM ─────────
-           Silver gradient clipped to the glyphs (dark-to-bright-
-           to-dark vertical band, the way polished metal actually
-           reflects) + a thin top-highlight / bottom-shadow bevel
-           + a lift-off drop-shadow so the letters sit above the
-           sage card rather than flat on it. */
-        .retinol-label .silver-3d {
-            background: linear-gradient(180deg,
-                #2f3239  0%,
-                #6b6f78 14%,
-                #d8dbe1 34%,
-                #f7f9fc 50%,
-                #b3b7c0 66%,
-                #595c65 86%,
-                #2f3239 100%);
-            -webkit-background-clip: text;
-                    background-clip: text;
-            -webkit-text-fill-color: transparent;
-                    color: transparent;
-            text-shadow:
-                0 -1px 0 rgba(255, 255, 255, 0.45),   /* top bevel */
-                0  1px 0 rgba(0, 0, 0, 0.55);         /* bottom bevel */
-            filter:
-                drop-shadow(0 2px 1px rgba(0, 0, 0, 0.32))
-                drop-shadow(0 6px 14px rgba(0, 0, 0, 0.30));
-        }
-
         .retinol-label .rtn-kicker,
         .retinol-label .rtn-foot {
             font-size: clamp(14px, 1.4vw, 20px);
             letter-spacing: 0.34em;
             text-transform: uppercase;
             margin: 0;
-            font-weight: 600;   /* silver needs body to read */
         }
         .retinol-label .rtn-title {
             font-size: clamp(32px, 5vw, 72px);
             letter-spacing: 0.16em;
-            font-weight: 700;   /* bumped from 300 so the gradient
-                                   has room to form the bright band */
+            font-weight: 300;
             text-transform: uppercase;
             margin: 0;
         }
-
-        /* Divider — brushed-silver bar matching the lettering */
         .retinol-label .rtn-divider {
             width: clamp(40px, 6vw, 90px);
             height: 2px;
+            background: rgba(243, 244, 238, 0.9);
             margin: 2.2vh 0 2vh;
-            background: linear-gradient(90deg,
-                #2f3239 0%,
-                #c0c3ca 30%,
-                #f7f9fc 50%,
-                #c0c3ca 70%,
-                #2f3239 100%);
-            box-shadow:
-                0 -1px 0 rgba(255, 255, 255, 0.35),
-                0  1px 0 rgba(0, 0, 0, 0.45),
-                0  2px 4px rgba(0, 0, 0, 0.25);
         }
         .j-post:hover .j-cover {
             border-color: rgba(10,10,10,0.55);
@@ -4724,10 +4684,10 @@ margin-top: 3px;
                         </div>
                         <div class="gallery-stacked-hero hero-retinol">
                             <div class="retinol-label" aria-hidden="true">
-                                <p class="rtn-kicker silver-3d">PURE</p>
-                                <h4 class="rtn-title silver-3d">RETINOL</h4>
+                                <p class="rtn-kicker">PURE</p>
+                                <h4 class="rtn-title">RETINOL</h4>
                                 <div class="rtn-divider"></div>
-                                <p class="rtn-foot silver-3d">SERUM</p>
+                                <p class="rtn-foot">SERUM</p>
                             </div>
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
