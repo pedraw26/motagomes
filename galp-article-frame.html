@@ -29,10 +29,12 @@
     gap: 18px;
   }
 
-  /* 16:9 frame — the whole rectangle is the black bezel; the
-     screen sits inset inside it with a hard inner edge. */
+  /* 16:9 frame — 30% smaller than the full viewport so plenty
+     of orange surrounds it. body's place-items: center plus the
+     .stage flex column keep it dead-centred horizontally and
+     vertically inside the iframe. */
   .frame {
-    width: min(92vw, calc(86vh * 16 / 9));
+    width: min(64vw, calc(60vh * 16 / 9));
     aspect-ratio: 16 / 9;
     background: var(--bezel);
     border-radius: 4px;
