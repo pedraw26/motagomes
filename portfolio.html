@@ -458,6 +458,22 @@
         .nav-gen-default,
         .nav-gen-hover {
             display: inline-block;
+            /* Re-apply the animated gradient + text-clip on each
+               inner span. The parent .nav-gen sets these too, but
+               an inline-block / absolutely-positioned child opens
+               its own paint context, so background-clip: text on
+               the parent doesn't reach into the child's box. The
+               child then inherits 'color: transparent' with no
+               gradient to fill from → invisible text. Painting
+               the gradient on each span fixes it. */
+            background-image: linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);
+            background-size: 200% 100%;
+            background-repeat: repeat;
+            -webkit-background-clip: text;
+                    background-clip: text;
+            -webkit-text-fill-color: transparent;
+                    color: transparent;
+            animation: aislop-gradient 6s linear infinite;
         }
         .nav-gen-hover {
             position: absolute;
