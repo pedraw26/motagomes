@@ -176,9 +176,18 @@
         .scroll-container {
             height: 100vh;
             overflow-y: scroll;
-            scroll-behavior: smooth;
+            /* scroll-behavior: smooth removed — when applied to a
+               container it intercepts every wheel/trackpad event
+               and re-animates with its own easing, which fights
+               macOS trackpad inertia and causes a sluggish, jerky
+               feel. Programmatic scrollTo({behavior:'smooth'})
+               still works for the back-to-top + anchor jumps. */
             scrollbar-width: none;              /* Firefox */
             -ms-overflow-style: none;           /* IE / Edge legacy */
+            /* Contain over-scroll so a flick at the top/bottom
+               doesn't rubber-band the whole window — only the
+               container itself springs back. */
+            overscroll-behavior: contain;
         }
         .scroll-container::-webkit-scrollbar { display: none; } /* WebKit */
 
@@ -5783,9 +5792,14 @@ margin-top: 3px;
         syncHeaderScrollbarComp();
         window.addEventListener('resize', syncHeaderScrollbarComp);
         
+        // Header-hide scroll handler. Marked passive: true so the
+        // browser doesn't have to wait for preventDefault() before
+        // committing the scroll — without this, every wheel/touch
+        // tick blocks the compositor, which is the leading cause
+        // of "scroll feels stuck" on macOS trackpads + iOS Safari.
         scrollContainer.addEventListener('scroll', function() {
             const scrollPosition = scrollContainer.scrollTop;
-            
+
             if (scrollPosition > lastScrollPosition && scrollPosition > 100) {
                 header.classList.add('hidden');
             } else {
@@ -5795,9 +5809,9 @@ margin-top: 3px;
             if (videoScrollIndicator) {
                 videoScrollIndicator.classList.toggle('hidden', scrollPosition > 12);
             }
-            
+
             lastScrollPosition = scrollPosition;
-        });
+        }, { passive: true });
         
         // ========================================
         // GALLERY SCROLL
