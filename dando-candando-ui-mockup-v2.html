@@ -27,21 +27,37 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Showcase canvas — phone on the left, email on the right */
+  /* ── Scroll-reveal ─────────────────────────────────────────
+     Canvas starts hidden. IntersectionObserver (bottom of file)
+     adds .is-visible once the frame enters the viewport — then
+     CSS animations run. Nothing plays on load while the slide
+     is off-screen. */
   .canvas {
-    width: min(1320px, calc(100vw - 56px));
+    opacity: 0;
+  }
+  .canvas.is-visible {
+    opacity: 1;
+  }
+
+  /* Showcase canvas — phone on the left, email on the right.
+     Columns are %-based so both sides shrink proportionally
+     as the iframe narrows; fixed px is gone. Each image
+     already has an intrinsic aspect-ratio so it never distorts. */
+  .canvas {
+    width: min(1320px, calc(100vw - 48px));
     margin: 0 auto;
-    padding: 56px 0 72px;
+    padding: 48px 0 64px;
     display: grid;
-    grid-template-columns: 380px minmax(620px, 1fr);
-    gap: 56px;
+    grid-template-columns: 36% 1fr;
+    gap: 4%;
     align-items: start;
   }
-  @media (max-width: 1100px) {
+  @media (max-width: 860px) {
     .canvas {
       grid-template-columns: 1fr;
       justify-items: center;
-      gap: 36px;
+      gap: 32px;
+      padding: 36px 0 48px;
     }
   }
 
@@ -56,7 +72,8 @@
 
   /* ─────────── Phone shell (showcase, ported from v1) ──── */
   .phone-shell {
-    width: 380px;
+    width: 100%;          /* fills its 36% grid column */
+    max-width: 380px;
     background: #ffffff;
     border: 1px solid #d1d1d1;
     box-shadow: 0 16px 50px rgba(20, 20, 20, 0.08);
@@ -110,7 +127,7 @@
     height: 38px;
     border-radius: 50%;
     background:
-      url("./Logo.svg") center / 64% auto no-repeat,
+      url("https://res.cloudinary.com/dzgqzeebg/image/upload/v1777144369/candando-logo.svg") center / 64% auto no-repeat,
       var(--red);
   }
   .phone-contact-name {
@@ -283,7 +300,7 @@
     height: 48px;
     border-radius: 50%;
     background:
-      url("./Logo.svg") center / 64% auto no-repeat,
+      url("https://res.cloudinary.com/dzgqzeebg/image/upload/v1777144369/candando-logo.svg") center / 64% auto no-repeat,
       var(--red);
   }
   .sender-name {
@@ -347,7 +364,7 @@
     height: 76px;
     margin: 0 auto 30px;
     background:
-      url("./Logo.svg") center / contain no-repeat;
+      url("https://res.cloudinary.com/dzgqzeebg/image/upload/v1777144369/candando-logo.svg") center / contain no-repeat;
   }
 
   .headline {
@@ -492,38 +509,37 @@
     to   { opacity: 1; }
   }
 
-  .headline,
-  .lede,
-  .cta {
-    opacity: 0;
+  /* All animated elements start invisible and static.
+     Animations only fire once JS adds .is-visible to .canvas. */
+  .headline, .lede, .cta { opacity: 0; }
+  .gift-card              { opacity: 0; }
+  .sms-bubble             { opacity: 0; transform-origin: bottom left; }
+  .phone-card-link        { opacity: 0; transform-origin: top left; }
+
+  .canvas.is-visible .headline,
+  .canvas.is-visible .lede,
+  .canvas.is-visible .cta {
     animation: fade-up 0.6s cubic-bezier(.22, 1, .36, 1) forwards;
   }
-  .headline  { animation-delay: 0.05s; }
-  .lede      { animation-delay: 0.18s; }
-  .cta       { animation-delay: 0.48s; }
-  /* Card uses opacity-only entrance so its transform stays free
-     for the hover lift effect. */
-  .gift-card {
-    opacity: 0;
+  .canvas.is-visible .headline     { animation-delay: 0.05s; }
+  .canvas.is-visible .lede         { animation-delay: 0.18s; }
+  .canvas.is-visible .cta          { animation-delay: 0.48s; }
+  .canvas.is-visible .gift-card    {
     animation: fade-only 0.6s cubic-bezier(.22, 1, .36, 1) 0.32s forwards;
   }
-
-  /* Phone SMS bubble pop-in, then card link follows. */
-  .sms-bubble {
-    transform-origin: bottom left;
+  .canvas.is-visible .sms-bubble   {
     animation: pop-in 0.45s cubic-bezier(.22, 1.4, .36, 1) 0.25s both;
   }
-  .phone-card-link {
+  .canvas.is-visible .phone-card-link {
     animation: pop-in 0.5s cubic-bezier(.22, 1.4, .36, 1) 0.85s both;
-    transform-origin: top left;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .headline, .lede, .gift-card, .cta, .sms-bubble,
-    .gift-card::before {
-      animation: none;
-      opacity: 1;
-      transform: none;
+    .canvas, .headline, .lede, .gift-card, .cta,
+    .sms-bubble, .phone-card-link {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
     }
   }
 
@@ -646,5 +662,35 @@
 
 </main>
 
+<script>
+  /* Scroll-triggered reveal — watches the canvas itself.
+     When ≥10% of it enters the iframe's own viewport,
+     .is-visible is added and all CSS animations fire once.
+     Works whether the iframe is lazy-loaded or eager. */
+  (() => {
+    const canvas = document.querySelector('.canvas');
+    if (!canvas) return;
+
+    if (!('IntersectionObserver' in window)) {
+      /* Fallback: just show everything immediately. */
+      canvas.classList.add('is-visible');
+      return;
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          canvas.classList.add('is-visible');
+          io.disconnect();   /* fire once, then stop watching */
+        }
+      });
+    }, {
+      threshold: 0.1,        /* trigger when 10% of canvas is visible */
+      rootMargin: '0px 0px -40px 0px'  /* slight bottom offset */
+    });
+
+    io.observe(canvas);
+  })();
+</script>
 </body>
 </html>
