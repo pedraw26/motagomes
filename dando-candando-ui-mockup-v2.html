@@ -394,18 +394,13 @@
     width: min(100%, 500px);
     aspect-ratio: 1692 / 1080;
     margin: 0 auto;
-    border-radius: 18px;
+    border-radius: 22px;           /* matches phone-card-link */
     overflow: hidden;
     background: url("https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1777144117/candando-card-kid.png") center / contain no-repeat;
-    background-color: rgba(255,255,255,0.08); /* soft fill behind letterbox */
-    /* Keyline matching the phone card's rounded frame —
-       1px white outline + the existing drop shadow */
-    outline: 1.5px solid rgba(255, 255, 255, 0.35);
-    outline-offset: 0px;
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.18),  /* inner keyline */
-      0 12px 20px rgba(0, 0, 0, 0.16),
-      0 24px 36px rgba(0, 0, 0, 0.18);
+    background-color: #ffffff;     /* exact same white fill as phone card */
+    box-shadow:                    /* exact same shadow as phone-card-link */
+      0 1px 0 rgba(0, 0, 0, 0.04),
+      0 6px 14px rgba(24, 24, 24, 0.06);
     transition:
       transform 0.45s cubic-bezier(.22, 1, .36, 1),
       box-shadow 0.45s cubic-bezier(.22, 1, .36, 1);
