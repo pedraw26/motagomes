@@ -19,7 +19,7 @@
   }
 
   * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
+  html, body { margin: 0; padding: 0; overflow-x: hidden; }
 
   body {
     background: var(--page);
@@ -39,26 +39,19 @@
     opacity: 1;
   }
 
-  /* Showcase canvas — phone on the left, email on the right.
-     Columns are %-based so both sides shrink proportionally
-     as the iframe narrows; fixed px is gone. Each image
-     already has an intrinsic aspect-ratio so it never distorts. */
+  /* Showcase canvas — fixed 1280px design width, always 2-column.
+     JS (bottom of file) applies transform: scale() so the whole
+     layout shrinks as one unit — same composition at every size.
+     No reflow breakpoint, no stacking. */
   .canvas {
-    width: min(1320px, calc(100vw - 48px));
+    width: 1280px;
     margin: 0 auto;
     padding: 48px 0 64px;
     display: grid;
     grid-template-columns: 36% 1fr;
     gap: 4%;
     align-items: start;
-  }
-  @media (max-width: 860px) {
-    .canvas {
-      grid-template-columns: 1fr;
-      justify-items: center;
-      gap: 32px;
-      padding: 36px 0 48px;
-    }
+    transform-origin: top center;
   }
 
   .mail {
@@ -665,16 +658,41 @@
 </main>
 
 <script>
-  /* Scroll-triggered reveal — watches the canvas itself.
-     When ≥10% of it enters the iframe's own viewport,
-     .is-visible is added and all CSS animations fire once.
-     Works whether the iframe is lazy-loaded or eager. */
   (() => {
     const canvas = document.querySelector('.canvas');
     if (!canvas) return;
 
+    /* ── Proportional scaling ─────────────────────────────────
+       The canvas is always 1280px wide. We scale the whole thing
+       down as one unit so the composition never reflows or stacks.
+       margin-bottom compensates for the height difference caused
+       by transform: scale() not affecting layout flow. */
+    const DESIGN_W = 1280;
+
+    function fit() {
+      const vw = document.documentElement.clientWidth;
+      const scale = Math.min(1, vw / DESIGN_W);
+
+      /* transform-origin: top left keeps the pivot at x=0,
+         so the scaled canvas always starts at the left edge
+         and fills exactly `vw` pixels of visual width.
+         At full size (scale=1) margin-left centers it. */
+      canvas.style.transformOrigin = 'top left';
+      canvas.style.transform = `scale(${scale})`;
+      canvas.style.marginLeft = scale < 1 ? '0px'
+        : `${(vw - DESIGN_W) / 2}px`;
+
+      /* Collapse the phantom height left by transform in layout. */
+      const naturalH = canvas.offsetHeight;
+      canvas.style.marginBottom = `${(naturalH * scale) - naturalH}px`;
+    }
+
+    fit();
+    window.addEventListener('resize', fit);
+
+    /* ── Scroll-triggered reveal ──────────────────────────────
+       Animations only fire once the canvas enters the viewport. */
     if (!('IntersectionObserver' in window)) {
-      /* Fallback: just show everything immediately. */
       canvas.classList.add('is-visible');
       return;
     }
@@ -683,13 +701,10 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           canvas.classList.add('is-visible');
-          io.disconnect();   /* fire once, then stop watching */
+          io.disconnect();
         }
       });
-    }, {
-      threshold: 0.1,        /* trigger when 10% of canvas is visible */
-      rootMargin: '0px 0px -40px 0px'  /* slight bottom offset */
-    });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
     io.observe(canvas);
   })();
