@@ -1679,6 +1679,19 @@
             display: flex;
             flex-direction: column;
             transition: transform 0.2s ease-out;
+            /* Chrome-specific perf hint — tell the layout engine
+               that this card is fully self-contained and that
+               its rendering work can be skipped while it's far
+               from the viewport. content-visibility: auto cuts
+               layout/paint/composite for off-screen cards, which
+               is the dominant Chrome scroll-jank source on this
+               page (Firefox handles this implicitly already, so
+               this only helps the Chrome-specific symptoms).
+               contain-intrinsic-size reserves the card's space
+               so the scroll position doesn't jump as cards enter
+               and leave the auto-skipped state. */
+            content-visibility: auto;
+            contain-intrinsic-size: auto 600px;
         }
 
         /* Bottom-corner labels inside each card (brand left, type right) */
