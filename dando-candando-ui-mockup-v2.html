@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candando — Email mockup v2</title>
+<style>
+  :root {
+    --red:        #ba2530;
+    --red-dark:   #9e1d27;
+    --red-deeper: #821920;
+    --gold:       #f4ad32;
+    --ink:        #111111;
+    --page:       #f3f3f3;
+    --footbar:    #e9e9e9;
+    --display-font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-family: var(--display-font);
+    font-feature-settings: "kern" 1;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    background: var(--page);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Showcase canvas — phone on the left, email on the right */
+  .canvas {
+    width: min(1320px, calc(100vw - 56px));
+    margin: 0 auto;
+    padding: 56px 0 72px;
+    display: grid;
+    grid-template-columns: 380px minmax(620px, 1fr);
+    gap: 56px;
+    align-items: start;
+  }
+  @media (max-width: 1100px) {
+    .canvas {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      gap: 36px;
+    }
+  }
+
+  .mail {
+    width: 100%;
+    max-width: 680px;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 16px 50px rgba(20, 20, 20, 0.08);
+  }
+
+  /* ─────────── Phone shell (showcase, ported from v1) ──── */
+  .phone-shell {
+    width: 380px;
+    background: #ffffff;
+    border: 1px solid #d1d1d1;
+    box-shadow: 0 16px 50px rgba(20, 20, 20, 0.08);
+    border-radius: 38px;
+    overflow: hidden;
+  }
+  .phone-top {
+    height: 96px;
+    border-bottom: 1px solid #e5e5e5;
+    display: grid;
+    grid-template-columns: 60px 1fr 60px;
+    align-items: center;
+    padding: 0 14px;
+  }
+  .back-stack {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    color: #2879ff;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .back-stack svg {
+    width: 22px;
+    height: 28px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .count-badge {
+    min-width: 24px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    border-radius: 99px;
+    background: #2f73ff;
+    color: #ffffff;
+    font-size: 12px;
+    line-height: 1;
+  }
+  .phone-contact {
+    justify-self: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .phone-contact .brand-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background:
+      url("./Logo.svg") center / 64% auto no-repeat,
+      var(--red);
+  }
+  .phone-contact-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    line-height: 1.1;
+  }
+  .phone-contact-name .verified-dot {
+    width: 12px;
+    height: 12px;
+    color: #1d9bf0;
+    display: inline-flex;
+    align-items: center;
+  }
+  .phone-contact-name .verified-dot svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+  .phone-body { padding: 18px 22px 14px; }
+  /* iOS Messages day-stamp — bold day name + regular time,
+     #8e8e93 gray, system font, centered. */
+  .message-meta {
+    color: #8e8e93;
+    text-align: center;
+    font-size: 12px;
+    font-family: -apple-system, "SF Pro Text", "Segoe UI", sans-serif;
+    line-height: 1.18;
+    letter-spacing: -0.005em;
+    margin-bottom: 16px;
+  }
+  .message-meta strong {
+    font-weight: 600;
+    color: #8e8e93;
+  }
+  /* iOS Messages received bubble (1:1 with Apple) — flat
+     #E9E9EB fill, 18px continuous-ish radius, tail on the
+     bottom-left via two pseudo-elements. */
+  .sms-bubble {
+    position: relative;
+    max-width: 260px;
+    padding: 8px 14px;
+    border-radius: 18px;
+    background: #E9E9EB;
+    color: #000000;
+    font-size: 16px;
+    line-height: 1.32;
+    letter-spacing: -0.01em;
+    font-family: -apple-system, "SF Pro Text", "Segoe UI", sans-serif;
+  }
+  .sms-bubble::before {
+    content: "";
+    position: absolute;
+    left: -7px;
+    bottom: 0;
+    width: 20px;
+    height: 22px;
+    background: #E9E9EB;
+    border-bottom-right-radius: 16px 14px;
+  }
+  .sms-bubble::after {
+    content: "";
+    position: absolute;
+    left: -10px;
+    bottom: 0;
+    width: 10px;
+    height: 22px;
+    background: #ffffff;
+    border-bottom-right-radius: 10px;
+  }
+  .sms-bubble p { margin: 0 0 8px; }
+  .sms-bubble p:last-child { margin: 0; }
+
+  .phone-card-link {
+    position: relative;
+    margin-top: 14px;
+    border-radius: 22px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 6px 14px rgba(24,24,24,0.06);
+  }
+  .phone-card-preview {
+    position: relative;
+    aspect-ratio: 1692 / 1080;
+    background: url("./card_kid.png") center / cover no-repeat;
+    overflow: hidden;
+  }
+  .phone-link-copy {
+    padding: 14px 18px 18px;
+    background: #eef0f2;
+  }
+  .phone-link-copy h2 {
+    margin: 0 0 6px;
+    font-size: 15px;
+    line-height: 1.1;
+  }
+  .phone-link-copy p {
+    margin: 0;
+    color: #8a8a8a;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+  .phone-link-url { color: #2879ff; font-weight: 600; }
+
+  .phone-compose { padding: 0 22px 12px; }
+  .message-input-row {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 8px;
+    align-items: center;
+  }
+  .plus-button {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #eef0f4;
+    color: #a7a9b0;
+    position: relative;
+  }
+  .plus-button::before,
+  .plus-button::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 11px;
+    height: 1.5px;
+    border-radius: 999px;
+    background: currentColor;
+    transform: translate(-50%, -50%);
+  }
+  .plus-button::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .message-input {
+    height: 30px;
+    border: 1px solid #e0e1e5;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px 0 12px;
+    color: #c2c3c9;
+    font-size: 12px;
+  }
+  .mic-icon { width: 16px; height: 16px; color: #a9abb2; fill: currentColor; }
+  .home-indicator {
+    width: 120px;
+    height: 4px;
+    border-radius: 999px;
+    background: #000000;
+    margin: 12px auto 14px;
+  }
+
+  /* ── Email-sender header ────────────────────────────────── */
+  .email-sender {
+    height: 88px;
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    column-gap: 14px;
+    align-items: center;
+    padding: 0 28px;
+    background: #ffffff;
+    border-bottom: 1px solid #eeeeee;
+  }
+  .email-sender .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background:
+      url("./Logo.svg") center / 64% auto no-repeat,
+      var(--red);
+  }
+  .sender-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 15px;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    font-weight: 600;
+    color: #0a0a0a;
+  }
+  .sender-name .verified-dot {
+    width: 14px;
+    height: 14px;
+    color: #1d9bf0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+  }
+  .sender-name .verified-dot svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+  .reply-actions {
+    display: flex;
+    align-items: center;
+    gap: 21px;
+  }
+  .reply-actions .time {
+    color: #8a8a8a;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+  }
+  .reply-actions .material-icon {
+    width: 22px;
+    height: 22px;
+    display: block;
+    fill: #4f4f4f;
+  }
+
+  /* ── Red shell ──────────────────────────────────────────── */
+  .shell {
+    background: var(--red);
+    color: #ffffff;
+    padding: 44px 36px 56px;
+    text-align: center;
+  }
+  .shell > * + * { margin-top: 24px; }
+  .headline  { margin-top: 0; }
+  .lede      { margin-top: 16px; }
+  .gift-card { margin-top: 32px; }
+  .cta       { margin-top: 48px; }
+  .footnote  { margin-top: 20px; }
+
+  .brand-mark {
+    width: 76px;
+    height: 76px;
+    margin: 0 auto 30px;
+    background:
+      url("./Logo.svg") center / contain no-repeat;
+  }
+
+  .headline {
+    margin: 0 auto 14px;
+    max-width: 520px;
+    font-size: 44px;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .lede {
+    margin: 0 auto 36px;
+    max-width: 480px;
+    font-size: 17px;
+    line-height: 1.45;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.92);
+    letter-spacing: -0.005em;
+  }
+
+  /* ── Hero gift card ─────────────────────────────────────── */
+  .gift-card {
+    position: relative;
+    width: min(100%, 500px);
+    aspect-ratio: 1692 / 1080;
+    margin: 0 auto;
+    border-radius: 18px;
+    overflow: hidden;
+    background: url("./card_kid.png") center / contain no-repeat;
+    box-shadow:
+      0 12px 20px rgba(0, 0, 0, 0.16),
+      0 24px 36px rgba(0, 0, 0, 0.18);
+    transition:
+      transform 0.45s cubic-bezier(.22, 1, .36, 1),
+      box-shadow 0.45s cubic-bezier(.22, 1, .36, 1);
+    will-change: transform;
+  }
+  .gift-card:hover {
+    transform: translateY(-6px) rotateX(2deg) rotateY(-1deg) scale(1.015);
+    box-shadow:
+      0 14px 22px rgba(0, 0, 0, 0.18),
+      0 28px 44px rgba(0, 0, 0, 0.22);
+  }
+  /* Specular sheen sweep on hover — clipped by parent
+     overflow:hidden + border-radius. */
+  .gift-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg,
+      transparent 35%,
+      rgba(255, 255, 255, 0.45) 50%,
+      rgba(255, 255, 255, 0) 65%);
+    transform: translateX(-100%);
+    opacity: 0;
+    transition:
+      transform 1s cubic-bezier(.22, 1, .36, 1),
+      opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .gift-card:hover::before {
+    transform: translateX(100%);
+    opacity: 1;
+  }
+
+  /* Primary CTA */
+  .cta {
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 18px 42px;
+    background: #ffffff;
+    color: var(--red);
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition:
+      transform 0.2s cubic-bezier(.22, 1, .36, 1),
+      box-shadow 0.2s ease,
+      color 0.15s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+  }
+  .cta:hover {
+    transform: translateY(-1px);
+    color: var(--red-deeper);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  }
+  .cta:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  }
+
+  .footnote {
+    margin: 38px auto 0;
+    max-width: 460px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+  }
+
+  /* Footer bar — closes the mail-client illusion. */
+  .footbar {
+    padding: 18px 22px;
+    background: #ffffff;
+    color: #5a5a5a;
+    border-top: 1px solid #eeeeee;
+    font-size: 11px;
+    line-height: 1.4;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+  .footbar a { color: #5a5a5a; text-decoration: underline; text-underline-offset: 2px; }
+
+  [contenteditable="true"]:focus { outline: none; }
+
+  /* ── Animations ─────────────────────────────────────────── */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pop-in {
+    0%   { opacity: 0; transform: scale(0.9); }
+    60%  { opacity: 1; transform: scale(1.02); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes sheen-once {
+    0%   { transform: translateX(-100%); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateX(100%); opacity: 0; }
+  }
+
+  @keyframes fade-only {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .headline,
+  .lede,
+  .cta {
+    opacity: 0;
+    animation: fade-up 0.6s cubic-bezier(.22, 1, .36, 1) forwards;
+  }
+  .headline  { animation-delay: 0.05s; }
+  .lede      { animation-delay: 0.18s; }
+  .cta       { animation-delay: 0.48s; }
+  /* Card uses opacity-only entrance so its transform stays free
+     for the hover lift effect. */
+  .gift-card {
+    opacity: 0;
+    animation: fade-only 0.6s cubic-bezier(.22, 1, .36, 1) 0.32s forwards;
+  }
+
+  /* Phone SMS bubble pop-in, then card link follows. */
+  .sms-bubble {
+    transform-origin: bottom left;
+    animation: pop-in 0.45s cubic-bezier(.22, 1.4, .36, 1) 0.25s both;
+  }
+  .phone-card-link {
+    animation: pop-in 0.5s cubic-bezier(.22, 1.4, .36, 1) 0.85s both;
+    transform-origin: top left;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .headline, .lede, .gift-card, .cta, .sms-bubble,
+    .gift-card::before {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .shell { padding: 32px 22px 44px; }
+    .headline { font-size: 32px; }
+    .lede { font-size: 15px; }
+    .cta { padding: 16px 30px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<main class="canvas" aria-label="Candando gift card showcase">
+
+<section class="phone-shell" aria-label="iPhone message mockup">
+  <header class="phone-top">
+    <div class="back-stack" aria-hidden="true">
+      <svg viewBox="0 0 24 30" aria-hidden="true">
+        <path d="M15.5 5.5 6 15l9.5 9.5" />
+      </svg>
+      <span class="count-badge">12</span>
+    </div>
+    <div class="phone-contact">
+      <div class="brand-avatar" aria-hidden="true"></div>
+      <div class="phone-contact-name">
+        <span contenteditable="true">Candando</span>
+        <span class="verified-dot" aria-label="Verified">
+          <svg viewBox="0 0 22 22" aria-hidden="true">
+            <path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z" />
+          </svg>
+        </span>
+      </div>
+    </div>
+    <div></div>
+  </header>
+
+  <div class="phone-body">
+    <div class="message-meta" contenteditable="true"><strong>Quarta-feira</strong> 09:41</div>
+    <div class="sms-bubble" contenteditable="true">
+      <p>Olá, Janaína!</p>
+      <p>Recebeu um cartão Candando para usar como quiser, em qualquer loja parceira.</p>
+      <p>Carregue no link abaixo para abrir o seu cartão.</p>
+      <p>Com carinho,<br>Candando ❤️</p>
+    </div>
+    <article class="phone-card-link" aria-label="Phone card preview">
+      <div class="phone-card-preview" aria-hidden="true"></div>
+      <div class="phone-link-copy">
+        <h2 contenteditable="true">Seu cartão Candando</h2>
+        <p contenteditable="true"><span class="phone-link-url">candando-cartao.ao</span></p>
+      </div>
+    </article>
+  </div>
+
+  <div class="phone-compose">
+    <div class="message-input-row">
+      <div class="plus-button" aria-hidden="true"></div>
+      <div class="message-input">
+        <span>Text Message · SMS</span>
+        <svg class="mic-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3Z" />
+          <path d="M17.3 11c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.4 2.72 6.23 6 6.72V21h2v-3.28c3.28-.49 6-3.32 6-6.72h-1.7Z" />
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="mail" role="article" aria-label="Candando gift card email">
+
+  <div class="email-sender">
+    <div class="avatar" aria-label="Email brand avatar"></div>
+    <div class="sender-name">
+      <span contenteditable="true">Candando</span>
+      <span class="verified-dot" aria-label="Verified">
+        <svg viewBox="0 0 22 22" aria-hidden="true">
+          <path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z" />
+        </svg>
+      </span>
+    </div>
+    <div class="reply-actions" aria-hidden="true">
+      <span class="time">09:41</span>
+      <svg class="material-icon" viewBox="0 0 24 24">
+        <path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11Z" />
+      </svg>
+      <svg class="material-icon" viewBox="0 0 24 24">
+        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2Zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2Zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2Z" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="shell">
+
+    <div class="brand-mark" aria-label="Candando"></div>
+
+    <h1 class="headline" contenteditable="true">
+      Um presente que cabe<br>em qualquer momento.
+    </h1>
+
+    <p class="lede" contenteditable="true">
+      Olá, Janaína! Recebeu um cartão Candando para usar
+      como quiser, quando quiser, em qualquer loja parceira.
+    </p>
+
+    <article class="gift-card" aria-label="Candando gift card"></article>
+
+    <a href="#" class="cta" contenteditable="true">Abrir o seu cartão</a>
+
+    <p class="footnote" contenteditable="true">
+      *Válido em todas as lojas Candando &amp; parceiros.
+    </p>
+
+  </div>
+
+  <div class="footbar" contenteditable="true">
+    Candando · Luanda, Angola · <a href="#">Política de privacidade</a>
+  </div>
+
+</div>
+
+</main>
+
+</body>
+</html>
