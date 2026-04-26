@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candando — Múpi Digital</title>
+<style>
+  @font-face {
+    font-family: 'Eveleth';
+    src: url('/fonts/EvelethClean-Regular.ttf') format('truetype'),
+         local('Eveleth Clean Regular');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Eveleth';
+    src: url('/fonts/Eveleth-Bold.ttf') format('truetype'),
+         local('Eveleth Bold');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #1a1a1a;
+    display: grid;
+    place-items: center;
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  /* ─────────────────────────────────────────
+     Mupi frame  120 × 175 cm → 0.6857 ratio
+  ───────────────────────────────────────── */
+  .mupi {
+    position: relative;
+    width: min(420px, calc(100vw - 32px));
+    aspect-ratio: 120 / 175;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.55);
+    background: #d41f3d;
+    container-type: size;
+  }
+
+  /* L0 — red panel (top 53%) */
+  .mupi-red {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 53%;
+    background: #d41f3d;
+    z-index: 0;
+  }
+
+  /* L1 — snow: above card (z4), behind white body (z5) → invisible on text */
+  .snow-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    overflow: hidden;
+    container-type: size;
+  }
+  .flake {
+    position: absolute;
+    top: -2%;
+    border-radius: 50%;
+    background: #ffffff;
+    animation: fall linear infinite;
+    will-change: transform, opacity;
+  }
+  @keyframes fall {
+    0%   { transform: translateY(0)      translateX(0)            scale(1);    opacity: 0; }
+    6%   { opacity: 1; }
+    85%  { opacity: 0.7; }
+    100% { transform: translateY(110cqh) translateX(var(--drift)) scale(0.85); opacity: 0; }
+  }
+
+  @keyframes white-rise {
+    from { transform: translateY(800px); }
+    to   { transform: translateY(0); }
+  }
+
+  /* ── Single white panel — curve + fill in one wrapper ── */
+  .mupi-white-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    animation: white-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+  }
+
+  .mupi-curve {
+    position: absolute;
+    bottom: 47%;
+    left: -30%;
+    width: 160%;
+    height: calc(53% * 0.52);
+    background: #ffffff;
+    border-radius: 50% 50% 0 0 / 65% 65% 0 0;
+  }
+
+  /* L3 — card */
+  .mupi-card {
+    position: absolute;
+    top: 13%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 78%;
+    aspect-ratio: 693 / 448;
+    border-radius: 10px;
+    overflow: hidden;
+    background:
+      url("https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800/v1777219506/atfmaczybm5gpkzukudn.png")
+      center / cover no-repeat;
+    box-shadow: 0 8px 28px rgba(0,0,0,0);
+    z-index: 3;
+    animation:
+      card-drop       0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both,
+      card-shadow-in  0.4s ease                           1.35s forwards;
+  }
+  .mupi-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 0;
+    width: 35%;
+    height: 200%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+    animation: card-shine 5s ease-in-out 2.2s infinite;
+    pointer-events: none;
+  }
+
+  @keyframes card-drop {
+    from {
+      transform: translateX(-50%) translateY(-55px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes card-shadow-in {
+    to { box-shadow: 0 8px 28px rgba(0,0,0,0.30); }
+  }
+
+  /* white fill inside the panel */
+  .mupi-white-bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 53%;
+    background: #ffffff;
+  }
+
+  /* text: fixed, never moves */
+  .mupi-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 53%;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    padding: 4% 8% 6%;
+    z-index: 6;
+  }
+
+  @keyframes text-enter {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes number-punch {
+    from { opacity: 0; transform: scale(1.07); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  /* card shine — light reflecting off a physical card */
+  @keyframes card-shine {
+    0%   { transform: skewX(-15deg) translateX(-180%); opacity: 0; }
+    4%   { opacity: 1; }
+    18%  { transform: skewX(-15deg) translateX(280%);  opacity: 0; }
+    100% { transform: skewX(-15deg) translateX(280%);  opacity: 0; }
+  }
+
+  /* "Activa o teu cartão" */
+  .mupi-eyebrow {
+    font-size: clamp(12px, 3.4vw, 17px);
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.02em;
+    margin-bottom: 3%;
+    animation: text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.3s both;
+  }
+
+  /* 2000 container */
+  .mupi-amount {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    margin-bottom: 9%;
+  }
+
+  /* 2000 — punches in */
+  .mupi-amount-number {
+    font-family: 'Eveleth', 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 23vw, 112px);
+    font-weight: 400;
+    color: #f4ad32;
+    line-height: 0.88;
+    letter-spacing: -0.03em;
+    animation: number-punch 0.55s cubic-bezier(0.16, 1, 0.3, 1) 1.5s both;
+  }
+
+  /* Button */
+  .mupi-cta {
+    display: inline-block;
+    background: #d41f3d;
+    color: #ffffff;
+    font-size: clamp(9px, 2.6vw, 13px);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    padding: 3.5% 10%;
+    border-radius: 999px;
+    text-decoration: none;
+    white-space: nowrap;
+    margin-bottom: auto;
+    animation: text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.65s both;
+  }
+  .mupi-cta strong { font-weight: 800; }
+
+  /* Footer */
+  .mupi-footer {
+    font-size: clamp(8px, 2.2vw, 12px);
+    font-weight: 400;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.45);
+    letter-spacing: 0;
+    animation: text-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1) 1.8s both;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="mupi" role="img" aria-label="Múpi Candando — Ativa o teu cartão e recebe 2000 KZ">
+
+  <!-- L0 red -->
+  <div class="mupi-red"></div>
+
+  <!-- L1 snow -->
+  <div class="snow-layer" id="snow"></div>
+
+  <!-- single white panel — curve + fill, animates together -->
+  <div class="mupi-white-panel" id="whitePanel">
+    <div class="mupi-curve"></div>
+    <div class="mupi-white-bg"></div>
+  </div>
+
+  <!-- L3 card -->
+  <div class="mupi-card" role="img" aria-label="Cartão Candando"></div>
+
+  <!-- L4 copy -->
+  <div class="mupi-body">
+    <p class="mupi-eyebrow">Activa o teu cartão</p>
+    <div class="mupi-amount">
+      <span class="mupi-amount-number"><span style="letter-spacing:-0.06em">2</span>000</span>
+    </div>
+    <a href="#" class="mupi-cta">Usa o código: <strong>Dando1250</strong></a>
+    <p class="mupi-footer">*Válido em todas as lojas Candando e parceiros.</p>
+  </div>
+
+</div>
+
+<script>
+  (() => {
+    const container = document.getElementById('snow');
+    const COUNT = 38;
+    const sizes = [3, 4, 5, 6, 7, 8, 10, 12, 14];
+    for (let i = 0; i < COUNT; i++) {
+      const f = document.createElement('div');
+      f.className = 'flake';
+      const size    = sizes[Math.floor(Math.random() * sizes.length)];
+      const left    = Math.random() * 100;
+      const delay   = -(Math.random() * 12);
+      const dur     = 6 + Math.random() * 10;
+      const drift   = (Math.random() - 0.5) * 30;
+      const opacity = 0.45 + Math.random() * 0.55;
+      f.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${left}%;
+        animation-duration:${dur}s;
+        animation-delay:${delay}s;
+        --drift:${drift}px;
+        opacity:${opacity};
+      `;
+      container.appendChild(f);
+    }
+  })();
+</script>
+
+<script>
+  // Loop: intro (~2s) → hold 7s → fade out → restart
+  (() => {
+    const WAIT_MS = 9000; // intro 2s + hold 7s
+    const FADE_MS = 450;
+    const mupi = document.querySelector('.mupi');
+    const targets = [
+      ['.mupi-white-panel',   'white-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards'],
+      ['.mupi-card',          'card-drop 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both, card-shadow-in 0.4s ease 1.35s forwards'],
+      ['.mupi-eyebrow',       'text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.3s both'],
+      ['.mupi-amount-number', 'number-punch 0.55s cubic-bezier(0.16, 1, 0.3, 1) 1.5s both'],
+      ['.mupi-cta',           'text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.65s both'],
+      ['.mupi-footer',        'text-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1) 1.8s both'],
+    ];
+    function restart() {
+      // fade out
+      mupi.style.transition = `opacity ${FADE_MS}ms ease`;
+      mupi.style.opacity = '0';
+      setTimeout(() => {
+        // reset animations
+        targets.forEach(([sel, anim]) => {
+          const el = document.querySelector(sel);
+          if (!el) return;
+          el.style.animation = 'none';
+          el.offsetHeight;
+          el.style.animation = anim;
+        });
+        // fade back in
+        mupi.style.opacity = '1';
+        setTimeout(restart, WAIT_MS);
+      }, FADE_MS);
+    }
+    setTimeout(restart, WAIT_MS);
+  })();
+</script>
+</body>
+</html>
