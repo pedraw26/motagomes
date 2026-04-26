@@ -118,22 +118,33 @@
     z-index: 3;
   }
 
-  /* L5 — copy block: above snow so text stays clean */
-  .mupi-body {
+  /* L4b — white fill (animated, no text) */
+  .mupi-white-bg {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     height: 53%;
     background: #ffffff;
+    z-index: 4;
     animation: white-rise 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* L6 — text: fixed, never moves */
+  .mupi-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 53%;
+    background: transparent;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     text-align: center;
     padding: 8% 8% 6%;
-    z-index: 5;
+    z-index: 6;
   }
 
   /* "Activa o teu cartão" — label: sits close to the hero number */
@@ -201,8 +212,11 @@
   <!-- L1 snow -->
   <div class="snow-layer" id="snow"></div>
 
-  <!-- L2 curve -->
+  <!-- L2 curve (animated) -->
   <div class="mupi-curve"></div>
+
+  <!-- L4b white fill (animated, no text) -->
+  <div class="mupi-white-bg"></div>
 
   <!-- L3 card -->
   <div class="mupi-card" role="img" aria-label="Cartão Candando"></div>
