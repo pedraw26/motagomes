@@ -84,7 +84,7 @@
 
   /* L2 — white curve + L5 body share one animation — move as a single panel */
   @keyframes white-rise {
-    from { transform: translateY(60cqh); }
+    from { transform: translateY(110cqh); }
     to   { transform: translateY(0); }
   }
 
@@ -100,9 +100,7 @@
     animation: white-rise 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
-  /* L3 — card
-     measured: top ≈ 14%, height ≈ 30% of mupi
-     width derived: 30% × (175/120) / (448/693) ≈ 76%               */
+  /* L3 — card */
   .mupi-card {
     position: absolute;
     top: 13%;
@@ -114,8 +112,13 @@
     background:
       url("https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800/v1777219506/atfmaczybm5gpkzukudn.png")
       center / cover no-repeat;
-    box-shadow: 0 8px 28px rgba(0,0,0,0.30);
+    box-shadow: 0 8px 28px rgba(0,0,0,0);
     z-index: 3;
+    animation: card-shadow-in 0.4s ease 1s forwards;
+  }
+
+  @keyframes card-shadow-in {
+    to { box-shadow: 0 8px 28px rgba(0,0,0,0.30); }
   }
 
   /* L4b — white fill (animated, no text) */
