@@ -114,7 +114,6 @@
     position: absolute;
     top: 13%;
     left: 50%;
-    transform: translateX(-50%);
     width: 78%;
     aspect-ratio: 693 / 448;
     border-radius: 10px;
@@ -123,7 +122,20 @@
       center / cover no-repeat;
     box-shadow: 0 8px 28px rgba(0,0,0,0);
     z-index: 3;
-    animation: card-shadow-in 0.4s ease 1s forwards;
+    animation:
+      card-enter      0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.35s backwards,
+      card-shadow-in  0.5s ease                           1s    forwards;
+  }
+
+  @keyframes card-enter {
+    from {
+      transform: translateX(-50%) translateY(24px) scale(0.88);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(-50%) translateY(0)    scale(1);
+      opacity: 1;
+    }
   }
 
   @keyframes card-shadow-in {
