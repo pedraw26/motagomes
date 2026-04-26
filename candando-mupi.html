@@ -4,10 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Candando — Múpi Digital</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
+  @font-face {
+    font-family: 'Eveleth';
+    src: url('/fonts/EvelethClean-Regular.ttf') format('truetype'),
+         local('Eveleth Clean Regular');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Eveleth';
+    src: url('/fonts/Eveleth-Bold.ttf') format('truetype'),
+         local('Eveleth Bold');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   html, body {
@@ -148,21 +161,6 @@
     letter-spacing: 0.02em;
   }
 
-  /* ── Logo top-left ── */
-  .mupi-logo {
-    position: absolute;
-    top: 5%;
-    left: 7%;
-    z-index: 3;
-    width: 14%;
-    opacity: 0.92;
-  }
-
-  .mupi-logo svg {
-    width: 100%;
-    height: auto;
-    fill: #ffffff;
-  }
 </style>
 </head>
 <body>
@@ -170,13 +168,6 @@
 <div class="mupi" role="img" aria-label="Múpi Candando — Ativa o teu cartão e recebe 2000 KZ">
 
   <div class="mupi-top"></div>
-
-  <!-- Logo -->
-  <div class="mupi-logo" aria-hidden="true">
-    <svg viewBox="0 0 239.33 230.17" xmlns="http://www.w3.org/2000/svg">
-      <path fill="#fff" d="M0,119.21c.11-31.96,12.65-61.97,35.33-84.5,46.81-46.5,122.73-46.25,169.23.56,22.53,22.68,34.87,52.77,34.77,84.73-.11,31.96-12.65,61.97-35.33,84.5-10.26,10.19-22.09,18.34-35.17,24.23-6.17,2.78-13.41,1.44-18.17-3.36l-31.24-31.45-31.45,31.24c-4.8,4.77-12.04,6.06-18.19,3.24-13.04-5.98-24.82-14.21-35.01-24.47C12.24,181.26-.11,151.17,0,119.21M206.89,119.9c.08-24.07-9.53-46.68-27-63.38-15.14-14.47-35.12-23.06-56.05-24.03-26.05-1.21-50.69,8.9-68.37,28.07-14.2,15.39-22.39,35.54-23,56.47-.7,24.15,8.35,46.99,25.31,64.06,4.18,4.21,8.73,7.95,13.6,11.2,1.27.85,2.95.71,4.04-.37l21.13-21-14.17-14.27c-9.89-9.96-15.32-23.17-15.27-37.21.05-14.04,5.56-27.22,15.52-37.11,20.56-20.42,53.9-20.31,74.32.25,9.92,9.98,15.34,23.24,15.27,37.32-.07,14.17-6.11,27.66-16.17,37.65l-13.61,13.52,21,21.14c1.08,1.08,2.76,1.23,4.04.4,4.89-3.21,9.46-6.92,13.67-11.11,16.53-16.42,25.67-38.29,25.75-61.59M139.77,119.68c.02-5.37-2.06-10.43-5.84-14.24-7.82-7.87-20.57-7.91-28.44-.09-3.81,3.79-5.92,8.83-5.94,14.2-.02,5.37,2.06,10.43,5.84,14.24l14.17,14.27,14.27-14.17c3.81-3.79,5.92-8.83,5.94-14.2"/>
-    </svg>
-  </div>
 
   <!-- Card image -->
   <div class="mupi-card" role="img" aria-label="Cartão Candando"></div>
