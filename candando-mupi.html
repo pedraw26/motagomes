@@ -45,27 +45,30 @@
     box-shadow: 0 32px 80px rgba(0,0,0,0.55);
   }
 
-  /* ── Red top panel ── */
-  .mupi-top {
+  /* ── Layer 0 — Red background ── */
+  .mupi-red {
     position: absolute;
     inset: 0 0 auto 0;
     height: 58%;
     background: #d41f3d;
+    z-index: 0;
   }
 
-  /* Curved white cutout — wide stretched ellipse */
-  .mupi-top::after {
-    content: '';
+  /* ── Layer 1 — Snow (see below) ── */
+
+  /* ── Layer 2 — White curved frame ── */
+  .mupi-curve {
     position: absolute;
-    bottom: -1px;
+    bottom: 42%;          /* aligns with bottom edge of red panel */
     left: -30%;
     width: 160%;
-    height: 52%;
+    height: calc(58% * 0.52);
     background: #ffffff;
     border-radius: 50% 50% 0 0 / 65% 65% 0 0;
+    z-index: 2;
   }
 
-  /* ── Card image — floats over the curve ── */
+  /* ── Layer 3 — Card image ── */
   .mupi-card {
     position: absolute;
     top: 12%;
@@ -78,10 +81,10 @@
       url("https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800/v1777218747/cxe8wzazrd3hs2bv9c5m.webp")
       center / cover no-repeat;
     box-shadow: 0 8px 32px rgba(0,0,0,0.28);
-    z-index: 2;
+    z-index: 3;
   }
 
-  /* ── White bottom copy section ── */
+  /* ── Layer 4+5 — Text & button ── */
   .mupi-body {
     position: absolute;
     bottom: 0;
@@ -94,7 +97,7 @@
     justify-content: center;
     text-align: center;
     padding: 0 6% 6%;
-    z-index: 1;
+    z-index: 4;
   }
 
   .mupi-eyebrow {
@@ -142,14 +145,13 @@
     margin-bottom: 12%;
   }
 
-  /* ── Snow ── */
+  /* ── Layer 1 — Snow ── */
   .snow-layer {
     position: absolute;
-    inset: 0;
-    z-index: 10;
+    inset: 0 0 42% 0;   /* only covers the red area — stops at the curve */
+    z-index: 1;
     pointer-events: none;
     overflow: hidden;
-    border-radius: 12px;
   }
 
   .flake {
@@ -162,10 +164,10 @@
   }
 
   @keyframes fall {
-    0%   { transform: translateY(0)   translateX(0)    scale(1);   opacity: 0; }
+    0%   { transform: translateY(0)      translateX(0)             scale(1);    opacity: 0; }
     5%   { opacity: 1; }
-    90%  { opacity: 0.6; }
-    100% { transform: translateY(115vh) translateX(var(--drift)) scale(0.85); opacity: 0; }
+    85%  { opacity: 0.7; }
+    100% { transform: translateY(100cqh) translateX(var(--drift)) scale(0.85); opacity: 0; }
   }
 
   /* ── CTA button ── */
@@ -193,10 +195,14 @@
 
 <div class="mupi" role="img" aria-label="Múpi Candando — Ativa o teu cartão e recebe 2000 KZ">
 
-  <div class="mupi-top"></div>
+  <!-- L0 red -->
+  <div class="mupi-red"></div>
 
-  <!-- Snow -->
+  <!-- L1 snow -->
   <div class="snow-layer" id="snow"></div>
+
+  <!-- L2 white curve -->
+  <div class="mupi-curve"></div>
 
   <!-- Card image -->
   <div class="mupi-card" role="img" aria-label="Cartão Candando"></div>
