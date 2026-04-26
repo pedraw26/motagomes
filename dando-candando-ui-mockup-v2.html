@@ -19,7 +19,7 @@
   }
 
   * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; overflow-x: hidden; }
+  html, body { margin: 0; padding: 0; overflow: hidden; }
 
   body {
     background: var(--page);
@@ -671,7 +671,7 @@
     const DESIGN_W = 1280;
 
     function fit() {
-      const vw = document.documentElement.clientWidth;
+      const vw = window.innerWidth;
       const scale = Math.min(1, vw / DESIGN_W);
 
       /* transform-origin: top left keeps the pivot at x=0,
