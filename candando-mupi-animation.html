@@ -84,7 +84,7 @@
 
   /* L2 — white curve + L5 body share one animation — move as a single panel */
   @keyframes white-rise {
-    from { transform: translateY(110cqh); }
+    from { transform: translateY(800px); }
     to   { transform: translateY(0); }
   }
 
@@ -97,7 +97,7 @@
     background: #ffffff;
     border-radius: 50% 50% 0 0 / 65% 65% 0 0;
     z-index: 2;
-    animation: white-rise 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: white-rise 1s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   /* L3 — card */
@@ -130,7 +130,7 @@
     height: 53%;
     background: #ffffff;
     z-index: 4;
-    animation: white-rise 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: white-rise 1s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   /* L6 — text: fixed, never moves */
