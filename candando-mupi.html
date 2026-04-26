@@ -45,110 +45,18 @@
     box-shadow: 0 32px 80px rgba(0,0,0,0.55);
   }
 
-  /* ── Layer 0 — Red background ── */
+  /* ── L0 — Red background (full mupi) ── */
   .mupi-red {
     position: absolute;
-    inset: 0 0 auto 0;
-    height: 58%;
+    inset: 0;
     background: #d41f3d;
     z-index: 0;
   }
 
-  /* ── Layer 1 — Snow (see below) ── */
-
-  /* ── Layer 2 — White curved frame ── */
-  .mupi-curve {
-    position: absolute;
-    bottom: 42%;          /* aligns with bottom edge of red panel */
-    left: -30%;
-    width: 160%;
-    height: calc(58% * 0.52);
-    background: #ffffff;
-    border-radius: 50% 50% 0 0 / 65% 65% 0 0;
-    z-index: 2;
-  }
-
-  /* ── Layer 3 — Card image ── */
-  .mupi-card {
-    position: absolute;
-    top: 12%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 78%;
-    aspect-ratio: 693 / 448;
-    border-radius: 10px;
-    background:
-      url("https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800/v1777219506/atfmaczybm5gpkzukudn.png")
-      center / cover no-repeat;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.28);
-    z-index: 3;
-  }
-
-  /* ── Layer 4+5 — Text & button ── */
-  .mupi-body {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 46%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 0 6% 6%;
-    z-index: 4;
-  }
-
-  .mupi-eyebrow {
-    font-size: clamp(9px, 2.4vw, 13px);
-    font-weight: 500;
-    color: #1a1a1a;
-    letter-spacing: 0.01em;
-    margin-bottom: 2%;
-  }
-
-  .mupi-headline {
-    font-family: 'Eveleth', 'Bebas Neue', sans-serif;
-    font-size: clamp(34px, 12vw, 62px);
-    font-weight: 400;
-    color: #d41f3d;
-    line-height: 0.9;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    margin-bottom: 0;
-  }
-
-  .mupi-amount {
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 1.5%;
-    margin-bottom: 6%;
-  }
-
-  .mupi-amount-number {
-    font-family: 'Eveleth', 'Bebas Neue', sans-serif;
-    font-size: clamp(48px, 17vw, 88px);
-    font-weight: 400;
-    color: #f4ad32;
-    line-height: 0.9;
-    letter-spacing: 0.02em;
-  }
-
-  .mupi-amount-currency {
-    font-family: 'Eveleth', 'Bebas Neue', sans-serif;
-    font-size: clamp(14px, 4.5vw, 24px);
-    font-weight: 400;
-    color: #f4ad32;
-    letter-spacing: 0.06em;
-    margin-bottom: 12%;
-  }
-
-  /* ── Layer 1 — Snow ── */
+  /* ── L1 — Snow (red zone only, behind card + curve) ── */
   .snow-layer {
     position: absolute;
-    inset: 0 0 42% 0;   /* only covers the red area — stops at the curve */
+    inset: 0 0 56% 0;
     z-index: 1;
     pointer-events: none;
     overflow: hidden;
@@ -164,10 +72,96 @@
   }
 
   @keyframes fall {
-    0%   { transform: translateY(0)      translateX(0)             scale(1);    opacity: 0; }
+    0%   { transform: translateY(0)       translateX(0)            scale(1);    opacity: 0; }
     5%   { opacity: 1; }
     85%  { opacity: 0.7; }
-    100% { transform: translateY(100cqh) translateX(var(--drift)) scale(0.85); opacity: 0; }
+    100% { transform: translateY(110%)    translateX(var(--drift)) scale(0.85); opacity: 0; }
+  }
+
+  /* ── L2 — White curved frame ── */
+  .mupi-curve {
+    position: absolute;
+    bottom: 56%;
+    left: -30%;
+    width: 160%;
+    height: calc(44% * 0.55);
+    background: #ffffff;
+    border-radius: 50% 50% 0 0 / 65% 65% 0 0;
+    z-index: 2;
+  }
+
+  /* ── L3 — Card — full bleed ── */
+  .mupi-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 693 / 448;
+    background:
+      url("https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800/v1777219506/atfmaczybm5gpkzukudn.png")
+      center / cover no-repeat;
+    z-index: 3;
+  }
+
+  /* ── L4 — Copy block ── */
+  .mupi-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 58%;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2% 8% 4%;
+    gap: 1.5%;
+    z-index: 4;
+  }
+
+  .mupi-eyebrow {
+    font-size: clamp(11px, 3vw, 16px);
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: 0.01em;
+  }
+
+  .mupi-headline {
+    font-family: 'Eveleth', 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 13vw, 66px);
+    font-weight: 400;
+    color: #d41f3d;
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .mupi-amount {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 2%;
+  }
+
+  .mupi-amount-number {
+    font-family: 'Eveleth', 'Bebas Neue', sans-serif;
+    font-size: clamp(64px, 22vw, 108px);
+    font-weight: 400;
+    color: #f4ad32;
+    line-height: 0.88;
+    letter-spacing: 0.02em;
+  }
+
+  .mupi-amount-currency {
+    font-family: 'Eveleth', 'Bebas Neue', sans-serif;
+    font-size: clamp(18px, 6vw, 30px);
+    font-weight: 400;
+    color: #f4ad32;
+    letter-spacing: 0.06em;
+    align-self: flex-end;
+    padding-bottom: 4%;
   }
 
   /* ── CTA button ── */
@@ -178,7 +172,7 @@
     font-size: clamp(9px, 2.6vw, 13px);
     font-weight: 500;
     letter-spacing: 0.01em;
-    padding: 3.5% 8%;
+    padding: 3.5% 10%;
     border-radius: 999px;
     text-decoration: none;
     white-space: nowrap;
@@ -189,13 +183,22 @@
     letter-spacing: 0.02em;
   }
 
+  /* ── Footer ── */
+  .mupi-footer {
+    font-size: clamp(7px, 2vw, 11px);
+    font-weight: 600;
+    color: #555555;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+
 </style>
 </head>
 <body>
 
 <div class="mupi" role="img" aria-label="Múpi Candando — Ativa o teu cartão e recebe 2000 KZ">
 
-  <!-- L0 red -->
+  <!-- L0 red background -->
   <div class="mupi-red"></div>
 
   <!-- L1 snow -->
@@ -204,18 +207,19 @@
   <!-- L2 white curve -->
   <div class="mupi-curve"></div>
 
-  <!-- Card image -->
+  <!-- L3 card — full bleed -->
   <div class="mupi-card" role="img" aria-label="Cartão Candando"></div>
 
-  <!-- Copy -->
+  <!-- L4 copy -->
   <div class="mupi-body">
-    <p class="mupi-eyebrow">Ativa o teu cartão</p>
+    <p class="mupi-eyebrow">Activa o teu cartão</p>
     <p class="mupi-headline">Recebe</p>
     <div class="mupi-amount">
       <span class="mupi-amount-number">2000</span>
       <span class="mupi-amount-currency">KZ</span>
     </div>
-    <a href="#" class="mupi-cta">Usa o código: <strong>dando1250</strong></a>
+    <a href="#" class="mupi-cta">Usa o código: <strong>Dando 1250</strong></a>
+    <p class="mupi-footer">Válido em todas as lojas Candando e parceiros</p>
   </div>
 
 </div>
@@ -224,8 +228,6 @@
   (() => {
     const container = document.getElementById('snow');
     const COUNT = 38;
-
-    // Sizes (px): mix of tiny, small, medium — no huge ones
     const sizes = [3, 4, 5, 6, 7, 8, 10, 12, 14];
 
     for (let i = 0; i < COUNT; i++) {
@@ -233,11 +235,11 @@
       f.className = 'flake';
 
       const size    = sizes[Math.floor(Math.random() * sizes.length)];
-      const left    = Math.random() * 100;           // % across width
-      const delay   = -(Math.random() * 12);         // stagger so they don't all start at once
-      const dur     = 6 + Math.random() * 10;        // 6–16 s fall duration
-      const drift   = (Math.random() - 0.5) * 30;   // ±15 px horizontal wander
-      const opacity = 0.45 + Math.random() * 0.55;  // 0.45–1.0 base opacity
+      const left    = Math.random() * 100;
+      const delay   = -(Math.random() * 12);
+      const dur     = 6 + Math.random() * 10;
+      const drift   = (Math.random() - 0.5) * 30;
+      const opacity = 0.45 + Math.random() * 0.55;
 
       f.style.cssText = `
         width: ${size}px;
