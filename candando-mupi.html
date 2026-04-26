@@ -21,6 +21,7 @@
     font-style: normal;
     font-display: swap;
   }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   html, body {
@@ -34,34 +35,36 @@
     overflow: hidden;
   }
 
-  /* ── Mupi frame — 2:3 portrait (120×175cm) ── */
+  /* ─────────────────────────────────────────
+     Mupi frame  120 × 175 cm → 0.6857 ratio
+  ───────────────────────────────────────── */
   .mupi {
     position: relative;
     width: min(420px, calc(100vw - 32px));
     aspect-ratio: 120 / 175;
-    background: #ffffff;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 32px 80px rgba(0,0,0,0.55);
+    background: #ffffff;
   }
 
-  /* ── L0 — Red background (full mupi) ── */
+  /* L0 — red panel (top 53%) */
   .mupi-red {
     position: absolute;
-    inset: 0;
+    inset: 0 0 auto 0;
+    height: 53%;
     background: #d41f3d;
     z-index: 0;
   }
 
-  /* ── L1 — Snow (red zone only, behind card + curve) ── */
+  /* L1 — snow (constrained to red zone) */
   .snow-layer {
     position: absolute;
-    inset: 0 0 56% 0;
+    inset: 0 0 47% 0;
     z-index: 1;
     pointer-events: none;
     overflow: hidden;
   }
-
   .flake {
     position: absolute;
     top: -10%;
@@ -70,59 +73,70 @@
     animation: fall linear infinite;
     will-change: transform, opacity;
   }
-
   @keyframes fall {
-    0%   { transform: translateY(0)       translateX(0)            scale(1);    opacity: 0; }
-    5%   { opacity: 1; }
+    0%   { transform: translateY(0)    translateX(0)            scale(1);    opacity: 0; }
+    6%   { opacity: 1; }
     85%  { opacity: 0.7; }
-    100% { transform: translateY(110%)    translateX(var(--drift)) scale(0.85); opacity: 0; }
+    100% { transform: translateY(110%) translateX(var(--drift)) scale(0.85); opacity: 0; }
   }
 
-  /* ── L2 — White curved frame ── */
+  /* L2 — white curve */
   .mupi-curve {
     position: absolute;
-    bottom: 56%;
+    bottom: 47%;
     left: -30%;
     width: 160%;
-    height: calc(44% * 0.55);
+    height: calc(53% * 0.52);
     background: #ffffff;
     border-radius: 50% 50% 0 0 / 65% 65% 0 0;
     z-index: 2;
   }
 
-  /* ── L3 — Card — full bleed ── */
+  /* L3 — card
+     measured: top ≈ 14%, height ≈ 30% of mupi
+     width derived: 30% × (175/120) / (448/693) ≈ 76%               */
   .mupi-card {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    top: 13%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 78%;
     aspect-ratio: 693 / 448;
+    border-radius: 10px;
     background:
       url("https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800/v1777219506/atfmaczybm5gpkzukudn.png")
       center / cover no-repeat;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.30);
     z-index: 3;
   }
 
-  /* ── L4 — Copy block ── */
+  /* L4 — copy block (white, bottom 53%) */
   .mupi-body {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 58%;
+    height: 53%;
     background: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     text-align: center;
-    padding: 2% 8% 4%;
-    gap: 1.5%;
+    padding: 10% 8% 5%;
     z-index: 4;
   }
 
+  /* "Activa o teu cartao" + RECEBE grouped at top */
+  .mupi-top-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1%;
+  }
+
   .mupi-eyebrow {
-    font-size: clamp(11px, 3vw, 16px);
+    font-size: clamp(11px, 3.2vw, 16px);
     font-weight: 700;
     color: #1a1a1a;
     letter-spacing: 0.01em;
@@ -130,7 +144,7 @@
 
   .mupi-headline {
     font-family: 'Eveleth', 'Bebas Neue', sans-serif;
-    font-size: clamp(36px, 13vw, 66px);
+    font-size: clamp(30px, 10vw, 48px);
     font-weight: 400;
     color: #d41f3d;
     line-height: 0.9;
@@ -138,6 +152,7 @@
     text-transform: uppercase;
   }
 
+  /* 2000 KZ */
   .mupi-amount {
     display: flex;
     align-items: baseline;
@@ -147,7 +162,7 @@
 
   .mupi-amount-number {
     font-family: 'Eveleth', 'Bebas Neue', sans-serif;
-    font-size: clamp(64px, 22vw, 108px);
+    font-size: clamp(72px, 23vw, 112px);
     font-weight: 400;
     color: #f4ad32;
     line-height: 0.88;
@@ -156,15 +171,14 @@
 
   .mupi-amount-currency {
     font-family: 'Eveleth', 'Bebas Neue', sans-serif;
-    font-size: clamp(18px, 6vw, 30px);
+    font-size: clamp(18px, 5.5vw, 28px);
     font-weight: 400;
     color: #f4ad32;
     letter-spacing: 0.06em;
-    align-self: flex-end;
-    padding-bottom: 4%;
+    padding-bottom: 6%;
   }
 
-  /* ── CTA button ── */
+  /* Button */
   .mupi-cta {
     display: inline-block;
     background: #d41f3d;
@@ -177,18 +191,17 @@
     text-decoration: none;
     white-space: nowrap;
   }
-
   .mupi-cta strong {
     font-weight: 800;
     letter-spacing: 0.02em;
   }
 
-  /* ── Footer ── */
+  /* Footer */
   .mupi-footer {
-    font-size: clamp(7px, 2vw, 11px);
+    font-size: clamp(7px, 1.9vw, 10px);
     font-weight: 600;
-    color: #555555;
-    letter-spacing: 0.01em;
+    color: #444444;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
@@ -198,22 +211,24 @@
 
 <div class="mupi" role="img" aria-label="Múpi Candando — Ativa o teu cartão e recebe 2000 KZ">
 
-  <!-- L0 red background -->
+  <!-- L0 red -->
   <div class="mupi-red"></div>
 
   <!-- L1 snow -->
   <div class="snow-layer" id="snow"></div>
 
-  <!-- L2 white curve -->
+  <!-- L2 curve -->
   <div class="mupi-curve"></div>
 
-  <!-- L3 card — full bleed -->
+  <!-- L3 card -->
   <div class="mupi-card" role="img" aria-label="Cartão Candando"></div>
 
   <!-- L4 copy -->
   <div class="mupi-body">
-    <p class="mupi-eyebrow">Activa o teu cartão</p>
-    <p class="mupi-headline">Recebe</p>
+    <div class="mupi-top-copy">
+      <p class="mupi-eyebrow">Activa o teu cartão</p>
+      <p class="mupi-headline">Recebe</p>
+    </div>
     <div class="mupi-amount">
       <span class="mupi-amount-number">2000</span>
       <span class="mupi-amount-currency">KZ</span>
@@ -229,28 +244,23 @@
     const container = document.getElementById('snow');
     const COUNT = 38;
     const sizes = [3, 4, 5, 6, 7, 8, 10, 12, 14];
-
     for (let i = 0; i < COUNT; i++) {
       const f = document.createElement('div');
       f.className = 'flake';
-
       const size    = sizes[Math.floor(Math.random() * sizes.length)];
       const left    = Math.random() * 100;
       const delay   = -(Math.random() * 12);
       const dur     = 6 + Math.random() * 10;
       const drift   = (Math.random() - 0.5) * 30;
       const opacity = 0.45 + Math.random() * 0.55;
-
       f.style.cssText = `
-        width: ${size}px;
-        height: ${size}px;
-        left: ${left}%;
-        animation-duration: ${dur}s;
-        animation-delay: ${delay}s;
-        --drift: ${drift}px;
-        opacity: ${opacity};
+        width:${size}px; height:${size}px;
+        left:${left}%;
+        animation-duration:${dur}s;
+        animation-delay:${delay}s;
+        --drift:${drift}px;
+        opacity:${opacity};
       `;
-
       container.appendChild(f);
     }
   })();
