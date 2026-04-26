@@ -2248,7 +2248,7 @@
             images: [
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1777144255/candando-hero.png', caption: 'Candando — hero', layout: 'full' },
                 { type: 'html', src: '/candando-cards.html', caption: 'Gift card range — colour variants', layout: 'full' },
-                { type: 'html', src: '/dando-candando-ui-mockup-v2.html', caption: 'Digital touchpoints — email + app UI mockup', layout: 'full' },
+                { type: 'html', src: '/dando-candando-ui-mockup-v2.html', caption: 'Digital touchpoints — email + app UI mockup', layout: 'full', aspectRatio: '1280/1128' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776640918/sBbbbArtboard_1-100_pzfngu.jpg', caption: 'Identity system — applied across retail touchpoints', layout: 'full' }
             ],
             metrics: [
@@ -2572,7 +2572,7 @@
                 <section class="section section--showcase" data-reveal style="border-top:none; padding:0;">
                     <div class="showcase-gallery">
                         ${project.images.filter(img => !img.hidden).map(img => `
-                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube' || img.type === 'mp4') ? ' has-iframe has-video' : ''}${img.grain ? ' has-grain' : ''}${img.type === 'placeholders' ? ' has-placeholders' : ''}${img.type === 'bwsplit' ? ' has-bwsplit' : ''}${img.type === 'sbscreens' ? ' has-sbscreens' : ''}${img.type === 'sbcrossfade' ? ' has-sbcrossfade' : ''}${img.type === 'sbdarkroom' ? ' has-sbdarkroom' : ''}${img.type === 'sbstatpair' ? ' has-sbstatpair' : ''}"${img.bgStyle ? ` style="${img.bgStyle} display:flex; align-items:center; justify-content:center;"` : ''}>
+                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube' || img.type === 'mp4') ? ' has-iframe has-video' : ''}${img.grain ? ' has-grain' : ''}${img.type === 'placeholders' ? ' has-placeholders' : ''}${img.type === 'bwsplit' ? ' has-bwsplit' : ''}${img.type === 'sbscreens' ? ' has-sbscreens' : ''}${img.type === 'sbcrossfade' ? ' has-sbcrossfade' : ''}${img.type === 'sbdarkroom' ? ' has-sbdarkroom' : ''}${img.type === 'sbstatpair' ? ' has-sbstatpair' : ''}" style="${img.bgStyle ? img.bgStyle + '; display:flex; align-items:center; justify-content:center;' : ''}${img.aspectRatio ? `aspect-ratio:${img.aspectRatio};` : ''}">
                                 ${img.type === 'youtube'
                                     ? `<div class="yt-player" data-vid="${img.src}">
                                         <iframe id="yt-${img.src}" src="https://www.youtube.com/embed/${img.src}?enablejsapi=1&autoplay=0&loop=1&playlist=${img.src}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&start=10" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
