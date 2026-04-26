@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candando Cards</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: #ffffff;
+    display: grid;
+    place-items: center;
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .carousel {
+    position: relative;
+    width: min(900px, calc(100vw - 64px));
+  }
+
+  /* ── Stage ── */
+  .stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+
+  /* ── Slides — all stacked, crossfade by class ── */
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+
+    /* default: invisible, ready to come in */
+    transform: scale(0.97);
+    opacity: 0;
+    z-index: 0;
+    transition:
+      transform 0.75s ease-in-out,
+      opacity   0.75s ease-in-out;
+    will-change: transform, opacity;
+  }
+
+  /* currently visible — full size, full opacity */
+  .slide.is-active {
+    transform: scale(1);
+    opacity: 1;
+    z-index: 2;
+  }
+
+  /* leaving — slowly drifts up in scale, fades out */
+  .slide.is-exiting {
+    transform: scale(1.04);
+    opacity: 0;
+    z-index: 1;
+  }
+
+  .slide-1 { background: rgba(232, 174, 66,  0.27); }
+  .slide-2 { background: rgba(194, 48,  71,  0.27); }
+  .slide-3 { background: rgba(74,  151, 196, 0.27); }
+  .slide-4 { background: rgba(225, 90,  52,  0.27); }
+
+  /* ── Card ── */
+  .card-img {
+    width: 43%;
+    aspect-ratio: 1692 / 1080;
+    border-radius: 22px;
+    object-fit: contain;
+    background: #ffffff;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 6px 14px rgba(24,24,24,0.06);
+  }
+
+  .card-block {
+    width: 43%;
+    aspect-ratio: 1692 / 1080;
+    border-radius: 22px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 6px 14px rgba(24,24,24,0.06);
+  }
+
+  .slide-1 .card-block { background: rgb(232, 174, 66); }
+  .slide-2 .card-block { background: rgb(194, 48,  71); }
+  .slide-4 .card-block { background: rgb(225, 90,  52); }
+
+  /* ── Dots ── */
+  .dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.18);
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    transition: background 0.25s ease, transform 0.25s ease;
+  }
+  .dot:hover { background: rgba(0,0,0,0.4); }
+  .dot.is-active {
+    background: rgba(0,0,0,0.75);
+    transform: scale(1.25);
+  }
+</style>
+</head>
+<body>
+
+<div class="carousel" aria-label="Candando colour slides">
+  <div class="stage" id="stage">
+    <div class="slide slide-1 is-active">
+      <div class="card-block"></div>
+    </div>
+    <div class="slide slide-2">
+      <div class="card-block"></div>
+    </div>
+    <div class="slide slide-3">
+      <img class="card-img" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1777144117/candando-card-kid.png" alt="Candando gift card">
+    </div>
+    <div class="slide slide-4">
+      <div class="card-block"></div>
+    </div>
+  </div>
+
+  <div class="dots" role="tablist" id="dots">
+    <button class="dot is-active" role="tab" aria-selected="true"  aria-label="Slide 1"></button>
+    <button class="dot"           role="tab" aria-selected="false" aria-label="Slide 2"></button>
+    <button class="dot"           role="tab" aria-selected="false" aria-label="Slide 3"></button>
+    <button class="dot"           role="tab" aria-selected="false" aria-label="Slide 4"></button>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const slides   = [...document.querySelectorAll('.slide')];
+    const dots     = [...document.getElementById('dots').children];
+    const total    = slides.length;
+    let current    = 0;
+    let animating  = false;
+    let timer      = null;
+
+    function updateDots(idx) {
+      dots.forEach((d, i) => {
+        d.classList.toggle('is-active', i === idx);
+        d.setAttribute('aria-selected', i === idx);
+      });
+    }
+
+    function goTo(idx) {
+      if (animating) return;
+      const next = ((idx % total) + total) % total;
+      if (next === current) return;
+      animating = true;
+
+      const outSlide = slides[current];
+      const inSlide  = slides[next];
+
+      /* outgoing: shrink + drift left */
+      outSlide.classList.remove('is-active');
+      outSlide.classList.add('is-exiting');
+
+      /* incoming: slide in from right + grow */
+      inSlide.classList.add('is-active');
+
+      updateDots(next);
+      current = next;
+
+      /* clean up exiting class after transition */
+      setTimeout(() => {
+        outSlide.classList.remove('is-exiting');
+        animating = false;
+      }, 600);
+    }
+
+    function next() { goTo(current + 1); }
+
+    function startAuto() {
+      clearInterval(timer);
+      timer = setInterval(next, 3000);
+    }
+
+    dots.forEach((d, i) => {
+      d.addEventListener('click', () => { goTo(i); startAuto(); });
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') { next(); startAuto(); }
+      if (e.key === 'ArrowLeft')  { goTo(current - 1); startAuto(); }
+    });
+
+    startAuto();
+  })();
+</script>
+</body>
+</html>
