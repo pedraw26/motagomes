@@ -180,9 +180,17 @@
     to   { opacity: 1; transform: scale(1); }
   }
 
-  @keyframes cta-pulse {
-    0%, 100% { transform: scale(1); }
-    50%      { transform: scale(1.04); }
+  /* sweep: scale 12% peak + shine, then hold until next loop */
+  @keyframes cta-sweep {
+    0%   { transform: scale(1); }
+    8%   { transform: scale(1.12); }
+    16%  { transform: scale(1); }
+    100% { transform: scale(1); }
+  }
+  @keyframes cta-shine {
+    0%   { transform: translateX(-180%); }
+    16%  { transform: translateX(220%); }
+    100% { transform: translateX(220%); }
   }
 
   /* "Activa o teu cartão" */
@@ -214,9 +222,11 @@
     animation: number-punch 0.55s cubic-bezier(0.16, 1, 0.3, 1) 1.5s both;
   }
 
-  /* Button — enters then pulses */
+  /* Button — enters then sweeps */
   .mupi-cta {
     display: inline-block;
+    position: relative;
+    overflow: hidden;
     background: #d41f3d;
     color: #ffffff;
     font-size: clamp(9px, 2.6vw, 13px);
@@ -229,7 +239,16 @@
     margin-bottom: auto;
     animation:
       text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.65s both,
-      cta-pulse  2s    ease-in-out                    3.5s  infinite;
+      cta-sweep  5s    ease-in-out                    3s    infinite;
+  }
+  .mupi-cta::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 45%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent);
+    animation: cta-shine 5s ease-in-out 3s infinite;
+    pointer-events: none;
   }
   .mupi-cta strong { font-weight: 800; }
 
@@ -312,7 +331,7 @@
       ['.mupi-card',          'card-drop 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both, card-shadow-in 0.4s ease 1.35s forwards'],
       ['.mupi-eyebrow',       'text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.3s both'],
       ['.mupi-amount-number', 'number-punch 0.55s cubic-bezier(0.16, 1, 0.3, 1) 1.5s both'],
-      ['.mupi-cta',           'text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.65s both, cta-pulse 2s ease-in-out 3.5s infinite'],
+      ['.mupi-cta',           'text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.65s both, cta-sweep 5s ease-in-out 3s infinite'],
       ['.mupi-footer',        'text-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1) 1.8s both'],
     ];
     function restart() {
