@@ -178,7 +178,7 @@
     align-items: center;
     justify-content: flex-start;
     text-align: center;
-    padding: 8% 8% 6%;
+    padding: 4% 8% 6%;
     z-index: 6;
   }
 
@@ -317,9 +317,11 @@
 </script>
 
 <script>
-  // Loop: play intro → hold 5s → restart (snow keeps running independently)
+  // Loop: intro (~2s) → hold 7s → fade out → restart
   (() => {
-    const LOOP_MS = 7000; // 2s animation + 5s hold
+    const WAIT_MS = 9000; // intro 2s + hold 7s
+    const FADE_MS = 450;
+    const mupi = document.querySelector('.mupi');
     const targets = [
       ['.mupi-white-panel',   'white-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards'],
       ['.mupi-card',          'card-drop 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both, card-shadow-in 0.4s ease 1.35s forwards'],
@@ -329,16 +331,24 @@
       ['.mupi-footer',        'text-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1) 1.8s both'],
     ];
     function restart() {
-      targets.forEach(([sel, anim]) => {
-        const el = document.querySelector(sel);
-        if (!el) return;
-        el.style.animation = 'none';
-        el.offsetHeight; // force reflow
-        el.style.animation = anim;
-      });
-      setTimeout(restart, LOOP_MS);
+      // fade out
+      mupi.style.transition = `opacity ${FADE_MS}ms ease`;
+      mupi.style.opacity = '0';
+      setTimeout(() => {
+        // reset animations
+        targets.forEach(([sel, anim]) => {
+          const el = document.querySelector(sel);
+          if (!el) return;
+          el.style.animation = 'none';
+          el.offsetHeight;
+          el.style.animation = anim;
+        });
+        // fade back in
+        mupi.style.opacity = '1';
+        setTimeout(restart, WAIT_MS);
+      }, FADE_MS);
     }
-    setTimeout(restart, LOOP_MS);
+    setTimeout(restart, WAIT_MS);
   })();
 </script>
 </body>
