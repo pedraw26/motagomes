@@ -82,6 +82,11 @@
     100% { transform: translateY(110cqh) translateX(var(--drift)) scale(0.85); opacity: 0; }
   }
 
+  @keyframes white-rise {
+    from { transform: translateY(800px); }
+    to   { transform: translateY(0); }
+  }
+
   /* ── Single white panel — curve + fill in one wrapper ── */
   .mupi-white-panel {
     position: absolute;
@@ -91,8 +96,7 @@
     height: 100%;
     z-index: 5;
     pointer-events: none;
-    transform: translateY(800px);
-    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: white-rise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
   }
 
   .mupi-curve {
