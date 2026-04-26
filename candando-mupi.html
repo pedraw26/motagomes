@@ -64,20 +64,21 @@
     z-index: 5;
     pointer-events: none;
     overflow: hidden;
+    container-type: size;   /* enables cqh units in keyframes */
   }
   .flake {
     position: absolute;
-    top: -10%;
+    top: -2%;
     border-radius: 50%;
     background: #ffffff;
     animation: fall linear infinite;
     will-change: transform, opacity;
   }
   @keyframes fall {
-    0%   { transform: translateY(0)    translateX(0)            scale(1);    opacity: 0; }
+    0%   { transform: translateY(0)      translateX(0)            scale(1);    opacity: 0; }
     6%   { opacity: 1; }
     85%  { opacity: 0.7; }
-    100% { transform: translateY(110%) translateX(var(--drift)) scale(0.85); opacity: 0; }
+    100% { transform: translateY(110cqh) translateX(var(--drift)) scale(0.85); opacity: 0; }
   }
 
   /* L2 — white curve */
