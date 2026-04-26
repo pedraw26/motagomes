@@ -118,6 +118,7 @@
     width: 78%;
     aspect-ratio: 693 / 448;
     border-radius: 10px;
+    overflow: hidden;
     background:
       url("https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_800/v1777219506/atfmaczybm5gpkzukudn.png")
       center / cover no-repeat;
@@ -126,6 +127,17 @@
     animation:
       card-drop       0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both,
       card-shadow-in  0.4s ease                           1.35s forwards;
+  }
+  .mupi-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 0;
+    width: 35%;
+    height: 200%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+    animation: card-shine 5s ease-in-out 2.2s infinite;
+    pointer-events: none;
   }
 
   @keyframes card-drop {
@@ -180,17 +192,12 @@
     to   { opacity: 1; transform: scale(1); }
   }
 
-  /* sweep: scale 12% peak + shine, then hold until next loop */
-  @keyframes cta-sweep {
-    0%   { transform: scale(1); }
-    8%   { transform: scale(1.12); }
-    16%  { transform: scale(1); }
-    100% { transform: scale(1); }
-  }
-  @keyframes cta-shine {
-    0%   { transform: translateX(-180%); }
-    16%  { transform: translateX(220%); }
-    100% { transform: translateX(220%); }
+  /* card shine — light reflecting off a physical card */
+  @keyframes card-shine {
+    0%   { transform: skewX(-15deg) translateX(-180%); opacity: 0; }
+    4%   { opacity: 1; }
+    18%  { transform: skewX(-15deg) translateX(280%);  opacity: 0; }
+    100% { transform: skewX(-15deg) translateX(280%);  opacity: 0; }
   }
 
   /* "Activa o teu cartão" */
@@ -222,11 +229,9 @@
     animation: number-punch 0.55s cubic-bezier(0.16, 1, 0.3, 1) 1.5s both;
   }
 
-  /* Button — enters then sweeps */
+  /* Button */
   .mupi-cta {
     display: inline-block;
-    position: relative;
-    overflow: hidden;
     background: #d41f3d;
     color: #ffffff;
     font-size: clamp(9px, 2.6vw, 13px);
@@ -237,18 +242,7 @@
     text-decoration: none;
     white-space: nowrap;
     margin-bottom: auto;
-    animation:
-      text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.65s both,
-      cta-sweep  5s    ease-in-out                    3s    infinite;
-  }
-  .mupi-cta::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 45%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent);
-    animation: cta-shine 5s ease-in-out 3s infinite;
-    pointer-events: none;
+    animation: text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.65s both;
   }
   .mupi-cta strong { font-weight: 800; }
 
@@ -331,7 +325,7 @@
       ['.mupi-card',          'card-drop 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both, card-shadow-in 0.4s ease 1.35s forwards'],
       ['.mupi-eyebrow',       'text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.3s both'],
       ['.mupi-amount-number', 'number-punch 0.55s cubic-bezier(0.16, 1, 0.3, 1) 1.5s both'],
-      ['.mupi-cta',           'text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.65s both, cta-sweep 5s ease-in-out 3s infinite'],
+      ['.mupi-cta',           'text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.65s both'],
       ['.mupi-footer',        'text-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1) 1.8s both'],
     ];
     function restart() {
