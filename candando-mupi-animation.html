@@ -168,31 +168,42 @@
     text-align: center;
     padding: 8% 8% 6%;
     z-index: 6;
-    animation: body-fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) 1.3s backwards;
   }
 
-  @keyframes body-fade-in {
+  @keyframes text-enter {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* "Activa o teu cartão" — label: sits close to the hero number */
+  @keyframes number-punch {
+    from { opacity: 0; transform: scale(1.07); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes cta-pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.04); }
+  }
+
+  /* "Activa o teu cartão" */
   .mupi-eyebrow {
     font-size: clamp(12px, 3.4vw, 17px);
     font-weight: 700;
     color: #1a1a1a;
     letter-spacing: -0.02em;
-    margin-bottom: 3%;   /* tight — it belongs to 2000 */
+    margin-bottom: 3%;
+    animation: text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.3s both;
   }
 
-  /* 2000 — hero: generous space below before action area */
+  /* 2000 container */
   .mupi-amount {
     display: flex;
     align-items: baseline;
     justify-content: center;
-    margin-bottom: 9%;   /* breathing room after the hero */
+    margin-bottom: 9%;
   }
 
+  /* 2000 — punches in */
   .mupi-amount-number {
     font-family: 'Eveleth', 'Bebas Neue', sans-serif;
     font-size: clamp(72px, 23vw, 112px);
@@ -200,9 +211,10 @@
     color: #f4ad32;
     line-height: 0.88;
     letter-spacing: -0.03em;
+    animation: number-punch 0.55s cubic-bezier(0.16, 1, 0.3, 1) 1.5s both;
   }
 
-  /* Button */
+  /* Button — enters then pulses */
   .mupi-cta {
     display: inline-block;
     background: #d41f3d;
@@ -214,19 +226,21 @@
     border-radius: 999px;
     text-decoration: none;
     white-space: nowrap;
-    margin-bottom: auto;  /* pushes footer to the very bottom */
+    margin-bottom: auto;
+    animation:
+      text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.65s both,
+      cta-pulse  2s    ease-in-out                    3.5s  infinite;
   }
-  .mupi-cta strong {
-    font-weight: 800;
-  }
+  .mupi-cta strong { font-weight: 800; }
 
-  /* Footer — matches email .footnote style */
+  /* Footer */
   .mupi-footer {
     font-size: clamp(8px, 2.2vw, 12px);
     font-weight: 400;
     line-height: 1.5;
     color: rgba(0, 0, 0, 0.45);
     letter-spacing: 0;
+    animation: text-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1) 1.8s both;
   }
 
 </style>
@@ -256,7 +270,7 @@
     <div class="mupi-amount">
       <span class="mupi-amount-number"><span style="letter-spacing:-0.06em">2</span>000</span>
     </div>
-    <a href="#" class="mupi-cta">Usa o código: <strong>Dando 1250</strong></a>
+    <a href="#" class="mupi-cta">Usa o código: <strong>Dando1250</strong></a>
     <p class="mupi-footer">*Válido em todas as lojas Candando e parceiros.</p>
   </div>
 
@@ -286,6 +300,32 @@
       `;
       container.appendChild(f);
     }
+  })();
+</script>
+
+<script>
+  // Loop: play intro → hold 5s → restart (snow keeps running independently)
+  (() => {
+    const LOOP_MS = 7000; // 2s animation + 5s hold
+    const targets = [
+      ['.mupi-white-panel',   'white-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards'],
+      ['.mupi-card',          'card-drop 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both, card-shadow-in 0.4s ease 1.35s forwards'],
+      ['.mupi-eyebrow',       'text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.3s both'],
+      ['.mupi-amount-number', 'number-punch 0.55s cubic-bezier(0.16, 1, 0.3, 1) 1.5s both'],
+      ['.mupi-cta',           'text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.65s both, cta-pulse 2s ease-in-out 3.5s infinite'],
+      ['.mupi-footer',        'text-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1) 1.8s both'],
+    ];
+    function restart() {
+      targets.forEach(([sel, anim]) => {
+        const el = document.querySelector(sel);
+        if (!el) return;
+        el.style.animation = 'none';
+        el.offsetHeight; // force reflow
+        el.style.animation = anim;
+      });
+      setTimeout(restart, LOOP_MS);
+    }
+    setTimeout(restart, LOOP_MS);
   })();
 </script>
 </body>
