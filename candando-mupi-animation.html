@@ -82,7 +82,12 @@
     100% { transform: translateY(110cqh) translateX(var(--drift)) scale(0.85); opacity: 0; }
   }
 
-  /* L2 — white curve */
+  /* L2 — white curve + L5 body share one animation — move as a single panel */
+  @keyframes white-rise {
+    from { transform: translateY(60cqh); }
+    to   { transform: translateY(0); }
+  }
+
   .mupi-curve {
     position: absolute;
     bottom: 47%;
@@ -92,12 +97,7 @@
     background: #ffffff;
     border-radius: 50% 50% 0 0 / 65% 65% 0 0;
     z-index: 2;
-    animation: curve-rise 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  @keyframes curve-rise {
-    from { transform: translateY(60cqh); }
-    to   { transform: translateY(0); }
+    animation: white-rise 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   /* L3 — card
@@ -126,6 +126,7 @@
     right: 0;
     height: 53%;
     background: #ffffff;
+    animation: white-rise 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     display: flex;
     flex-direction: column;
     align-items: center;
