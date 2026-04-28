@@ -1492,12 +1492,15 @@
         /* Site-refresh banner — identical treatment to portfolio.html so it feels unified across pages.
            Dismissal is shared across pages via localStorage key 'sitebanner-refresh-v1'. */
         .sitebanner {
-            position: relative;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
             width: 100%;
             padding: 10px 20px;
             background: #0a0a0a;
             color: #f5f3ee;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            border-top: 1px solid rgba(255,255,255,0.08);
             font-family: var(--sf-pro);
             font-size: 13px;
             line-height: 1.5;
