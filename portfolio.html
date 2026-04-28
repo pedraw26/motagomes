@@ -1642,19 +1642,18 @@
         .gallery-see-more__btn {
             appearance: none;
             background: transparent;
-            color: rgba(255,255,255,0.95);
-            border: 1px solid rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.55);
+            border: none;
             padding: 28px 72px;
             font-family: var(--sf-pro);
             font-size: clamp(1.4rem, 2.2vw, 2rem);
             font-weight: 400;
             letter-spacing: 0.01em;
             cursor: pointer;
-            transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+            transition: color 0.2s ease;
         }
         .gallery-see-more__btn:hover {
-            border-color: rgba(255,255,255,0.6);
-            background: rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.95);
         }
         .gallery-see-more.is-expanded { display: none; }
         @media (max-width: 768px) {
