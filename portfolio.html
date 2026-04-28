@@ -212,18 +212,11 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            /* Header is fixed and overlays the scroll container, so
-               every backdrop-filter pixel recomposites the whole
-               viewport beneath it on every paint. blur(20px) is
-               GPU-heavy enough on long scroll sessions to crash the
-               renderer (Chrome 'Aw, Snap!' Error 5). The 0.9-alpha
-               background hides almost everything behind it anyway,
-               so a much smaller blur (8px) reads identically and
-               cuts the GPU cost by roughly an order of magnitude. */
-            background: rgba(0, 0, 0, 0.92);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--border-subtle);
+            background: transparent;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            -webkit-mask-image: linear-gradient(to bottom, #000 55%, rgba(0,0,0,0) 100%);
+                    mask-image: linear-gradient(to bottom, #000 55%, rgba(0,0,0,0) 100%);
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
         }
         
@@ -236,7 +229,7 @@
             width: 100%;
             max-width: none;
             margin: 0;
-            padding: 28px calc(32px + var(--scrollbar-comp)) 28px 32px;
+            padding: 28px calc(32px + var(--scrollbar-comp, 0px)) 28px 32px;
             display: grid;
             grid-template-columns: 1fr auto 1fr;
             align-items: center;
