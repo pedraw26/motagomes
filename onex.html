@@ -285,7 +285,11 @@
     anim(document.querySelector('.d4'), 'circle-drop', 0.48, 1.34, spring);
   }
 
+  let loopTimer = null;
+
   function resetAndPlay() {
+    if (loopTimer) { clearTimeout(loopTimer); loopTimer = null; }
+
     // Collect every animated element
     const els = [
       ...document.querySelectorAll('.section-label'),
@@ -304,7 +308,7 @@
     page.offsetHeight; // single reflow for all
     startAnimation();
 
-    setTimeout(resetAndPlay, 7000);
+    loopTimer = setTimeout(resetAndPlay, 7000);
   }
 
   // Expose for portfolio integration — call window.onexPlay() when section enters viewport

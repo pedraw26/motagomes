@@ -2559,10 +2559,14 @@
                             const metalClass = lower === 'gold' ? ' metal-text gold'
                                             : lower === 'silver' ? ' metal-text silver'
                                             : '';
+                            const numMatch = String(m.value).match(/^(\d+(?:\.\d+)?)(.*)$/);
+                            const countTo = (numMatch && !metalClass) ? numMatch[1] : null;
+                            const countSuffix = numMatch ? numMatch[2].replace(/0/g, 'O') : '';
+                            const dataAttrs = countTo ? ` data-count-to="${countTo}" data-count-suffix="${countSuffix}"` : '';
                             var mLabel = I18N ? I18N.tMetric(m.label) : m.label;
                             return `
                             <div class="overview__metric" style="transition-delay: ${i * 80}ms">
-                                <div class="overview__metric-value${metalClass}">${raw}</div>
+                                <div class="overview__metric-value${metalClass}"${dataAttrs}>${countTo ? '0' + countSuffix : raw}</div>
                                 <div class="overview__metric-label">${mLabel}</div>
                             </div>`;
                         }).join('')}
@@ -2840,6 +2844,31 @@
 
     const slug = getSlug();
     renderProject(slug);
+
+    // Count-up animation for metrics
+    if ('IntersectionObserver' in window) {
+        const countEls = document.querySelectorAll('.overview__metric-value[data-count-to]');
+        const countObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                countObserver.unobserve(entry.target);
+                const el = entry.target;
+                const target = parseFloat(el.dataset.countTo);
+                const suffix = el.dataset.countSuffix || '';
+                const duration = 1100;
+                const start = performance.now();
+                function tick(now) {
+                    const progress = Math.min((now - start) / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    const current = Math.round(eased * target);
+                    el.textContent = String(current).replace(/0/g, 'O') + suffix;
+                    if (progress < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+            });
+        }, { threshold: 0.6 });
+        countEls.forEach(el => countObserver.observe(el));
+    }
 
     // Trigger onex brand animation when iframe scrolls into view
     const onexIframe = document.querySelector('iframe[src="/onex.html"]');
