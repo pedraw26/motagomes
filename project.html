@@ -499,17 +499,18 @@
         }
 
         /* ========================================
-           OVERVIEW — EDITORIAL REDESIGN
+           OVERVIEW — SWISS INTERNATIONAL STYLE
            ======================================== */
 
         .overview {
+            background: #f5f4f0;
             padding: 0 80px;
         }
 
         /* Staggered reveal */
         [data-reveal-child] {
             opacity: 0;
-            transform: translateY(28px);
+            transform: translateY(20px);
             transition:
                 opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
                 transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
@@ -520,58 +521,72 @@
             transform: translateY(0);
         }
 
-        /* Zone 1: Metadata */
+        /* Zone 1: Metadata — brief header grid */
         .overview__meta {
-            padding: 100px 0 0;
+            padding: 64px 0 0;
         }
 
         .overview__meta-list {
-            display: flex;
-            gap: 64px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             list-style: none;
             margin: 0;
             padding: 0;
+            border-top: 1px solid rgba(0,0,0,0.14);
         }
 
         .overview__meta-item {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            padding: 20px 32px 32px 0;
+            border-right: 1px solid rgba(0,0,0,0.14);
+        }
+
+        .overview__meta-item:last-child {
+            border-right: none;
         }
 
         .overview__label {
-            font-family: var(--sf-pro);
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            text-transform: none;
-            color: #ffffff;
-            line-height: 1.3;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 9px;
+            font-weight: 400;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(0,0,0,0.38);
+            line-height: 1;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .overview__label::before {
+            content: '↓';
+            font-size: 10px;
         }
 
         .overview__value {
-            font-family: var(--sf-pro);
-            font-size: 15px;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: clamp(15px, 1.4vw, 19px);
             font-weight: 400;
-            color: rgba(255,255,255,0.5);
+            color: #1a1a1a;
             line-height: 1.3;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.02em;
         }
 
         /* Zone 2: Statement */
         .overview__statement {
-            padding: 80px 0 100px;
-            /* max-width: 70% removed — was clamping the paragraph too narrow and leaving
-               the right half of the row empty. Now fills the same measure as the narrative
-               block below it. */
+            padding: 64px 0;
+            max-width: 64%;
+            border-top: 1px solid rgba(0,0,0,0.14);
         }
 
         .overview__statement-text {
-            font-family: var(--sf-pro);
-            font-size: clamp(1.8rem, 3vw, 2.8rem);
-            font-weight: 200;
-            line-height: 1.35;
-            color: var(--text);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+            font-weight: 300;
+            line-height: 1.42;
+            color: #1a1a1a;
             letter-spacing: -0.025em;
         }
 
@@ -580,13 +595,15 @@
             display: grid;
             grid-template-columns: 5fr 1fr 6fr;
             gap: 0;
-            padding-bottom: 100px;
+            padding-bottom: 64px;
+            border-top: 1px solid rgba(0,0,0,0.14);
+            padding-top: 40px;
         }
 
         .overview__narrative-block {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
         }
 
         .overview__narrative-block--challenge {
@@ -600,48 +617,61 @@
         }
 
         .overview__narrative-text {
-            font-family: var(--sf-pro);
-            font-size: clamp(0.95rem, 1.15vw, 1.1rem);
-            font-weight: 300;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: clamp(0.88rem, 1.1vw, 1rem);
+            font-weight: 400;
             line-height: 1.75;
-            color: var(--text-60);
-            letter-spacing: 0.005em;
+            color: rgba(0,0,0,0.6);
+            letter-spacing: 0;
         }
 
         /* Zone 4: Metrics */
         .overview__metrics {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            padding: 64px 0 120px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0 0 80px;
+            border-top: 1px solid rgba(0,0,0,0.14);
         }
 
         .overview__metric {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            padding: 40px 24px 40px 0;
+            gap: 8px;
+            padding: 32px 24px 32px 0;
+            border-right: 1px solid rgba(0,0,0,0.14);
+        }
+
+        .overview__metric:last-child {
+            border-right: none;
         }
 
         .overview__metric-value {
-            font-family: var(--mono);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             font-size: clamp(2.2rem, 3.5vw, 3.2rem);
-            font-weight: 200;
+            font-weight: 300;
             letter-spacing: -0.03em;
             line-height: 1;
-            color: var(--text);
+            color: #1a1a1a;
             font-variant-numeric: tabular-nums;
         }
 
         .overview__metric-label {
-            font-family: var(--sf-pro);
-            font-size: 10px;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 9px;
             font-weight: 400;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
-            color: var(--text-40);
+            color: rgba(0,0,0,0.38);
             line-height: 1.5;
             max-width: 180px;
+        }
+
+        /* Darker gold/silver for light background */
+        .overview .metal-text.gold {
+            background-image: linear-gradient(100deg, #5c4215 0%, #9b7428 18%, #c47d20 32%, #b8882a 42%, #c47d20 52%, #9b7428 68%, #5c4215 82%, #9b7428 100%);
+        }
+        .overview .metal-text.silver {
+            background-image: linear-gradient(100deg, #3a3a3e 0%, #656570 18%, #929298 32%, #b4b4bc 42%, #929298 52%, #656570 68%, #3a3a3e 82%, #656570 100%);
         }
 
         /* Animated metallic text — gold + silver, looped */
@@ -1863,16 +1893,29 @@
             }
 
             .overview__meta {
-                padding-top: 64px;
+                padding-top: 48px;
             }
 
             .overview__meta-list {
-                flex-wrap: wrap;
-                gap: 32px 48px;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .overview__meta-item:nth-child(2) {
+                border-right: none;
+            }
+
+            .overview__meta-item:nth-child(3) {
+                border-top: 1px solid rgba(0,0,0,0.14);
+            }
+
+            .overview__meta-item:nth-child(4) {
+                border-right: none;
+                border-top: 1px solid rgba(0,0,0,0.14);
             }
 
             .overview__statement {
-                padding: 56px 0 72px;
+                padding: 48px 0 56px;
+                max-width: 100%;
             }
 
             .overview__narrative {
@@ -1938,15 +1981,11 @@
             }
 
             .overview__meta-list {
-                flex-direction: column;
-                gap: 24px;
+                grid-template-columns: 1fr 1fr;
             }
 
-            .overview__meta-item {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: baseline;
-                gap: 16px;
+            .overview__statement {
+                max-width: 100%;
             }
 
             .overview__statement {
