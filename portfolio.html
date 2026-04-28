@@ -1533,6 +1533,10 @@
             letter-spacing: 0.34em;
             text-transform: uppercase;
             margin: 0;
+            opacity: 0.75;
+            transition: letter-spacing 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        opacity 0.5s ease,
+                        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .retinol-label .rtn-title {
             font-size: clamp(32px, 5vw, 72px);
@@ -1540,12 +1544,41 @@
             font-weight: 300;
             text-transform: uppercase;
             margin: 0;
+            transition: letter-spacing 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        opacity 0.5s ease,
+                        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .retinol-label .rtn-divider {
             width: clamp(40px, 6vw, 90px);
             height: 2px;
             background: rgba(243, 244, 238, 0.9);
             margin: 2.2vh 0 2vh;
+            transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        opacity 0.5s ease;
+            opacity: 0.75;
+        }
+
+        /* Hover: staggered letter-spacing breathe */
+        .gallery-stacked-hero.hero-retinol:hover .rtn-kicker {
+            letter-spacing: 0.54em;
+            opacity: 1;
+            transform: translateY(-3px);
+            transition-delay: 0s;
+        }
+        .gallery-stacked-hero.hero-retinol:hover .rtn-title {
+            letter-spacing: 0.28em;
+            transition-delay: 0.07s;
+        }
+        .gallery-stacked-hero.hero-retinol:hover .rtn-divider {
+            width: clamp(70px, 10vw, 150px);
+            opacity: 1;
+            transition-delay: 0.14s;
+        }
+        .gallery-stacked-hero.hero-retinol:hover .rtn-foot {
+            letter-spacing: 0.54em;
+            opacity: 1;
+            transform: translateY(3px);
+            transition-delay: 0.07s;
         }
         .j-post:hover .j-cover {
             border-color: rgba(10,10,10,0.55);
@@ -5003,10 +5036,6 @@ margin-top: 3px;
 
             </div>
 
-            <!-- See more: reveals hidden cards -->
-            <div class="gallery-see-more" id="gallerySeeMore">
-                <button type="button" class="gallery-see-more__btn" id="gallerySeeMoreBtn">See all work</button>
-            </div>
         </section>
 
         <!-- JOURNAL · Editorial typography teaser strip -->
