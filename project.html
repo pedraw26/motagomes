@@ -23,7 +23,10 @@
             --text-40: #666666;
             --border-light: rgba(255, 255, 255, 0.25);
             --border-subtle: rgba(255, 255, 255, 0.15);
+            --scrollbar-comp: 0px;
         }
+        html, body { scrollbar-width: none; -ms-overflow-style: none; }
+        html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
 
         * {
             margin: 0;
