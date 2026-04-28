@@ -1631,6 +1631,36 @@
             border-color: rgba(10,10,10,0.6);
             background: rgba(10,10,10,0.04);
         }
+
+        /* See all work button */
+        .gallery-see-more {
+            display: flex;
+            justify-content: center;
+            margin: 16px auto 0;
+            padding: 0 80px;
+        }
+        .gallery-see-more__btn {
+            appearance: none;
+            background: transparent;
+            color: rgba(255,255,255,0.95);
+            border: 1px solid rgba(255,255,255,0.25);
+            padding: 28px 72px;
+            font-family: var(--sf-pro);
+            font-size: clamp(1.4rem, 2.2vw, 2rem);
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+        }
+        .gallery-see-more__btn:hover {
+            border-color: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.04);
+        }
+        .gallery-see-more.is-expanded { display: none; }
+        @media (max-width: 768px) {
+            .gallery-see-more { padding: 0 24px; margin-top: 48px; }
+            .gallery-see-more__btn { padding: 20px 48px; }
+        }
         
         .gallery-stacked-header {
             margin-bottom: 60px;
@@ -4927,7 +4957,7 @@ margin-top: 3px;
                 </div>
 
                 <!-- Card 8: Moope -->
-                <div class="gallery-stacked-card" style="--card-index: 7; --card-offset: 50px;">
+                <div class="gallery-stacked-card" style="--card-index: 7; --card-offset: 50px;" hidden data-hidden-card>
                     <div class="gallery-stacked-card-inner">
                         <div class="gallery-stacked-bar">
                             <div class="gallery-stacked-dot"></div>
@@ -4953,7 +4983,7 @@ margin-top: 3px;
                 </div>
 
                 <!-- Card 9: Wammo -->
-                <div class="gallery-stacked-card" style="--card-index: 8; --card-offset: 50px;">
+                <div class="gallery-stacked-card" style="--card-index: 8; --card-offset: 50px;" hidden data-hidden-card>
                     <div class="gallery-stacked-card-inner">
                         <div class="gallery-stacked-bar">
                             <div class="gallery-stacked-dot"></div>
@@ -4979,7 +5009,7 @@ margin-top: 3px;
                 </div>
 
                 <!-- Card 10: Aura Studio -->
-                <div class="gallery-stacked-card" style="--card-index: 9; --card-offset: 50px;">
+                <div class="gallery-stacked-card" style="--card-index: 9; --card-offset: 50px;" hidden data-hidden-card>
                     <div class="gallery-stacked-card-inner">
                         <div class="gallery-stacked-bar">
                             <div class="gallery-stacked-dot"></div>
@@ -5007,6 +5037,10 @@ margin-top: 3px;
 
             </div>
 
+            <!-- See more: reveals hidden cards -->
+            <div class="gallery-see-more" id="gallerySeeMore">
+                <button type="button" class="gallery-see-more__btn" id="gallerySeeMoreBtn">See all work</button>
+            </div>
         </section>
 
         <!-- JOURNAL · Editorial typography teaser strip -->
@@ -6064,6 +6098,19 @@ margin-top: 3px;
         }
         injectEdgeLabels(galleryCardInners);
 
+        // "See more" — reveal hidden cards
+        const seeMoreWrap = document.getElementById('gallerySeeMore');
+        const seeMoreBtn = document.getElementById('gallerySeeMoreBtn');
+        if (seeMoreBtn) {
+            seeMoreBtn.addEventListener('click', () => {
+                document.querySelectorAll('.gallery-stacked-card[data-hidden-card]').forEach(card => {
+                    card.removeAttribute('hidden');
+                });
+                const newInners = document.querySelectorAll('.gallery-stacked-card:not([hidden]) .gallery-stacked-card-inner');
+                injectEdgeLabels(newInners);
+                if (seeMoreWrap) seeMoreWrap.classList.add('is-expanded');
+            });
+        }
 
         function updateActiveGalleryCard() {
             let active = 0;
