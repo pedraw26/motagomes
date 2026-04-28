@@ -6,20 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="meta.title.portfolio">Mota Gomes - Portfolio</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <script>(function(){try{var l=localStorage.getItem('mg_lang');if(l==='pt')document.documentElement.lang='pt-PT';}catch(e){}})();</script>
     <script src="/i18n.js" defer></script>
     <script src="/guard.js" defer></script>
     <style>
         :root {
             --sf-pro: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
-            /* Site rule: no monospaced fonts — --mono aliases the sans stack
-               so every legacy 'font-family: var(--mono)' declaration still
-               resolves, but renders in SF Pro. Keep the variable name to
-               avoid touching every call site. */
-            --mono: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            --mono: 'SF Mono', 'Fira Code', 'Monaco', 'Menlo', monospace;
             --scrollbar-comp: 0px;
             
             --bg-black: #000000;
@@ -39,19 +32,14 @@
         
         html {
             scroll-behavior: smooth;
-            /* Hard cap horizontal overflow at the root — prevents any
-               rogue wide child (pattern-scroll tracks, translateX MG
-               letters, etc.) from pushing the viewport sideways. */
-            overflow-x: clip;
         }
-
+        
         body {
             font-family: var(--sf-pro);
             background: var(--bg-black);
             color: var(--text);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            overflow-x: clip;
         }
 
         /* ========================================
@@ -176,25 +164,8 @@
         .scroll-container {
             height: 100vh;
             overflow-y: scroll;
-            /* scroll-behavior: smooth removed — when applied to a
-               container it intercepts every wheel/trackpad event
-               and re-animates with its own easing, which fights
-               macOS trackpad inertia and causes a sluggish, jerky
-               feel. Programmatic scrollTo({behavior:'smooth'})
-               still works for the back-to-top + anchor jumps. */
-            scrollbar-width: none;              /* Firefox */
-            -ms-overflow-style: none;           /* IE / Edge legacy */
-            /* Contain over-scroll so a flick at the top/bottom
-               doesn't rubber-band the whole window — only the
-               container itself springs back. */
-            overscroll-behavior: contain;
+            scroll-behavior: smooth;
         }
-        .scroll-container::-webkit-scrollbar { display: none; } /* WebKit */
-
-        /* Also hide any top-level page scrollbar */
-        html, body { scrollbar-width: none; -ms-overflow-style: none; }
-        html::-webkit-scrollbar,
-        body::-webkit-scrollbar { display: none; }
         
         .snap-section {
             min-height: 100vh;
@@ -212,17 +183,9 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            /* Header is fixed and overlays the scroll container, so
-               every backdrop-filter pixel recomposites the whole
-               viewport beneath it on every paint. blur(20px) is
-               GPU-heavy enough on long scroll sessions to crash the
-               renderer (Chrome 'Aw, Snap!' Error 5). The 0.9-alpha
-               background hides almost everything behind it anyway,
-               so a much smaller blur (8px) reads identically and
-               cuts the GPU cost by roughly an order of magnitude. */
-            background: rgba(0, 0, 0, 0.92);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-subtle);
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
         }
@@ -236,30 +199,13 @@
             width: 100%;
             max-width: none;
             margin: 0;
-            padding: 28px calc(32px + var(--scrollbar-comp)) 28px 32px;
+            padding: 20px calc(32px + var(--scrollbar-comp)) 20px 32px;
             display: grid;
             grid-template-columns: 1fr auto 1fr;
             align-items: center;
         }
         
-        /* ===== Cross-document View Transitions — morph into Gen Studio ===== */
-        @view-transition { navigation: auto; }
-        ::view-transition-group(*) {
-            animation-duration: 1000ms;
-            animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-        }
-        ::view-transition-old(root),
-        ::view-transition-new(root) {
-            animation-duration: 600ms;
-            animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-        }
-
         .header-logo {
-            /* Pinned to match Gen Studio's MG position pixel-for-pixel */
-            position: fixed;
-            top: 28px;
-            left: 32px;
-            z-index: 1001;
             font-size: 16px;
             font-weight: 400;
             letter-spacing: 0.04em;
@@ -269,9 +215,9 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            position: relative;
             opacity: 0.92;
             transition: opacity 200ms ease;
-            view-transition-name: site-logo;
         }
         .header-logo:hover { opacity: 1; }
 
@@ -306,7 +252,6 @@
 
         .header-nav {
             display: flex;
-            align-items: center;
             gap: 28px;
         }
 
@@ -327,11 +272,6 @@
             letter-spacing: -0.005em;
             transition: color 0.3s ease;
             position: relative;
-            /* Every nav item is an inline-flex row so icons (lock, book) sit
-               on the same optical centre as the plain-text links. */
-            display: inline-flex;
-            align-items: center;
-            line-height: 1;
         }
         
         .header-nav a::before {
@@ -358,8 +298,8 @@
         .header-nav a.is-current { color: var(--text); }
 
         /* Animated gradient on the "AI slop" nav link — seamless continuous loop */
-        .header-nav a.nav-gen,
-        .menu-overlay-link.nav-gen {
+        .header-nav a[data-i18n="menu.gen"],
+        .menu-overlay-link[data-i18n="menu.gen"] {
             background-image: linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);
             background-size: 200% 100%;
             background-repeat: repeat;
@@ -369,100 +309,15 @@
                     color: transparent;
             animation: aislop-gradient 6s linear infinite;
         }
-        /* Expand button — chevron that nudges to signal it's clickable.
-           Collapsed: '‹' points away from the nav items; expanded: rotates
-           180° to '›', pointing toward the now-visible items. */
-        .nav-expand {
-            appearance: none;
-            background: transparent;
-            border: 0;
-            padding: 4px;
-            margin-right: -4px;
-            color: rgba(255,255,255,0.7);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            transition: color 0.2s ease;
-        }
-        .nav-expand:hover { color: #fff; }
-        .nav-expand-icon {
-            display: block;
-            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-            animation: nav-expand-nudge 2.4s ease-in-out infinite;
-        }
-        /* Nudge loop: tiny horizontal wiggle on the collapsed chevron. */
-        @keyframes nav-expand-nudge {
-            0%, 60%, 100% { transform: translateX(0); }
-            70% { transform: translateX(-3px); }
-            80% { transform: translateX(0); }
-            90% { transform: translateX(-2px); }
-        }
-        .nav-expand:hover .nav-expand-icon { animation-play-state: paused; }
-        /* Once expanded, lock the rotation and stop the nudge. */
-        .header-nav.is-expanded .nav-expand-icon {
-            transform: rotate(180deg);
-            animation: none;
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .nav-expand-icon { animation: none; }
-        }
-
-        /* Extra items stay collapsed until the expand button is clicked */
-        .nav-extra { display: none !important; }
-        .header-nav.is-expanded .nav-extra {
-            display: inline-flex !important;
-            animation: nav-extra-in 0.3s ease forwards;
-        }
-        @keyframes nav-extra-in {
-            from { opacity: 0; transform: translateX(-6px); }
-            to   { opacity: 1; transform: translateX(0); }
-        }
-
-        /* ================================================================
-           "Gen Studies" nav link — pinned to the SAME viewport coordinates
-           as the Gen Studies page title (top:32px right:32px, font 15.2px,
-           line-height:1) so the View Transition across pages hands off
-           cleanly. Natural nav flow can't hit that pixel exactly, so the
-           link is taken out of flow.
-           ================================================================ */
-        .header-nav a.nav-gen {
-            position: fixed;
-            top: 28px;
-            right: 32px;
-            z-index: 1001;
-            font-size: 15.2px;
-            letter-spacing: -0.005em;
-            line-height: 1;
-        }
-        /* Reserve horizontal space in the nav so Work / About / Blog don't
-           slide into the pinned Gen Studies label's territory. */
-        .header-nav {
-            padding-right: 130px;
-        }
-
-        /* NDA menu item: inline lock icon after the label */
-        .header-nav a.menu-nda,
-        .menu-overlay-link.menu-nda {
-            gap: 0.45em;
-        }
-        .menu-nda-lock {
-            opacity: 0.7;
-            flex-shrink: 0;
-            display: block;
-        }
-        .header-nav a.menu-nda:hover .menu-nda-lock,
-        .menu-overlay-link.menu-nda:hover .menu-nda-lock {
-            opacity: 1;
-        }
         @keyframes aislop-gradient {
             from { background-position: 0% 50%; }
             to   { background-position: -200% 50%; }
         }
         @media (prefers-reduced-motion: reduce) {
-            .header-nav a.nav-gen,
-            .menu-overlay-link.nav-gen { animation: none; }
+            .header-nav a[data-i18n="menu.gen"],
+            .menu-overlay-link[data-i18n="menu.gen"] { animation: none; }
         }
-
+        
         .header-right {
             display: flex;
             align-items: center;
@@ -709,13 +564,9 @@
             padding: 120px 80px 80px;
             position: relative;
             z-index: 1;
-            /* Shock colour — Klein Blue (IKB). Hero text flips to white. */
-            background: #002FA7;
-            border-radius: 0;
+            background: #f5f5f0;
+            border-radius: 16px;
         }
-        .hero .hero-label { color: rgba(255,255,255,0.55); }
-        .hero .hero-title { color: rgba(255,255,255,0.75); }
-        .hero .hero-subtitle { color: #ffffff; }
         
         .hero-content {
             max-width: 1100px;
@@ -872,15 +723,12 @@
         /* Site-refresh banner — sticky at the top of the document, dismissible (remembered via localStorage).
            Dark/muted variant with small eclipse icon, editorial copy, and a close button. */
         .sitebanner {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            position: relative;
             width: 100%;
             padding: 10px 20px;
             background: #0a0a0a;
-            color: #ffffff;
-            border-top: 1px solid rgba(255,255,255,0.08);
+            color: #f5f3ee;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
             font-family: var(--sf-pro);
             font-size: 13px;
             line-height: 1.5;
@@ -902,46 +750,9 @@
         .sitebanner-text {
             flex: 1 1 auto;
             font-weight: 400;
-            /* Rainbow gradient applied to the letters themselves */
-            background-image: linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);
-            background-size: 200% 100%;
-            background-repeat: repeat;
-            -webkit-background-clip: text;
-                    background-clip: text;
-            -webkit-text-fill-color: transparent;
-                    color: transparent;
-            animation: aislop-gradient 6s linear infinite;
+            color: rgba(245,243,238,0.88);
         }
-        .sitebanner-text em { font-style: normal; font-weight: 500; color: inherit; }
-        /* Minimal privacy / cookies notice cluster (right side of the banner) */
-        .sitebanner-privacy {
-            flex-shrink: 0;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            margin-left: auto;                /* pushes it to the right */
-            font-size: 11px;
-            letter-spacing: 0.02em;
-            color: rgba(255,255,255,0.55);
-        }
-        .sitebanner-privacy-note {
-            white-space: nowrap;
-        }
-        .sitebanner-privacy-link {
-            color: rgba(255,255,255,0.85);
-            text-decoration: none;
-            border-bottom: 1px solid rgba(255,255,255,0.25);
-            padding-bottom: 1px;
-            transition: color 0.2s ease, border-color 0.2s ease;
-        }
-        .sitebanner-privacy-link:hover {
-            color: #ffffff;
-            border-color: rgba(255,255,255,0.7);
-        }
-        @media (max-width: 640px) {
-            .sitebanner-privacy-note { display: none; }
-        }
-
+        .sitebanner-text em { font-style: normal; color: #f5f3ee; font-weight: 500; }
         .sitebanner-close {
             flex-shrink: 0;
             display: inline-flex;
@@ -952,8 +763,8 @@
             margin-right: -4px;
             background: transparent;
             border: none;
-            color: #ffffff;
-            opacity: 0.85;
+            color: #f5f3ee;
+            opacity: 0.55;
             cursor: pointer;
             border-radius: 999px;
             transition: opacity 0.2s, background 0.2s;
@@ -1124,524 +935,19 @@
         
         .gallery-stacked {
             min-height: 100vh;
-            background: #f5f5f0;
-            color: #0a0a0a;
+            background: var(--bg-black);
             padding: 140px 80px 0px;
             position: relative;
-        }
-
-        /* ================================================================
-           JOURNAL (blog) — minimal 3-box grid on cream (matches gallery bg).
-           ================================================================ */
-        .journal {
-            background: #f5f5f0;
-            color: #0a0a0a;
-            padding: 140px 80px 160px;
-            position: relative;
-        }
-        .journal-inner {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .journal-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 72px;
-            gap: 32px;
-        }
-        .journal-title {
-            font-family: var(--sf-pro);
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 400;
-            letter-spacing: -0.02em;
-            line-height: 1;
-            color: #0a0a0a;
-            text-align: left;
-            margin: 0;
-        }
-        .journal-meta {
-            font-family: var(--sf-pro);
-            font-size: 12px;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: rgba(10,10,10,0.5);
-        }
-
-        .journal-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
-        }
-        /* A post = bordered cover box (image only) + caption stack below */
-        .j-post {
-            display: block;
-            color: inherit;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .j-cover {
-            position: relative;
-            aspect-ratio: 4 / 3;
-            border: 1px solid rgba(10,10,10,0.14);
-            background: #eaeadf;
-            overflow: hidden;
-            transition: border-color 0.35s ease, transform 0.45s cubic-bezier(.7,0,.3,1);
-        }
-        /* Hatch placeholder only when cover has no content */
-        .j-cover:empty::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(135deg, rgba(10,10,10,0.04) 25%, transparent 25%),
-                linear-gradient(225deg, rgba(10,10,10,0.04) 25%, transparent 25%);
-            background-size: 22px 22px;
-        }
-
-        /* ── Candando — pattern tiles right→left in a seamless loop ──
-           Track is 200% of the card with background-repeat:repeat-x so the
-           pattern automatically fills any card width no matter how narrow
-           each tile ends up. translateX 0 → -50% = one card-width shift;
-           because the background is tileable, that reset is visually silent. */
-        .gallery-stacked-hero.hero-candando {
-            /* Exact pattern red — sampled from the cropped asset
-               (RGB 210,15,49 is the dominant pixel in the Cloudinary
-               delivery). Card bg matches the pattern area pixel-perfect,
-               so no edge is visible where the pattern strip ends. */
-            background: #D20F31;
-            overflow: hidden;
-        }
-        .pattern-scroll {
-            position: absolute;
-            top: 0;
-            left: 0;
-            /* Nudge the pattern band up so it clears the 'Candando' /
-               'Retail Branding' edge labels pinned at the bottom of the
-               card. Labels sit around bottom:28px with ~20px type, so
-               ~72px of clearance keeps them breathing. */
-            bottom: 72px;
-            width: 200%;
-            background-image: url('https://res.cloudinary.com/dzgqzeebg/image/upload/c_crop,w_0.45,h_0.8,g_center/f_auto,q_auto,h_800/v1776979530/pyofnjny9lxn2h5ecvnf.jpg');
-            background-repeat: repeat-x;
-            background-position: left center;
-            background-size: auto 100%;
-            animation: pattern-scroll-left 45s linear infinite;
-            will-change: transform;
-        }
-        @keyframes pattern-scroll-left {
-            from { transform: translateX(0); }
-            to   { transform: translateX(-50%); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .pattern-scroll { animation: none; }
-        }
-
-        /* ── Luandina card — royal blue stage with a small rounded-point
-           yellow star stacked above 'A NOSSA' in Bebas Neue. Scales
-           match the Retinol card's kicker/title so both cards read
-           with the same typographic weight.
-
-           Cinematic loop (minimal, always on):
-             · stage key-light drifts diagonally (18s, alternate)
-             · star breathes with micro-rotation (5.4s)
-             · specular shimmer sweeps across 'A NOSSA' (7.5s)
-             · subtle 35mm grain riding on top in overlay blend
-           On first reveal (triggers when the card enters the
-           viewport) the star rotates in from -12° and the letters
-           stagger-rise with a blur-to-sharp focus pull. ── */
-        .gallery-stacked-hero.hero-luandina {
-            /* Two stacked backgrounds: a soft drifting key-light
-               ellipse painted in white with low alpha, and a base
-               radial corner vignette darkening the edges. */
-            background:
-                radial-gradient(ellipse 80% 120% at 30% 20%,
-                    rgba(255,255,255,0.08) 0%,
-                    rgba(255,255,255,0)   55%),
-                radial-gradient(ellipse 95% 130% at 50% 50%,
-                    #1E40AF 40%,
-                    #173299 100%);
-            background-size: 180% 180%, 100% 100%;
-            background-position: 0% 0%, 50% 50%;
-            animation: luandina-drift 18s ease-in-out infinite alternate paused;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        /* Drift only animates while the card is in view —
-           cuts continuous GPU compositor work that was leaking
-           memory across long scroll sessions. */
-        .gallery-stacked-hero.hero-luandina.in-view {
-            animation-play-state: running;
-        }
-        @keyframes luandina-drift {
-            from { background-position:   0%   0%, 50% 50%; }
-            to   { background-position: 100% 100%, 50% 50%; }
-        }
-
-        .luandina-mark {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: clamp(8px, 1.2vh, 18px);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* Star — entry rotate-in on reveal, then a slow breathe
-           with a whisper of rotation so its highlight stays alive. */
-        .luandina-star {
-            width: clamp(72px, 10vw, 136px);
-            height: auto;
-            aspect-ratio: 1 / 1;
-            display: block;
-            transform-origin: center;
-            filter: drop-shadow(0 6px 24px rgba(0,0,0,0.25));
-            /* Breathing loop runs continuously. Entry is handled by
-               .is-reveal added via IntersectionObserver below. */
-            animation: luandina-star-breathe 5.4s ease-in-out infinite alternate;
-        }
-        @keyframes luandina-star-breathe {
-            0%   { transform: rotate(0deg)   scale(1);    }
-            100% { transform: rotate(0.6deg) scale(1.03); }
-        }
-        /* Entry state — the star starts folded away; .is-reveal
-           fires the rotate-in, then the breathe loop takes over. */
-        .gallery-stacked-hero.hero-luandina:not(.is-reveal) .luandina-star {
-            opacity: 0;
-            transform: rotate(-12deg) scale(0.78);
-            animation: none;
-        }
-        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-star {
-            animation:
-                luandina-star-entry   1.4s cubic-bezier(.22, 1, .36, 1) 0.1s both,
-                luandina-star-breathe 5.4s ease-in-out 1.6s infinite alternate;
-        }
-        @keyframes luandina-star-entry {
-            0%   { opacity: 0; transform: rotate(-12deg) scale(0.78); }
-            100% { opacity: 1; transform: rotate(0deg)   scale(1);    }
-        }
-
-        /* Text — letters stagger-rise on reveal, then the whole
-           word carries a repeating specular shimmer. */
-        .luandina-text {
-            font-family: 'Bebas Neue', Impact, 'Helvetica Neue Condensed', sans-serif;
-            font-size: clamp(64px, 10vw, 144px);
-            letter-spacing: -0.01em;
-            line-height: 0.95;
-            font-weight: 400;
-            color: #ffffff;
-            text-transform: uppercase;
-            filter: url(#luandina-round);
-            display: inline-flex;
-            gap: 0.02em;
-        }
-        .luandina-text .luandina-letter {
-            display: inline-block;
-            opacity: 1;
-            /* Shimmer — a 260% linear gradient clipped to each
-               letter, drifting across every 7.5s. The base is pure
-               white so between sweeps the text reads as plain
-               white; mid-sweep a subtle warm highlight passes. */
-            background: linear-gradient(110deg,
-                rgba(255,255,255,1)    0%,
-                rgba(255,255,255,1)   42%,
-                rgba(255,255,210,1)   50%,
-                rgba(255,255,255,1)   58%,
-                rgba(255,255,255,1)  100%);
-            background-size: 260% 100%;
-            background-position: 100% 0%;
-            -webkit-background-clip: text;
-                    background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: luandina-shimmer 7.5s ease-in-out 2.2s infinite;
-        }
-        @keyframes luandina-shimmer {
-            0%   { background-position: 100% 0%; }
-            55%  { background-position:   0% 0%; }
-            100% { background-position: -80% 0%; }
-        }
-        /* Pre-reveal state on each letter — hidden, lowered, blurred */
-        .gallery-stacked-hero.hero-luandina:not(.is-reveal) .luandina-letter {
-            opacity: 0;
-            transform: translateY(22%);
-            filter: blur(6px);
-            animation: none;
-        }
-        /* Reveal — staggered rise-in, then pick up the shimmer loop */
-        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-letter {
-            animation:
-                luandina-letter-rise 0.9s cubic-bezier(.22, 1, .36, 1) both,
-                luandina-shimmer 7.5s ease-in-out 2.2s infinite;
-        }
-        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-letter:nth-child(1) { animation-delay: 0.35s, 2.2s; }
-        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-letter:nth-child(2) { animation-delay: 0.45s, 2.2s; }
-        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-letter:nth-child(3) { animation-delay: 0.55s, 2.2s; }
-        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-letter:nth-child(4) { animation-delay: 0.65s, 2.2s; }
-        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-letter:nth-child(5) { animation-delay: 0.75s, 2.2s; }
-        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-letter:nth-child(6) { animation-delay: 0.85s, 2.2s; }
-        .gallery-stacked-hero.hero-luandina.is-reveal .luandina-letter:nth-child(7) { animation-delay: 0.95s, 2.2s; }
-        @keyframes luandina-letter-rise {
-            0%   { opacity: 0; transform: translateY(22%); filter: blur(6px); }
-            100% { opacity: 1; transform: translateY(0);   filter: blur(0);   }
-        }
-
-        /* 35mm grain — subtle overlay riding above the stage but
-           below the info/badge (which live at z-index 1). The
-           grain animation only runs once .is-reveal lands AND
-           the card is in view; off-screen we use animation-play-
-           state: paused to release the GPU work that was
-           contributing to renderer-process crashes during long
-           scroll sessions. */
-        .luandina-grain {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            background-image:
-                url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280'><filter id='n'><feTurbulence baseFrequency='1.15' numOctaves='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.8 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-            background-repeat: repeat;
-            background-size: 280px 280px;
-            mix-blend-mode: overlay;
-            opacity: 0.22;
-            animation: luandina-grain 0.12s steps(1) infinite paused;
-        }
-        .gallery-stacked-hero.hero-luandina.in-view .luandina-grain {
-            animation-play-state: running;
-        }
-        @keyframes luandina-grain {
-            0%   { background-position:   0px   0px; }
-            20%  { background-position: -40px -80px; }
-            40%  { background-position:  60px -30px; }
-            60%  { background-position: -90px  50px; }
-            80%  { background-position:  20px 110px; }
-            100% { background-position:   0px   0px; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .gallery-stacked-hero.hero-luandina,
-            .luandina-star,
-            .luandina-letter,
-            .luandina-grain { animation: none !important; }
-            .gallery-stacked-hero.hero-luandina .luandina-letter { opacity: 1; transform: none; filter: none; }
-        }
-
-        /* ── Retinol card — drifting sage gradient + auto-spawning
-           water-ripple blooms. Two stacked layers:
-             1. A radial "green pool" (STATIC) centred on the card
-                that stays dark sage where the lettering sits, so
-                the label never falls onto light stops and washes
-                out. Alpha fades to transparent near the edges.
-             2. The drifting horizontal light-to-dark gradient
-                (ANIMATED) underneath — visible only at the edges
-                where the pool's alpha has faded away. Motion is
-                preserved around the perimeter.
-           Mirrored stops on layer 2 keep the 220% loop seamless. */
-        .gallery-stacked-hero.hero-retinol {
-            background:
-                /* Softer sage pool — smaller opaque core, longer
-                   feather all the way to 100%. No hard plateau:
-                   alpha drops gently from 90% → 0 across most of
-                   the radius, so the blend into the drifting edge
-                   gradient reads as a haze, not a mask. */
-                radial-gradient(ellipse 44% 60% at 50% 50%,
-                    rgba(96, 119, 83, 0.92) 0%,
-                    rgba(96, 119, 83, 0.78) 28%,
-                    rgba(96, 119, 83, 0.52) 52%,
-                    rgba(96, 119, 83, 0.26) 72%,
-                    rgba(96, 119, 83, 0.08) 88%,
-                    rgba(96, 119, 83, 0)   100%),
-                linear-gradient(90deg,
-                    #607753 0%,
-                    #7d9568 12%,
-                    #96ad7f 22%,
-                    #c9d3bf 33%,
-                    #d9dfcf 50%,
-                    #c9d3bf 67%,
-                    #96ad7f 78%,
-                    #7d9568 88%,
-                    #607753 100%);
-            /* Radial pool is static; only the linear layer drifts. */
-            background-size: 100% 100%, 260% 100%;   /* wider sweep
-                                                        so edge swing
-                                                        is more visible */
-            background-position: 50% 50%, 0% 50%;
-            /* Faster drift — 14s reads as a live undulation at
-               the edges rather than a slow creep that reads
-               almost static. */
-            animation: retinol-drift 14s ease-in-out infinite alternate paused;
-            color: #f3f4ee;
-            overflow: hidden;
-        }
-        /* Pause the drift unless the card is in view (saves GPU
-           compositor work, prevents long-scroll memory drift). */
-        .gallery-stacked-hero.hero-retinol.in-view {
-            animation-play-state: running;
-        }
-        @keyframes retinol-drift {
-            from { background-position: 50% 50%,   0% 50%; }
-            to   { background-position: 50% 50%, 100% 50%; }
-        }
-        /* Water-ripple bloom — JS spawns one of these at a random spot
-           every ~1s. Radial fade, screen blend, no ring stroke. */
-        .retinol-ripple {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            margin: -20px 0 0 -20px;
-            border-radius: 50%;
-            background: radial-gradient(circle,
-                rgba(255,255,255,0.60) 0%,
-                rgba(255,255,255,0.30) 35%,
-                rgba(255,255,255,0.10) 65%,
-                transparent 100%);
-            mix-blend-mode: screen;
-            transform: scale(0);
-            opacity: 0;
-            pointer-events: none;
-            will-change: transform, opacity;
-            animation: retinol-ripple-bloom var(--dur, 3s) cubic-bezier(.22,1,.36,1) forwards;
-            z-index: 1;
-        }
-        @keyframes retinol-ripple-bloom {
-            0%   { transform: scale(0); opacity: 0; }
-            12%  { opacity: var(--peak, 0.4); }
-            100% { transform: scale(var(--end, 16)); opacity: 0; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .gallery-stacked-hero.hero-retinol { animation: none; }
-            .retinol-ripple { animation: none !important; }
-        }
-        .retinol-label {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 6vh 4vw;
-            text-align: center;
-            font-family: Arial, Helvetica, sans-serif;
-            color: #f3f4ee;
-            pointer-events: none;
-        }
-        .retinol-label .rtn-kicker,
-        .retinol-label .rtn-foot {
-            font-size: clamp(14px, 1.4vw, 20px);
-            letter-spacing: 0.34em;
-            text-transform: uppercase;
-            margin: 0;
-            opacity: 0.75;
-            transition: letter-spacing 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                        opacity 0.5s ease,
-                        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .retinol-label .rtn-title {
-            font-size: clamp(32px, 5vw, 72px);
-            letter-spacing: 0.16em;
-            font-weight: 300;
-            text-transform: uppercase;
-            margin: 0;
-            transition: letter-spacing 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                        opacity 0.5s ease,
-                        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .retinol-label .rtn-divider {
-            width: clamp(40px, 6vw, 90px);
-            height: 2px;
-            background: rgba(243, 244, 238, 0.9);
-            margin: 2.2vh 0 2vh;
-            transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                        opacity 0.5s ease;
-            opacity: 0.75;
-        }
-
-        /* Hover: staggered letter-spacing breathe */
-        .gallery-stacked-hero.hero-retinol:hover .rtn-kicker {
-            letter-spacing: 0.54em;
-            opacity: 1;
-            transform: translateY(-3px);
-            transition-delay: 0s;
-        }
-        .gallery-stacked-hero.hero-retinol:hover .rtn-title {
-            letter-spacing: 0.28em;
-            transition-delay: 0.07s;
-        }
-        .gallery-stacked-hero.hero-retinol:hover .rtn-divider {
-            width: clamp(70px, 10vw, 150px);
-            opacity: 1;
-            transition-delay: 0.14s;
-        }
-        .gallery-stacked-hero.hero-retinol:hover .rtn-foot {
-            letter-spacing: 0.54em;
-            opacity: 1;
-            transform: translateY(3px);
-            transition-delay: 0.07s;
-        }
-        .j-post:hover .j-cover {
-            border-color: rgba(10,10,10,0.55);
-            transform: translateY(-4px);
-        }
-
-        .j-top,
-        .j-bot {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-family: var(--sf-pro);
-            font-size: 12px;
-            letter-spacing: 0.08em;
-            color: rgba(10,10,10,0.55);
-        }
-        .j-top { margin-top: 20px; }
-        .j-title {
-            font-family: var(--sf-pro);
-            font-size: clamp(1.3rem, 1.7vw, 1.6rem);
-            font-weight: 300;
-            line-height: 1.22;
-            letter-spacing: -0.02em;
-            color: #0a0a0a;
-            margin: 12px 0 18px;
-            max-width: 24ch;
-            transition: color 0.3s ease;
-        }
-        .j-title em { font-style: italic; color: rgba(10,10,10,0.55); }
-        .j-arrow {
-            width: 20px;
-            height: 10px;
-            color: rgba(10,10,10,0.45);
-            transition: transform 0.3s ease, color 0.3s ease;
-        }
-        .j-post:hover .j-title { color: #002FA7; }
-        .j-post:hover .j-arrow { transform: translateX(6px); color: #002FA7; }
-
-        @media (max-width: 900px) {
-            .journal { padding: 96px 24px 120px; }
-            .journal-head { flex-direction: column; align-items: flex-start; gap: 12px; }
-            .journal-grid { grid-template-columns: 1fr; gap: 48px; }
-        }
-        .gallery-stacked .gallery-stacked-title { color: #0a0a0a; }
-        .gallery-stacked .gallery-see-more__btn {
-            color: rgba(10,10,10,0.85);
-            border-color: rgba(10,10,10,0.25);
-        }
-        .gallery-stacked .gallery-see-more__btn:hover {
-            border-color: rgba(10,10,10,0.6);
-            background: rgba(10,10,10,0.04);
         }
         
         .gallery-stacked-header {
             margin-bottom: 60px;
             display: flex;
-            justify-content: center;   /* "Selected Projects" centred in the section */
+            justify-content: space-between;
             align-items: flex-end;
-            text-align: center;
         }
         
         .gallery-stacked-title {
-            font-family: var(--sf-pro);
             font-size: clamp(2rem, 4vw, 3rem);
             font-weight: 400;
             letter-spacing: -0.02em;
@@ -1686,9 +992,9 @@
         
         .gallery-stacked-container {
             position: relative;
-            max-width: 1600px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding-bottom: 0;
+            padding-bottom: calc(8 * 22px);
         }
         
         .gallery-stacked-card {
@@ -1701,56 +1007,22 @@
         }
         
         .gallery-stacked-card-inner {
-            /* Lock aspect ratio so cards look identical on every viewport — all 2:1. */
+            /* Lock aspect ratio so cards look identical on every viewport:
+               desktop 1000×500, tablet 768×384, mobile 375×188 — all 2:1. */
             aspect-ratio: 2 / 1;
             width: 100%;
-            border-radius: 0;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: none;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
             transform-origin: center top;
             will-change: transform;
             display: flex;
             flex-direction: column;
-            transition: transform 0.2s ease-out;
-            /* Chrome-specific perf hint — tell the layout engine
-               that this card is fully self-contained and that
-               its rendering work can be skipped while it's far
-               from the viewport. content-visibility: auto cuts
-               layout/paint/composite for off-screen cards, which
-               is the dominant Chrome scroll-jank source on this
-               page (Firefox handles this implicitly already, so
-               this only helps the Chrome-specific symptoms).
-               contain-intrinsic-size reserves the card's space
-               so the scroll position doesn't jump as cards enter
-               and leave the auto-skipped state. */
-            content-visibility: auto;
-            contain-intrinsic-size: auto 600px;
+            transition: transform 0.2s ease-out, box-shadow 0.3s ease;
         }
-
-        /* Bottom-corner labels inside each card (brand left, type right) */
-        .gallery-edge {
-            position: absolute;
-            bottom: 28px;
-            z-index: 3;
-            font-family: var(--sf-pro);
-            color: rgba(255,255,255,0.95);
-            letter-spacing: 0.04em;
-            font-size: 16px;
-            font-weight: 500;
-            white-space: nowrap;
-            pointer-events: none;
-        }
-        .gallery-edge-left { left: 32px; }
-        .gallery-edge-right { right: 32px; font-weight: 400; }
-        @media (max-width: 768px) {
-            .gallery-edge { font-size: 12px; bottom: 18px; }
-            .gallery-edge-left { left: 18px; }
-            .gallery-edge-right { right: 18px; }
-        }
-
-
+        
         .gallery-stacked-card-inner:hover {
-            box-shadow: none;
+            box-shadow: 0 -20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.1);
         }
         
         /* Browser bar */
@@ -2205,7 +1477,6 @@
         
         .gallery-stacked-side-left {
             left: 80px;
-            display: none !important; /* text moved inside each card as bottom-corner labels */
         }
         
         .gallery-stacked-side-right {
@@ -2542,7 +1813,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border-radius: 0;
+            border-radius: 18px;
             overflow: hidden;
             max-width: 95vw;
             max-height: 85vh;
@@ -2557,61 +1828,15 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            border-radius: 0;
+            border-radius: 18px;
         }
         .motion-embed__shade {
             position: absolute;
             inset: 0;
             background: rgba(0,0,0,0.3);
-            border-radius: 0;
+            border-radius: 18px;
             pointer-events: none;
             transition: opacity 0.2s ease;
-        }
-        /* "Fake video" — cycles through 5 grey placeholder frames to
-           simulate the reel while real motion content is being produced. */
-        .motion-embed__fake-video {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            background: #1a1a1a;
-        }
-        .mfv-frame {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            animation: mfv-cycle 15s infinite;
-        }
-        .mfv-frame-1 { background: #2a2a2a; animation-delay: 0s; }
-        .mfv-frame-2 {
-            background: #333;
-            background-image:
-                linear-gradient(135deg, rgba(255,255,255,0.03) 25%, transparent 25%),
-                linear-gradient(225deg, rgba(255,255,255,0.03) 25%, transparent 25%);
-            background-size: 24px 24px;
-            animation-delay: 3s;
-        }
-        .mfv-frame-3 {
-            background: #222;
-            background-image: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.05), transparent 60%);
-            animation-delay: 6s;
-        }
-        .mfv-frame-4 {
-            background: #2d2d2d;
-            background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 40px);
-            animation-delay: 9s;
-        }
-        .mfv-frame-5 {
-            background: #262626;
-            background-image: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 50%, rgba(0,0,0,0.2) 100%);
-            animation-delay: 12s;
-        }
-        @keyframes mfv-cycle {
-            0%, 18% { opacity: 1; }
-            22%, 100% { opacity: 0; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .mfv-frame { animation: none; }
-            .mfv-frame-1 { opacity: 1; }
         }
 
         /* Under-media meta */
@@ -2642,34 +1867,6 @@
             text-transform: uppercase;
             font-weight: 500;
             color: var(--text-60);
-        }
-        /* Mouse-scroll indicator — pill keyline with a small dot
-           that drops from the top, fades, then resets. Classic
-           "scroll to see more" idiom, no text needed. */
-        .scroll-mouse {
-            width: 22px;
-            height: 36px;
-            display: block;
-            color: var(--text-40);
-        }
-        .scroll-mouse__body {
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 1.5;
-        }
-        .scroll-mouse__dot {
-            fill: currentColor;
-            transform-origin: center;
-            animation: scroll-mouse-dot 1.8s cubic-bezier(.4,0,.2,1) infinite;
-        }
-        @keyframes scroll-mouse-dot {
-            0%   { transform: translateY(0);   opacity: 0; }
-            15%  { opacity: 1; }
-            70%  { transform: translateY(10px); opacity: 0; }
-            100% { transform: translateY(0);    opacity: 0; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .scroll-mouse__dot { animation: none; opacity: 1; }
         }
 
         /* Split title — matches portfolio philosophy weight/color */
@@ -3891,8 +3088,8 @@ margin-top: 3px;
         
         .footer-swiss {
             min-height: 100vh;
-            background: #0f0f0f;
-            border-radius: 0;
+            background: #f5f5f0;
+            border-radius: 16px;
             display: grid;
             grid-template-rows: 1fr auto;
             padding: 0 80px 48px;
@@ -3905,13 +3102,13 @@ margin-top: 3px;
             left: 80px;
             display: inline-flex;
             align-items: center;
-            color: rgba(255,255,255,0.35);
+            color: var(--text-40);
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
         .swiss-linkedin:hover {
-            color: #002FA7;
+            color: #89CFF0;
         }
 
         .swiss-cv {
@@ -3926,13 +3123,13 @@ margin-top: 3px;
             font-weight: 400;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.35);
+            color: var(--text-40);
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
         .swiss-cv:hover {
-            color: #002FA7;
+            color: #89CFF0;
         }
 
         .swiss-cv svg {
@@ -3975,7 +3172,7 @@ margin-top: 3px;
             font-weight: 400;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.3);
+            color: rgba(0,0,0,0.32);
             margin-bottom: 28px;
         }
 
@@ -3984,7 +3181,7 @@ margin-top: 3px;
             font-weight: 300;
             line-height: 1.15;
             letter-spacing: -0.03em;
-            color: #ffffff;
+            color: #111;
             margin-bottom: 40px;
         }
 
@@ -4048,7 +3245,7 @@ margin-top: 3px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid rgba(255,255,255,0.08);
+            border-top: 1px solid rgba(0,0,0,0.08);
             padding-top: 16px;
             max-width: 1200px;
             margin: 0 auto;
@@ -4079,7 +3276,7 @@ margin-top: 3px;
             font-weight: 400;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.3);
+            color: var(--text-40);
         }
 
         .swiss-backtop {
@@ -4088,7 +3285,7 @@ margin-top: 3px;
             font-weight: 400;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.3);
+            color: var(--text-40);
             text-decoration: none;
             display: flex;
             align-items: center;
@@ -4098,7 +3295,7 @@ margin-top: 3px;
         }
 
         .swiss-backtop:hover {
-            color: #002FA7;
+            color: #111;
         }
 
         .swiss-backtop svg {
@@ -4517,28 +3714,12 @@ margin-top: 3px;
     </style>
 </head>
 <body>
-    <!-- Shared SVG filter defs (Luandina text corner rounding, etc.) -->
-    <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none;">
-        <defs>
-            <!-- Luandina 'A NOSSA' slight corner rounding. Higher stdDeviation
-                 = more melt; tighten the alpha recovery (last row of the
-                 matrix) if the text starts losing stroke weight. -->
-            <filter id="luandina-round" x="-5%" y="-5%" width="110%" height="110%">
-                <feGaussianBlur stdDeviation="0.9"/>
-                <feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 32 -15"/>
-            </filter>
-        </defs>
-    </svg>
     <!-- Site-refresh banner. Dismissal persisted in localStorage under 'sitebanner-refresh-v1'. -->
     <div class="sitebanner" id="siteBanner" role="status" aria-label="Site notice" data-i18n-attr="aria-label:banner.aria">
         <span class="sitebanner-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20"/></svg>
         </span>
         <span class="sitebanner-text"><em data-i18n="banner.textEm">Portfolio in refinement.</em><span data-i18n="banner.textRest"> New case studies and refreshed layouts are rolling out over the coming days — a few sections may shift as the edit continues.</span></span>
-        <span class="sitebanner-privacy" aria-label="Privacy notice">
-            <span class="sitebanner-privacy-note">This site uses cookies &amp; analytics.</span>
-            <a href="/privacy" class="sitebanner-privacy-link">Privacy</a>
-        </span>
         <button class="sitebanner-close" type="button" id="siteBannerClose" aria-label="Dismiss notice" data-i18n-attr="aria-label:banner.dismiss">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
@@ -4556,14 +3737,15 @@ margin-top: 3px;
         </div>
     </div>
 
-    <!-- Hover Image Container — emptied. The Research section is
-         currently hidden (display:none) so preloading 6 large
-         Unsplash images here was burning ~3-6 MB of decoded image
-         memory for nothing and contributing to renderer crashes
-         (Chrome 'Aw, Snap!' Error 5). Container kept so the
-         hover-revealer JS keeps working when Research returns —
-         just re-add the <img> tags then. -->
-    <div class="research-hover-container" id="researchHoverContainer"></div>
+    <!-- Hover Image Container -->
+    <div class="research-hover-container" id="researchHoverContainer">
+        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=760&q=80" alt="" class="research-hover-image" data-index="1" style="left: 50%; top: 50%; opacity: 0; z-index: 1;">
+        <img src="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=760&q=80" alt="" class="research-hover-image" data-index="2" style="left: 50%; top: 50%; opacity: 0; z-index: 1;">
+        <img src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?w=760&q=80" alt="" class="research-hover-image" data-index="3" style="left: 50%; top: 50%; opacity: 0; z-index: 1;">
+        <img src="https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=760&q=80" alt="" class="research-hover-image" data-index="4" style="left: 50%; top: 50%; opacity: 0; z-index: 1;">
+        <img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=760&q=80" alt="" class="research-hover-image" data-index="5" style="left: 50%; top: 50%; opacity: 0; z-index: 1;">
+        <img src="https://images.unsplash.com/photo-1618172193763-c511deb635ca?w=760&q=80" alt="" class="research-hover-image" data-index="6" style="left: 50%; top: 50%; opacity: 0; z-index: 1;">
+    </div>
 
     <!-- ========================================
          NAVIGATION HEADER
@@ -4577,13 +3759,11 @@ margin-top: 3px;
 
             <div class="header-right">
                 <nav class="header-nav">
-                    <button type="button" class="nav-expand" id="navExpand" aria-label="Expand menu" aria-expanded="false"><svg class="nav-expand-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 6 9 12 15 18"/></svg></button>
                     <a href="#work" data-i18n="menu.work">Work</a>
-                    <a href="#about" class="nav-extra" data-i18n="menu.about">About</a>
-                    <a href="/blog.html" class="nav-extra" data-i18n="menu.blog">Blog</a>
-                    <a href="javascript:void(0)" data-i18n="menu.research" hidden style="display:none">Research</a>
-                    <a href="javascript:void(0)" class="menu-nda" onclick="event.preventDefault();openPwModal()" aria-label="NDA-protected work" hidden style="display:none"><span data-i18n="menu.nda">NDA</span><svg class="menu-nda-lock" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></a>
-                    <a href="/gen-studio.html" class="nav-gen" data-i18n="menu.gen">Gen Studies</a>
+                    <a href="#motion" data-i18n="menu.motion">Motion Design</a>
+                    <a href="#research" data-i18n="menu.research">Research</a>
+                    <a href="#about" data-i18n="menu.about" hidden style="display:none">About</a>
+                    <a href="/gen-studio.html" data-i18n="menu.gen">Gen Studio</a>
                 </nav>
                 <div class="header-lang" role="group" aria-label="Language" hidden style="display:none">
                     <button type="button" data-i18n-toggle="en" aria-pressed="true">EN</button>
@@ -4608,11 +3788,10 @@ margin-top: 3px;
         </button>
         <div class="menu-overlay-items">
             <a href="#work" class="menu-overlay-link" data-i18n="menu.work">Work</a>
-            <a href="#about" class="menu-overlay-link" data-i18n="menu.about">About</a>
-            <a href="/blog.html" class="menu-overlay-link" data-i18n="menu.blog">Blog</a>
-            <a href="javascript:void(0)" class="menu-overlay-link" data-i18n="menu.research" hidden style="display:none">Research</a>
-            <a href="javascript:void(0)" class="menu-overlay-link menu-nda" onclick="event.preventDefault();openPwModal()" aria-label="NDA-protected work" hidden style="display:none"><span data-i18n="menu.nda">NDA</span><svg class="menu-nda-lock" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></a>
-            <a href="/gen-studio.html" class="menu-overlay-link nav-gen" data-i18n="menu.gen">Gen Studies</a>
+            <a href="#motion" class="menu-overlay-link" data-i18n="menu.motion">Motion Design</a>
+            <a href="#research" class="menu-overlay-link" data-i18n="menu.research">Research</a>
+            <a href="#about" class="menu-overlay-link" data-i18n="menu.about" hidden style="display:none">About</a>
+            <a href="/gen-studio.html" class="menu-overlay-link" data-i18n="menu.gen">Gen Studio</a>
             <a href="mailto:hi@motagomes.com" class="menu-overlay-cta" data-i18n="menu.letstalk">Let's Talk</a>
             <a href="/cv.pdf" download class="menu-overlay-cv">
                 <span data-i18n="menu.cv">Curriculum</span>
@@ -4688,7 +3867,7 @@ margin-top: 3px;
         <!-- SECTION 2: GALLERY STACKED WITH GRADIENTS -->
         <section class="snap-section gallery-stacked" id="work">
             <div class="gallery-stacked-header">
-                <h2 class="gallery-stacked-title"><span data-i18n="work.title">Selected Projects</span></h2>
+                <h2 class="gallery-stacked-title"><span data-i18n="work.title">Selected Projects</span><span class="star" aria-hidden="true"><svg viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="14" stroke-linecap="round" fill="none"><line x1="0" y1="-40" x2="0" y2="40"/><line x1="-34.64" y1="-20" x2="34.64" y2="20"/><line x1="-34.64" y1="20" x2="34.64" y2="-20"/></g></svg></span></h2>
                 <span class="gallery-stacked-updated" data-i18n="nav.lastUpdated" hidden style="display:none">Last updated · February 2026</span>
             </div>
             
@@ -4777,13 +3956,12 @@ margin-top: 3px;
                                 <span>Angola</span>
                             </div>
                         </div>
-                        <div class="gallery-stacked-hero hero-candando">
-                            <div class="pattern-scroll" aria-hidden="true"></div>
+                        <div class="gallery-stacked-hero gradient-emerald" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1776640918/sBbbbArtboard_1-100_pzfngu.jpg') center/cover no-repeat;">
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">Retail Branding</div>
                                 <div class="gallery-stacked-project-title">Candando</div>
-                                <a href="/project.html?p=candando" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
+                                <a href="#" class="gallery-stacked-btn gallery-stacked-btn-outline" onclick="event.preventDefault();event.stopPropagation();"><span data-i18n="card.viewCase">View Case</span></a>
                             </div>
                             <div class="gallery-stacked-badge"><span data-i18n="card.viewProject">VIEW</span><br><span data-i18n="card.projectWord">PROJECT</span></div>
                         </div>
@@ -4860,13 +4038,7 @@ margin-top: 3px;
                                 <span>Strategy</span>
                             </div>
                         </div>
-                        <div class="gallery-stacked-hero hero-retinol">
-                            <div class="retinol-label" aria-hidden="true">
-                                <p class="rtn-kicker">PURE</p>
-                                <h4 class="rtn-title">RETINOL</h4>
-                                <div class="rtn-divider"></div>
-                                <p class="rtn-foot">SERUM</p>
-                            </div>
+                        <div class="gallery-stacked-hero gradient-obsidian" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773843097/Screenshot_2026-03-18_at_14.11.02_xh4n3n.png') center/cover no-repeat;">
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">Rebrand</div>
@@ -4892,29 +4064,7 @@ margin-top: 3px;
                                 <span>Angola</span>
                             </div>
                         </div>
-                        <div class="gallery-stacked-hero hero-luandina">
-                            <!-- 35mm grain layer — sits under the info/badge but
-                                 above the stage gradient for a cinematic plate feel. -->
-                            <div class="luandina-grain" aria-hidden="true"></div>
-                            <div class="luandina-mark" aria-hidden="true">
-                                <svg class="luandina-star" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
-                                    <polygon
-                                        points="50,6 61.8,38.2 95.5,38.2 68.3,58.3 78.5,91.5 50,71.2 21.5,91.5 31.7,58.3 4.5,38.2 38.2,38.2"
-                                        fill="#FFD700"/>
-                                </svg>
-                                <!-- Each glyph is its own span so letters can
-                                     stagger-rise independently on reveal, and
-                                     each carries the shimmer sweep loop. -->
-                                <span class="luandina-text" aria-label="A NOSSA">
-                                    <span class="luandina-letter">A</span>
-                                    <span class="luandina-letter">&nbsp;</span>
-                                    <span class="luandina-letter">N</span>
-                                    <span class="luandina-letter">O</span>
-                                    <span class="luandina-letter">S</span>
-                                    <span class="luandina-letter">S</span>
-                                    <span class="luandina-letter">A</span>
-                                </span>
-                            </div>
+                        <div class="gallery-stacked-hero" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1776527014/lluandina_copy_azce8t.jpg') center/cover no-repeat;">
                             <div class="gallery-stacked-info">
                                 <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
                                 <div class="gallery-stacked-label">Geo-Targeted Campaign</div>
@@ -4979,7 +4129,7 @@ margin-top: 3px;
                 </div>
 
                 <!-- Card 10: Aura Studio -->
-                <div class="gallery-stacked-card" style="--card-index: 9; --card-offset: 50px;">
+                <div class="gallery-stacked-card" style="--card-index: 9; --card-offset: 50px;" hidden data-hidden-card>
                     <div class="gallery-stacked-card-inner">
                         <div class="gallery-stacked-bar">
                             <div class="gallery-stacked-dot"></div>
@@ -5004,50 +4154,32 @@ margin-top: 3px;
                     </div>
                 </div>
 
-
-            </div>
-
-        </section>
-
-        <!-- JOURNAL · Editorial typography teaser strip -->
-        <section class="journal" id="journal" hidden style="display:none">
-            <div class="journal-inner">
-                <header class="journal-head">
-                    <h2 class="journal-title">Journey</h2>
-                    <span class="journal-meta">03 Notes · 2026</span>
-                </header>
-
-                <div class="journal-grid">
-                    <a href="/blog.html" class="j-post">
-                        <div class="j-cover" aria-hidden="true"></div>
-                        <div class="j-top"><span>N° 01</span><span>Essay</span></div>
-                        <h3 class="j-title">On the <em>honest weight</em> of a headline</h3>
-                        <div class="j-bot">
-                            <span>8 min · Apr 2026</span>
-                            <svg class="j-arrow" viewBox="0 0 20 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h18M14 1l5 4-5 4"/></svg>
+                <!-- Card 11: Amal Clooney Scholarship (password-protected) -->
+                <div class="gallery-stacked-card" style="--card-index: 10; --card-offset: 50px;">
+                    <div class="gallery-stacked-card-inner">
+                        <div class="gallery-stacked-bar">
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-dot"></div>
+                            <div class="gallery-stacked-url">law.ac.uk</div>
+                            <div class="gallery-stacked-nav">
+                                <span>Scholarship</span>
+                                <span>Campaign</span>
+                                <span>Branding</span>
+                            </div>
                         </div>
-                    </a>
-
-                    <a href="/blog.html" class="j-post">
-                        <div class="j-cover" aria-hidden="true"></div>
-                        <div class="j-top"><span>N° 02</span><span>Process</span></div>
-                        <h3 class="j-title">Pacing is a <em>moral</em> decision</h3>
-                        <div class="j-bot">
-                            <span>6 min · Mar 2026</span>
-                            <svg class="j-arrow" viewBox="0 0 20 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h18M14 1l5 4-5 4"/></svg>
+                        <div class="gallery-stacked-hero gradient-ocean" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773804309/Amal_Clooney_mucx8j.jpg') center/cover no-repeat;">
+                            <div class="gallery-stacked-info">
+                                <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
+                                <div class="gallery-stacked-label">Scholarship Initiative</div>
+                                <div class="gallery-stacked-project-title">Amal Clooney<br>Scholarship</div>
+                                <a href="#" class="gallery-stacked-btn gallery-stacked-btn-fill" onclick="event.preventDefault();event.stopPropagation();openPwModal()"><span data-i18n="card.viewCase">View Case</span></a>
+                            </div>
+                            <div class="gallery-stacked-badge"><span data-i18n="card.viewProject">VIEW</span><br><span data-i18n="card.projectWord">PROJECT</span></div>
                         </div>
-                    </a>
-
-                    <a href="/blog.html" class="j-post">
-                        <div class="j-cover" aria-hidden="true"></div>
-                        <div class="j-top"><span>N° 03</span><span>Field notes</span></div>
-                        <h3 class="j-title">The <em>quietest</em> identity wins the room</h3>
-                        <div class="j-bot">
-                            <span>5 min · Feb 2026</span>
-                            <svg class="j-arrow" viewBox="0 0 20 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h18M14 1l5 4-5 4"/></svg>
-                        </div>
-                    </a>
+                    </div>
                 </div>
+
             </div>
         </section>
 
@@ -5057,23 +4189,16 @@ margin-top: 3px;
                 <div class="motion-embed__bg" id="motionBg"></div>
 
                 <div class="motion-embed__media" id="motionMedia">
-                    <div class="motion-embed__fake-video" aria-label="Motion reel placeholder — showreel coming soon">
-                        <div class="mfv-frame mfv-frame-1"></div>
-                        <div class="mfv-frame mfv-frame-2"></div>
-                        <div class="mfv-frame mfv-frame-3"></div>
-                        <div class="mfv-frame mfv-frame-4"></div>
-                        <div class="mfv-frame mfv-frame-5"></div>
-                    </div>
+                    <video id="motionVideo"
+                        src="https://res.cloudinary.com/dzgqzeebg/video/upload/f_auto,q_auto,w_1280,br_1500k/v1776453073/hf_20260417_161823_be42aff6-94ae-4add-836f-ea6904f9f135_wnk0ul.mp4"
+                        autoplay muted loop playsinline preload="metadata"
+                        disablepictureinpicture disableremoteplayback></video>
                     <div class="motion-embed__shade" id="motionShade"></div>
                 </div>
 
                 <div class="motion-embed__meta">
-                    <!-- Mouse-scroll indicator — pill keyline with a dot
-                         that drops to hint at scrolling for more reels. -->
-                    <svg class="scroll-mouse" viewBox="0 0 22 36" aria-label="Scroll" role="img">
-                        <rect class="scroll-mouse__body" x="1" y="1" width="20" height="34" rx="10" ry="10" />
-                        <circle class="scroll-mouse__dot" cx="11" cy="10" r="1.8" />
-                    </svg>
+                    <p class="me-date" id="motionDate">Selected Reels · 2022 — 2026</p>
+                    <p class="me-prompt" data-i18n="motion.scrollPrompt">Scroll to Expand</p>
                 </div>
 
                 <div class="motion-embed__title">
@@ -5114,7 +4239,7 @@ margin-top: 3px;
         </section>
 
         <!-- SECTION 3: RESEARCH & EXPERIMENTS -->
-        <section class="snap-section research" id="research" hidden style="display:none">
+        <section class="snap-section research" id="research">
             <div class="research-content">
                 <div class="research-inner">
                     <div class="research-header">
@@ -5277,196 +4402,7 @@ margin-top: 3px;
         </section>
 
         <!-- FOOTER -->
-        <!-- ===================================================
-             NEW FOOTER: MG supergraphic + Glass overlay
-             =================================================== -->
-        <style>
-            .mgf-stage-wrap {
-                position: relative;
-                background: #000;
-            }
-            .mgf-sticky {
-                position: sticky;
-                top: 0;
-                height: 100vh;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                overflow: hidden;
-                background: #000;
-            }
-            /* One gradient across the whole 'MⒼ' mark (unigraphic). Each
-               letter shows its own slice of the SAME gradient based on its
-               layout position — same technique as the Gen Studies link. */
-            .mgf-mark {
-                font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
-                font-weight: 200;
-                font-size: clamp(240px, 44vw, 720px);
-                line-height: 0.8;
-                letter-spacing: -0.04em;
-                user-select: none;
-                white-space: nowrap;
-                background-image: linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);
-                background-size: 200% 100%;
-                background-repeat: repeat;
-                -webkit-background-clip: text;
-                        background-clip: text;
-                -webkit-text-fill-color: transparent;
-                        color: transparent;
-                animation: mgf-slide 12s linear infinite;
-            }
-            /* Child spans inherit the parent's text-clip gradient. They only
-               animate transform + opacity; no background/color of their own,
-               so the gradient flows across both letters as one mark. */
-            .mgf-mark .mgf-m-sym,
-            .mgf-mark .mgf-g-sym {
-                display: inline-block;
-                line-height: 1;
-                will-change: transform, opacity;
-                opacity: 0;
-                transition:
-                    transform 1.6s cubic-bezier(.16, 1, .3, 1),
-                    opacity 0.9s ease-out;
-            }
-            .mgf-mark .mgf-m-sym {
-                transform: translateX(-80vw);
-            }
-            .mgf-mark .mgf-g-sym {
-                font-size: 1.22em;
-                vertical-align: -0.08em;
-                transform: translateX(80vw);
-                transition-delay: 0.12s;
-            }
-            .mgf-mark.is-reveal .mgf-m-sym,
-            .mgf-mark.is-reveal .mgf-g-sym {
-                opacity: 1;
-                transform: translateX(0);
-            }
-            @media (prefers-reduced-motion: reduce) {
-                .mgf-mark .mgf-m-sym,
-                .mgf-mark .mgf-g-sym {
-                    opacity: 1;
-                    transform: none;
-                    transition: none;
-                }
-            }
-            .mgf-caption {
-                position: absolute;
-                left: 50%;
-                bottom: 44px;
-                transform: translateX(-50%);
-                font-size: 10px;
-                letter-spacing: 0.4em;
-                text-transform: uppercase;
-                color: rgba(255,255,255,0.4);
-                white-space: nowrap;
-            }
-            .mgf-caption .mgf-role { color: rgba(255,255,255,0.2); margin-right: 2px; }
-            @keyframes mgf-slide {
-                from { background-position: 0% 50%; }
-                to   { background-position: -200% 50%; }
-            }
-            .mgf-glass {
-                position: relative;
-                z-index: 2;
-                min-height: 100vh;
-                margin-top: -60px;
-                border-radius: 0;
-                background: rgba(255, 255, 255, 0.78);
-                border: 1px solid rgba(255,255,255,0.5);
-                border-bottom: none;
-                -webkit-backdrop-filter: blur(50px) saturate(200%) brightness(115%);
-                        backdrop-filter: blur(50px) saturate(200%) brightness(115%);
-                box-shadow:
-                    0 -30px 60px -30px rgba(0,0,0,0.5),
-                    0 -2px 0 rgba(255,255,255,0.18) inset;
-                padding: 80px 48px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                color: #0b0b0e;
-            }
-            .mgf-glass::before {
-                content: '';
-                position: absolute;
-                left: 50%;
-                top: 14px;
-                transform: translateX(-50%);
-                width: 48px;
-                height: 4px;
-                border-radius: 2px;
-                background: rgba(255,255,255,0.18);
-            }
-            .mgf-content {
-                max-width: 720px;
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                gap: 32px;
-            }
-            .mgf-title {
-                font-size: clamp(36px, 5vw, 68px);
-                font-weight: 300;
-                letter-spacing: -0.02em;
-                line-height: 1.05;
-                color: #0b0b0e;
-            }
-            .mgf-cta {
-                margin-top: 32px;
-                align-self: center;
-                display: inline-flex;
-                align-items: center;
-                gap: 10px;
-                padding: 14px 24px;
-                border-radius: 999px;
-                background: #0b0b0e;
-                color: #fff;
-                text-decoration: none;
-                font-size: 11px;
-                letter-spacing: 0.26em;
-                text-transform: uppercase;
-                font-weight: 500;
-                transition:
-                    transform 400ms cubic-bezier(0.22, 1, 0.36, 1),
-                    gap 400ms cubic-bezier(0.22, 1, 0.36, 1),
-                    box-shadow 400ms ease;
-            }
-            .mgf-cta:hover {
-                transform: translateY(-2px);
-                gap: 16px;
-                box-shadow: 0 12px 30px -10px rgba(0,0,0,0.35);
-            }
-            .mgf-cta:active { transform: translateY(0); }
-            .mgf-cta svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-            @media (prefers-reduced-motion: reduce) {
-                .mgf-mark { animation: none; }
-            }
-        </style>
-
-        <section class="mgf-stage-wrap">
-            <div class="mgf-sticky" aria-hidden="true">
-                <div class="mgf-mark" id="mgfMark"><span class="mgf-m-sym">M</span><span class="mgf-g-sym">Ⓖ</span></div>
-                <div class="mgf-caption"><span class="mgf-role">SR Designer</span> · Mota Gomes · Studio</div>
-            </div>
-            <div class="mgf-glass">
-                <div class="mgf-content">
-                    <h2 class="mgf-title">Thank you for watching my portfolio.<br>Let's get in touch.</h2>
-                    <a href="mailto:hi@motagomes.com" class="mgf-cta" aria-label="Contact me">
-                        <span>Contact me</span>
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <line x1="5" y1="12" x2="19" y2="12"/>
-                            <polyline points="13 6 19 12 13 18"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <section class="snap-section footer-swiss" id="contact" hidden style="display:none">
+        <section class="snap-section footer-swiss" id="contact">
             <a href="https://linkedin.com/in/pedraw" target="_blank" rel="noopener" class="swiss-linkedin">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
@@ -5605,7 +4541,7 @@ margin-top: 3px;
             const banner = document.getElementById('siteBanner');
             const closeBtn = document.getElementById('siteBannerClose');
             if (!banner || !closeBtn) return;
-            const key = 'sitebanner-refresh-v2';
+            const key = 'sitebanner-refresh-v1';
             try { if (localStorage.getItem(key) === 'dismissed') { banner.hidden = true; return; } } catch (_) {}
             closeBtn.addEventListener('click', () => {
                 banner.hidden = true;
@@ -5778,14 +4714,9 @@ margin-top: 3px;
         syncHeaderScrollbarComp();
         window.addEventListener('resize', syncHeaderScrollbarComp);
         
-        // Header-hide scroll handler. Marked passive: true so the
-        // browser doesn't have to wait for preventDefault() before
-        // committing the scroll — without this, every wheel/touch
-        // tick blocks the compositor, which is the leading cause
-        // of "scroll feels stuck" on macOS trackpads + iOS Safari.
         scrollContainer.addEventListener('scroll', function() {
             const scrollPosition = scrollContainer.scrollTop;
-
+            
             if (scrollPosition > lastScrollPosition && scrollPosition > 100) {
                 header.classList.add('hidden');
             } else {
@@ -5795,9 +4726,9 @@ margin-top: 3px;
             if (videoScrollIndicator) {
                 videoScrollIndicator.classList.toggle('hidden', scrollPosition > 12);
             }
-
+            
             lastScrollPosition = scrollPosition;
-        }, { passive: true });
+        });
         
         // ========================================
         // GALLERY SCROLL
@@ -5816,12 +4747,6 @@ margin-top: 3px;
                 behavior: 'smooth'
             });
         }
-
-        // Gen Studio title now sits at the same top-right spot as the nav link —
-        // the cross-document view-transition crossfade handles the swap cleanly.
-        // Clean up any stale markers from older versions of this flow.
-        try { sessionStorage.removeItem('gs-transition'); } catch (e) {}
-        try { sessionStorage.removeItem('gs-return');     } catch (e) {}
         
         // ========================================
         // RESEARCH HOVER REVEALER
@@ -5883,129 +4808,6 @@ margin-top: 3px;
                 menuOverlay.classList.remove('active');
             });
         });
-
-        // ========================================
-        // MGF MARK — M flies in from the left, Ⓖ from the right when the
-        // mark is centred in the viewport; reverses when scrolled away.
-        // ========================================
-        const mgfMark = document.getElementById('mgfMark');
-        if (mgfMark && 'IntersectionObserver' in window) {
-            const mgfObs = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    mgfMark.classList.toggle('is-reveal', entry.isIntersecting);
-                });
-            }, {
-                // Trigger when the mark crosses the middle band of the viewport
-                rootMargin: '-35% 0px -35% 0px',
-                threshold: 0
-            });
-            mgfObs.observe(mgfMark);
-        }
-
-        // ========================================
-        // RETINOL CARD — water-ripple blooms spawn at random spots on
-        // the sage stage, MAX 1 active at a time so no overlap glitch.
-        // ========================================
-        (() => {
-            const card = document.querySelector('.gallery-stacked-hero.hero-retinol');
-            if (!card) return;
-            const rand = (min, max) => min + Math.random() * (max - min);
-            const MAX_ACTIVE = 1;
-            let active = 0;
-
-            function spawn() {
-                if (active >= MAX_ACTIVE) return;
-                active++;
-                const el = document.createElement('span');
-                const dur = rand(2.2, 3.2);
-                el.className = 'retinol-ripple';
-                el.style.left = rand(18, 82) + '%';
-                el.style.top  = rand(22, 78) + '%';
-                el.style.setProperty('--dur',  dur + 's');
-                el.style.setProperty('--end',  rand(12, 18));
-                el.style.setProperty('--peak', rand(0.30, 0.50));
-                card.appendChild(el);
-                const cleanup = () => { el.remove(); active = Math.max(0, active - 1); };
-                el.addEventListener('animationend', cleanup, { once: true });
-                setTimeout(cleanup, dur * 1000 + 600);
-            }
-            /* Sparser cadence — one drop at a time, long gaps
-               between. Previously spawned every 0.9–1.7s which
-               read as near-continuous; now 5–9s so each ripple
-               feels like a deliberate event, not a stream. */
-            function loop() { spawn(); setTimeout(loop, rand(5000, 9000)); }
-            setTimeout(spawn, 800);
-            setTimeout(loop, 6000);
-        })();
-
-        // ========================================
-        // LUANDINA CARD — reveal trigger. When the card first
-        // enters the viewport, add .is-reveal so the star rotates
-        // in and the letters stagger-rise with the blur-to-sharp
-        // focus pull. One-shot — we unobserve after firing so the
-        // loop animations (breathe, shimmer, drift, grain) can run
-        // uninterrupted.
-        // ========================================
-        (() => {
-            const card = document.querySelector('.gallery-stacked-hero.hero-luandina');
-            if (!card || !('IntersectionObserver' in window)) {
-                // No support → show the mark immediately.
-                card && card.classList.add('is-reveal');
-                return;
-            }
-            const obs = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        card.classList.add('is-reveal');
-                        obs.unobserve(card);
-                    }
-                });
-            }, { threshold: 0.35 });
-            obs.observe(card);
-        })();
-
-        // ========================================
-        // VIEWPORT-PAUSE — toggle .in-view on heavy animated
-        // cards (Luandina + Retinol) so their continuous CSS
-        // animations and SVG-grain backgrounds only run while
-        // visible. Runaway compositor work on these cards was
-        // a major contributor to Chrome 'Aw, Snap!' Error 5
-        // crashes during long scroll sessions.
-        // ========================================
-        (() => {
-            const heavyCards = document.querySelectorAll(
-                '.gallery-stacked-hero.hero-luandina, .gallery-stacked-hero.hero-retinol'
-            );
-            if (!heavyCards.length || !('IntersectionObserver' in window)) {
-                // No support → leave them animating (default behaviour).
-                heavyCards.forEach((c) => c.classList.add('in-view'));
-                return;
-            }
-            const obs = new IntersectionObserver((entries) => {
-                entries.forEach((e) => {
-                    e.target.classList.toggle('in-view', e.isIntersecting);
-                });
-            }, {
-                root: document.getElementById('scrollContainer'),
-                rootMargin: '200px 0px 200px 0px',  // start animating
-                                                    // just before reveal
-                threshold: 0,
-            });
-            heavyCards.forEach((c) => obs.observe(c));
-        })();
-
-        // ========================================
-        // NAV EXPAND — reveal About / Blog inline
-        // ========================================
-        const navExpand = document.getElementById('navExpand');
-        const headerNav = document.querySelector('.header-nav');
-        if (navExpand && headerNav) {
-            navExpand.addEventListener('click', () => {
-                const expanded = headerNav.classList.toggle('is-expanded');
-                navExpand.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-                navExpand.setAttribute('aria-label', expanded ? 'Collapse menu' : 'Expand menu');
-            });
-        }
         
         // ========================================
         // MAKE ENTIRE CARD CLICKABLE
@@ -6038,33 +4840,14 @@ margin-top: 3px;
         const galleryBrands = [
             'Standard Bank', 'Galp', 'Candando',
             'RAS Real Estate', 'Lyft', 'One1x',
-            'Luandina', 'Moope', 'Wammo'
+            'Luandina', 'Moope', 'Wammo', 'ULaw'
         ];
         const galleryProjects = [
             '360 Campaign', 'Christmas Campaign', 'Retail Branding',
             'Real Estate Branding', 'Illustration', 'Rebrand',
-            'Geo-Targeted Campaign', 'UX Design', 'Retail Campaign'
+            'Geo-Targeted Campaign', 'UX Design', 'Retail Campaign', 'Scholarship Initiative'
         ];
-
-        // Inject bottom-corner labels inside each card (brand bottom-left, type bottom-right)
-        function injectEdgeLabels(inners) {
-            inners.forEach((inner, i) => {
-                if (inner.querySelector('.gallery-edge-left')) return; // idempotent
-                const brand = galleryBrands[i] || '';
-                const type = galleryProjects[i] || '';
-                const left = document.createElement('span');
-                left.className = 'gallery-edge gallery-edge-left';
-                left.textContent = brand;
-                const right = document.createElement('span');
-                right.className = 'gallery-edge gallery-edge-right';
-                right.textContent = type;
-                inner.appendChild(left);
-                inner.appendChild(right);
-            });
-        }
-        injectEdgeLabels(galleryCardInners);
-
-
+        
         function updateActiveGalleryCard() {
             let active = 0;
             const vh = window.innerHeight;

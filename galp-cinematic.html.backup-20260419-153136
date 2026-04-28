@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cinematic Hero · Visuals Only</title>
+<style>
+  :root {
+    --color-foreground: #1a1a1a;
+    --color-background: #dcacd0;                   /* dusty pink per reference swatch */
+    --card-purple: #55277a;                        /* flat royal purple per reference swatch */
+
+    /* Bezel geometry — the source of truth.
+       Concentric curves: inner-radius = outer-radius - bezel-inset. */
+    --bezel-w: 320px;
+    --bezel-h: 660px;
+    --bezel-radius: 3.2rem;                        /* = 51.2px */
+    --bezel-inset: 7px;                            /* black ring thickness */
+    --screen-radius: calc(var(--bezel-radius) - var(--bezel-inset));
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Pinned hero container */
+  .hero {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1500px;
+  }
+
+  /* Card wrapper + main purple card */
+  .card-wrapper {
+    position: absolute; inset: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none;
+    perspective: 1500px;
+  }
+  .main-card {
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: auto;
+    width: 92vw; height: 92vh;
+    border-radius: 32px;
+    background: var(--card-purple);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    visibility: hidden;
+  }
+  @media (min-width: 768px) {
+    .main-card { width: 85vw; height: 85vh; border-radius: 40px; }
+  }
+
+  .card-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+  }
+
+  /* Mockup sizing wrappers */
+  .mockup-scroll-wrapper {
+    position: relative;
+    width: 100%; height: 460px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+    visibility: hidden;
+  }
+  @media (min-width: 1024px) {
+    .mockup-scroll-wrapper { height: 760px; }
+  }
+
+  .mockup-scale {
+    position: relative;
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    transform: scale(0.8);
+  }
+  @media (min-width: 768px) { .mockup-scale { transform: scale(1); } }
+  @media (min-width: 1024px) { .mockup-scale { transform: scale(1.18); } }
+
+  /* ---------------- Physical iPhone bezel ----------------
+     Rebuilt as real nested layers (padding-based) instead of inset box-shadows.
+     inset-shadow rasterization doesn't match real geometry on curved edges;
+     combined with an animated GIF that exposes the mismatch as shimmer/tearing.
+     Real padding layers = the silver rim, black ring, and screen all use their
+     own border-radius so the browser clips each with real geometry. */
+  .iphone-bezel {
+    position: relative;
+    width: var(--bezel-w);
+    height: var(--bezel-h);
+    border-radius: var(--bezel-radius);
+    background: #c7c7c7;                         /* outer rim — light grey */
+    padding: 2px;
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.35);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .bezel-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: calc(var(--bezel-radius) - 2px);
+    background: #000;                            /* black bezel ring */
+    padding: calc(var(--bezel-inset) - 2px);
+    overflow: hidden;                            /* real clip as safety net */
+  }
+  .screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--screen-radius);
+    background: #000;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  /* Key fix: the gif carries its OWN border-radius + GPU layer so its
+     animated frames rasterize pre-clipped. Relying on parent overflow:hidden
+     to clip an animated replaced element produces sub-pixel edge shimmer in
+     WebKit because the parent clip runs after each frame is rasterized. */
+  .screen-gif {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+    border-radius: inherit;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Dynamic Island */
+  .notch {
+    position: absolute;
+    top: 5px; left: 50%;
+    transform: translateX(-50%);
+    width: 100px; height: 28px;
+    background: #000;
+    border-radius: 999px;
+    z-index: 2;
+    display: flex; align-items: center; justify-content: flex-end;
+    padding: 0 12px;
+  }
+  .notch-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.7);
+  }
+
+  /* Trailing spacer so ScrollTrigger has scroll distance to scrub */
+  .spacer { height: 200vh; }
+
+  /* Scroll cue — small uppercase text, bottom center of the purple full-screen state.
+     Starts hidden; GSAP fades it in once the card fills the viewport, fades it out
+     before the phone mockup arrives. Light color so it reads against the purple. */
+  .scroll-cue {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.75);
+    animation: scroll-pulse 2.6s ease-in-out infinite;
+    pointer-events: none;
+    white-space: nowrap;
+    visibility: hidden;
+  }
+  @keyframes scroll-pulse {
+    0%, 100% { opacity: 0.35; }
+    50%      { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="hero" id="hero">
+    <div class="scroll-cue" aria-hidden="true">Scroll</div>
+    <div class="card-wrapper">
+      <div class="main-card" id="mainCard">
+        <div class="card-inner">
+          <div class="mockup-scroll-wrapper">
+            <div class="mockup-scale">
+              <div class="iphone-bezel" id="mockup">
+                <div class="bezel-inner">
+                  <div class="screen">
+                    <img class="screen-gif" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_900,c_limit/v1776600424/Snapinst.app_video_AQN764z3q6t8v-utzswUcfAzXUgONarG4UUC3HgbLE0xQdTD3SeOggvqui4tpemoPSYDYxX-PHxQ5lNY9SNxL85J-H8MB4m30kypMlk_lzep6q.gif" alt="" aria-hidden="true">
+                    <div class="notch"><div class="notch-dot"></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* Mouse parallax — phone tilts on rotateX/rotateY while the hero is in view */
+    const mockup = document.getElementById('mockup');
+    let raf = 0;
+    window.addEventListener('mousemove', (e) => {
+      if (window.scrollY > window.innerHeight * 2) return;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        if (!mockup) return;
+        const xVal = (e.clientX / window.innerWidth  - 0.5) * 2;
+        const yVal = (e.clientY / window.innerHeight - 0.5) * 2;
+        gsap.to(mockup, {
+          rotationY:  xVal * 12,
+          rotationX: -yVal * 12,
+          ease: 'power3.out',
+          duration: 1.2
+        });
+      });
+    });
+
+    /* Scroll-scrubbed cinematic timeline — card rises, fills, phone reveals, card shrinks and exits */
+    const isMobile = window.innerWidth < 768;
+
+    gsap.set('.main-card', { y: window.innerHeight + 200, autoAlpha: 1 });
+    gsap.set('.mockup-scroll-wrapper', { autoAlpha: 0 });
+    gsap.set('.scroll-cue', { autoAlpha: 0 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: '+=6000',
+        pin: true,
+        scrub: 1,
+        anticipatePin: 1
+      }
+    });
+
+    tl
+      .to('.main-card', { y: 0, ease: 'power3.inOut', duration: 2 }, 0)
+      .to('.main-card', { width: '100%', height: '100%', borderRadius: '0px', ease: 'power3.inOut', duration: 1.5 })
+      .fromTo('.mockup-scroll-wrapper',
+        { y: 300, z: -500, rotationX: 50, rotationY: -30, autoAlpha: 0, scale: 0.6 },
+        { y: 0, z: 0, rotationX: 0, rotationY: 0, autoAlpha: 1, scale: 1, ease: 'expo.out', duration: 2.5 },
+        '-=0.8'
+      )
+      /* Tightened post-phone sequence: cue lands quickly, shorter dwell,
+         cue fades out — less scroll between "phone visible" and exit. */
+      .to('.scroll-cue', { autoAlpha: 1, duration: 0.25, ease: 'power2.out' })
+      .to({}, { duration: 1.0 })
+      .to('.scroll-cue', { autoAlpha: 0, duration: 0.25, ease: 'power2.in' })
+      .to('.mockup-scroll-wrapper', {
+        scale: 0.9, y: -40, z: -200, autoAlpha: 0, ease: 'power3.in', duration: 0.8
+      })
+      .to('.main-card', {
+        width:  isMobile ? '92vw' : '85vw',
+        height: isMobile ? '92vh' : '85vh',
+        borderRadius: isMobile ? '32px' : '40px',
+        ease: 'expo.inOut',
+        duration: 1.2
+      })
+      .to('.main-card', { y: -window.innerHeight - 300, ease: 'power3.in', duration: 1.0 });
+  </script>
+</body>
+</html>

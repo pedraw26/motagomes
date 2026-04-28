@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project — Mota Gomes</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <style>
+        :root {
+            --sf-pro: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            --mono: 'SF Mono', 'Fira Code', 'Monaco', 'Menlo', monospace;
+            --bg-black: #000000;
+            --text: #ffffff;
+            --text-80: #e5e5e5;
+            --text-60: #999999;
+            --text-40: #666666;
+            --border-light: rgba(255, 255, 255, 0.25);
+            --border-subtle: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--sf-pro);
+            background: var(--bg-black);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ========================================
+           HEADER
+           ======================================== */
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+        }
+
+        .header.hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        .header-content {
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            padding: 20px 80px;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+        }
+
+        .header-logo {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .header-center {
+            justify-self: center;
+            font-family: var(--sf-pro);
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            color: var(--text-40);
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            justify-self: end;
+            gap: 16px;
+        }
+
+        .menu-icon {
+            width: 29px;
+            height: 29px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-icon span {
+            display: block;
+            background: #fff;
+            height: 1.5px;
+            border-radius: 1px;
+            position: absolute;
+            left: 3.5px;
+            width: 22px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-icon span:nth-child(1) {
+            top: 9px;
+        }
+
+        .menu-icon span:nth-child(2) {
+            top: 17px;
+        }
+
+        .menu-icon:hover span:nth-child(2) {
+            width: 14px;
+        }
+
+        /* ========================================
+           MENU OVERLAY
+           ======================================== */
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .menu-overlay-items {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+            text-align: center;
+        }
+
+        .menu-overlay-link {
+            font-family: var(--sf-pro);
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            color: var(--text-60);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .menu-overlay-link:hover {
+            color: var(--text);
+            transform: scale(1.05);
+        }
+
+        .menu-overlay-cta {
+            margin-top: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--sf-pro);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            color: var(--text);
+            text-decoration: none;
+            padding: 9px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.34);
+            border-radius: 999px;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .menu-overlay-cta:hover {
+            background: var(--text);
+            border-color: var(--text);
+            color: var(--bg-black);
+        }
+
+        .menu-overlay-footer {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            gap: 40px;
+        }
+
+        .menu-overlay-footer a {
+            font-family: var(--sf-pro);
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            color: var(--text-40);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .menu-overlay-footer a:hover {
+            color: var(--text);
+        }
+
+        /* ========================================
+           GRADIENT BACKGROUNDS
+           ======================================== */
+
+        .gradient-obsidian {
+            background: linear-gradient(135deg, #070b34 0%, #2f6bff 46%, #8fd3ff 100%);
+        }
+
+        .gradient-velvet {
+            background: linear-gradient(135deg, #1b0033 0%, #7a1fff 45%, #ff4fcf 100%);
+        }
+
+        .gradient-midnight {
+            background: linear-gradient(135deg, #001a14 0%, #00a86b 44%, #9effc8 100%);
+        }
+
+        .gradient-ocean {
+            background: linear-gradient(135deg, #001b2e 0%, #0077ff 44%, #00d1ff 100%);
+        }
+
+        .gradient-sunset {
+            background: linear-gradient(135deg, #2f0f00 0%, #ff5e00 40%, #ffcc00 100%);
+        }
+
+        .gradient-emerald {
+            background: linear-gradient(135deg, #2a0a00 0%, #ff4d00 46%, #ffd166 100%);
+        }
+
+        .gradient-forest {
+            background: linear-gradient(135deg, #051f10 0%, #10b85a 42%, #b4ff4a 100%);
+        }
+
+        .gradient-crimson {
+            background: linear-gradient(135deg, #2b000f 0%, #ff2d55 46%, #ff9a3c 100%);
+        }
+
+        /* ========================================
+           PROJECT HERO
+           ======================================== */
+
+        .project-hero {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 80px 80px;
+            overflow: hidden;
+        }
+
+        .project-hero-gradient {
+            position: absolute;
+            inset: 0;
+            opacity: 0.35;
+            z-index: 0;
+            background-attachment: fixed;
+        }
+
+        .project-hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.4) 100%);
+            z-index: 1;
+        }
+
+        .project-hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .project-hero-label {
+            font-family: var(--sf-pro);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-60);
+            margin-bottom: 24px;
+        }
+
+        .project-hero-title {
+            font-family: var(--sf-pro);
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            color: var(--text);
+            margin-bottom: 32px;
+        }
+
+        .project-hero-url {
+            font-family: var(--mono);
+            font-size: 12px;
+            letter-spacing: 0.05em;
+            color: var(--text-40);
+        }
+
+        .project-hero-url a {
+            color: var(--text-40);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .project-hero-url a:hover {
+            color: var(--text);
+        }
+
+        /* ========================================
+           SECTION SHARED
+           ======================================== */
+
+        .section {
+            padding: 120px 80px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .section-label {
+            font-family: var(--sf-pro);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            margin-bottom: 40px;
+        }
+
+        /* ========================================
+           OVERVIEW — EDITORIAL REDESIGN
+           ======================================== */
+
+        .overview {
+            padding: 0 80px;
+        }
+
+        /* Staggered reveal */
+        [data-reveal-child] {
+            opacity: 0;
+            transform: translateY(28px);
+            transition:
+                opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-reveal-child].is-revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Zone 1: Metadata */
+        .overview__meta {
+            padding: 100px 0 0;
+        }
+
+        .overview__meta-list {
+            display: flex;
+            gap: 64px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .overview__meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .overview__label {
+            font-family: var(--sf-pro);
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            line-height: 1;
+        }
+
+        .overview__value {
+            font-family: var(--sf-pro);
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-60);
+            line-height: 1.5;
+            letter-spacing: 0.01em;
+        }
+
+        /* Zone 2: Statement */
+        .overview__statement {
+            padding: 80px 0 100px;
+            max-width: 70%;
+        }
+
+        .overview__statement-text {
+            font-family: var(--sf-pro);
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            font-weight: 200;
+            line-height: 1.35;
+            color: var(--text);
+            letter-spacing: -0.025em;
+        }
+
+        /* Zone 3: Narrative */
+        .overview__narrative {
+            display: grid;
+            grid-template-columns: 5fr 1fr 6fr;
+            gap: 0;
+            padding-bottom: 100px;
+        }
+
+        .overview__narrative-block {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .overview__narrative-block--challenge {
+            grid-column: 1 / 2;
+            padding-right: 40px;
+        }
+
+        .overview__narrative-block--solution {
+            grid-column: 3 / 4;
+            padding-top: 0;
+        }
+
+        .overview__narrative-text {
+            font-family: var(--sf-pro);
+            font-size: clamp(0.95rem, 1.15vw, 1.1rem);
+            font-weight: 300;
+            line-height: 1.75;
+            color: var(--text-60);
+            letter-spacing: 0.005em;
+        }
+
+        /* Zone 4: Metrics */
+        .overview__metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            padding: 64px 0 120px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .overview__metric {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 40px 24px 40px 0;
+        }
+
+        .overview__metric-value {
+            font-family: var(--mono);
+            font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+            font-weight: 200;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .overview__metric-label {
+            font-family: var(--sf-pro);
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            line-height: 1.5;
+            max-width: 180px;
+        }
+
+        /* ========================================
+           SHOWCASE GALLERY
+           ======================================== */
+
+        .showcase-gallery {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            width: 100%;
+            grid-auto-rows: auto;
+        }
+
+        .showcase-item {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+        }
+
+        .showcase-item.full {
+            grid-column: 1 / -1;
+        }
+
+        .showcase-item.half {
+            aspect-ratio: unset;
+        }
+
+        .showcase-item.half img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .showcase-item:has(.showcase-colorstrip) {
+            aspect-ratio: unset;
+        }
+        .showcase-colorstrip {
+            display: flex;
+            width: 100%;
+        }
+        .showcase-colorstrip > div {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 12px 14px;
+        }
+        .showcase-colorstrip .cs-role {
+            font-family: var(--sf-pro);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            margin-bottom: 6px;
+        }
+        .showcase-colorstrip .cs-meta {
+            font-family: var(--mono);
+            font-size: 7.5px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            opacity: 0.45;
+            line-height: 1.8;
+        }
+
+        .showcase-slideshow {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .showcase-slideshow img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            visibility: hidden;
+        }
+        .showcase-slideshow img.active {
+            visibility: visible;
+        }
+
+        .showcase-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .showcase-item:hover img {
+            transform: scale(1.03);
+        }
+
+        .showcase-item.has-iframe {
+            aspect-ratio: 16 / 9;
+        }
+
+        .showcase-item.has-video {
+            aspect-ratio: 16 / 9;
+        }
+
+        /* YouTube custom player */
+        .yt-player {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .yt-player iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            pointer-events: none;
+        }
+        .yt-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            background: rgba(0,0,0,0.15);
+            transition: background 0.3s;
+        }
+        .yt-overlay.playing {
+            background: transparent;
+        }
+        .yt-overlay.playing .yt-play-btn {
+            opacity: 0;
+        }
+        .yt-overlay:hover .yt-play-btn {
+            opacity: 1;
+        }
+        .yt-play-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            opacity: 1;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        .yt-play-btn:hover {
+            transform: scale(1.1);
+        }
+        .yt-play-btn.paused svg polygon {
+            points: 26,20 26,44 46,32;
+        }
+
+        .showcase-item iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            overflow: hidden;
+        }
+
+
+        @media (max-width: 768px) {
+            .showcase-gallery {
+                grid-template-columns: 1fr;
+            }
+            .showcase-item.half {
+                grid-column: 1 / -1;
+            }
+        }
+
+        /* ========================================
+           FOOTER NAVIGATION
+           ======================================== */
+
+        .footer-nav {
+            position: relative;
+            border-top: 1px solid var(--border-subtle);
+            background: var(--bg-black);
+            z-index: 100;
+        }
+
+        .footer-nav-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            min-height: 72px;
+        }
+
+        .footer-nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 20px;
+            font-family: var(--sf-pro);
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-right: 1px solid var(--border-subtle);
+            white-space: nowrap;
+        }
+
+        .footer-nav-link:last-child {
+            border-right: none;
+        }
+
+        .footer-nav-link:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .footer-nav-link span.arrow {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-nav-link:hover span.arrow-left {
+            transform: translateX(-4px);
+        }
+
+        .footer-nav-link:hover span.arrow-right {
+            transform: translateX(4px);
+        }
+
+        /* ========================================
+           PAGE TRANSITIONS
+           ======================================== */
+
+        .page-content {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .section.visible {
+            animation: sectionReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes sectionReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========================================
+           404 / NOT FOUND STATE
+           ======================================== */
+
+        .not-found {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            text-align: center;
+            padding: 80px;
+        }
+
+        .not-found-code {
+            font-family: var(--sf-pro);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-40);
+        }
+
+        .not-found-title {
+            font-family: var(--sf-pro);
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            color: var(--text);
+        }
+
+        .not-found-link {
+            font-family: var(--sf-pro);
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-40);
+            text-decoration: none;
+            padding: 12px 24px;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+            margin-top: 16px;
+        }
+
+        .not-found-link:hover {
+            background: var(--text);
+            color: var(--bg-black);
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+
+        @media (max-width: 1024px) {
+            .header-content {
+                padding: 18px 40px;
+            }
+
+            .project-hero {
+                padding: 0 40px 60px;
+            }
+
+            .section {
+                padding: 80px 40px;
+            }
+
+            .overview {
+                padding: 0 40px;
+            }
+
+            .overview__narrative {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+
+            .overview__narrative-block--challenge {
+                padding-right: 0;
+            }
+
+            .overview__narrative-block--solution {
+                padding-top: 0;
+            }
+
+            .overview__metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 16px 24px;
+            }
+
+            .project-hero {
+                padding: 0 24px 48px;
+            }
+
+            .section {
+                padding: 64px 24px;
+            }
+
+            .overview {
+                padding: 0 24px;
+            }
+
+            .overview__meta {
+                padding-top: 64px;
+            }
+
+            .overview__meta-list {
+                flex-wrap: wrap;
+                gap: 32px 48px;
+            }
+
+            .overview__statement {
+                padding: 56px 0 72px;
+            }
+
+            .overview__narrative {
+                grid-template-columns: 1fr;
+                gap: 48px;
+                padding-bottom: 72px;
+            }
+
+            .overview__narrative-block--challenge {
+                order: 2;
+                grid-column: 1 / -1;
+                padding-right: 0;
+            }
+
+            .overview__narrative-block--solution {
+                order: 1;
+                grid-column: 1 / -1;
+                padding-top: 0;
+            }
+
+            .overview__metrics {
+                grid-template-columns: 1fr 1fr;
+                padding: 48px 0 80px;
+            }
+
+            .overview__metric {
+                padding: 28px 0;
+            }
+
+            .footer-nav-inner {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-nav-link {
+                font-size: 9px;
+                padding: 18px 12px;
+            }
+
+            .footer-nav-link:nth-child(2) {
+                border-right: none;
+            }
+
+            .footer-nav-link:nth-child(3) {
+                border-top: 1px solid var(--border-subtle);
+            }
+
+            .footer-nav-link:nth-child(4) {
+                border-top: 1px solid var(--border-subtle);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .project-hero {
+                padding: 0 20px 40px;
+            }
+
+            .section {
+                padding: 48px 20px;
+            }
+
+            .overview {
+                padding: 0 20px;
+            }
+
+            .overview__meta-list {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .overview__meta-item {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: baseline;
+                gap: 16px;
+            }
+
+            .overview__statement {
+                padding: 40px 0 56px;
+            }
+
+            .overview__metrics {
+                grid-template-columns: 1fr;
+                padding: 40px 0 64px;
+            }
+
+            .footer-nav-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-nav-link {
+                border-right: none;
+                border-bottom: 1px solid var(--border-subtle);
+            }
+
+            .footer-nav-link:last-child {
+                border-bottom: none;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@100;200;300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ========================================
+         NAVIGATION HEADER
+         ======================================== -->
+    <header class="header" id="header">
+        <div class="header-content">
+            <a href="/" class="header-logo">MG</a>
+            <div class="header-center" id="gmtTime">GMT 00:00</div>
+            <div class="header-right">
+                <div class="menu-icon" id="hamburger">
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hidden Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay">
+        <div class="menu-overlay-items">
+            <a href="/#work" class="menu-overlay-link">Work</a>
+            <a href="/#research" class="menu-overlay-link">Research</a>
+            <a href="/#about" class="menu-overlay-link">About</a>
+            <a href="/dashboard/" class="menu-overlay-link">Dashboard</a>
+            <a href="mailto:hi@motagomes.com" class="menu-overlay-cta">Let's Talk</a>
+        </div>
+        <div class="menu-overlay-footer">
+            <a href="mailto:hi@motagomes.com">Email</a>
+            <a href="https://linkedin.com/in/pedraw" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+    </div>
+
+    <!-- ========================================
+         PAGE CONTENT (populated by JS)
+         ======================================== -->
+    <main id="projectPage"></main>
+
+    <script>
+    /* ========================================
+       PROJECT DATA
+       ======================================== */
+
+    /* Grey placeholder images */
+    const _g1 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGOQkpICAACgAE8sk/soAAAAAElFTkSuQmCC';
+    const _g2 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGNQUlICAADQAGdDq+B2AAAAAElFTkSuQmCC';
+    const _g3 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGPQ0tICAAEAAH/YikUSAAAAAElFTkSuQmCC';
+    const _g4 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGOQk5MDAAC4AFuF/QUSAAAAAElFTkSuQmCC';
+    const _g5 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGNQVVUFAADiAHA18FNgAAAAAElFTkSuQmCC';
+    const _g6 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGMwMDAAAAEkAJGCSNGTAAAAAElFTkSuQmCC';
+
+    const PROJECTS = {
+        'one1x': {
+            title: 'One1x',
+            category: 'Rebrand',
+            client: 'One1x',
+            url: 'one1x.com',
+            year: '2024',
+            services: 'Rebrand, Brand Identity, Visual System',
+            gradient: 'gradient-obsidian',
+            description: 'A complete rebrand for One1x, transforming an outdated identity into a sharp, contemporary brand system built for scale.',
+            challenge: 'The existing brand lacked cohesion and failed to communicate the company\'s evolved positioning in a competitive market.',
+            solution: 'We stripped the brand back to its core and rebuilt from zero. A new visual identity system, typographic hierarchy, and colour language that feels both confident and adaptable across every touchpoint.',
+            images: [
+                { src: _g1, caption: 'Brand identity system — logo and colour palette', layout: 'full' },
+                { src: _g2, caption: 'Typography and visual hierarchy', layout: 'half' },
+                { src: _g3, caption: 'Brand guidelines and asset library', layout: 'half' },
+                { src: _g4, caption: 'Multi-platform brand rollout', layout: 'full' }
+            ],
+            metrics: [
+                { value: '100%', label: 'Brand refresh' },
+                { value: '40+', label: 'Assets delivered' },
+                { value: '3', label: 'Brand tiers' },
+                { value: '12', label: 'Touchpoints' }
+            ]
+        },
+        'aura': {
+            title: 'Aura',
+            category: 'Brand & Ecommerce Design',
+            client: 'Aura',
+            url: 'aura.com',
+            year: '2024',
+            services: 'Brand Identity, Ecommerce Design, Art Direction, Packaging',
+            gradient: 'gradient-velvet',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773219965/Aura_Site_copy_zjjcgh.jpg',
+            description: 'Complete brand identity and ecommerce platform for Aura — a premium lifestyle brand. From logo and visual system to a fully designed online store experience.',
+            challenge: 'Aura needed a cohesive brand world that translated seamlessly from physical touchpoints to a high-converting ecommerce experience. The brand had to feel premium yet accessible, standing out in a saturated DTC market.',
+            solution: 'We built a refined visual identity anchored by a minimal wordmark, a muted-yet-bold colour palette, and bespoke typography pairings. The ecommerce platform was designed mobile-first with editorial product pages, smooth checkout flows, and lifestyle imagery that reinforces the brand narrative at every scroll.',
+            images: [
+                { src: _g1, caption: 'Brand identity — business cards and collateral', layout: 'full' },
+                { src: _g3, caption: 'Ecommerce website — desktop UI design', layout: 'half' },
+                { src: _g5, caption: 'Product packaging — premium cosmetics line', layout: 'half' },
+                { src: _g2, caption: 'Mobile shopping — app interface design', layout: 'full' }
+            ],
+            metrics: [
+                { value: '3.2x', label: 'Conversion uplift' },
+                { value: '60%', label: 'Bounce rate reduced' },
+                { value: '45+', label: 'Pages designed' },
+                { value: '98%', label: 'Brand consistency score' }
+            ]
+        },
+        'galp': {
+            title: 'Galp Christmas',
+            category: '360° Festive Campaign',
+            client: 'Galp',
+            url: 'galp.com',
+            year: '2024',
+            services: 'Art Direction, Graphic Design, Illustration, Copywriting, Campaign Development, Strategy',
+            gradient: 'gradient-midnight',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776301771/Papel-embrulho1_dukbrt.jpg',
+            description: 'A festive holiday campaign for Galp across Portugal and Spain, showcasing their exclusive seasonal products — from Christmas cookies and festive dots to traditional cakes — with a playful twist on the Portuguese saying "comer e chorar por mais." The visuals balanced Galp\'s brand identity with warm, nostalgic holiday charm.',
+            challenge: 'Delivering a full 360° campaign across print, digital and OOH for two markets within a tight 1.2-month timeline — while ensuring the festive warmth felt authentic to Galp\'s brand and resonated with both Portuguese and Spanish audiences.',
+            solution: 'Led the creative vision and asset design, merging Galp\'s brand identity with festive Christmas motifs. Partnered with another designer to deliver a complete 360° campaign:<br><br><strong>Print</strong> — In-store posters, flyers, and shelf talkers<br><strong>Digital</strong> — Social media carousels and animated GIFs with product close-ups<br><strong>OOH</strong> — Gas station pump toppers and window decals',
+            images: [
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773865908/galp-card_vn3fdn.gif', caption: 'Festive campaign key visual — Christmas warmth meets brand identity', layout: 'full', style: 'transform: scale(1.10);' },
+                { type: 'html', src: '/galp-grid.html', caption: 'Festive card system — animated grid showcase', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776303437/bandeja_iajxem.jpg', caption: 'Festive product tray — seasonal packaging design', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776301769/Papel-embrulho_wquff2.jpg', caption: 'Wrapping paper design — festive brand pattern', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776301771/Papel-embrulho1_dukbrt.jpg', caption: 'Wrapping paper variant — holiday gift packaging', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776301788/poster2_god4h8.jpg', caption: 'Campaign poster — seasonal product showcase', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776302254/Artboard-1_tmgf8z.jpg', caption: 'Social media assets — carousel design', layout: 'half' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776302254/Artboard-1-copy-2_w3320i.jpg', caption: 'Social media assets — carousel variant', layout: 'half' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776305960/gap_ygkvl7.jpg', caption: 'Campaign overview — full asset grid', layout: 'full' }
+            ],
+            metrics: [
+                { value: '23%', label: 'Seasonal Sales Increase' },
+                { value: '64%', label: 'OOH Brand Recall' },
+                { value: '30+', label: 'Assets Delivered' },
+                { value: '2', label: 'Markets (PT & ES)' }
+            ]
+        },
+        'ulaw': {
+            title: 'Amal Clooney Scholarship',
+            category: 'Scholarship Initiative',
+            client: 'University of Law',
+            url: 'law.ac.uk',
+            year: '2024',
+            services: 'Visual Design, Photo Retouching, Brand Design, Video Editing, Campaign Design',
+            gradient: 'gradient-ocean',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773804309/Amal_Clooney_mucx8j.jpg',
+            description: 'A prestigious mini campaign for the University of Law, establishing scholarships in Amal Clooney\'s name to empower future human rights advocates. The visual narrative blended Ms. Clooney\'s iconic professional elegance with ULaw\'s academic heritage.',
+            challenge: 'The submitted files were low resolution. Had to act quickly using AI upscalers and manual retouching to recover details and enhance image quality for large-scale use, while seamlessly integrating the scholarship into the existing "Law & So Much More" campaign framework.',
+            solution: 'Designed the complete suite of digital campaign assets across all channels, executing precision retouching and adaptive video editing. Used AI upscalers and manual retouching to recover low-res assets. Seamlessly incorporated the Amal Clooney Scholarship into the existing brand architecture.',
+            images: [
+                { src: _g3, caption: 'Scholarship campaign — digital assets across channels', layout: 'full' },
+                { src: _g5, caption: 'Brand integration — Law & So Much More framework', layout: 'half' },
+                { src: _g1, caption: 'Social media campaign rollout', layout: 'half' },
+                { src: _g4, caption: 'AI-upscaled and retouched key visuals', layout: 'full' }
+            ],
+            metrics: [
+                { value: '12', label: 'International markets reached' },
+                { value: '2wk', label: 'Delivery timeline' },
+                { value: '1,984', label: 'Social engagement' },
+                { value: '\u221e', label: 'Human rights prestige boost' }
+            ]
+        },
+        'moope': {
+            title: 'Moope',
+            category: 'UX Design',
+            client: 'Moope',
+            url: 'moope.com',
+            year: '2024',
+            services: 'UX Design, Research, Interaction Design',
+            gradient: 'gradient-sunset',
+            description: 'UX design for Moope, rethinking the entire user experience through research-led design and rigorous usability testing.',
+            challenge: 'Users were dropping off at critical conversion points. The existing experience was functional but lacked the flow and delight that builds retention.',
+            solution: 'We ran a full UX audit, mapped pain points, and redesigned the core user journeys. Every decision was backed by research. The result is an experience that feels effortless and keeps users coming back.',
+            images: [
+                { src: _g4, caption: 'UX audit — user journey mapping and pain points', layout: 'full' },
+                { src: _g2, caption: 'Wireframes and interaction design', layout: 'half' },
+                { src: _g6, caption: 'Mobile-first responsive design', layout: 'half' },
+                { src: _g3, caption: 'Usability testing and analytics dashboard', layout: 'full' }
+            ],
+            metrics: [
+                { value: '72%', label: 'Retention improvement' },
+                { value: '3.1x', label: 'Task completion speed' },
+                { value: '90%', label: 'Usability score' },
+                { value: '5', label: 'Core journeys redesigned' }
+            ]
+        },
+        'standard-bank': {
+            title: 'The Voice of Experience',
+            category: '360 Campaign',
+            client: 'Standard Bank Angola',
+            url: 'standardbank.co.ao',
+            year: '2018',
+            services: 'Art Direction, Visual Design, Digital Painting, Photo Retouching, Campaign Development',
+            gradient: 'gradient-emerald',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776312630/hf_20260416_040746_8c19b4cc-2c31-4a7b-a951-8dc72e210136_tfq8xi.png',
+            description: 'A cinematic tribute to Angola\'s Sobas (ancestral leaders), blending their centuries-old wisdom with Standard Bank\'s legacy. The campaign "Listen to the Voice of Experience" visually paralleled the Sobas\' guidance with the bank\'s trusted expertise, using documentary storytelling and striking portraiture.',
+            challenge: 'Merging traditional Angolan symbolism with Standard Bank\'s corporate visual identity while honouring the cultural weight of the Sobas \u2014 ancestral leaders whose wisdom spans generations.',
+            solution: 'Collaborated on creating sketches and digital paintings and moodboards to guide the photoshoot direction. Developed storyboards for the final video documentary. Executed image retouching and designed posters while strictly following brand guidelines.',
+            images: [
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776311200/standart_bank_copy_bnauat.jpg', caption: 'Concept art — Soba portrait studies and digital paintings', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773803838/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1BNVHoxU0VyTVR0S2ozMURNLVNqMTdqMVlTMGsxS2pKRFNuN1NuMTR0WVMwaw_albnbl.webp', caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776307954/L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL21qMFptck1UMVNFck1UdEtqMzFETS1TajE3ajFZUzBrMUtqSkRTbjdTbnRZUzBr_oldho6.webp', caption: 'Campaign poster design and retouching', layout: 'half' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776310428/hf_20260416_032825_4da86cb2-3d7e-4de4-9485-220b213df54f_mennyc.png', caption: 'Documentary storyboard and film production', layout: 'full' },
+                { src: 'https://player.vimeo.com/video/260034770?autoplay=1&loop=1&muted=1&title=0&byline=0&portrait=0&controls=0', caption: 'The Voice of Experience \u2014 Documentary Film', layout: 'full', type: 'video' }
+            ],
+            metrics: [
+                { value: 'Gold', label: 'Meios & Publicidade Awards' },
+                { value: 'Silver', label: 'Lus\u00f3fonos Creativity Awards' },
+                { value: '280+', label: 'Media mentions' },
+                { value: '3mo', label: 'Production timeline' }
+            ]
+        },
+        'luandina': {
+            title: 'Luandina — A Nossa',
+            category: 'Geo-Targeted Beer Campaign',
+            client: 'Luandina',
+            url: '',
+            year: '2019',
+            services: 'Art Direction, Brand Storytelling, Photo Retouching, Campaign Development, Strategy, Layout Design, OOH Design',
+            gradient: 'gradient-amber',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776321539/cd599073612173.5c13900282998_pc2vlh.jpg',
+            description: 'A vibrant outdoor campaign celebrating Luandina\'s presence in Luanda\'s neighbourhoods, tying the brand to summer\'s social moments — beach outings, barbecues, and lively gatherings.',
+            challenge: 'Creating a hyper-local campaign that felt authentic to each neighbourhood while maintaining brand consistency across a geo-targeted billboard strategy.',
+            solution: 'Created initial illustration concepts that evolved into the photographic direction for the campaign. Briefed and accompanied photoshoots on location, then developed the full suite of geo-targeted billboards and print assets alongside the team.',
+            images: [
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776325416/Untitled-1_copy_pvw93f.jpg', caption: 'Summer campaign — vibrant outdoor billboard key visual', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776322175/Asset_1-50_hejf3c.jpg', caption: 'Campaign key visual — neighbourhood connection', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776328447/hf_20260416_061903_3ff6163c-6400-4a67-8bf6-89a36385b377_copy_yua8jz.jpg', caption: 'Geo-targeted billboard development', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776324426/Asset_2-50_bdilfk.jpg', caption: 'OOH campaign — billboard placements across Luanda', layout: 'full' }
+            ],
+            metrics: [
+                { value: '23%', label: 'Social Engagement vs. Previous Campaign' },
+                { value: '17%', label: 'Increase in Repeat Purchases' },
+                { value: '85%', label: 'Geo-Billboards Driving Local Reach' }
+            ]
+        },
+        'wammo': {
+            title: 'Wammo World Cup',
+            category: 'Retail Campaign',
+            client: 'Wammo',
+            url: '',
+            year: '2022',
+            services: 'Art Direction, Campaign Design, Visual Design, Motion Graphics, Retouch, Influencer Collaboration',
+            gradient: 'gradient-gold',
+            description: 'A high-energy campaign promoting Wammo\'s exclusive 40" TV deals during the World Cup, featuring in-store FIFA gaming tournaments and starring Angola\'s top comedy group Os Tuneza to drive viral engagement.',
+            challenge: 'An extremely tight deadline and limited budget for a high-priority client. As the only all-around designer at the studio, had to strategically stretch resources while producing studio-quality assets entirely in-house.',
+            solution: 'Photographed each participant individually, capturing authentic reactions, then composited portraits into dynamic group scenes. Led the Os Tuneza campaign from initial sketches through to final execution across digital, print, and motion.',
+            images: [
+                { src: _g6, caption: 'World Cup campaign \u2014 FIFA gaming tournament activation', layout: 'full' },
+                { src: _g2, caption: 'Os Tuneza \u2014 influencer collaboration and content', layout: 'half' },
+                { src: _g4, caption: 'In-store retail activation and point of sale', layout: 'half' },
+                { src: _g1, caption: 'Motion graphics \u2014 Yellow Friday promotional assets', layout: 'full' }
+            ],
+            metrics: [
+                { value: '3M', label: 'Social impressions' },
+                { value: '68%', label: '40" TV purchase surge' },
+                { value: '18%', label: 'More customers during FIFA games' },
+                { value: '3wk', label: 'Delivery timeline' }
+            ]
+        },
+        'economy-of-words': {
+            title: 'Economy of Words',
+            category: 'Personal Project',
+            client: 'Self-Initiated',
+            url: '',
+            year: '2025',
+            services: 'Creative Copywriting, Visual Design, Design Thinking, Presentation Design',
+            gradient: 'gradient-slate',
+            description: 'A self-initiated study distilling complex narratives into their most potent verbal and visual forms. Through micro-copy experiments and visual haikus, this project examines how brevity amplifies meaning in branding.',
+            challenge: 'Exploring the cognitive science of brevity \u2014 demonstrating how concise communication significantly improves comprehension rates and message retention in professional contexts.',
+            solution: 'Wrote 50+ pieces of concise, high-impact copy \u2014 from taglines to product bios \u2014 all within tight word limits. Focused on precision, tone, and making every word count. Explored both minimalist visual design and editorial layout.',
+            images: [
+                { src: _g3, caption: 'Minimalist typography \u2014 precision in every word', layout: 'full' },
+                { src: _g5, caption: 'Editorial layout \u2014 contents and chapter design', layout: 'half' },
+                { src: _g1, caption: 'Visual haiku \u2014 brevity as design principle', layout: 'half' },
+                { src: _g4, caption: 'Cognitive science of concision \u2014 research spreads', layout: 'full' }
+            ],
+            metrics: [
+                { value: '50+', label: 'Pieces of ultra-concise copy' },
+                { value: '40%', label: 'Word reduction through editing' },
+                { value: '3x', label: 'Faster ideation-to-final draft' },
+                { value: '10', label: 'Chapters designed' }
+            ]
+        },
+        'sundial': {
+            title: 'Sundial',
+            category: 'Digital Art / NFT',
+            client: 'NFTART Finance',
+            url: '',
+            year: '2021',
+            services: 'Illustration, Visual Design, Digital Painting, 3D (Cinema 4D)',
+            gradient: 'gradient-purple',
+            description: 'An exploration of duality in digital existence, where geometric precision meets human expression. The artwork examines how structured virtual environments influence organic identity, visualising the intersection between mathematical order and artistic spontaneity.',
+            challenge: 'Creating a visually distinctive piece for a new NFT platform that would stand out among thousands of digital artworks while conveying conceptual depth.',
+            solution: 'Created the artwork using Photoshop for digital painting and Cinema 4D for the geometric elements. Developed the gradient lighting system, colour harmonies, and compositional balance that made the piece visually distinctive in the marketplace.',
+            images: [
+                { src: _g2, caption: 'Sundial \u2014 geometric precision meets human expression', layout: 'full' },
+                { src: _g6, caption: 'Digital painting process \u2014 Photoshop layers', layout: 'half' },
+                { src: _g4, caption: 'Cinema 4D \u2014 geometric elements and lighting', layout: 'half' },
+                { src: _g1, caption: 'Final artwork \u2014 gradient harmonies and composition', layout: 'full' }
+            ],
+            metrics: [
+                { value: '62%', label: 'Traffic driven to NFT portfolio' },
+                { value: '1', label: 'Platform spotlight feature' },
+                { value: '2wk', label: 'Creation timeline' },
+                { value: '\u221e', label: 'Creative exploration value' }
+            ]
+        },
+        'aura-studio': {
+            title: 'Digital Presence Redefined',
+            category: 'Brand & Web',
+            client: 'Aura Studio',
+            url: 'aurastudio.com',
+            year: '2025',
+            services: 'Brand & Web, Visual Identity, Art Direction',
+            gradient: 'gradient-crimson',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773219965/Aura_Site_copy_zjjcgh.jpg',
+            description: 'A refined digital presence for a creative studio, blending editorial aesthetics with seamless user experience.',
+            challenge: 'Aura Studio needed a website that reflected their creative caliber while remaining functional and conversion-focused.',
+            solution: 'We designed a visually immersive site with bold imagery, fluid transitions, and intentional whitespace. Every detail reinforces the studio\'s premium positioning while guiding visitors naturally toward engagement.',
+            images: [
+                { src: '/aura-showcase.html', caption: 'Aura Studio \u2014 animated brand showcase', layout: 'full', type: 'html' },
+                { src: _g3, caption: 'Ecommerce website \u2014 desktop UI design', layout: 'half' },
+                { src: _g5, caption: 'Product packaging \u2014 premium cosmetics line', layout: 'half' },
+                { src: _g2, caption: 'Mobile shopping \u2014 app interface design', layout: 'full' }
+            ],
+            metrics: [
+                { value: '3x', label: 'Inquiry increase' },
+                { value: '4.2m', label: 'Avg. session time' },
+                { value: '85%', label: 'Portfolio engagement' },
+                { value: '40%', label: 'Bounce rate decrease' }
+            ]
+        },
+        'lyft': {
+            title: 'Lyft Illustrations',
+            category: 'Illustration',
+            client: 'Lyft',
+            url: 'lyft.com',
+            year: '2023',
+            services: 'Illustration, Visual Design, Brand Storytelling, Character Design',
+            gradient: 'gradient-slate',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1771801419/sBbbbArtboard_6moope_gikcuc.png',
+            description: 'A series of custom illustrations for Lyft, bringing warmth and personality to the brand through hand-crafted characters and scenes that celebrate the human side of getting from A to B.',
+            challenge: 'Creating illustrations that felt distinctly Lyft while remaining versatile enough to work across app, web, social, and print touchpoints.',
+            solution: 'Developed a cohesive illustration system with a warm, approachable style. Each piece tells a micro-story about connection, community, and movement, reinforcing Lyft\'s brand values through visual narrative.',
+            images: [
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1771801419/sBbbbArtboard_6moope_gikcuc.png', caption: 'Lyft illustration — brand characters and scenes', layout: 'full' },
+                { src: _g2, caption: 'Character design system — expression and pose studies', layout: 'half' },
+                { src: _g4, caption: 'In-app illustration placements', layout: 'half' },
+                { src: _g6, caption: 'Social media and print applications', layout: 'full' }
+            ],
+            metrics: [
+                { value: '12', label: 'Custom illustrations delivered' },
+                { value: '4', label: 'Touchpoints covered' },
+                { value: '2mo', label: 'Production timeline' },
+                { value: '100%', label: 'Client satisfaction' }
+            ]
+        },
+        'ras': {
+            title: 'RAS Real Estate',
+            category: 'Real Estate Branding',
+            client: 'RAS',
+            url: 'ras-realestate.com',
+            year: '2025',
+            services: 'Brand Identity, Visual System, Real Estate Marketing, Art Direction',
+            gradient: 'gradient-midnight',
+            heroImage: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1774150674/Asset_1-100_szaika.jpg',
+            description: 'A premium brand identity for RAS Real Estate, crafting a visual language that communicates trust, sophistication, and market authority in the luxury property sector.',
+            challenge: 'The real estate market demands a brand that balances prestige with approachability — standing out in a saturated landscape while building immediate trust with high-value clients.',
+            solution: 'Built a refined identity system rooted in clean geometry and restrained elegance. The visual language scales seamlessly from property brochures to digital listings, establishing RAS as a credible force in premium real estate.',
+            images: [
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773855922/sBbbbArtboard_1_o0eian.png', caption: 'RAS Real Estate — brand identity system', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1773853078/sBbbbArtboard_2_zdvsf5.png', caption: 'Visual identity — stationery and collateral', layout: 'half' },
+                { type: 'html', src: '/ras-typography.html', caption: 'Typography — Urbanist type system', layout: 'half' },
+                { type: 'colorstrip', colors: ['#121010', '#42dbdb', '#cbf4f7', '#F5ECDA'], pantones: ['Pantone Black 6 C', 'Pantone 3255 C', 'Pantone 573 C', 'Pantone 7499 C'], roles: ['Primary', 'Accent', 'Surface', 'Highlight'], caption: 'Brand colour palette', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776388803/hf_20260417_002633_f4bad765-7958-423d-a7c2-44e8e83ebae8_ebotvv.png', caption: 'Brand application — campaign visual', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1774150046/Screenshot_2026-03-22_at_03.26.31_buypz6.png', caption: 'Brand application — editorial layout', layout: 'full' },
+                { type: 'slideshow', src: ['https://res.cloudinary.com/dzgqzeebg/image/upload/v1774150046/Screenshot_2026-03-22_at_03.26.42_tenr0w.png', 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1774150046/Screenshot_2026-03-22_at_03.26.35_jnqire.png'], caption: 'Brand application — signage and digital touchpoints', layout: 'full' }
+            ],
+            metrics: [
+                { value: '1', label: 'Complete brand system' },
+                { value: '20+', label: 'Assets delivered' },
+                { value: 'Premium', label: 'Market positioning' },
+                { value: '100%', label: 'Client satisfaction' }
+            ]
+        }
+    };
+
+    const PROJECT_ORDER = [
+        'standard-bank',
+        'galp',
+        'ulaw',
+        'luandina',
+        'wammo',
+        'one1x',
+        'aura',
+        'moope',
+        'economy-of-words',
+        'sundial',
+        'aura-studio',
+        'lyft',
+        'ras'
+    ];
+
+    /* ========================================
+       INIT
+       ======================================== */
+
+    function getSlug() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('p');
+    }
+
+    function renderProject(slug) {
+        const project = PROJECTS[slug];
+        const page = document.getElementById('projectPage');
+
+        if (!project) {
+            document.title = 'Project Not Found \u2014 Mota Gomes';
+            page.innerHTML = `
+                <div class="not-found">
+                    <div class="not-found-code">404 \u2014 Project not found</div>
+                    <h1 class="not-found-title">This project doesn't exist.</h1>
+                    <a href="/" class="not-found-link">Back to Portfolio</a>
+                </div>
+            `;
+            return;
+        }
+
+        // Update page title
+        document.title = `${project.title} \u2014 Mota Gomes`;
+
+        // Prev / Next
+        const currentIndex = PROJECT_ORDER.indexOf(slug);
+        const prevIndex = (currentIndex - 1 + PROJECT_ORDER.length) % PROJECT_ORDER.length;
+        const nextIndex = (currentIndex + 1) % PROJECT_ORDER.length;
+        const prevSlug = PROJECT_ORDER[prevIndex];
+        const nextSlug = PROJECT_ORDER[nextIndex];
+        const prevProject = PROJECTS[prevSlug];
+        const nextProject = PROJECTS[nextSlug];
+
+        page.innerHTML = `
+            <div class="page-content">
+                <!-- PROJECT HERO -->
+                <section class="project-hero">
+                    <div class="project-hero-gradient ${project.gradient}" ${project.heroImage ? `style="background:url('${project.heroImage}') center/cover no-repeat fixed; opacity:0.5;"` : ''}></div>
+                    <div class="project-hero-overlay"></div>
+                    <div class="project-hero-content">
+                        <h1 class="project-hero-title">${project.title}</h1>
+                        <div class="project-hero-url"><a href="https://${project.url}" target="_blank" rel="noopener">${project.url}</a></div>
+                    </div>
+                </section>
+
+                <!-- OVERVIEW -->
+                <section class="overview" data-reveal-group>
+                    <div class="overview__meta" data-reveal-child>
+                        <dl class="overview__meta-list">
+                            <div class="overview__meta-item">
+                                <dt class="overview__label">Client</dt>
+                                <dd class="overview__value">${project.client}</dd>
+                            </div>
+                            <div class="overview__meta-item">
+                                <dt class="overview__label">Industry</dt>
+                                <dd class="overview__value">${project.category}</dd>
+                            </div>
+                            <div class="overview__meta-item">
+                                <dt class="overview__label">Year</dt>
+                                <dd class="overview__value">${project.year}</dd>
+                            </div>
+                            <div class="overview__meta-item">
+                                <dt class="overview__label">Services</dt>
+                                <dd class="overview__value">${project.services}</dd>
+                            </div>
+                        </dl>
+                    </div>
+
+                    <div class="overview__statement" data-reveal-child>
+                        <p class="overview__statement-text">${project.description}</p>
+                    </div>
+
+                    ${project.challenge ? `
+                    <div class="overview__narrative" data-reveal-child>
+                        <div class="overview__narrative-block overview__narrative-block--challenge">
+                            <span class="overview__label">Challenge</span>
+                            <p class="overview__narrative-text">${project.challenge}</p>
+                        </div>
+                        <div class="overview__narrative-block overview__narrative-block--solution">
+                            <span class="overview__label">Solution</span>
+                            <p class="overview__narrative-text">${project.solution}</p>
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <div class="overview__metrics" data-reveal-child>
+                        ${project.metrics.map((m, i) => `
+                            <div class="overview__metric" style="transition-delay: ${i * 80}ms">
+                                <div class="overview__metric-value">${m.value.replace(/0/g, 'O')}</div>
+                                <div class="overview__metric-label">${m.label}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+
+                <!-- SHOWCASE -->
+                ${project.images ? `
+                <section class="section section--showcase" data-reveal style="border-top:none; padding:0;">
+                    <div class="showcase-gallery">
+                        ${project.images.map(img => `
+                            <div class="showcase-item ${img.layout}${img.type === 'html' ? ' has-iframe' : ''}${(img.type === 'video' || img.type === 'youtube') ? ' has-iframe has-video' : ''}"${img.bgStyle ? ` style="${img.bgStyle} display:flex; align-items:center; justify-content:center;"` : ''}>
+                                ${img.type === 'youtube'
+                                    ? `<div class="yt-player" data-vid="${img.src}">
+                                        <iframe id="yt-${img.src}" src="https://www.youtube.com/embed/${img.src}?enablejsapi=1&autoplay=0&loop=1&playlist=${img.src}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&start=10" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                        <div class="yt-overlay">
+                                            <button class="yt-play-btn" aria-label="Play video">
+                                                <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="31" stroke="white" stroke-width="2"/><polygon points="26,20 26,44 46,32" fill="white"/></svg>
+                                            </button>
+                                        </div>
+                                       </div>`
+                                    : img.type === 'html' && img.html
+                                    ? img.html
+                                    : img.type === 'html'
+                                    ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}" scrolling="no"></iframe>`
+                                    : img.type === 'video'
+                                    ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`
+                                    : img.type === 'slideshow'
+                                    ? `<div class="showcase-slideshow" data-interval="${img.interval || 1500}">${img.src.map((s, i) => `<img src="${s}" alt="${img.caption}" loading="lazy" class="${i === 0 ? 'active' : ''}">`).join('')}</div>`
+                                    : img.type === 'colorstrip'
+                                    ? `<div class="showcase-colorstrip">${img.colors.map((c, ci) => { const hex = c.replace('#',''); const r = parseInt(hex.substr(0,2),16); const g = parseInt(hex.substr(2,2),16); const b = parseInt(hex.substr(4,2),16); const lum = (r*299+g*587+b*114)/1000; const tc = lum > 140 ? '#000' : '#fff'; const pnt = img.pantones && img.pantones[ci] ? img.pantones[ci] : ''; const role = img.roles && img.roles[ci] ? img.roles[ci] : ''; return `<div style="background:${c};color:${tc}">${role ? `<div class="cs-role">${role}</div>` : ''}<div class="cs-meta">${c.toUpperCase()}${pnt ? '<br>' + pnt : ''}</div></div>`; }).join('')}</div>`
+                                    : `<img src="${img.src}" alt="${img.caption}" loading="lazy"${img.style ? ` style="${img.style}"` : ''}>`}
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+                ` : ''}
+
+                <!-- FOOTER NAVIGATION -->
+                <nav class="footer-nav">
+                    <div class="footer-nav-inner">
+                        <a href="/#work" class="footer-nav-link">
+                            <span class="arrow arrow-left">&larr;</span>&nbsp;&nbsp;Back
+                        </a>
+                        <a href="project.html?p=${prevSlug}" class="footer-nav-link">
+                            <span class="arrow arrow-left">&larr;</span>&nbsp;&nbsp;${prevProject.client}
+                        </a>
+                        <a href="project.html?p=${nextSlug}" class="footer-nav-link">
+                            ${nextProject.client}&nbsp;&nbsp;<span class="arrow arrow-right">&rarr;</span>
+                        </a>
+                        <a href="/" class="footer-nav-link">
+                            Main Menu
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        `;
+
+        // Observe sections for reveal animation
+        initRevealObserver();
+    }
+
+    /* ========================================
+       SECTION REVEAL ON SCROLL
+       ======================================== */
+
+    function initRevealObserver() {
+        // Legacy data-reveal sections
+        const sections = document.querySelectorAll('[data-reveal]');
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = `${i * 0.08}s`;
+                    entry.target.classList.add('visible');
+                    sectionObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.12,
+            rootMargin: '0px 0px -40px 0px'
+        });
+        sections.forEach(s => sectionObserver.observe(s));
+
+        // Staggered reveal groups (editorial overview)
+        const groups = document.querySelectorAll('[data-reveal-group]');
+        const childObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const children = entry.target.querySelectorAll('[data-reveal-child]');
+                    children.forEach((child, i) => {
+                        setTimeout(() => {
+                            child.classList.add('is-revealed');
+                        }, i * 120);
+                    });
+                    childObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.08,
+            rootMargin: '0px 0px -60px 0px'
+        });
+        groups.forEach(g => childObserver.observe(g));
+    }
+
+    /* ========================================
+       HEADER SCROLL BEHAVIOR
+       ======================================== */
+
+    let lastScrollY = 0;
+    let headerHidden = false;
+
+    window.addEventListener('scroll', () => {
+        const currentY = window.scrollY;
+        if (currentY > 120 && currentY > lastScrollY && !headerHidden) {
+            document.getElementById('header').classList.add('hidden');
+            headerHidden = true;
+        } else if (currentY < lastScrollY && headerHidden) {
+            document.getElementById('header').classList.remove('hidden');
+            headerHidden = false;
+        }
+        lastScrollY = currentY;
+    }, { passive: true });
+
+    /* ========================================
+       GMT CLOCK
+       ======================================== */
+
+    function updateGMT() {
+        const el = document.getElementById('gmtTime');
+        if (!el) return;
+        const fmt = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Europe/London',
+            hour: '2-digit', minute: '2-digit',
+            hour12: false
+        });
+        const offset = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Europe/London',
+            timeZoneName: 'short'
+        }).formatToParts(new Date()).find(p => p.type === 'timeZoneName');
+        const tz = offset ? offset.value : 'GMT';
+        el.textContent = tz + ' ' + fmt.format(new Date());
+    }
+
+    updateGMT();
+    setInterval(updateGMT, 1000);
+
+    /* ========================================
+       HAMBURGER MENU
+       ======================================== */
+
+    const hamburger = document.getElementById('hamburger');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const menuLinks = document.querySelectorAll('.menu-overlay-link, .menu-overlay-cta');
+
+    hamburger.addEventListener('click', () => {
+        menuOverlay.classList.toggle('active');
+    });
+
+    menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            menuOverlay.classList.remove('active');
+        });
+    });
+
+    // Close menu on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menuOverlay.classList.contains('active')) {
+            menuOverlay.classList.remove('active');
+        }
+    });
+
+    /* ========================================
+       RENDER
+       ======================================== */
+
+    const slug = getSlug();
+    renderProject(slug);
+
+    // Showcase slideshows
+    document.querySelectorAll('.showcase-slideshow').forEach(ss => {
+        const imgs = ss.querySelectorAll('img');
+        if (imgs.length < 2) return;
+        let current = 0;
+        const interval = parseInt(ss.dataset.interval) || 1500;
+        setInterval(() => {
+            imgs[current].classList.remove('active');
+            current = (current + 1) % imgs.length;
+            imgs[current].classList.add('active');
+        }, interval);
+    });
+
+    // YouTube custom player
+    document.querySelectorAll('.yt-player').forEach(player => {
+        const iframe = player.querySelector('iframe');
+        const overlay = player.querySelector('.yt-overlay');
+        const btn = player.querySelector('.yt-play-btn');
+        let playing = false;
+
+        function postMsg(action) {
+            iframe.contentWindow.postMessage(JSON.stringify({event:'command', func: action, args:''}), '*');
+        }
+
+        overlay.addEventListener('click', () => {
+            if (!playing) {
+                iframe.style.pointerEvents = 'none';
+                postMsg('playVideo');
+                overlay.classList.add('playing');
+                btn.innerHTML = '<svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="31" stroke="white" stroke-width="2"/><rect x="22" y="20" width="6" height="24" rx="1" fill="white"/><rect x="36" y="20" width="6" height="24" rx="1" fill="white"/></svg>';
+                playing = true;
+            } else {
+                postMsg('pauseVideo');
+                overlay.classList.remove('playing');
+                btn.innerHTML = '<svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="31" stroke="white" stroke-width="2"/><polygon points="26,20 26,44 46,32" fill="white"/></svg>';
+                playing = false;
+            }
+        });
+    });
+
+    </script>
+</body>
+</html>

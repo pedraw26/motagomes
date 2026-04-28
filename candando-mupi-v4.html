@@ -61,18 +61,15 @@
     z-index: 0;
   }
 
-  /* Snow — clip-path cuts out the card area (top:13%, left:11%, right:89%, bottom:48%) */
+  /* Snow — restricted to top 52% so it never enters the white panel.
+     The card (z-index 10, above snow z-index 6) blocks snow in the card area. */
   .snow-layer {
     position: absolute;
     inset: 0;
     z-index: 6;
     pointer-events: none;
     overflow: hidden;
-    clip-path: polygon(
-      0% 0%, 100% 0%, 100% 13%,
-      89% 13%, 89% 48%, 11% 48%, 11% 13%,
-      0% 13%
-    );
+    clip-path: polygon(0% 0%, 100% 0%, 100% 52%, 0% 52%);
   }
   .snow-layer.logo-phase {
     clip-path: none;
@@ -98,7 +95,7 @@
     to   { transform: translateY(0); }
   }
 
-  /* ── Single white panel — curve + fill in one wrapper ── */
+  /* ── White panel — curve + fill ── */
   .mupi-white-panel {
     position: absolute;
     bottom: 0;
@@ -120,7 +117,7 @@
     border-radius: 50% 50% 0 0 / 65% 65% 0 0;
   }
 
-  /* L3 — card */
+  /* L3 — card — lives OUTSIDE the offer wrapper so z-index 10 beats snow z-index 6 */
   .mupi-card {
     position: absolute;
     top: 13%;
@@ -139,6 +136,10 @@
     animation:
       card-drop       0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both,
       card-shadow-in  0.4s ease                           1.35s forwards;
+    transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  .mupi-card.pan-out {
+    transform: translateX(-50%) translateY(120cqh);
   }
   .mupi-card::before {
     content: '';
@@ -153,58 +154,12 @@
   }
 
   @keyframes card-drop {
-    from {
-      transform: translateX(-50%) translateY(-55px);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
+    from { transform: translateX(-50%) translateY(-55px); opacity: 0; }
+    to   { transform: translateX(-50%) translateY(0);     opacity: 1; }
   }
-
   @keyframes card-shadow-in {
     to { box-shadow: 0 8px 28px rgba(0,0,0,0.30); }
   }
-
-  /* white fill inside the panel */
-  .mupi-white-bg {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 53%;
-    background: #ffffff;
-  }
-
-  /* text: fixed, never moves */
-  .mupi-body {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 53%;
-    background: transparent;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    text-align: center;
-    padding: 8% 8% 6%;
-    z-index: 6;
-  }
-
-  @keyframes text-enter {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes number-punch {
-    from { opacity: 0; transform: scale(1.07); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-
-  /* card shine — light reflecting off a physical card */
   @keyframes card-shine {
     0%   { transform: skewX(-15deg) translateX(-180%); opacity: 0; }
     4%   { opacity: 1; }
@@ -212,79 +167,154 @@
     100% { transform: skewX(-15deg) translateX(280%);  opacity: 0; }
   }
 
-  /* "Activa o teu cartão" */
+  /* white fill */
+  .mupi-white-bg {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 53%;
+    background: #ffffff;
+  }
+
+  /* ── Body — vertically centred block, consistent cqw grid ── */
+  .mupi-body {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 53%;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;      /* centres the whole stack vertically */
+    text-align: center;
+    padding: 6% 8%;
+    z-index: 6;
+  }
+
+  @keyframes text-enter {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes number-punch {
+    from { opacity: 0; transform: scale(1.06); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  /* Level 1 — eyebrow */
   .mupi-eyebrow {
-    font-size: clamp(12px, 3.4vw, 17px);
+    font-size: clamp(10px, 2.8cqw, 13px);
     font-weight: 700;
     color: #1a1a1a;
-    letter-spacing: -0.02em;
-    margin-bottom: 3%;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1cqw;
     animation: text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.3s both;
   }
 
-  /* 2000 container */
-  .mupi-amount {
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    margin-bottom: 9%;
+  /* Level 2 — bridge word */
+  .mupi-bridge {
+    font-size: clamp(8px, 2cqw, 10px);
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.38);
+    letter-spacing: 0.04em;
+    margin-bottom: 2cqw;
+    animation: text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.4s both;
   }
 
-  /* 2000 — punches in */
+  /* Level 3 — amount */
+  .mupi-amount {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.18em;
+    margin-bottom: 4cqw;
+  }
+
+  /* 500 — hero number, corrected tracking & line-height */
   .mupi-amount-number {
     font-family: 'Eveleth', 'Bebas Neue', sans-serif;
-    font-size: clamp(36px, 11cqw, 48px);
+    font-size: clamp(28px, 9cqw, 42px);
     font-weight: 400;
     color: #f4ad32;
-    line-height: 0.88;
-    letter-spacing: -0.03em;
+    line-height: 1;
+    letter-spacing: 0.01em;         /* neutral — not squeezed */
     animation: number-punch 0.55s cubic-bezier(0.16, 1, 0.3, 1) 1.5s both;
   }
 
-  /* Button */
+  /* Kz — denomination, proportionally scaled */
+  .mupi-amount-currency {
+    font-family: 'Eveleth', 'Bebas Neue', sans-serif;
+    font-size: clamp(13px, 4cqw, 18px);
+    font-weight: 400;
+    color: #f4ad32;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    padding-bottom: 0.12em;        /* optical baseline alignment with number */
+    animation: number-punch 0.55s cubic-bezier(0.16, 1, 0.3, 1) 1.52s both;
+  }
+
+  /* Level 4 — CTA: the conversion driver, sized accordingly */
   .mupi-cta {
     display: inline-block;
     background: #d41f3d;
     color: #ffffff;
-    font-size: clamp(9px, 2.6vw, 13px);
+    font-size: clamp(10px, 3cqw, 14px);   /* bigger than before */
     font-weight: 700;
-    letter-spacing: 0.01em;
-    padding: 3.5% 10%;
+    letter-spacing: 0.02em;
+    padding: 4% 11%;
     border-radius: 999px;
     text-decoration: none;
     white-space: nowrap;
-    margin-bottom: auto;
+    margin-bottom: 3cqw;
     animation: text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.65s both;
   }
-  .mupi-cta strong { font-weight: 800; }
+  .mupi-cta strong {
+    font-weight: 800;
+    letter-spacing: 0.05em;          /* opens up the code for legibility */
+  }
 
-  /* Footer */
+  /* Level 5 — legal, pinned by flow */
   .mupi-footer {
-    font-size: clamp(8px, 2.2vw, 12px);
+    font-size: clamp(7px, 1.8cqw, 9px);
     font-weight: 400;
-    line-height: 1.5;
-    color: rgba(0, 0, 0, 0.45);
+    line-height: 1.4;
+    color: rgba(0, 0, 0, 0.35);
     letter-spacing: 0;
     animation: text-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1) 1.8s both;
   }
 
-  /* Logo end card */
+  /* Offer wrapper — slides down on pan, rises back on return */
+  .mupi-offer {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    transform: translateY(0);
+    transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  .mupi-offer.exit {
+    transform: translateY(100%);
+  }
+
+  /* Logo end card — parked above frame, slides down into view on pan */
   .mupi-logo-card {
     position: absolute;
     inset: 0;
     background: #d41f3d;
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 20;
+    transform: translateY(-100%);
+    transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  .mupi-logo-card.active {
+    transform: translateY(0);
   }
   .mupi-logo-card svg {
-    width: 62%;
-    animation: logo-settle 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    width: 42%;
   }
   @keyframes logo-settle {
-    from { transform: scale(0.88); opacity: 0; }
+    from { transform: scale(0.93); opacity: 0.6; }
     to   { transform: scale(1);    opacity: 1; }
   }
 
@@ -292,7 +322,7 @@
 </head>
 <body>
 
-<div class="mupi" role="img" aria-label="Múpi Candando — Ativa o teu cartão e recebe 2000 KZ">
+<div class="mupi" role="img" aria-label="Múpi Candando — Activa o teu cartão e recebe 1000 Kz">
 
   <!-- Logo end card -->
   <div class="mupi-logo-card" id="logoCard">
@@ -304,29 +334,33 @@
     </svg>
   </div>
 
-  <!-- L0 red -->
-  <div class="mupi-red"></div>
-
-  <!-- L1 snow -->
+  <!-- Snow — z-index 6, card (z-index 10) blocks it in the card area -->
   <div class="snow-layer" id="snow"></div>
 
-  <!-- single white panel — curve + fill, animates together -->
-  <div class="mupi-white-panel" id="whitePanel">
-    <div class="mupi-curve"></div>
-    <div class="mupi-white-bg"></div>
-  </div>
+  <!-- Card — outside offer wrapper: z-index 10 in mupi context beats snow z-index 6 -->
+  <div class="mupi-card" id="mupiCard" role="img" aria-label="Cartão Candando"></div>
 
-  <!-- L3 card -->
-  <div class="mupi-card" role="img" aria-label="Cartão Candando"></div>
+  <!-- Offer screen — slides down on pan -->
+  <div class="mupi-offer" id="mupiOffer">
 
-  <!-- L4 copy -->
-  <div class="mupi-body">
-    <p class="mupi-eyebrow">Activa o teu cartão</p>
-    <div class="mupi-amount">
-      <span class="mupi-amount-number"><span style="letter-spacing:-0.06em">2</span>000</span>
+    <div class="mupi-red"></div>
+
+    <div class="mupi-white-panel" id="whitePanel">
+      <div class="mupi-curve"></div>
+      <div class="mupi-white-bg"></div>
     </div>
-    <a href="#" class="mupi-cta">Usa o código: <strong>Dando1250</strong></a>
-    <p class="mupi-footer">*Válido em todas as lojas Candando e parceiros.</p>
+
+    <div class="mupi-body">
+      <p class="mupi-eyebrow">Activa o teu cartão</p>
+      <p class="mupi-bridge">e recebe</p>
+      <div class="mupi-amount">
+        <span class="mupi-amount-number">2000</span>
+        <span class="mupi-amount-currency">Kz</span>
+      </div>
+      <a href="#" class="mupi-cta">Usa o código: <strong>Dando1250</strong></a>
+      <p class="mupi-footer">*Válido em todas as lojas Candando e parceiros.</p>
+    </div>
+
   </div>
 
 </div>
@@ -359,60 +393,80 @@
 </script>
 
 <script>
-  // Loop: offer (9s) → fade → logo end card (3s) → fade → restart
+  // Loop: offer → camera pan down → logo → camera pan back → repeat
   (() => {
-    const WAIT_MS     = 9000;  // intro 2s + hold 7s
-    const FADE_MS     = 450;
-    const LOGO_HOLD   = 3000;
-    const mupi     = document.querySelector('.mupi');
-    const logoCard = document.getElementById('logoCard');
-    const snow     = document.getElementById('snow');
+    const PAN_MS    = 900;
+    const LOGO_HOLD = 3500;
+    const WAIT_MS   = 9000;
+
+    const logoCard  = document.getElementById('logoCard');
+    const mupiOffer = document.getElementById('mupiOffer');
+    const mupiCard  = document.getElementById('mupiCard');
+    const snow      = document.getElementById('snow');
+
+    // Elements to re-animate on each loop (card handled separately)
     const targets = [
-      ['.mupi-white-panel',   'white-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards'],
-      ['.mupi-card',          'card-drop 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both, card-shadow-in 0.4s ease 1.35s forwards'],
-      ['.mupi-eyebrow',       'text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.3s both'],
-      ['.mupi-amount-number', 'number-punch 0.55s cubic-bezier(0.16, 1, 0.3, 1) 1.5s both'],
-      ['.mupi-cta',           'text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.65s both'],
-      ['.mupi-footer',        'text-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1) 1.8s both'],
+      ['#whitePanel',           'white-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards'],
+      ['.mupi-eyebrow',         'text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.3s both'],
+      ['.mupi-bridge',          'text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.4s both'],
+      ['.mupi-amount-number',   'number-punch 0.55s cubic-bezier(0.16, 1, 0.3, 1) 1.5s both'],
+      ['.mupi-amount-currency', 'number-punch 0.55s cubic-bezier(0.16, 1, 0.3, 1) 1.52s both'],
+      ['.mupi-cta',             'text-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) 1.65s both'],
+      ['.mupi-footer',          'text-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1) 1.8s both'],
     ];
 
-    function restart() {
-      // 1 — fade out offer
-      mupi.style.transition = `opacity ${FADE_MS}ms ease`;
-      mupi.style.opacity = '0';
-      setTimeout(() => {
-        // 2 — show logo card, raise snow above it, fade mupi back in
-        logoCard.style.display = 'flex';
-        snow.classList.add('logo-phase');
-        // re-trigger logo animation
-        const svg = logoCard.querySelector('svg');
-        svg.style.animation = 'none';
-        svg.offsetHeight;
-        svg.style.animation = 'logo-settle 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards';
-        mupi.style.opacity = '1';
+    function panToLogo() {
+      // Full-frame snow for the cinematic pan
+      snow.classList.add('logo-phase');
 
-        setTimeout(() => {
-          // 3 — fade out logo
-          mupi.style.opacity = '0';
-          setTimeout(() => {
-            // 4 — hide logo, restore snow behind card, reset offer animations, fade back in
-            logoCard.style.display = 'none';
-            snow.classList.remove('logo-phase');
-            targets.forEach(([sel, anim]) => {
-              const el = document.querySelector(sel);
-              if (!el) return;
-              el.style.animation = 'none';
-              el.offsetHeight;
-              el.style.animation = anim;
-            });
-            mupi.style.opacity = '1';
-            setTimeout(restart, WAIT_MS);
-          }, FADE_MS);
-        }, LOGO_HOLD);
-      }, FADE_MS);
+      // Clear card animation (fill-mode would block the transition otherwise)
+      mupiCard.style.animation = 'none';
+      mupiCard.offsetHeight;
+
+      // Slide everything down simultaneously
+      mupiOffer.classList.add('exit');
+      mupiCard.classList.add('pan-out');
+      logoCard.classList.add('active');
+
+      // Logo SVG settles just as the pan lands
+      const svg = logoCard.querySelector('svg');
+      svg.style.animation = 'none';
+      svg.offsetHeight;
+      svg.style.animation = 'logo-settle 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both';
+
+      setTimeout(panToOffer, PAN_MS + LOGO_HOLD);
     }
 
-    setTimeout(restart, WAIT_MS);
+    function panToOffer() {
+      // Reverse pan — everything rises back
+      mupiOffer.classList.remove('exit');
+      mupiCard.classList.remove('pan-out');
+      logoCard.classList.remove('active');
+
+      setTimeout(() => {
+        // Replay all offer animations
+        targets.forEach(([sel, anim]) => {
+          const el = document.querySelector(sel);
+          if (!el) return;
+          el.style.animation = 'none';
+          el.offsetHeight;
+          el.style.animation = anim;
+        });
+
+        // Card gets its drop animation back
+        mupiCard.style.animation = 'none';
+        mupiCard.offsetHeight;
+        mupiCard.style.animation =
+          'card-drop 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both, card-shadow-in 0.4s ease 1.35s forwards';
+
+        // Restore snow clip after card has dropped in (~1.5s)
+        setTimeout(() => snow.classList.remove('logo-phase'), 1500);
+
+        setTimeout(panToLogo, WAIT_MS);
+      }, PAN_MS);
+    }
+
+    setTimeout(panToLogo, WAIT_MS);
   })();
 </script>
 </body>

@@ -61,38 +61,6 @@
     z-index: 0;
   }
 
-  /* Snow — clip-path cuts out the card area (top:13%, left:11%, right:89%, bottom:48%) */
-  .snow-layer {
-    position: absolute;
-    inset: 0;
-    z-index: 6;
-    pointer-events: none;
-    overflow: hidden;
-    clip-path: polygon(
-      0% 0%, 100% 0%, 100% 13%,
-      89% 13%, 89% 48%, 11% 48%, 11% 13%,
-      0% 13%
-    );
-  }
-  .snow-layer.logo-phase {
-    clip-path: none;
-    z-index: 25;
-  }
-  .flake {
-    position: absolute;
-    top: -2%;
-    border-radius: 50%;
-    background: #ffffff;
-    animation: fall linear infinite;
-    will-change: transform, opacity;
-  }
-  @keyframes fall {
-    0%   { transform: translateY(0)      translateX(0)            scale(1);    opacity: 0; }
-    6%   { opacity: 1; }
-    85%  { opacity: 0.7; }
-    100% { transform: translateY(110cqh) translateX(var(--drift)) scale(0.85); opacity: 0; }
-  }
-
   @keyframes white-rise {
     from { transform: translateY(800px); }
     to   { transform: translateY(0); }
@@ -307,9 +275,6 @@
   <!-- L0 red -->
   <div class="mupi-red"></div>
 
-  <!-- L1 snow -->
-  <div class="snow-layer" id="snow"></div>
-
   <!-- single white panel — curve + fill, animates together -->
   <div class="mupi-white-panel" id="whitePanel">
     <div class="mupi-curve"></div>
@@ -332,41 +297,13 @@
 </div>
 
 <script>
-  (() => {
-    const container = document.getElementById('snow');
-    const COUNT = 38;
-    const sizes = [3, 4, 5, 6, 7, 8, 10, 12, 14];
-    for (let i = 0; i < COUNT; i++) {
-      const f = document.createElement('div');
-      f.className = 'flake';
-      const size    = sizes[Math.floor(Math.random() * sizes.length)];
-      const left    = Math.random() * 100;
-      const delay   = -(Math.random() * 12);
-      const dur     = 6 + Math.random() * 10;
-      const drift   = (Math.random() - 0.5) * 30;
-      const opacity = 0.45 + Math.random() * 0.55;
-      f.style.cssText = `
-        width:${size}px; height:${size}px;
-        left:${left}%;
-        animation-duration:${dur}s;
-        animation-delay:${delay}s;
-        --drift:${drift}px;
-        opacity:${opacity};
-      `;
-      container.appendChild(f);
-    }
-  })();
-</script>
-
-<script>
   // Loop: offer (9s) → fade → logo end card (3s) → fade → restart
   (() => {
-    const WAIT_MS     = 9000;  // intro 2s + hold 7s
-    const FADE_MS     = 450;
-    const LOGO_HOLD   = 3000;
-    const mupi     = document.querySelector('.mupi');
-    const logoCard = document.getElementById('logoCard');
-    const snow     = document.getElementById('snow');
+    const WAIT_MS   = 9000;
+    const FADE_MS   = 450;
+    const LOGO_HOLD = 3000;
+    const mupi      = document.querySelector('.mupi');
+    const logoCard  = document.getElementById('logoCard');
     const targets = [
       ['.mupi-white-panel',   'white-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards'],
       ['.mupi-card',          'card-drop 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both, card-shadow-in 0.4s ease 1.35s forwards'],
@@ -377,14 +314,10 @@
     ];
 
     function restart() {
-      // 1 — fade out offer
       mupi.style.transition = `opacity ${FADE_MS}ms ease`;
       mupi.style.opacity = '0';
       setTimeout(() => {
-        // 2 — show logo card, raise snow above it, fade mupi back in
         logoCard.style.display = 'flex';
-        snow.classList.add('logo-phase');
-        // re-trigger logo animation
         const svg = logoCard.querySelector('svg');
         svg.style.animation = 'none';
         svg.offsetHeight;
@@ -392,12 +325,9 @@
         mupi.style.opacity = '1';
 
         setTimeout(() => {
-          // 3 — fade out logo
           mupi.style.opacity = '0';
           setTimeout(() => {
-            // 4 — hide logo, restore snow behind card, reset offer animations, fade back in
             logoCard.style.display = 'none';
-            snow.classList.remove('logo-phase');
             targets.forEach(([sel, anim]) => {
               const el = document.querySelector(sel);
               if (!el) return;
