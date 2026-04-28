@@ -2056,14 +2056,14 @@
             year: '2024',
             services: 'Rebrand, Brand Identity, Visual System',
             gradient: 'gradient-obsidian',
+            heroColor: '#5b6a57',
             description: 'A complete rebrand for One1x, transforming an outdated identity into a sharp, contemporary brand system built for scale.',
             challenge: 'The existing brand lacked cohesion and failed to communicate the company\'s evolved positioning in a competitive market.',
             solution: 'We stripped the brand back to its core and rebuilt from zero. A new visual identity system, typographic hierarchy, and colour language that feels both confident and adaptable across every touchpoint.',
             images: [
-                { src: _g1, caption: 'Brand identity system — logo and colour palette', layout: 'full' },
-                { src: _g2, caption: 'Typography and visual hierarchy', layout: 'half' },
-                { src: _g3, caption: 'Brand guidelines and asset library', layout: 'half' },
-                { src: _g4, caption: 'Multi-platform brand rollout', layout: 'full' }
+                { type: 'html', src: '/onex.html', caption: 'Brand identity system — typography and colours', layout: 'full', aspectRatio: '1366/640' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1777386915/ygqc0t2ustdkdb04m4ln.jpg', caption: 'Brand identity system', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1777386939/lzccow1bpsvzhcwrkumc.webp', caption: 'Product', layout: 'full' }
             ],
             metrics: [
                 { value: '100%', label: 'Brand refresh' },
@@ -2502,7 +2502,7 @@
             <div class="page-content">
                 <!-- PROJECT HERO -->
                 <section class="project-hero">
-                    <div class="project-hero-gradient ${project.gradient}" ${project.heroImage ? `style="background:url('${project.heroImage.replace('/upload/', '/upload/w_1800,c_limit/')}') center/cover no-repeat; opacity:0.5;"` : ''}></div>
+                    <div class="project-hero-gradient ${project.gradient}" ${project.heroImage ? `style="background:url('${project.heroImage.replace('/upload/', '/upload/w_1800,c_limit/')}') center/cover no-repeat; opacity:0.5;"` : project.heroColor ? `style="background:${project.heroColor}; opacity:1;"` : ''}></div>
                     <div class="project-hero-overlay"></div>
                     <div class="project-hero-content">
                         <h1 class="project-hero-title">${project.title}</h1>
@@ -2838,6 +2838,19 @@
 
     const slug = getSlug();
     renderProject(slug);
+
+    // Trigger onex brand animation when iframe scrolls into view
+    const onexIframe = document.querySelector('iframe[src="/onex.html"]');
+    if (onexIframe && 'IntersectionObserver' in window) {
+        const onexObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    onexIframe.contentWindow.postMessage('onex:play', '*');
+                }
+            });
+        }, { threshold: 0.3 });
+        onexObserver.observe(onexIframe);
+    }
 
     // Showcase slideshows
     document.querySelectorAll('.showcase-slideshow').forEach(ss => {
