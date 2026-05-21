@@ -436,15 +436,39 @@
             letter-spacing: 0.1em;
         }
 
+        /* ====== Bottom-centre description ====== */
+        .ui-desc {
+            position: fixed;
+            bottom: 36px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            text-align: center;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .ui-desc p {
+            font-size: 10px;
+            font-weight: 400;
+            line-height: 1.75;
+            letter-spacing: 0.04em;
+            color: var(--text-40);
+            margin: 0;
+        }
+        .ui-desc p + p {
+            margin-top: 6px;
+        }
+
         /* ====== Responsive ====== */
         @media (max-width: 720px) {
             .ui-logo   { top: 20px; left: 20px; }
-            .ui-back   { top: 20px; right: 20px; font-size: 10px; }
+            .ui-back   { top: 20px; right: 20px; bottom: auto; font-size: 10px; }
             .rail      { right: 20px; }
             .rail-item.is-active .rail-item-tick { width: 32px; }
             .caption   { left: 20px; bottom: 24px; }
             .caption-cur { font-size: 32px; }
             .hint      { bottom: 24px; }
+            .ui-desc   { display: none; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -490,6 +514,11 @@
         <span class="caption-total" id="capTotal">06</span>
     </div>
 
+    <div class="ui-desc" aria-hidden="true">
+        <p>A line about your generative AI practice and what drives the work.</p>
+        <p>The intention behind these images: a mood, a question, a method.</p>
+    </div>
+
 
     <script>
     (function () {
@@ -499,7 +528,8 @@
             { url: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776862663/hf_20260422_020335_b52c4512-e9c9-4e50-870a-df8ee0862ec9_b8vzjs.png' },
             { url: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776863789/hf_20260421_063353_f2544b10-1ce8-472e-84af-fb5e2a33d3b8_trsdfi.jpg' },
             { url: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776866906/ocydqxvxnd3xnyxslg9f.jpg' },
-            { url: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776903278/oqrg22zd0ry1w318cyxm.png' }
+            { url: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1776903278/oqrg22zd0ry1w318cyxm.png' },
+            { url: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1779406353/rnk5r1jllxg06khjzbbq.png' }
         ];
 
         var stage  = document.getElementById('stage');
