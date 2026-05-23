@@ -40,8 +40,14 @@
     overflow: hidden;
   }
 
-  .column.left  { background: #c5c6c1; }
-  .column.right { background: #e8e2d6; padding: 0 110px; justify-content: flex-start; }
+  .column.left  { background: #cdcec9; }
+  .column.right {
+    background: #f0eadc;
+    padding: 90px 110px 0;
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-direction: column;
+  }
 
   /* Left: image */
   .image-wrap {
@@ -89,6 +95,29 @@
     font-weight: 400;
   }
 
+  /* Decorative botanical curve below the caption */
+  .curves {
+    margin-top: 42px;
+    width: 240px;
+    height: 56px;
+    opacity: 0;
+    animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+  }
+  .curves path { stroke: #1c1c1c; fill: none; }
+  .curves .leaf { fill: #1c1c1c; }
+
+  /* 35mm film grain overlay — covers the whole stage */
+  .grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 20;
+    opacity: 0.22;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size: 220px 220px;
+  }
+
   /* Right: animated leaf shadow video — full frame, multiply blend
      casts moving branch shadow over the cream background and headline */
   .shadow-video {
@@ -134,8 +163,21 @@
       <p class="headline">Overnight renewal,<br>you can see<br>and feel.</p>
       <hr class="rule">
       <p class="caption">PURE RETINOL SERUM</p>
+
+      <!-- Botanical curve decoration -->
+      <svg class="curves" viewBox="0 0 240 56" aria-hidden="true">
+        <path d="M 0,30 Q 60,8 120,30 T 240,30" stroke-width="1.1" opacity="0.55"/>
+        <path d="M 8,42 Q 70,22 132,42 T 240,42" stroke-width="0.8" opacity="0.32"/>
+        <ellipse class="leaf" cx="40"  cy="20" rx="9"  ry="3.6" transform="rotate(-22 40 20)"  opacity="0.55"/>
+        <ellipse class="leaf" cx="100" cy="13" rx="8"  ry="3.2" transform="rotate(-8  100 13)" opacity="0.55"/>
+        <ellipse class="leaf" cx="160" cy="14" rx="8"  ry="3.2" transform="rotate(12  160 14)" opacity="0.55"/>
+        <ellipse class="leaf" cx="216" cy="22" rx="9"  ry="3.6" transform="rotate(28  216 22)" opacity="0.55"/>
+      </svg>
     </div>
   </div>
+
+  <!-- 35mm film grain overlay -->
+  <div class="grain" aria-hidden="true"></div>
 </div>
 
 <script>
