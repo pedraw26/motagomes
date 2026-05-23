@@ -83,18 +83,25 @@
     font-weight: 400;
   }
 
-  /* Right: soft branch shadow overlay */
-  .shadow-overlay {
+  /* Right: animated leaf shadow video — multiply blend casts moving
+     branch shadow over the cream background and headline */
+  .shadow-video {
     position: absolute;
-    top: -40px;
-    right: -60px;
-    width: 70%;
-    height: 110%;
+    top: 64px;
+    right: 64px;
+    width: 58%;
+    height: 72%;
+    object-fit: cover;
+    object-position: right top;
     pointer-events: none;
     mix-blend-mode: multiply;
-    opacity: 0.32;
-    z-index: 1;
-    filter: blur(3px);
+    opacity: 0.55;
+    z-index: 3;
+    opacity: 0;
+    animation: shadowIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+  }
+  @keyframes shadowIn {
+    to { opacity: 0.55; }
   }
 
   @keyframes fadeUp {
@@ -114,6 +121,11 @@
 
   <!-- RIGHT -->
   <div class="column right">
+    <!-- Animated leaf-shadow video, flipped horizontally, multiply blend -->
+    <video class="shadow-video" autoplay loop muted playsinline>
+      <source src="https://res.cloudinary.com/dzgqzeebg/video/upload/v1779564193/kee19eaiezzrgkizav1k.mp4" type="video/mp4">
+    </video>
+
     <div class="text-wrap">
       <p class="headline">Overnight renewal,<br>you can see<br>and feel.</p>
       <hr class="rule">
