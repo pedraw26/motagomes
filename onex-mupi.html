@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One1x — Retinol MUPI</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%; height: 100%;
+    background: #e9e8e3;
+    overflow: hidden;
+  }
+
+  /* 1600×900 canvas (16:9), JS scales to fit any viewport */
+  .stage {
+    width: 1600px;
+    height: 900px;
+    background: #e9e8e3;
+    position: absolute;
+    top: 0; left: 0;
+    transform-origin: top left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mupi {
+    height: 88%;
+    width: auto;
+    object-fit: contain;
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <img class="mupi" src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1779580403/xulfbz4uiqbkazkbgxnl.png" alt="One1x Retinol MUPI">
+</div>
+
+<script>
+  const STAGE_W = 1600, STAGE_H = 900;
+  const stage = document.getElementById('stage');
+  function fit() {
+    const s = Math.min(window.innerWidth / STAGE_W, window.innerHeight / STAGE_H);
+    const x = (window.innerWidth  - STAGE_W * s) / 2;
+    const y = (window.innerHeight - STAGE_H * s) / 2;
+    stage.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+  }
+  fit();
+  window.addEventListener('resize', fit);
+</script>
+
+</body>
+</html>
