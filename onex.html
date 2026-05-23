@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OneX — Brand Guidelines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -16,10 +19,10 @@
     overflow: hidden;
   }
 
-  /* Fixed 1366×640 canvas — JS scales to fit any viewport */
+  /* Fixed 1366×1200 canvas — JS scales to fit any viewport */
   .page {
     width: 1366px;
-    height: 640px;
+    height: 1200px;
     background: #e9e8e3;
     padding: 88px 104px;
     display: grid;
@@ -31,6 +34,35 @@
     top: 0; left: 0;
   }
 
+  /* ── Product hero (last frame) ── */
+  .product-section {
+    grid-column: 1 / -1;
+    margin-top: 72px;
+    opacity: 0;
+    animation: productIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+  }
+  .product-frame {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    max-width: 1158px;
+    margin: 24px auto 0;
+    overflow: hidden;
+    background: #1a1f1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  @keyframes productIn {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
   /* ── Section header ── */
   .section-label {
     font-size: 13px;
@@ -39,6 +71,7 @@
     letter-spacing: 0.01em;
     margin-bottom: 10px;
     opacity: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 
   .section-rule {
@@ -49,11 +82,27 @@
     opacity: 0;
   }
 
-  /* ── Font ── */
-  .font-grid {
+  /* ── Font section ── */
+  .font-section { position: relative; }
+
+  /* Each font slide sits on top of each other, fully absolute */
+  .font-slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0 32px;
+    opacity: 0;
+  }
+
+  /* Need height for the absolute container */
+  .font-slide-ghost {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 32px;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .specimen-aa {
@@ -62,11 +111,10 @@
     color: #1c1c1c;
     margin-bottom: 26px;
     letter-spacing: -0.02em;
-    opacity: 0;
+    margin-top: 24px;
   }
-
-  .specimen-aa--bold  { font-weight: 800; }
-  .specimen-aa--light { font-weight: 300; }
+  .specimen-aa--bold  { font-weight: 700; }
+  .specimen-aa--light { font-weight: 400; }
 
   .specimen-name {
     font-size: 18px;
@@ -74,9 +122,7 @@
     margin-bottom: 9px;
     line-height: 1.3;
     white-space: nowrap;
-    opacity: 0;
   }
-
   .specimen-name--bold  { font-weight: 700; }
   .specimen-name--light { font-weight: 400; }
 
@@ -86,11 +132,14 @@
     letter-spacing: 0.07em;
     line-height: 2.1;
     white-space: nowrap;
-    opacity: 0;
   }
-
   .specimen-alpha--bold  { font-weight: 700; }
   .specimen-alpha--light { font-weight: 400; }
+
+  /* ── Font families ── */
+  .font-helvetica { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+  .font-inter     { font-family: 'Inter', sans-serif; }
+  .font-trade     { font-family: 'Trade Gothic LT', 'TradeGothicLT-BoldCondTwenty', 'Trade Gothic LT Std', 'Trade Gothic', Arial Narrow, sans-serif; }
 
   /* ── Colours ── */
   .colour-grid {
@@ -136,16 +185,6 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  @keyframes punch-in {
-    from { opacity: 0; transform: scale(1.07); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-
-  @keyframes float-in {
-    from { opacity: 0; transform: translateY(-10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
   @keyframes rule-draw {
     from { opacity: 1; transform: scaleX(0); }
     to   { opacity: 1; transform: scaleX(1); }
@@ -155,6 +194,29 @@
     from { opacity: 0; transform: translateY(-22px) scale(0.88); }
     to   { opacity: 1; transform: translateY(0)   scale(1); }
   }
+
+  /* Font slide indicator dots */
+  .font-dots {
+    display: flex;
+    gap: 6px;
+    position: absolute;
+    bottom: -28px;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .font-dots.visible { opacity: 1; }
+  .font-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #c8c7c1;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+  .font-dot.active {
+    background: #1c1c1c;
+    transform: scale(1.3);
+  }
 </style>
 </head>
 <body>
@@ -162,29 +224,71 @@
 <div class="page" id="page">
 
   <!-- Font -->
-  <section>
-    <p class="section-label">Font</p>
+  <div>
+    <p class="section-label" id="labelFont">Font</p>
     <hr class="section-rule" id="rule-font">
 
-    <div class="font-grid">
+    <!-- position:relative wrapper — only ghost+slides here so top:0 aligns correctly -->
+    <div class="font-section" id="fontSection">
+    <!-- Ghost for height reference -->
+    <div class="font-slide-ghost">
       <div>
-        <div class="specimen-aa specimen-aa--bold">Aa</div>
-        <p class="specimen-name specimen-name--bold">Helvetica Neue Bold</p>
-        <p class="specimen-alpha specimen-alpha--bold">ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
-        <p class="specimen-alpha specimen-alpha--bold">abcdefghijklmnopqrstuvwxyz</p>
+        <div class="specimen-aa specimen-aa--bold font-helvetica">Aa</div>
+        <p class="specimen-name specimen-name--bold font-helvetica">Helvetica Neue Bold</p>
+        <p class="specimen-alpha specimen-alpha--bold font-helvetica">ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+        <p class="specimen-alpha specimen-alpha--bold font-helvetica">abcdefghijklmnopqrstuvwxyz</p>
       </div>
       <div>
-        <div class="specimen-aa specimen-aa--light">Aa</div>
-        <p class="specimen-name specimen-name--light">Helvetica Neue Regular</p>
-        <p class="specimen-alpha specimen-alpha--light">ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
-        <p class="specimen-alpha specimen-alpha--light">abcdefghijklmnopqrstuvwxyz</p>
+        <div class="specimen-aa specimen-aa--light font-helvetica">Aa</div>
+        <p class="specimen-name specimen-name--light font-helvetica">Helvetica Neue Regular</p>
+        <p class="specimen-alpha specimen-alpha--light font-helvetica">ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+        <p class="specimen-alpha specimen-alpha--light font-helvetica">abcdefghijklmnopqrstuvwxyz</p>
       </div>
     </div>
-  </section>
+
+    <!-- Slide 0: Helvetica Neue -->
+    <div class="font-slide" id="slide-0">
+      <div>
+        <div class="specimen-aa specimen-aa--bold font-helvetica">Aa</div>
+        <p class="specimen-name specimen-name--bold font-helvetica">Helvetica Neue Bold</p>
+        <p class="specimen-alpha specimen-alpha--bold font-helvetica">ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+        <p class="specimen-alpha specimen-alpha--bold font-helvetica">abcdefghijklmnopqrstuvwxyz</p>
+      </div>
+      <div>
+        <div class="specimen-aa specimen-aa--light font-helvetica">Aa</div>
+        <p class="specimen-name specimen-name--light font-helvetica">Helvetica Neue Regular</p>
+        <p class="specimen-alpha specimen-alpha--light font-helvetica">ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+        <p class="specimen-alpha specimen-alpha--light font-helvetica">abcdefghijklmnopqrstuvwxyz</p>
+      </div>
+    </div>
+
+    <!-- Slide 1: Inter -->
+    <div class="font-slide" id="slide-1">
+      <div>
+        <div class="specimen-aa specimen-aa--bold font-inter">Aa</div>
+        <p class="specimen-name specimen-name--bold font-inter">Inter Bold</p>
+        <p class="specimen-alpha specimen-alpha--bold font-inter">ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+        <p class="specimen-alpha specimen-alpha--bold font-inter">abcdefghijklmnopqrstuvwxyz</p>
+      </div>
+      <div>
+        <div class="specimen-aa specimen-aa--light font-inter">Aa</div>
+        <p class="specimen-name specimen-name--light font-inter">Inter Regular</p>
+        <p class="specimen-alpha specimen-alpha--light font-inter">ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+        <p class="specimen-alpha specimen-alpha--light font-inter">abcdefghijklmnopqrstuvwxyz</p>
+      </div>
+    </div>
+
+    <!-- Indicator dots -->
+    <div class="font-dots" id="fontDots">
+      <div class="font-dot active" id="dot-0"></div>
+      <div class="font-dot" id="dot-1"></div>
+    </div>
+    </div><!-- end .font-section -->
+  </div><!-- end font column -->
 
   <!-- Colours -->
   <section>
-    <p class="section-label">Colours</p>
+    <p class="section-label" id="labelColours">Colours</p>
     <hr class="section-rule" id="rule-colours">
 
     <div class="colour-grid">
@@ -212,11 +316,20 @@
     </div>
   </section>
 
+  <!-- Product (last frame) -->
+  <section class="product-section">
+    <p class="section-label" style="opacity: 1;">Product</p>
+    <hr class="section-rule" style="opacity: 1;">
+    <div class="product-frame">
+      <img class="product-img" src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1779561403/tia2ilz2w1hxkzzltcoo.jpg" alt="One1x Pure Retinol Serum — Night Renewal">
+    </div>
+  </section>
+
 </div>
 
 <script>
-  // ── Viewport scaling ──────────────────────────────
-  const PAGE_W = 1366, PAGE_H = 640;
+  // ── Viewport scaling ─────────────────────────────
+  const PAGE_W = 1366, PAGE_H = 1200;
   const page = document.getElementById('page');
 
   function fit() {
@@ -228,98 +341,137 @@
   fit();
   window.addEventListener('resize', fit);
 
-  // ── Animation sequence ────────────────────────────
-  const smooth  = 'cubic-bezier(0.16, 1, 0.3, 1)';
-  const spring  = 'cubic-bezier(0.22, 1.2, 0.36, 1)';
+  // ── Helpers ──────────────────────────────────────
+  const smooth = 'cubic-bezier(0.16, 1, 0.3, 1)';
+  const spring = 'cubic-bezier(0.22, 1.2, 0.36, 1)';
 
   function anim(el, kf, dur, delay, ease) {
     if (!el) return;
     el.style.animation = `${kf} ${dur}s ${ease || smooth} ${delay}s both`;
   }
 
-  function startAnimation() {
-    const alphas = document.querySelectorAll('.specimen-alpha');
+  // ── Font slide cycling ────────────────────────────
+  const SLIDES      = 2;
+  const SLIDE_HOLD  = 2800;  // ms each font is fully visible
+  const FADE_OUT_MS = 400;   // ms to fade out before next slide fades in
+  // Total loop: intro settles (1.82s) + 800ms delay + 2×(HOLD + FADE_OUT)
+  const INTRO_SETTLE = 800;
+  const LOOP_DURATION = INTRO_SETTLE + 1900 + SLIDES * (SLIDE_HOLD + FADE_OUT_MS) + 400;
 
-    // Labels — both at once
+  let currentSlide  = 0;
+  let slideTimer    = null;
+  let introTimer    = null;   // outer startSlides timeout — must be cancellable
+  let loopTimer     = null;
+  let transitioning = false;
+
+  function setDot(idx) {
+    for (let i = 0; i < SLIDES; i++)
+      document.getElementById('dot-' + i).classList.toggle('active', i === idx);
+  }
+
+  const EASE = 'cubic-bezier(0.16,1,0.3,1)';
+
+  function showSlide(el, show, instant) {
+    el.style.transition = instant ? 'none' : ('opacity 0.45s ' + EASE);
+    el.style.opacity    = show ? '1' : '0';
+  }
+
+  // Fade out current → wait FADE_OUT_MS → fade in next
+  function goToSlide(next) {
+    if (transitioning) return;
+    transitioning = true;
+
+    showSlide(document.getElementById('slide-' + currentSlide), false);
+
+    setTimeout(() => {
+      showSlide(document.getElementById('slide-' + next), true);
+      setDot(next);
+      currentSlide = next;
+      transitioning = false;
+    }, FADE_OUT_MS);
+  }
+
+  function startSlides() {
+    introTimer = setTimeout(() => {
+      introTimer = null;
+      showSlide(document.getElementById('slide-0'), true);
+      setDot(0);
+      currentSlide = 0;
+
+      for (let i = 1; i < SLIDES; i++) {
+        const t = i * (SLIDE_HOLD + FADE_OUT_MS);
+        slideTimer = setTimeout(() => goToSlide(i), t);
+      }
+    }, INTRO_SETTLE);
+  }
+
+  function stopSlides() {
+    if (introTimer) { clearTimeout(introTimer); introTimer = null; }
+    if (slideTimer) { clearTimeout(slideTimer); slideTimer = null; }
+    transitioning = false;
+  }
+
+  // ── Animation intro ──────────────────────────────
+  function startAnimation() {
     document.querySelectorAll('.section-label').forEach(el =>
       anim(el, 'fade-up', 0.4, 0)
     );
-
-    // Rules draw simultaneously
     anim(document.getElementById('rule-font'),    'rule-draw', 0.55, 0.12);
     anim(document.getElementById('rule-colours'), 'rule-draw', 0.55, 0.12);
 
-    // Bold Aa punches in
-    anim(document.querySelector('.specimen-aa--bold'),  'punch-in', 0.5, 0.42);
+    document.getElementById('fontDots').classList.add('visible');
 
-    // Regular Aa floats in
-    anim(document.querySelector('.specimen-aa--light'), 'float-in', 0.5, 0.58);
-
-    // Font names
-    anim(document.querySelector('.specimen-name--bold'),  'fade-up', 0.35, 0.80);
-    anim(document.querySelector('.specimen-name--light'), 'fade-up', 0.35, 0.90);
-
-    // Alphabet lines (bold then regular, slight stagger)
-    anim(alphas[0], 'fade-up', 0.3, 0.96);
-    anim(alphas[1], 'fade-up', 0.3, 1.03);
-    anim(alphas[2], 'fade-up', 0.3, 1.00);
-    anim(alphas[3], 'fade-up', 0.3, 1.07);
-
-    // Colour circles — row by row, left to right
-    // Row 1
     anim(document.querySelector('.g1'), 'circle-drop', 0.48, 0.38, spring);
     anim(document.querySelector('.o1'), 'circle-drop', 0.48, 0.50, spring);
     anim(document.querySelector('.d1'), 'circle-drop', 0.48, 0.62, spring);
     anim(document.querySelector('.w1'), 'circle-drop', 0.48, 0.74, spring);
-    // Row 2
     anim(document.querySelector('.g2'), 'circle-drop', 0.48, 0.62, spring);
     anim(document.querySelector('.o2'), 'circle-drop', 0.48, 0.74, spring);
     anim(document.querySelector('.d2'), 'circle-drop', 0.48, 0.86, spring);
-    // Row 3
     anim(document.querySelector('.g3'), 'circle-drop', 0.48, 0.86, spring);
     anim(document.querySelector('.o3'), 'circle-drop', 0.48, 0.98, spring);
     anim(document.querySelector('.d3'), 'circle-drop', 0.48, 1.10, spring);
-    // Row 4
     anim(document.querySelector('.g4'), 'circle-drop', 0.48, 1.10, spring);
     anim(document.querySelector('.o4'), 'circle-drop', 0.48, 1.22, spring);
     anim(document.querySelector('.d4'), 'circle-drop', 0.48, 1.34, spring);
+
+    startSlides();
   }
 
-  let loopTimer = null;
-
+  // ── Full reset & replay ──────────────────────────
   function resetAndPlay() {
+    stopSlides();
     if (loopTimer) { clearTimeout(loopTimer); loopTimer = null; }
 
-    // Collect every animated element
+    // Hide all slides instantly (no transition)
+    for (let i = 0; i < SLIDES; i++)
+      showSlide(document.getElementById('slide-' + i), false, true);
+    document.getElementById('fontDots').classList.remove('visible');
+
+    // FIX 4: strip animations, wait one frame so opacity:0 is painted,
+    // then wait a short beat before replaying — no blank flash
     const els = [
       ...document.querySelectorAll('.section-label'),
       document.getElementById('rule-font'),
       document.getElementById('rule-colours'),
-      document.querySelector('.specimen-aa--bold'),
-      document.querySelector('.specimen-aa--light'),
-      document.querySelector('.specimen-name--bold'),
-      document.querySelector('.specimen-name--light'),
-      ...document.querySelectorAll('.specimen-alpha'),
       ...document.querySelectorAll('.swatch'),
     ];
-
-    // Strip animations, force reflow, then replay
     els.forEach(el => { if (el) el.style.animation = 'none'; });
-    page.offsetHeight; // single reflow for all
-    startAnimation();
+    page.offsetHeight; // force reflow
 
-    loopTimer = setTimeout(resetAndPlay, 7000);
+    setTimeout(() => {
+      startAnimation();
+      // FIX 2: schedule next loop exactly after all slides have played
+      loopTimer = setTimeout(resetAndPlay, LOOP_DURATION);
+    }, 80);
   }
 
-  // Expose for portfolio integration — call window.onexPlay() when section enters viewport
+  // ── Public API ───────────────────────────────────
   window.onexPlay = resetAndPlay;
 
-  // Standalone only: auto-start when opened directly (not inside another page)
-  if (window.top === window) {
-    window.addEventListener('load', () => setTimeout(resetAndPlay, 300));
-  }
+  // Auto-start on load regardless of iframe context
+  window.addEventListener('load', () => setTimeout(resetAndPlay, 300));
 
-  // iframe integration: listen for postMessage from parent portfolio page
   window.addEventListener('message', e => {
     if (e.data === 'onex:play') resetAndPlay();
   });
