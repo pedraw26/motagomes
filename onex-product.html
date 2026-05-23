@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One1x — Pure Retinol Serum</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%; height: 100%;
+    background: #65705a;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  /* 1600×900 canvas (16:9), JS scales to fit any viewport */
+  .stage {
+    width: 1600px;
+    height: 900px;
+    background: #65705a;
+    position: absolute;
+    top: 0; left: 0;
+    transform-origin: top left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .frame {
+    position: relative;
+    width: 1280px;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: frameIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  }
+
+  .frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Rotating PRECISION SKINCARE badge */
+  .badge {
+    position: absolute;
+    left: -70px;
+    top: 50%;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: #f4f3ee;
+    transform: translateY(-50%);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: badgeFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+  }
+  .badge svg {
+    width: 100%; height: 100%;
+    animation: badgeSpin 28s linear infinite;
+  }
+  .badge text {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 7.5px;
+    letter-spacing: 0.22em;
+    fill: #2b2f24;
+    font-weight: 500;
+  }
+
+  @keyframes frameIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes badgeFadeIn {
+    to { opacity: 1; }
+  }
+  @keyframes badgeSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <div class="frame">
+    <div class="badge">
+      <svg viewBox="0 0 100 100">
+        <defs>
+          <path id="badgeCircle" d="M 50,50 m -40,0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0"/>
+        </defs>
+        <text>
+          <textPath href="#badgeCircle">PRECISION SKINCARE • PRECISION SKINCARE • </textPath>
+        </text>
+      </svg>
+    </div>
+    <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1779561700/vhkp35vrg5zs2upova8w.jpg" alt="One1x Pure Retinol Serum — Night Renewal">
+  </div>
+</div>
+
+<script>
+  const STAGE_W = 1600, STAGE_H = 900;
+  const stage = document.getElementById('stage');
+  function fit() {
+    const s = Math.min(window.innerWidth / STAGE_W, window.innerHeight / STAGE_H);
+    const x = (window.innerWidth  - STAGE_W * s) / 2;
+    const y = (window.innerHeight - STAGE_H * s) / 2;
+    stage.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+  }
+  fit();
+  window.addEventListener('resize', fit);
+</script>
+
+</body>
+</html>
