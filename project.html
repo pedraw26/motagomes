@@ -2889,6 +2889,21 @@
         onexObserver.observe(onexIframe);
     }
 
+    // Trigger onex-split headline animation when iframe scrolls into view
+    const splitIframe = document.querySelector('iframe[src="/onex-split.html"]');
+    if (splitIframe && 'IntersectionObserver' in window) {
+        const splitObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    splitIframe.contentWindow.postMessage('split:play', '*');
+                } else {
+                    splitIframe.contentWindow.postMessage('split:reset', '*');
+                }
+            });
+        }, { threshold: 0.35 });
+        splitObserver.observe(splitIframe);
+    }
+
     // Showcase slideshows
     document.querySelectorAll('.showcase-slideshow').forEach(ss => {
         const imgs = ss.querySelectorAll('img');

@@ -65,14 +65,19 @@
     display: block;
   }
 
-  /* Right: text content */
+  /* Right: text content — animates in when scrolled into view */
   .text-wrap {
     position: relative;
     z-index: 2;
     max-width: 560px;
     opacity: 0;
-    transform: translateY(20px);
-    animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+    transform: translateY(28px);
+    transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .text-wrap.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
   .headline {
     font-family: 'Kings Caslon Display', 'Times New Roman', Georgia, serif;
@@ -173,6 +178,23 @@
   }
   fit();
   window.addEventListener('resize', fit);
+
+  // Headline animates in when iframe scrolls into view (parent posts message)
+  const textWrap = document.querySelector('.text-wrap');
+  function playHeadline() {
+    if (textWrap) textWrap.classList.add('visible');
+  }
+  function resetHeadline() {
+    if (textWrap) textWrap.classList.remove('visible');
+  }
+  window.addEventListener('message', e => {
+    if (e.data === 'split:play')  playHeadline();
+    if (e.data === 'split:reset') resetHeadline();
+  });
+  // Also auto-play if loaded standalone (no parent iframe context)
+  if (window.self === window.top) {
+    setTimeout(playHeadline, 300);
+  }
 </script>
 
 </body>
