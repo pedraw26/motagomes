@@ -45,10 +45,11 @@
     display: block;
   }
 
-  /* Rotating PRECISION SKINCARE badge */
+  /* Rotating PRECISION SKINCARE badge — sits outside frame so it's not cropped */
   .badge {
     position: absolute;
-    left: -70px;
+    /* Frame's left edge is at (1600-1280)/2 = 160px. Badge centred on that edge. */
+    left: 90px;
     top: 50%;
     width: 140px;
     height: 140px;
@@ -89,17 +90,17 @@
 <body>
 
 <div class="stage" id="stage">
+  <div class="badge">
+    <svg viewBox="0 0 100 100">
+      <defs>
+        <path id="badgeCircle" d="M 50,50 m -40,0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0"/>
+      </defs>
+      <text>
+        <textPath href="#badgeCircle">PRECISION SKINCARE • PRECISION SKINCARE • </textPath>
+      </text>
+    </svg>
+  </div>
   <div class="frame">
-    <div class="badge">
-      <svg viewBox="0 0 100 100">
-        <defs>
-          <path id="badgeCircle" d="M 50,50 m -40,0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0"/>
-        </defs>
-        <text>
-          <textPath href="#badgeCircle">PRECISION SKINCARE • PRECISION SKINCARE • </textPath>
-        </text>
-      </svg>
-    </div>
     <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1779561700/vhkp35vrg5zs2upova8w.jpg" alt="One1x Pure Retinol Serum — Night Renewal">
   </div>
 </div>
