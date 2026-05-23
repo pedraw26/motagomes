@@ -24,18 +24,31 @@
     width: 1366px;
     height: 640px;
     background: #e9e8e3;
-    padding: 88px 104px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0 80px;
-    align-items: start;
     transform-origin: top left;
     position: absolute;
     top: 0; left: 0;
     overflow: hidden;
   }
 
-  /* ── Final slide (product hero) ── */
+  /* ── Scene wrapper: brand book (slide 1) ── */
+  .brand-scene {
+    position: absolute;
+    top: 0; left: 0;
+    width: 1366px;
+    height: 640px;
+    padding: 88px 104px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 80px;
+    align-items: start;
+    background: #e9e8e3;
+    opacity: 1;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1;
+  }
+  .brand-scene.hidden { opacity: 0; pointer-events: none; }
+
+  /* ── Final slide (product hero — LAST slide) ── */
   .final-slide {
     position: absolute;
     top: 0; left: 0;
@@ -47,7 +60,7 @@
     justify-content: center;
     opacity: 0;
     pointer-events: none;
-    z-index: 10;
+    z-index: 2;
     transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .final-slide.visible { opacity: 1; pointer-events: auto; }
@@ -253,6 +266,8 @@
 
 <div class="page" id="page">
 
+<div class="brand-scene" id="brandScene">
+
   <!-- Font -->
   <div>
     <p class="section-label" id="labelFont">Font</p>
@@ -345,6 +360,8 @@
       </div>
     </div>
   </section>
+
+</div><!-- /.brand-scene -->
 
   <!-- Final slide: product hero on #65705a -->
   <div class="final-slide" id="finalSlide">
@@ -443,10 +460,15 @@
         slideTimer = setTimeout(() => goToSlide(i), t);
       }
 
-      // After all font slides complete, reveal the final product slide
+      // After all font slides complete, transition to the final product slide:
+      // 1) fade out the brand book
+      // 2) fade in the final slide
       const finalDelay = SLIDES * (SLIDE_HOLD + FADE_OUT_MS) + 200;
       finalTimer = setTimeout(() => {
-        document.getElementById('finalSlide').classList.add('visible');
+        document.getElementById('brandScene').classList.add('hidden');
+        setTimeout(() => {
+          document.getElementById('finalSlide').classList.add('visible');
+        }, 400);
       }, finalDelay);
     }, INTRO_SETTLE);
   }
@@ -456,6 +478,7 @@
     if (slideTimer)  { clearTimeout(slideTimer); slideTimer = null; }
     if (finalTimer)  { clearTimeout(finalTimer); finalTimer = null; }
     document.getElementById('finalSlide').classList.remove('visible');
+    document.getElementById('brandScene').classList.remove('hidden');
     transitioning = false;
   }
 
