@@ -95,17 +95,6 @@
     font-weight: 400;
   }
 
-  /* Decorative botanical curve below the caption */
-  .curves {
-    margin-top: 42px;
-    width: 240px;
-    height: 56px;
-    opacity: 0;
-    animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
-  }
-  .curves path { stroke: #1c1c1c; fill: none; }
-  .curves .leaf { fill: #1c1c1c; }
-
   /* 35mm film grain overlay — covers the whole stage */
   .grain {
     position: absolute;
@@ -166,15 +155,6 @@
       <hr class="rule">
       <p class="caption">PURE RETINOL SERUM</p>
 
-      <!-- Botanical curve decoration -->
-      <svg class="curves" viewBox="0 0 240 56" aria-hidden="true">
-        <path d="M 0,30 Q 60,8 120,30 T 240,30" stroke-width="1.1" opacity="0.55"/>
-        <path d="M 8,42 Q 70,22 132,42 T 240,42" stroke-width="0.8" opacity="0.32"/>
-        <ellipse class="leaf" cx="40"  cy="20" rx="9"  ry="3.6" transform="rotate(-22 40 20)"  opacity="0.55"/>
-        <ellipse class="leaf" cx="100" cy="13" rx="8"  ry="3.2" transform="rotate(-8  100 13)" opacity="0.55"/>
-        <ellipse class="leaf" cx="160" cy="14" rx="8"  ry="3.2" transform="rotate(12  160 14)" opacity="0.55"/>
-        <ellipse class="leaf" cx="216" cy="22" rx="9"  ry="3.6" transform="rotate(28  216 22)" opacity="0.55"/>
-      </svg>
     </div>
   </div>
 
