@@ -19,10 +19,10 @@
     overflow: hidden;
   }
 
-  /* Fixed 1366×1200 canvas — JS scales to fit any viewport */
+  /* Fixed 1366×640 canvas — JS scales to fit any viewport */
   .page {
     width: 1366px;
-    height: 1200px;
+    height: 640px;
     background: #e9e8e3;
     padding: 88px 104px;
     display: grid;
@@ -32,35 +32,65 @@
     transform-origin: top left;
     position: absolute;
     top: 0; left: 0;
+    overflow: hidden;
   }
 
-  /* ── Product hero (last frame) ── */
-  .product-section {
-    grid-column: 1 / -1;
-    margin-top: 72px;
-    opacity: 0;
-    animation: productIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
-  }
-  .product-frame {
-    aspect-ratio: 16 / 9;
-    width: 100%;
-    max-width: 1158px;
-    margin: 24px auto 0;
-    overflow: hidden;
-    background: #1a1f1a;
+  /* ── Final slide (product hero) ── */
+  .final-slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 1366px;
+    height: 640px;
+    background: #65705a;
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .product-img {
+  .final-slide.visible { opacity: 1; pointer-events: auto; }
+  .final-frame {
+    position: relative;
+    width: 1080px;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.18);
+  }
+  .final-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
-  @keyframes productIn {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
+  .final-badge {
+    position: absolute;
+    left: -54px;
+    top: 50%;
+    width: 108px;
+    height: 108px;
+    border-radius: 50%;
+    background: #f4f3ee;
+    transform: translateY(-50%);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .final-badge svg {
+    width: 100%; height: 100%;
+    animation: badgeSpin 28s linear infinite;
+  }
+  .final-badge text {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 7.5px;
+    letter-spacing: 0.18em;
+    fill: #2b2f24;
+  }
+  @keyframes badgeSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
   }
 
   /* ── Section header ── */
@@ -316,20 +346,28 @@
     </div>
   </section>
 
-  <!-- Product (last frame) -->
-  <section class="product-section">
-    <p class="section-label" style="opacity: 1;">Product</p>
-    <hr class="section-rule" style="opacity: 1;">
-    <div class="product-frame">
-      <img class="product-img" src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1779561700/vhkp35vrg5zs2upova8w.jpg" alt="One1x Pure Retinol Serum — Night Renewal">
+  <!-- Final slide: product hero on #65705a -->
+  <div class="final-slide" id="finalSlide">
+    <div class="final-frame">
+      <div class="final-badge">
+        <svg viewBox="0 0 100 100">
+          <defs>
+            <path id="badgeCircle" d="M 50,50 m -40,0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0"/>
+          </defs>
+          <text>
+            <textPath href="#badgeCircle">PRECISION SKINCARE • PRECISION SKINCARE • </textPath>
+          </text>
+        </svg>
+      </div>
+      <img class="final-img" src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1779561700/vhkp35vrg5zs2upova8w.jpg" alt="One1x Pure Retinol Serum — Night Renewal">
     </div>
-  </section>
+  </div>
 
 </div>
 
 <script>
   // ── Viewport scaling ─────────────────────────────
-  const PAGE_W = 1366, PAGE_H = 1200;
+  const PAGE_W = 1366, PAGE_H = 640;
   const page = document.getElementById('page');
 
   function fit() {
@@ -356,7 +394,9 @@
   const FADE_OUT_MS = 400;   // ms to fade out before next slide fades in
   // Total loop: intro settles (1.82s) + 800ms delay + 2×(HOLD + FADE_OUT)
   const INTRO_SETTLE = 800;
-  const LOOP_DURATION = INTRO_SETTLE + 1900 + SLIDES * (SLIDE_HOLD + FADE_OUT_MS) + 400;
+  const FINAL_HOLD_MS = 4200;  // how long the product slide is shown
+  const LOOP_DURATION = INTRO_SETTLE + 1900 + SLIDES * (SLIDE_HOLD + FADE_OUT_MS) + 400 + FINAL_HOLD_MS;
+  let   finalTimer    = null;
 
   let currentSlide  = 0;
   let slideTimer    = null;
@@ -402,12 +442,20 @@
         const t = i * (SLIDE_HOLD + FADE_OUT_MS);
         slideTimer = setTimeout(() => goToSlide(i), t);
       }
+
+      // After all font slides complete, reveal the final product slide
+      const finalDelay = SLIDES * (SLIDE_HOLD + FADE_OUT_MS) + 200;
+      finalTimer = setTimeout(() => {
+        document.getElementById('finalSlide').classList.add('visible');
+      }, finalDelay);
     }, INTRO_SETTLE);
   }
 
   function stopSlides() {
-    if (introTimer) { clearTimeout(introTimer); introTimer = null; }
-    if (slideTimer) { clearTimeout(slideTimer); slideTimer = null; }
+    if (introTimer)  { clearTimeout(introTimer); introTimer = null; }
+    if (slideTimer)  { clearTimeout(slideTimer); slideTimer = null; }
+    if (finalTimer)  { clearTimeout(finalTimer); finalTimer = null; }
+    document.getElementById('finalSlide').classList.remove('visible');
     transitioning = false;
   }
 
