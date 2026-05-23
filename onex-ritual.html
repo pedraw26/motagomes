@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One1x — The Ritual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%; height: 100%;
+    background: #d8d6d1;
+    font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  /* 1600×900 canvas (16:9), JS scales to fit any viewport */
+  .stage {
+    width: 1600px;
+    height: 900px;
+    background: #d8d6d1;
+    position: absolute;
+    top: 0; left: 0;
+    transform-origin: top left;
+    padding: 90px 110px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .title {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: #1c1c1c;
+    margin-bottom: 64px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: 1fr 56px 1fr 56px 1fr 56px 1fr;
+    grid-template-rows: auto 1fr;
+    flex: 1;
+    column-gap: 0;
+  }
+
+  .step {
+    grid-row: 1 / span 2;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .step:nth-of-type(1) { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards; }
+  .step:nth-of-type(3) { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.40s forwards; }
+  .step:nth-of-type(5) { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards; }
+  .step:nth-of-type(7) { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.70s forwards; }
+
+  .num {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: #1c1c1c;
+    margin-bottom: 14px;
+  }
+
+  .label {
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    color: #1c1c1c;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  .separator {
+    width: 1px;
+    height: 26px;
+    background: #9c9c98;
+    margin-bottom: 28px;
+  }
+
+  .card {
+    flex: 1;
+    background: #efebe2;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    width: 100%;
+  }
+
+  .arrow {
+    grid-row: 2;
+    align-self: center;
+    justify-self: center;
+    font-size: 22px;
+    line-height: 1;
+    color: #6f6f6b;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeIn 0.7s ease 0.95s forwards;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <h2 class="title">The Ritual</h2>
+
+  <div class="steps">
+    <!-- 01 CLEANSE -->
+    <div class="step">
+      <p class="num">01</p>
+      <p class="label">Cleanse</p>
+      <div class="separator"></div>
+      <div class="card"></div>
+    </div>
+
+    <div class="arrow">&rarr;</div>
+
+    <!-- 02 PREPARE -->
+    <div class="step">
+      <p class="num">02</p>
+      <p class="label">Prepare</p>
+      <div class="separator"></div>
+      <div class="card"></div>
+    </div>
+
+    <div class="arrow">&rarr;</div>
+
+    <!-- 03 TREAT -->
+    <div class="step">
+      <p class="num">03</p>
+      <p class="label">Treat</p>
+      <div class="separator"></div>
+      <div class="card"></div>
+    </div>
+
+    <div class="arrow">&rarr;</div>
+
+    <!-- 04 RENEW -->
+    <div class="step">
+      <p class="num">04</p>
+      <p class="label">Renew</p>
+      <div class="separator"></div>
+      <div class="card"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const STAGE_W = 1600, STAGE_H = 900;
+  const stage = document.getElementById('stage');
+  function fit() {
+    const s = Math.min(window.innerWidth / STAGE_W, window.innerHeight / STAGE_H);
+    const x = (window.innerWidth  - STAGE_W * s) / 2;
+    const y = (window.innerHeight - STAGE_H * s) / 2;
+    stage.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+  }
+  fit();
+  window.addEventListener('resize', fit);
+</script>
+
+</body>
+</html>
