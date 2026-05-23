@@ -111,9 +111,12 @@
         }
 
         .header-right {
+            position: fixed;
+            top: 28px;
+            right: calc(32px + var(--scrollbar-comp, 0px));
+            z-index: 1001;
             display: flex;
             align-items: center;
-            justify-self: end;
             gap: 16px;
         }
 
@@ -2065,7 +2068,8 @@
             images: [
                 { type: 'html', src: '/onex.html', caption: 'Brand identity system — typography and colours', layout: 'full', aspectRatio: '1366/640' },
                 { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1777386915/ygqc0t2ustdkdb04m4ln.jpg', caption: 'Brand identity system', layout: 'full' },
-                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1777386939/lzccow1bpsvzhcwrkumc.webp', caption: 'Product', layout: 'full' }
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1400,c_limit/v1777386939/lzccow1bpsvzhcwrkumc.webp', caption: 'Product', layout: 'full' },
+                { src: 'https://res.cloudinary.com/dzgqzeebg/image/upload/v1779561700/vhkp35vrg5zs2upova8w.jpg', caption: 'Pure Retinol Serum — Night Renewal', layout: 'full' }
             ],
             metrics: [
                 { value: '100%', label: 'Brand refresh' },
