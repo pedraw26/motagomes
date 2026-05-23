@@ -6,7 +6,7 @@
 <title>One1x — Split</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
@@ -86,19 +86,17 @@
     font-weight: 400;
   }
 
-  /* Right: animated leaf shadow video — multiply blend casts moving
-     branch shadow over the cream background and headline */
+  /* Right: animated leaf shadow video — full frame, multiply blend
+     casts moving branch shadow over the cream background and headline */
   .shadow-video {
     position: absolute;
-    top: 64px;
-    right: 64px;
-    width: 58%;
-    height: 72%;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    object-position: right top;
+    object-position: center center;
     pointer-events: none;
     mix-blend-mode: multiply;
-    opacity: 0.55;
     z-index: 3;
     opacity: 0;
     animation: shadowIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
