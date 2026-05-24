@@ -73,21 +73,17 @@
   .slide-3 { background: #ffffff; }
   .slide-4 { background: rgba(225, 90,  52,  0.27); }
 
-  /* ── Card — fixed size so it doesn't grow with the larger stage ── */
-  .card-img {
-    width: min(387px, 43%);
-    aspect-ratio: 1692 / 1080;
-    border-radius: 22px;
-    object-fit: contain;
-    background: #ffffff;
-    box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 6px 14px rgba(24,24,24,0.06);
-  }
-
+  /* ── Card — all variants exact same size ── */
+  .card-img,
   .card-block {
     width: min(387px, 43%);
     aspect-ratio: 1692 / 1080;
     border-radius: 22px;
     box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 6px 14px rgba(24,24,24,0.06);
+    background: #ffffff;
+  }
+  .card-img {
+    object-fit: cover;
   }
 
   .slide-1 .card-block { background: rgb(232, 174, 66); }
