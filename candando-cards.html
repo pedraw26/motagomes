@@ -134,18 +134,12 @@
     </div>
   </div>
 
-  <div class="dots" role="tablist" id="dots">
-    <button class="dot is-active" role="tab" aria-selected="true"  aria-label="Slide 1"></button>
-    <button class="dot"           role="tab" aria-selected="false" aria-label="Slide 2"></button>
-    <button class="dot"           role="tab" aria-selected="false" aria-label="Slide 3"></button>
-    <button class="dot"           role="tab" aria-selected="false" aria-label="Slide 4"></button>
-  </div>
 </div>
 
 <script>
   (() => {
     const slides   = [...document.querySelectorAll('.slide')];
-    const dots     = [...document.getElementById('dots').children];
+    const dots     = [];
     const total    = slides.length;
     let current    = 0;
     let animating  = false;
