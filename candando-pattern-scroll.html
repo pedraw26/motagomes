@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candando — Pattern</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #D20F31;
+    overflow: hidden;
+  }
+  .stage {
+    position: absolute;
+    inset: 0;
+    background: #D20F31;
+    overflow: hidden;
+  }
+  .pattern-scroll {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 200%;
+    background-image: url('https://res.cloudinary.com/dzgqzeebg/image/upload/c_crop,w_0.45,h_0.8,g_center/f_auto,q_auto,h_800/v1776979530/pyofnjny9lxn2h5ecvnf.jpg');
+    background-repeat: repeat-x;
+    background-position: left center;
+    background-size: auto 100%;
+    animation: scroll-left 45s linear infinite;
+    will-change: transform;
+  }
+  @keyframes scroll-left {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pattern-scroll { animation: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="pattern-scroll"></div>
+  </div>
+</body>
+</html>
