@@ -145,6 +145,16 @@
     let animating  = false;
     let timer      = null;
 
+    /* If URL has ?slide=N, show only that slide and stop here (no cycling) */
+    const params = new URLSearchParams(window.location.search);
+    const fixed  = parseInt(params.get('slide'), 10);
+    if (!isNaN(fixed) && fixed >= 1 && fixed <= total) {
+      slides.forEach((s, i) => {
+        s.classList.toggle('is-active', i === fixed - 1);
+      });
+      return;
+    }
+
     function updateDots(idx) {
       dots.forEach((d, i) => {
         d.classList.toggle('is-active', i === idx);
