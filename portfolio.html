@@ -8,18 +8,18 @@
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <script>(function(){try{var l=localStorage.getItem('mg_lang');if(l==='pt')document.documentElement.lang='pt-PT';}catch(e){}})();</script>
     <script src="/i18n.js" defer></script>
     <script src="/guard.js" defer></script>
     <style>
         :root {
-            --sf-pro: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --sf-pro: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
             /* Site rule: no monospaced fonts — --mono aliases the sans stack
                so every legacy 'font-family: var(--mono)' declaration still
-               resolves, but renders in Inter. Keep the variable name to
+               resolves, but renders in SF Pro. Keep the variable name to
                avoid touching every call site. */
-            --mono: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --mono: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
             --scrollbar-comp: 0px;
             
             --bg-black: #000000;
@@ -46,7 +46,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: var(--sf-pro);
             background: var(--bg-black);
             color: var(--text);
             -webkit-font-smoothing: antialiased;
@@ -248,7 +248,10 @@
         }
 
         .header-logo {
-            justify-self: center;
+            /* Pinned to match Gen Studio's MG position pixel-for-pixel */
+            position: fixed;
+            top: 28px;
+            left: 32px;
             z-index: 1001;
             font-size: 16px;
             font-weight: 400;
@@ -264,14 +267,6 @@
             view-transition-name: site-logo;
         }
         .header-logo:hover { opacity: 1; }
-
-        .header-role {
-            font-size: 13px;
-            font-weight: 400;
-            letter-spacing: 0.01em;
-            color: var(--text);
-            line-height: 1;
-        }
 
         .header-logo span {
             display: inline-block;
@@ -302,13 +297,61 @@
             gap: 36px;
         }
 
-        /* Hamburger always visible — nav is overlay-only now */
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        /* Desktop: show nav links, hide hamburger. Mobile flips it. */
         @media (max-width: 720px) {
+            .header-nav { display: none; }
             .header-left { gap: 0; }
-            .header-role { font-size: 11px; }
+        }
+        @media (min-width: 721px) {
+            .menu-icon { display: none !important; }
         }
         
+        .header-nav a {
+            font-size: 0.95rem;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 400;
+            letter-spacing: -0.005em;
+            transition: color 0.3s ease;
+            position: relative;
+            /* Every nav item is an inline-flex row so icons (lock, book) sit
+               on the same optical centre as the plain-text links. */
+            display: inline-flex;
+            align-items: center;
+            line-height: 1;
+        }
+        
+        .header-nav a::before {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: currentColor;
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .header-nav a:hover {
+            color: var(--text);
+        }
+
+        .header-nav a:hover::before,
+        .header-nav a.is-current::before {
+            transform: scaleX(1);
+        }
+        .header-nav a.is-current { color: var(--text); }
+
         /* Animated gradient on the "AI slop" nav link — seamless continuous loop */
+        .header-nav a.nav-gen,
         .menu-overlay-link.nav-gen {
             background-image: linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);
             background-size: 200% 100%;
@@ -319,6 +362,77 @@
                     color: transparent;
             animation: aislop-gradient 6s linear infinite;
         }
+        /* Expand button — chevron that nudges to signal it's clickable.
+           Collapsed: '‹' points away from the nav items; expanded: rotates
+           180° to '›', pointing toward the now-visible items. */
+        .nav-expand {
+            appearance: none;
+            background: transparent;
+            border: 0;
+            padding: 4px;
+            margin-right: -4px;
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: color 0.2s ease;
+        }
+        .nav-expand:hover { color: #fff; }
+        .nav-expand-icon {
+            display: block;
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            animation: nav-expand-nudge 2.4s ease-in-out infinite;
+        }
+        /* Nudge loop: tiny horizontal wiggle on the collapsed chevron. */
+        @keyframes nav-expand-nudge {
+            0%, 60%, 100% { transform: translateX(0); }
+            70% { transform: translateX(-3px); }
+            80% { transform: translateX(0); }
+            90% { transform: translateX(-2px); }
+        }
+        .nav-expand:hover .nav-expand-icon { animation-play-state: paused; }
+        /* Once expanded, lock the rotation and stop the nudge. */
+        .header-nav.is-expanded .nav-expand-icon {
+            transform: rotate(180deg);
+            animation: none;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .nav-expand-icon { animation: none; }
+        }
+
+        /* Extra items stay collapsed until the expand button is clicked */
+        .nav-extra { display: none !important; }
+        .header-nav.is-expanded .nav-extra {
+            display: inline-flex !important;
+            animation: nav-extra-in 0.3s ease forwards;
+        }
+        @keyframes nav-extra-in {
+            from { opacity: 0; transform: translateX(-6px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        /* ================================================================
+           "Gen Studies" nav link — pinned to the SAME viewport coordinates
+           as the Gen Studies page title (top:32px right:32px, font 15.2px,
+           line-height:1) so the View Transition across pages hands off
+           cleanly. Natural nav flow can't hit that pixel exactly, so the
+           link is taken out of flow.
+           ================================================================ */
+        .header-nav a.nav-gen {
+            position: fixed;
+            top: 28px;
+            right: 32px;
+            z-index: 1001;
+            font-size: 15.2px;
+            letter-spacing: -0.005em;
+            line-height: 1;
+        }
+        /* Reserve horizontal space in the nav so Work / About / Blog don't
+           slide into the pinned Gen Studies label's territory. */
+        .header-nav {
+            padding-right: 130px;
+        }
+
         /* NDA menu item: inline lock icon after the label */
         .header-nav a.menu-nda,
         .menu-overlay-link.menu-nda {
@@ -338,13 +452,14 @@
             to   { background-position: -200% 50%; }
         }
         @media (prefers-reduced-motion: reduce) {
+            .header-nav a.nav-gen,
             .menu-overlay-link.nav-gen { animation: none; }
         }
 
         .header-right {
-            justify-self: end;
             display: flex;
             align-items: center;
+            justify-self: end;
             gap: 16px;
         }
 
@@ -391,23 +506,9 @@
             line-height: 1;
         }
         
-        /* Mail Icon */
-        .mail-icon {
-            width: 52px;
-            height: 29px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: rgba(255,255,255,0.7);
-            transition: color 0.25s ease;
-        }
-        .mail-icon:hover { color: #fff; }
-        .mail-icon svg { display: block; }
-
         /* Menu Icon */
         .menu-icon {
-            width: 36px;
+            width: 29px;
             height: 29px;
             position: relative;
             cursor: pointer;
@@ -422,22 +523,22 @@
             height: 1.5px;
             border-radius: 1px;
             position: absolute;
-            left: 0;
-            width: 36px;
+            left: 3.5px;
+            width: 22px;
             transition: all 0.3s ease;
         }
-
+        
         .menu-icon span:nth-child(1) {
             top: 9px;
         }
-
+        
         .menu-icon span:nth-child(2) {
             top: 17px;
         }
-
+        
         /* Hover: bottom line shortens */
         .menu-icon:hover span:nth-child(2) {
-            width: 20px;
+            width: 14px;
         }
         
         .header-cta {
@@ -593,105 +694,25 @@
             color: rgba(255, 255, 255, 0.65);
         }
         
-        /* ─────────────────────────────────────────
-           HERO  —  Swiss International Grid
-           Base unit: 8px
-           Columns: 192px | gap 56px | 1fr
-           Bottom padding: 80px  Top: 160px
-           ───────────────────────────────────────── */
         .hero {
             min-height: 100vh;
-            display: grid;
-            grid-template-columns: 192px 1fr;
-            align-items: end;
-            padding: 160px 80px 80px;
-            column-gap: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 80px 80px;
             position: relative;
             z-index: 1;
+            /* Shock colour — Klein Blue (IKB). Hero text flips to white. */
             background: #002FA7;
+            border-radius: 0;
         }
-
-        /* ── LEFT: Swiss manifest ── */
-        .hero-aside {
-            display: flex;
-            flex-direction: column;
-            gap: 0;                   /* rows are self-spaced via padding */
-            padding-bottom: 0;
-        }
-
-        .aside-row {
-            display: grid;
-            grid-template-columns: 1fr;
-            row-gap: 4px;
-            padding: 16px 0;
-            border-top: 1px solid rgba(255,255,255,0.14);
-        }
-        .aside-row:last-child {
-            border-bottom: 1px solid rgba(255,255,255,0.14);
-        }
-
-        .aside-label {
-            font-size: 8px;
-            font-weight: 500;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.28);
-            line-height: 16px;       /* 2 × 8 */
-        }
-        .aside-values {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
-        .aside-value {
-            font-size: 12px;
-            font-weight: 400;
-            letter-spacing: 0.005em;
-            color: rgba(255,255,255,0.88);
-            line-height: 20px;       /* 2.5 × 8 */
-        }
-        .aside-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0 16px;
-            margin-top: 4px;
-        }
-        .aside-tag {
-            font-size: 9px;
-            font-weight: 400;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.38);
-            line-height: 16px;
-        }
-
-        /* ── RIGHT: Display headline ── */
-        .hero-main {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 40px;
-            padding-bottom: 0;
-        }
-        .hero-headline {
-            font-size: clamp(3.2rem, 7.8vw, 9rem);
-            font-weight: 300;
-            line-height: 0.95;
-            letter-spacing: -0.04em;
-            color: #ffffff;
-            margin: 0;
-        }
-
-        @media (max-width: 768px) {
-            .hero {
-                grid-template-columns: 1fr;
-                padding: 120px 32px 56px;
-                column-gap: 0;
-                row-gap: 48px;
-            }
-            .hero-aside { order: 2; }
-            .hero-main  { order: 1; }
-            .hero-headline { font-size: clamp(2.8rem, 10vw, 4.8rem); line-height: 1.0; }
+        .hero .hero-label { color: rgba(255,255,255,0.55); }
+        .hero .hero-title { color: rgba(255,255,255,0.75); }
+        .hero .hero-subtitle { color: #ffffff; }
+        
+        .hero-content {
+            max-width: 1100px;
+            text-align: center;
         }
         
         .hero::before {
@@ -4142,7 +4163,11 @@ margin-top: 3px;
             .header-content {
                 padding: 16px 24px;
             }
-
+            
+            .header-nav {
+                display: none;
+            }
+            
             .hero, .gallery-1, .research, .blog-magazine {
                 padding: 100px 24px 48px;
             }
@@ -4568,18 +4593,25 @@ margin-top: 3px;
     <header class="header" id="header">
         <div class="header-content">
             <div class="header-left">
-                <span class="header-role">Pedro Mota Gomes</span>
+                <a href="javascript:void(0)" class="header-logo" onclick="scrollToTop()"><span>M<span class="mg-g">Ⓖ</span></span></a>
             </div>
-            <a href="javascript:void(0)" class="header-logo" onclick="scrollToTop()">
-                <span>M<span class="mg-g">Ⓖ</span></span>
-            </a>
+            <div class="header-center" id="navClock">GMT 00:00</div>
+
             <div class="header-right">
-                <a href="mailto:hello@motagomes.com" class="mail-icon" aria-label="Send email">
-                    <svg width="34" height="14" viewBox="0 0 34 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="1" y="1" width="32" height="12" rx="1.5"/>
-                        <polyline points="1,1 17,8 33,1"/>
-                    </svg>
-                </a>
+                <nav class="header-nav">
+                    <button type="button" class="nav-expand" id="navExpand" aria-label="Expand menu" aria-expanded="false"><svg class="nav-expand-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 6 9 12 15 18"/></svg></button>
+                    <a href="#work" data-i18n="menu.work">Work</a>
+                    <a href="#about" class="nav-extra" data-i18n="menu.about">About</a>
+                    <a href="/blog.html" class="nav-extra" data-i18n="menu.blog">Blog</a>
+                    <a href="javascript:void(0)" data-i18n="menu.research" hidden style="display:none">Research</a>
+                    <a href="javascript:void(0)" class="menu-nda" onclick="event.preventDefault();openPwModal()" aria-label="NDA-protected work" hidden style="display:none"><span data-i18n="menu.nda">NDA</span><svg class="menu-nda-lock" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></a>
+                    <a href="/gen-studio.html" class="nav-gen" data-i18n="menu.gen">Gen Studies</a>
+                </nav>
+                <div class="header-lang" role="group" aria-label="Language" hidden style="display:none">
+                    <button type="button" data-i18n-toggle="en" aria-pressed="true">EN</button>
+                    <span class="ml-sep" aria-hidden="true">/</span>
+                    <button type="button" data-i18n-toggle="pt" aria-pressed="false">PT</button>
+                </div>
                 <div class="menu-icon" id="hamburger">
                     <span></span>
                     <span></span>
@@ -4663,46 +4695,14 @@ margin-top: 3px;
 
         <!-- SECTION 1: HERO -->
         <section class="snap-section hero" id="hero">
-            <div class="hero-aside">
-
-                <div class="aside-row">
-                    <span class="aside-label">Discipline</span>
-                    <div class="aside-values">
-                        <span class="aside-value">Brand Identity</span>
-                        <span class="aside-value">Digital Design</span>
-                        <span class="aside-value">Art Direction</span>
-                        <span class="aside-value">Motion & Gen AI</span>
-                    </div>
-                </div>
-
-                <div class="aside-row">
-                    <span class="aside-label">Recognition</span>
-                    <div class="aside-values">
-                        <span class="aside-value">16+ Awards</span>
-                    </div>
-                    <div class="aside-tags">
-                        <span class="aside-tag">Awwwards</span>
-                        <span class="aside-tag">FWA</span>
-                        <span class="aside-tag">CSSDA</span>
-                    </div>
-                </div>
-
-                <div class="aside-row">
-                    <span class="aside-label">Based in</span>
-                    <div class="aside-values">
-                        <span class="aside-value">Lisbon, PT</span>
-                    </div>
-                </div>
-
-            </div>
-            <div class="hero-main">
-                <h1 class="hero-headline">Hybrid<br>Designer.</h1>
-                <a href="#work" class="mbtn" aria-label="View Work">
+            <div class="hero-content">
+                <p class="hero-subtitle"><span class="hs-part p1" data-i18n="hero.p1">Hybrid Designer</span> <span class="hs-part p2"><span data-i18n="hero.p2">focused on elevating brands</span> <span class="hero-inline-stack"><span class="hero-inline-green"></span><img class="hero-inline-image" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1772425940/Layer_21_qw0mad.png" alt=""></span> <span data-i18n="hero.p2b">experiences</span></span> <span class="hs-part p3" data-i18n="hero.p3">that balance aesthetics with purpose and results.</span></p>
+                <a href="#work" class="mbtn" aria-label="View Work" data-i18n-attr="aria-label:hero.viewWork">
                     <span class="mbtn-circle" aria-hidden="true"></span>
                     <span class="mbtn-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                     </span>
-                    <span class="mbtn-label">View Work</span>
+                    <span class="mbtn-label" data-i18n="hero.viewWork">View Work</span>
                 </a>
             </div>
         </section>
@@ -6021,6 +6021,19 @@ margin-top: 3px;
         })();
 
         // ========================================
+        // NAV EXPAND — reveal About / Blog inline
+        // ========================================
+        const navExpand = document.getElementById('navExpand');
+        const headerNav = document.querySelector('.header-nav');
+        if (navExpand && headerNav) {
+            navExpand.addEventListener('click', () => {
+                const expanded = headerNav.classList.toggle('is-expanded');
+                navExpand.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+                navExpand.setAttribute('aria-label', expanded ? 'Collapse menu' : 'Expand menu');
+            });
+        }
+        
+        // ========================================
         // MAKE ENTIRE CARD CLICKABLE
         // ========================================
         document.querySelectorAll('.gallery-stacked-card').forEach(card => {
@@ -6330,6 +6343,27 @@ margin-top: 3px;
             }, 1000);
         }
         
+        // ========================================
+        // NAV CLOCK — London Time
+        // ========================================
+        function updateNavClock() {
+            const el = document.getElementById('navClock');
+            if (!el) return;
+            const fmt = new Intl.DateTimeFormat('en-GB', {
+                timeZone: 'Europe/London',
+                hour: '2-digit', minute: '2-digit',
+                hour12: false
+            });
+            const offset = new Intl.DateTimeFormat('en-GB', {
+                timeZone: 'Europe/London',
+                timeZoneName: 'short'
+            }).formatToParts(new Date()).find(p => p.type === 'timeZoneName');
+            const tz = offset ? offset.value : 'GMT';
+            el.textContent = tz + ' ' + fmt.format(new Date());
+        }
+        updateNavClock();
+        setInterval(updateNavClock, 1000);
+
         // ========================================
         // WIDGET DATE LABEL
         // ========================================
