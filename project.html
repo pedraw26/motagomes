@@ -906,7 +906,7 @@
             display: block;
         }
         @media (max-width: 768px) {
-            .showcase-item.has-sbdarkroom .sbd-grid { inset: 8% 4%; gap: 8px; }
+            .showcase-item.has-sbdarkroom .sbd-grid { inset: 8% 4%; gap: 8px; grid-template-columns: repeat(3, 1fr); }
         }
 
         /* Standard Bank stat-pair — 2-card layout on a white background for contrast.
@@ -1034,6 +1034,10 @@
             }
             .sbsp-stat-row { flex-direction: column; align-items: flex-start; gap: 18px; }
             .sbsp-stat-body { padding-bottom: 0; }
+            /* Remove fixed aspect-ratio on cards when stacked so content isn't clipped */
+            .sbsp-card { aspect-ratio: unset; }
+            .sbsp-card-stat { min-height: 300px; }
+            .sbsp-card-image { aspect-ratio: 16 / 9; }
         }
 
         /* Solid-white breathing slide — one full 16:9 frame in #ffffff */
@@ -1855,6 +1859,7 @@
 
             .project-hero {
                 padding: 0 24px 48px;
+                min-height: 280px;
             }
 
             .section {
@@ -1930,6 +1935,7 @@
         @media (max-width: 480px) {
             .project-hero {
                 padding: 0 20px 40px;
+                min-height: 260px;
             }
 
             .section {
@@ -1972,6 +1978,45 @@
 
             .footer-nav-link:last-child {
                 border-bottom: none;
+            }
+
+            /* Statement text: reduce clamp minimum on very small screens */
+            .overview__statement-text {
+                font-size: clamp(1.45rem, 5.5vw, 1.8rem);
+            }
+
+            /* Meta-item row layout: constrain label + wrap value */
+            .overview__meta-item {
+                align-items: flex-start;
+            }
+            .overview__meta-item .overview__label {
+                flex-shrink: 0;
+                white-space: nowrap;
+            }
+            .overview__meta-item .overview__value {
+                flex: 1;
+                text-align: right;
+                min-width: 0;
+            }
+        }
+
+        /* Doc-player: fix award text and meta sizing on mobile */
+        @media (max-width: 768px) {
+            .doc-player .doc-award {
+                white-space: normal;
+                font-size: 11px;
+            }
+            .doc-player .doc-meta {
+                padding: 6%;
+            }
+            .doc-player .doc-title {
+                font-size: clamp(20px, 5.5vw, 26px);
+            }
+            .doc-player .doc-cta-label {
+                font-size: 12px;
+            }
+            .doc-player .doc-runtime {
+                font-size: 11px;
             }
         }
     </style>
