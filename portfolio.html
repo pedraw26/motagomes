@@ -701,26 +701,111 @@
             color: rgba(255, 255, 255, 0.65);
         }
         
+        /* ── NEW HERO ─────────────────────────────── */
         .hero {
-            min-height: 100vh;
+            height: 84vh;
+            min-height: unset;
+            background: #111111;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 120px 80px 80px;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 0;
+            overflow: hidden;
             position: relative;
             z-index: 1;
-            /* Shock colour — Klein Blue (IKB). Hero text flips to white. */
-            background: #002FA7;
-            border-radius: 0;
         }
+
+        .hero-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 40px;
+            flex-shrink: 0;
+        }
+        .hero-mono {
+            font-family: var(--sf-pro);
+            font-size: 9px;
+            font-weight: 400;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.22);
+        }
+
+        /* ── Image trio ── */
+        .hero-trio-wrap {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            align-items: stretch;
+            min-height: 0;
+        }
+        .hero-trio {
+            display: grid;
+            grid-template-columns: 1fr 1.18fr 1fr;
+            gap: 6px;
+            /* Extend past viewport so outer images bleed */
+            width: calc(100% + 22vw);
+            margin-left: -11vw;
+            align-self: stretch;
+        }
+        .hero-trio-cell {
+            overflow: hidden;
+            position: relative;
+        }
+        .hero-trio-cell img,
+        .hero-trio-ph {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        /* Placeholder colours until real images are dropped in */
+        .hero-trio-cell:nth-child(1) .hero-trio-ph { background: #1c1c1c; }
+        .hero-trio-cell:nth-child(2) .hero-trio-ph { background: #242424; }
+        .hero-trio-cell:nth-child(3) .hero-trio-ph { background: #1c1c1c; }
+
+        /* ── Bottom text strip ── */
+        .hero-bottom-strip {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 18px 40px 24px;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .hero-hl {
+            font-family: var(--sf-pro);
+            font-size: clamp(1.3rem, 2vw, 2.1rem);
+            font-weight: 300;
+            letter-spacing: -0.025em;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.1;
+        }
+        .hero-hl-tag {
+            font-family: var(--sf-pro);
+            font-size: clamp(10px, 0.78vw, 11.5px);
+            font-weight: 300;
+            color: rgba(255,255,255,0.3);
+            line-height: 1.85;
+            max-width: 320px;
+            text-align: right;
+            letter-spacing: 0.01em;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero { height: 78vh; }
+            .hero-top-bar,
+            .hero-bottom-strip { padding: 14px 20px; }
+            .hero-trio { width: calc(100% + 32vw); margin-left: -16vw; }
+            .hero-hl-tag { display: none; }
+        }
+
+        /* Keep old hero-label/title/subtitle for any JS still referencing them */
         .hero .hero-label { color: rgba(255,255,255,0.55); }
         .hero .hero-title { color: rgba(255,255,255,0.75); }
         .hero .hero-subtitle { color: #ffffff; }
-        
-        .hero-content {
-            max-width: 1100px;
-            text-align: center;
-        }
+        .hero-content { max-width: 1100px; text-align: center; }
         
         .hero::before {
             display: none;
@@ -4695,16 +4780,35 @@ margin-top: 3px;
 
         <!-- SECTION 1: HERO -->
         <section class="snap-section hero" id="hero">
-            <div class="hero-content">
-                <p class="hero-subtitle"><span class="hs-part p1" data-i18n="hero.p1">Hybrid Designer</span> <span class="hs-part p2"><span data-i18n="hero.p2">focused on elevating brands</span> <span class="hero-inline-stack"><span class="hero-inline-green"></span><img class="hero-inline-image" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1772425940/Layer_21_qw0mad.png" alt=""></span> <span data-i18n="hero.p2b">experiences</span></span> <span class="hs-part p3" data-i18n="hero.p3">that balance aesthetics with purpose and results.</span></p>
-                <a href="#work" class="mbtn" aria-label="View Work" data-i18n-attr="aria-label:hero.viewWork">
-                    <span class="mbtn-circle" aria-hidden="true"></span>
-                    <span class="mbtn-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-                    </span>
-                    <span class="mbtn-label" data-i18n="hero.viewWork">View Work</span>
-                </a>
+
+            <!-- Top meta bar -->
+            <div class="hero-top-bar">
+                <span class="hero-mono">Pedro Mota Gomes</span>
+                <span class="hero-mono">Brand &amp; Digital — Lisbon, PT</span>
             </div>
+
+            <!-- Three bleeding images -->
+            <div class="hero-trio-wrap">
+                <div class="hero-trio">
+                    <div class="hero-trio-cell">
+                        <!-- swap src when ready -->
+                        <div class="hero-trio-ph"></div>
+                    </div>
+                    <div class="hero-trio-cell">
+                        <div class="hero-trio-ph"></div>
+                    </div>
+                    <div class="hero-trio-cell">
+                        <div class="hero-trio-ph"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom title strip -->
+            <div class="hero-bottom-strip">
+                <h1 class="hero-hl">Hybrid Designer.</h1>
+                <p class="hero-hl-tag">Focused on elevating brands &amp; experiences<br>that balance aesthetics with purpose and results.</p>
+            </div>
+
         </section>
 
         <!-- SECTION 2: GALLERY STACKED WITH GRADIENTS -->
