@@ -736,33 +736,45 @@
             flex: 1;
             overflow: hidden;
             display: flex;
-            align-items: stretch;
+            align-items: center;
+            justify-content: center;
             min-height: 0;
         }
         .hero-trio {
-            display: grid;
-            grid-template-columns: 1fr 1.18fr 1fr;
-            gap: 6px;
-            /* Extend past viewport so outer images bleed */
-            width: calc(100% + 22vw);
-            margin-left: -11vw;
-            align-self: stretch;
+            /* Fixed height — all images same height, width follows natural ratio */
+            height: 54vh;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            /* Extend past viewport edges so outer images bleed */
+            width: calc(100% + 20vw);
+            margin-left: -10vw;
+            flex-shrink: 0;
         }
         .hero-trio-cell {
+            height: 100%;
+            flex-shrink: 0;
             overflow: hidden;
-            position: relative;
         }
-        .hero-trio-cell img,
-        .hero-trio-ph {
+        .hero-trio-cell img {
+            height: 100%;
+            width: auto;   /* natural width at fixed height — preserves ratio */
+            display: block;
+            max-width: none;
+        }
+        /* Center cell stretches to fill remaining space */
+        .hero-trio-cell:nth-child(2) {
+            flex: 1;
+        }
+        .hero-trio-cell:nth-child(2) img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            display: block;
+            object-fit: cover;
         }
-        /* Placeholder colours until real images are dropped in */
-        .hero-trio-cell:nth-child(1) .hero-trio-ph { background: #1c1c1c; }
-        .hero-trio-cell:nth-child(2) .hero-trio-ph { background: #242424; }
-        .hero-trio-cell:nth-child(3) .hero-trio-ph { background: #1c1c1c; }
+
+        @media (max-width: 768px) {
+            .hero-trio { height: 42vh; width: calc(100% + 32vw); margin-left: -16vw; }
+        }
 
         /* ── Bottom text strip ── */
         .hero-bottom-strip {
