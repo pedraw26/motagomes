@@ -757,6 +757,19 @@
             object-fit: cover;
             display: block;
         }
+        /* Badge overlay on centre hero image */
+        .hero-trio-cell--badge { position: relative; }
+        .hero-trio-badge {
+            position: absolute;
+            top: 5%;
+            right: 5%;
+            width: 18%;
+            height: auto;
+            object-fit: unset;
+            z-index: 2;
+            pointer-events: none;
+        }
+
         /* Crop 2% from right of third image to remove edge line */
         .hero-trio-cell:last-child img {
             clip-path: inset(0 2% 0 0);
@@ -4789,8 +4802,9 @@ margin-top: 3px;
                     <div class="hero-trio-cell">
                         <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_900/v1776558077/logo_giant_ycehuz.webp" alt="Standard Bank">
                     </div>
-                    <div class="hero-trio-cell">
+                    <div class="hero-trio-cell hero-trio-cell--badge">
                         <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/q_100/portfolio/galp-man.jpg" alt="Galp Man">
+                        <img class="hero-trio-badge" src="https://res.cloudinary.com/dzgqzeebg/image/upload/q_100/portfolio/galp-badge.png" alt="">
                     </div>
                     <div class="hero-trio-cell">
                         <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_900/v1773804627/Moope_kb7fve.jpg" alt="Moope">
