@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galp Christmas — Marquee</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%; height: 100%;
+    background: #28602f;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  }
+  .stage {
+    position: absolute; inset: 0;
+    display: flex; align-items: center;
+    overflow: hidden; background: #28602f;
+  }
+  .marquee {
+    display: flex; align-items: center;
+    gap: 0.8vw;
+    width: max-content;
+    animation: scroll-left 50s linear infinite;
+    will-change: transform;
+  }
+  @keyframes scroll-left {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .card {
+    height: 70vh;
+    width: auto;
+    flex-shrink: 0;
+    display: block;
+    object-fit: contain;
+    border-radius: 22px;
+    filter: drop-shadow(0 30px 40px rgba(0,0,0,0.25));
+  }
+  .stage:hover .marquee { animation-play-state: paused; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="marquee">
+    <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/q_100/galp-marquee/1.webp" alt="">
+    <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/q_100/galp-marquee/2.webp" alt="">
+    <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/q_100/galp-marquee/3-fresh.webp" alt="">
+    <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/q_100/galp-marquee/4.webp" alt="">
+    <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/q_100/galp-marquee/1.webp" alt="" aria-hidden="true">
+    <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/q_100/galp-marquee/2.webp" alt="" aria-hidden="true">
+    <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/q_100/galp-marquee/3-fresh.webp" alt="" aria-hidden="true">
+    <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/q_100/galp-marquee/4.webp" alt="" aria-hidden="true">
+  </div>
+</div>
+</body>
+</html>
