@@ -79,14 +79,19 @@
 
   .mail {
     width: 100%;
-    max-width: 544px;
+    max-width: 480px;
+    aspect-ratio: 3 / 4;
     background: #ffffff;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 16px 50px rgba(20, 20, 20, 0.08);
     outline: 1px solid #d1d1d1;
     outline-offset: -1px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
   }
+  .mail > *:not(.email-sender):not(.email-footer) { min-height: 0; }
 
   /* ─────────── Phone shell (showcase, ported from v1) ──── */
   .phone-shell {
@@ -576,7 +581,7 @@
 <main class="canvas" aria-label="Candando gift card showcase">
 
 <div class="asset-col">
-  <div class="asset-label"><span>iOS Message</span><span class="asset-dim">380 × 824</span></div>
+  <div class="asset-label"><span>iOS Message</span><span class="asset-dim">360 × 640 · 9:16</span></div>
 <section class="phone-shell" aria-label="iPhone message mockup">
   <header class="phone-top">
     <div class="back-stack" aria-hidden="true">
@@ -632,7 +637,7 @@
 </div>
 
 <div class="asset-col">
-  <div class="asset-label"><span>Email</span><span class="asset-dim">680 × 1024</span></div>
+  <div class="asset-label"><span>Email</span><span class="asset-dim">480 × 640 · 3:4</span></div>
 <div class="mail" role="article" aria-label="Candando gift card email">
 
   <div class="email-sender">
