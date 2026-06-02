@@ -6461,12 +6461,7 @@ margin-top: 3px;
                 hour: '2-digit', minute: '2-digit',
                 hour12: false
             });
-            const offset = new Intl.DateTimeFormat('en-GB', {
-                timeZone: 'Europe/London',
-                timeZoneName: 'short'
-            }).formatToParts(new Date()).find(p => p.type === 'timeZoneName');
-            const tz = offset ? offset.value : 'GMT';
-            el.textContent = tz + ' ' + fmt.format(new Date());
+            el.textContent = 'LONDON ' + fmt.format(new Date());
         }
         updateNavClock();
         setInterval(updateNavClock, 1000);
