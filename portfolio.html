@@ -758,14 +758,15 @@
             display: block;
         }
         /* Badge overlay on centre hero image */
-        .hero-trio-cell--badge { position: relative; }
+        .hero-trio-cell--badge { position: relative; overflow: visible; }
         .hero-trio-badge {
             position: absolute;
-            top: 5%;
-            right: 5%;
-            width: 18%;
+            top: 24px;
+            right: 24px;
+            width: 12%;
+            max-width: 130px;
             height: auto;
-            object-fit: unset;
+            object-fit: contain;
             z-index: 2;
             pointer-events: none;
         }
