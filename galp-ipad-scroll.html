@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galp Christmas — iPad Scroll</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: #1a1410;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── 16:9 stage that maintains aspect ratio ── */
+  .stage {
+    position: relative;
+    width: 100vw;
+    aspect-ratio: 2048 / 1152;
+    max-height: 100vh;
+    max-width: calc(100vh * 2048 / 1152);
+    overflow: hidden;
+  }
+
+  /* ── iPad mockup fills the stage exactly ── */
+  .mockup {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 1;
+  }
+
+  /* ── Screen area sits over the iPad's white screen ──
+     Coordinates are % of the stage (which matches the image),
+     so they're now reliable. */
+  .screen {
+    position: absolute;
+    top: 16.3%;
+    left: 23.3%;
+    width: 53.0%;
+    height: 66.8%;
+    overflow: hidden;
+    background: #ffffff;
+    z-index: 2;
+    /* Match iPad screen corner radius (~25px in 2048px wide source = ~2.3%) */
+    border-radius: clamp(10px, 1.4vw, 28px);
+  }
+
+  /* ── Article — smooth scroll down, then back up, like reading ── */
+  .article {
+    width: 100%;
+    display: block;
+    animation: read-scroll 14s ease-in-out infinite;
+  }
+
+  /* Pause on hover */
+  .screen:hover .article { animation-play-state: paused; }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <img class="mockup"
+       src="https://res.cloudinary.com/dzgqzeebg/image/upload/q_100/galp-marquee/ipad-mockup.webp"
+       alt="">
+  <div class="screen">
+    <img class="article"
+         src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_1600,c_limit/v1777074228/m4wvh9tnwv4vvvhhzxyf.png"
+         alt="Galp Christmas — article">
+  </div>
+</div>
+
+<script>
+  // The keyframes above won't actually move the article because translateY
+  // needs the article's height vs screen height. Compute it precisely.
+  const article = document.querySelector('.article');
+  const screen  = document.querySelector('.screen');
+
+  function setupAnimation() {
+    // Wait for the article image to load so we have its rendered height
+    const apply = () => {
+      const articleH = article.getBoundingClientRect().height;
+      const screenH  = screen.getBoundingClientRect().height;
+      const delta = Math.max(0, articleH - screenH);
+      // Inject the precise distance into a CSS variable
+      document.documentElement.style.setProperty('--scroll-distance', `-${delta}px`);
+    };
+    if (article.complete) apply();
+    else article.addEventListener('load', apply);
+    window.addEventListener('resize', apply);
+  }
+  setupAnimation();
+</script>
+
+<style>
+  /* Smooth down-and-back scroll; uses precise distance from JS */
+  @keyframes read-scroll {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(var(--scroll-distance, -100%)); }
+    100% { transform: translateY(0); }
+  }
+</style>
+
+</body>
+</html>
