@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candando — iPad Email (Mail.app)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a1a;
+    --muted: #8a8a8a;
+    --line: #e5e5e5;
+    --bg: #f4f1ea;
+    --red: #d41f3d;
+    --sidebar-bg: #f6f6f6;
+    --hl: #dfe7ff;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--bg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  /* ── Stage ── */
+  .stage {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px;
+  }
+
+  /* ── iPad in LANDSCAPE (4:3) ── */
+  .ipad {
+    /* Landscape iPad — wider than tall */
+    height: clamp(420px, 84vh, 820px);
+    aspect-ratio: 4 / 3;
+    background: #0a0a0a;
+    border-radius: clamp(22px, 2.6vh, 38px);
+    padding: clamp(10px, 1.2vh, 18px);
+    box-shadow:
+      0 1px 0 rgba(0,0,0,0.06),
+      0 30px 60px rgba(40,30,50,0.22),
+      0 80px 120px rgba(40,30,50,0.14);
+  }
+
+  .ipad-screen {
+    width: 100%; height: 100%;
+    background: #fff;
+    border-radius: clamp(14px, 1.6vh, 26px);
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+
+  /* ── iPadOS top status bar ── */
+  .ios-statusbar {
+    height: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 22px;
+    background: #fff;
+    border-bottom: 0.5px solid var(--line);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    flex-shrink: 0;
+  }
+  .ios-statusbar .right { display: flex; gap: 6px; align-items: center; }
+
+  /* ── Mail app layout: sidebar | content ── */
+  .mail-app {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* SIDEBAR (inbox list) */
+  .sidebar {
+    background: var(--sidebar-bg);
+    border-right: 0.5px solid var(--line);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .sidebar-header {
+    padding: 14px 18px 10px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .sidebar-header .title {
+    font-size: 22px; font-weight: 700; letter-spacing: -0.02em;
+  }
+  .sidebar-header .icons {
+    display: flex; gap: 14px; color: #007aff;
+  }
+  .sidebar-header .icons svg { width: 18px; height: 18px; }
+  .sidebar-search {
+    margin: 0 14px 8px;
+    height: 30px;
+    border-radius: 8px;
+    background: #e5e5ea;
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 10px;
+    color: #8e8e93;
+    font-size: 13px;
+  }
+  .sidebar-search svg { width: 14px; height: 14px; }
+  .mail-list { flex: 1; overflow: hidden; }
+  .mail-item {
+    padding: 12px 16px;
+    border-bottom: 0.5px solid var(--line);
+    cursor: pointer;
+    display: flex; flex-direction: column;
+    gap: 3px;
+    position: relative;
+  }
+  .mail-item.unread::before {
+    content: ''; position: absolute;
+    left: 6px; top: 50%; transform: translateY(-50%);
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #007aff;
+  }
+  .mail-item.active {
+    background: var(--hl);
+  }
+  .mail-item-top {
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .mail-item-from {
+    font-size: 14px; font-weight: 600;
+    color: var(--ink);
+  }
+  .mail-item-time {
+    font-size: 11px; color: var(--muted);
+  }
+  .mail-item-subject {
+    font-size: 13px; font-weight: 500;
+    color: var(--ink);
+  }
+  .mail-item-preview {
+    font-size: 12px; color: var(--muted);
+    line-height: 1.35;
+    overflow: hidden; text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  /* CONTENT (open email) */
+  .content {
+    background: #fff;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    min-height: 0;
+  }
+  .content > .email-canvas { min-height: 0; }
+  .content-toolbar {
+    padding: 10px 22px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 0.5px solid var(--line);
+    color: #007aff;
+    font-size: 16px;
+  }
+  .content-toolbar svg { width: 18px; height: 18px; }
+  .toolbar-actions { display: flex; gap: 20px; }
+
+  .email-head {
+    padding: 18px 28px 16px;
+    border-bottom: 0.5px solid var(--line);
+  }
+  .email-head .subject {
+    font-size: 20px; font-weight: 600;
+    letter-spacing: -0.015em;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .email-head .sender-row {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .email-head .av {
+    width: 36px; height: 36px; border-radius: 50%;
+    background:
+      url("https://res.cloudinary.com/dzgqzeebg/image/upload/v1777144369/candando-logo.svg") center / 64% auto no-repeat,
+      var(--red);
+  }
+  .email-head .from { font-size: 14px; font-weight: 600; }
+  .email-head .meta { font-size: 12px; color: var(--muted); }
+  .email-head .time {
+    margin-left: auto;
+    font-size: 12px; color: var(--muted);
+  }
+
+  /* Red background fills the canvas; email body sits centered at 600px
+     as designed. Vertical scroll enabled when content overflows. */
+  .email-canvas {
+    background: var(--red);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    padding: 26px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    /* Hide scrollbar entirely (still scrollable) */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .email-canvas::-webkit-scrollbar { width: 0; height: 0; display: none; }
+  .email-body {
+    width: 100%;
+    max-width: 600px;
+    background: var(--red);
+    color: #fff;
+    border-radius: 10px;
+    overflow: visible;
+    text-align: center;
+    padding: 32px 28px 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  /* Inline SVG renders the Candando logo cleanly in white */
+  .email-body .logo {
+    width: 64px; height: 64px;
+    margin: 0 auto 22px;
+    display: block;
+  }
+  .email-body h1 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 12px;
+  }
+  .email-body .lede {
+    font-size: 13px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 22px;
+    max-width: 440px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .email-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1692 / 1080;
+    border-radius: 12px;
+    background: #6fc1ec url("https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1777144117/candando-card-kid.png") center / cover no-repeat;
+    margin-bottom: 22px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    overflow: hidden;
+    transition: transform 0.45s cubic-bezier(.22, 1, .36, 1),
+                box-shadow 0.45s cubic-bezier(.22, 1, .36, 1);
+    will-change: transform;
+  }
+  .email-card:hover {
+    transform: translateY(-4px) rotateX(2deg) rotateY(-1deg) scale(1.012);
+    box-shadow: 0 14px 26px rgba(0,0,0,0.22),
+                0 28px 44px rgba(0,0,0,0.18);
+  }
+  /* Specular sheen sweep on hover */
+  .email-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg,
+      transparent 35%,
+      rgba(255,255,255,0.45) 50%,
+      rgba(255,255,255,0) 65%);
+    transform: translateX(-110%);
+    opacity: 0;
+    transition: transform 1s cubic-bezier(.22, 1, .36, 1),
+                opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .email-card:hover::before {
+    transform: translateX(110%);
+    opacity: 1;
+  }
+  .email-cta {
+    background: #fff;
+    color: var(--red);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 13px 36px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 16px;
+  }
+  .email-fineprint {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="ipad">
+    <div class="ipad-screen">
+
+      <!-- iOS status bar -->
+      <div class="ios-statusbar">
+        <span>09:41</span>
+        <span class="right">
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="currentColor"><rect x="0" y="6" width="2" height="4"/><rect x="3" y="4" width="2" height="6"/><rect x="6" y="2" width="2" height="8"/><rect x="9" y="0" width="2" height="10"/></svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor" aria-label="Wi-Fi"><path d="M8 1.3C4.4 1.3 1.4 2.7 0 4.4l1.8 1.7C2.9 4.8 5.3 3.9 8 3.9s5.1.9 6.2 2.2L16 4.4C14.6 2.7 11.6 1.3 8 1.3z"/><path d="M8 4.9C5.7 4.9 3.6 5.8 2.4 7.1l1.7 1.6C5 7.6 6.4 7 8 7s3 .6 3.9 1.7l1.7-1.6C12.4 5.8 10.3 4.9 8 4.9z"/><circle cx="8" cy="9.6" r="1.3"/></svg>
+          <svg width="22" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="1"><rect x="0.5" y="0.5" width="18" height="9" rx="2"/><rect x="2" y="2" width="16" height="6" fill="currentColor"/><rect x="20" y="3" width="1.5" height="4" rx="0.5" fill="currentColor"/></svg>
+        </span>
+      </div>
+
+      <!-- Mail app — sidebar + content -->
+      <div class="mail-app">
+
+        <!-- SIDEBAR: Inbox -->
+        <div class="sidebar">
+          <div class="sidebar-header">
+            <div class="title">Inbox</div>
+            <div class="icons">
+              <!-- Compose (square.and.pencil) -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6.5A1.5 1.5 0 0 1 6.5 5h6"/><path d="M5 6.5v11A1.5 1.5 0 0 0 6.5 19h11a1.5 1.5 0 0 0 1.5-1.5v-6"/><path d="m14.5 5.5 4 4-7.2 7.2a1.2 1.2 0 0 1-.55.32l-2.6.7.7-2.6a1.2 1.2 0 0 1 .32-.55Z"/><path d="m13.4 6.6 4 4"/></svg>
+            </div>
+          </div>
+
+          <div class="sidebar-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+            <span>Search</span>
+          </div>
+
+          <div class="mail-list">
+            <div class="mail-item unread active">
+              <div class="mail-item-top">
+                <span class="mail-item-from">Candando ✓</span>
+                <span class="mail-item-time">09:41</span>
+              </div>
+              <div class="mail-item-subject">Um presente que cabe em qualquer momento.</div>
+              <div class="mail-item-preview">Olá, Janaína! Recebeu um cartão Candando para usar como quiser, quando quiser…</div>
+            </div>
+
+            <div class="mail-item">
+              <div class="mail-item-top">
+                <span class="mail-item-from">TAAG</span>
+                <span class="mail-item-time">Ontem</span>
+              </div>
+              <div class="mail-item-subject">Reserva confirmada · LAD → LIS</div>
+              <div class="mail-item-preview">Janaína, obrigado pela sua reserva. O seu voo está confirmado para o dia 14…</div>
+            </div>
+
+            <div class="mail-item">
+              <div class="mail-item-top">
+                <span class="mail-item-from">UNITEL</span>
+                <span class="mail-item-time">Ontem</span>
+              </div>
+              <div class="mail-item-subject">Sua fatura está disponível</div>
+              <div class="mail-item-preview">A fatura do mês de janeiro já pode ser consultada na app Unitel ou no website…</div>
+            </div>
+
+            <div class="mail-item">
+              <div class="mail-item-top">
+                <span class="mail-item-from">Multicaixa Express</span>
+                <span class="mail-item-time">2 Jan</span>
+              </div>
+              <div class="mail-item-subject">Pagamento recebido — Kz 9.000</div>
+              <div class="mail-item-preview">Recebeu uma transferência de Lourdes B. no valor de 9.000 Kz na sua conta…</div>
+            </div>
+
+            <div class="mail-item">
+              <div class="mail-item-top">
+                <span class="mail-item-from">BAI</span>
+                <span class="mail-item-time">1 Jan</span>
+              </div>
+              <div class="mail-item-subject">Bom ano novo, Janaína</div>
+              <div class="mail-item-preview">Que 2026 seja o seu melhor ano. Estamos aqui para o acompanhar em todos os…</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTENT: Open email -->
+        <div class="content">
+
+          <!-- Toolbar (iPad Mail.app — open email) -->
+          <div class="content-toolbar">
+            <!-- Back chevron (sidebar collapse) -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6 9 12l5.5 6"/></svg>
+            <div class="toolbar-actions">
+              <!-- Move / folder -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5A1.5 1.5 0 0 1 5 6h3.6a1.5 1.5 0 0 1 1.06.44l1.3 1.3a1.5 1.5 0 0 0 1.06.44H19a1.5 1.5 0 0 1 1.5 1.5v7.5A1.5 1.5 0 0 1 19 18.5H5A1.5 1.5 0 0 1 3.5 17Z"/></svg>
+              <!-- Trash -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 7h15"/><path d="M10 5h4a1 1 0 0 1 1 1v1H9V6a1 1 0 0 1 1-1Z"/><path d="M6.5 7.5 7.3 18.4A1.6 1.6 0 0 0 8.9 19.9h6.2a1.6 1.6 0 0 0 1.6-1.5l.8-10.9"/></svg>
+              <!-- Reply -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 8V5.5L4.5 11l5.5 5.5V14c3.4 0 6.2.9 8.5 4-.4-4.5-3-9-8.5-10Z"/></svg>
+              <!-- Forward -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 8V5.5L19.5 11 14 16.5V14c-3.4 0-6.2.9-8.5 4 .4-4.5 3-9 8.5-10Z"/></svg>
+              <!-- Flag -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4.5V20"/><path d="M6 5.5h10.5l-2.2 3.2a.5.5 0 0 0 0 .6L16.5 12H6"/></svg>
+              <!-- More (ellipsis) -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="8" cy="12" r=".9" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r=".9" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r=".9" fill="currentColor" stroke="none"/></svg>
+            </div>
+          </div>
+
+          <!-- Email header (subject + sender) -->
+          <div class="email-head">
+            <div class="subject">Um presente que cabe em qualquer momento.</div>
+            <div class="sender-row">
+              <div class="av"></div>
+              <div>
+                <div class="from">Candando ✓</div>
+                <div class="meta">para Janaína</div>
+              </div>
+              <div class="time">Quarta-feira, 09:41</div>
+            </div>
+          </div>
+
+          <!-- Email body — rendered in proper 600px column on grey canvas
+               (this is the iPad-native way) -->
+          <div class="email-canvas">
+            <div class="email-body">
+              <img class="logo" src="https://res.cloudinary.com/dzgqzeebg/image/upload/v1777144369/candando-logo.svg" alt="Candando">
+              <h1>Um presente que cabe<br>em qualquer momento.</h1>
+              <p class="lede">Olá, Janaína! Recebeu um cartão Candando para usar como quiser, quando quiser, em qualquer loja parceira.</p>
+              <div class="email-card"></div>
+              <button class="email-cta">Abrir o seu cartão</button>
+              <p class="email-fineprint">*Válido em todas as lojas Candando &amp; parceiros.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
