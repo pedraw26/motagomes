@@ -26,21 +26,28 @@
     overflow: hidden;
   }
 
-  /* ── Stage ── */
+  /* ── Stage — FIXED design dimensions 1600×1100 (16:11) ──
+     Whole composition is built at this size and proportionally
+     scaled to fit the viewport via transform: scale() in JS.
+     Every internal element uses fixed px values so nothing reflows
+     or changes ratio on resize. */
   .stage {
-    position: absolute; inset: 0;
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 1600px;
+    height: 1100px;
     display: flex; align-items: center; justify-content: center;
-    padding: 40px;
+    transform-origin: center center;
+    transform: translate(-50%, -50%);
   }
 
-  /* ── iPad in LANDSCAPE (4:3) ── */
+  /* ── iPad LANDSCAPE (4:3) at fixed design dimensions ── */
   .ipad {
-    /* Landscape iPad — wider than tall */
-    height: clamp(357px, 71.4vh, 697px);
-    aspect-ratio: 4 / 3;
+    width: 1020px;
+    height: 765px;       /* 4:3 of width */
     background: #0a0a0a;
-    border-radius: clamp(22px, 2.6vh, 38px);
-    padding: clamp(10px, 1.2vh, 18px);
+    border-radius: 32px;
+    padding: 14px;
     box-shadow:
       0 1px 0 rgba(0,0,0,0.06),
       0 30px 60px rgba(40,30,50,0.22),
@@ -50,7 +57,7 @@
   .ipad-screen {
     width: 100%; height: 100%;
     background: #fff;
-    border-radius: clamp(14px, 1.6vh, 26px);
+    border-radius: 22px;
     overflow: hidden;
     display: grid;
     grid-template-rows: auto 1fr;
@@ -436,5 +443,32 @@
   </div>
 </div>
 
+<script>
+  (() => {
+    /* ── Proportional scaling ──────────────────────────────────
+       The .stage is built at a fixed 1600×1100 design size and
+       scaled uniformly to fit the viewport. Every internal
+       element keeps its exact aspect ratio at every viewport
+       size — nothing reflows, nothing changes proportion. */
+    const stage = document.querySelector('.stage');
+    if (!stage) return;
+
+    const DESIGN_W = 1600;
+    const DESIGN_H = 1100;
+
+    function fit() {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const scale = Math.min(vw / DESIGN_W, vh / DESIGN_H);
+      stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    }
+
+    fit();
+    window.addEventListener('resize', fit);
+    if (window.ResizeObserver) {
+      new ResizeObserver(fit).observe(document.documentElement);
+    }
+  })();
+</script>
 </body>
 </html>
