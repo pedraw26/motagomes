@@ -1845,16 +1845,18 @@
             }
 
             .overview__narrative {
-                grid-template-columns: 1fr 1fr;
-                gap: 40px;
+                grid-template-columns: 1fr;
+                gap: 48px;
             }
 
             .overview__narrative-block--challenge {
                 padding-right: 0;
+                grid-column: 1 / -1;
             }
 
             .overview__narrative-block--solution {
                 padding-top: 0;
+                grid-column: 1 / -1;
             }
 
             .overview__metrics {
