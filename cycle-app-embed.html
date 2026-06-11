@@ -412,6 +412,8 @@ const art = document.querySelector('.article');
 const label = document.querySelector('.label');
 const titles = [...document.querySelectorAll('.card span')];
 function openCard() {
+  big.style.height = '572px';
+  big.style.marginTop = '-606px';
   title.style.opacity = '0';
   art.style.opacity = '0';
   titles[2].style.opacity = '0';
@@ -431,7 +433,7 @@ function closeCard() {
   setTimeout(() => { titles[0].style.opacity = '1'; }, 1050);
   setTimeout(() => { titles[1].style.opacity = '1'; }, 1180);
   setTimeout(() => { titles[2].style.opacity = '1'; }, 1310);
-  setTimeout(() => big.classList.remove('open'), 320);
+  setTimeout(() => { big.classList.remove('open'); big.style.height = ''; big.style.marginTop = ''; }, 320);
   setTimeout(() => { art.style.transition = ''; }, 700);
   setTimeout(() => { title.style.opacity = '1'; }, 1200);
   setTimeout(openCard, 4200);
