@@ -229,7 +229,7 @@
     color: rgba(0,0,0,0.72);
     text-align: left;
     max-width: 480px;
-    margin-top: 22px;
+    margin-top: 34px;
     opacity: 0;
     max-height: 0;
     transition: opacity 0.25s ease, max-height 0.85s cubic-bezier(.45,0,.2,1);
@@ -241,6 +241,7 @@
   }
   .article p + p { margin-top: 16px; }
   .cbig h2 {
+    text-wrap: balance;
     transition: opacity 0.3s ease;
     font-family: 'Canela Trial', 'Canela Deck Trial', 'Canela Text Trial', 'Canela', 'Lora', Georgia, serif;
     font-size: 41px; font-weight: 700;
@@ -250,6 +251,16 @@
   }
   .read { position: absolute; bottom: 30px; left: 0; right: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: opacity 0.45s ease 0.85s; }
   .cbig.open .read { opacity: 0; transition: opacity 0.25s ease; }
+  .nextline {
+    position: absolute;
+    bottom: 28px; left: 40px; right: 40px;
+    text-align: left;
+    font-size: 15px; font-weight: 600;
+    color: rgba(0,0,0,0.35);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .cbig.open .nextline { opacity: 1; transition: opacity 0.5s ease 1.9s; }
   .read svg { width: 16px; height: 16px; }
   .dock {
     flex: 1;
@@ -390,6 +401,7 @@
           <p>If your thoughts wander, that counts as noticing.</p>
           <p>Just come back to the exhale.</p>
         </div>
+        <div class="nextline">Next &middot; Warmth on the belly</div>
         <div class="read" style="gap: 26px;">
           <span class="pillbtn"><svg viewBox="0 0 24 24" fill="rgba(0,0,0,0.4)"><path d="M7 4.5 L19 12 L7 19.5 Z"/></svg>Listen</span>
           <span class="pillbtn"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5 C 10.2 4.9 7.6 4.5 5 4.5 L 5 18 C 7.6 18 10.2 18.4 12 20 C 13.8 18.4 16.4 18 19 18 L 19 4.5 C 16.4 4.5 13.8 4.9 12 6.5 Z"/><path d="M12 6.5 L 12 20"/></svg>Read</span>
