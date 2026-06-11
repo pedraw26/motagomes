@@ -412,15 +412,13 @@ const art = document.querySelector('.article');
 const label = document.querySelector('.label');
 const titles = [...document.querySelectorAll('.card span')];
 function openCard() {
-  big.style.height = '572px';
-  big.style.marginTop = '-606px';
   title.style.opacity = '0';
   art.style.opacity = '0';
   titles[2].style.opacity = '0';
   setTimeout(() => { titles[1].style.opacity = '0'; }, 130);
   setTimeout(() => { titles[0].style.opacity = '0'; }, 260);
   setTimeout(() => { label.style.opacity = '0'; }, 420);
-  setTimeout(() => big.classList.add('open'), 300);
+  setTimeout(() => { big.classList.add('open'); big.style.height = '572px'; big.style.marginTop = '-606px'; }, 300);
   setTimeout(() => { title.style.opacity = '1'; }, 1200);
   setTimeout(() => { art.style.opacity = ''; }, 1850);
   setTimeout(closeCard, 17000);
