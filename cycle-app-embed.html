@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cycle app screen — static</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500&display=swap">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #222; display: flex; justify-content: center; padding: 0; }
+  .stage {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: #e87c35;
+    font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  }
+  .stagegrad {
+    position: absolute;
+    inset: -18%;
+    background:
+      radial-gradient(circle at 2% 96%, #c95fd6 0%, rgba(201,95,214,0) 40%),
+      radial-gradient(circle at 0% 45%, #ee5c93 0%, rgba(238,92,147,0) 52%),
+      radial-gradient(circle at 18% 2%, #f08e53 0%, rgba(240,142,83,0) 38%),
+      linear-gradient(100deg, #ee6f8e 0%, #ee8a50 55%, #e87c35 100%);
+    animation: stageflow 22s ease-in-out infinite alternate;
+    filter: saturate(1.07);
+  }
+  @keyframes stageflow {
+    0% { transform: translate(-2.5%, -1.8%) scale(1.02) rotate(-1.2deg); }
+    100% { transform: translate(2.5%, 1.8%) scale(1.1) rotate(1.2deg); }
+  }
+  .noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 300px 300px;
+    opacity: 0.13;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  .phone {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    transform-origin: center;
+    width: 652px; height: 1389px;
+    border: 12px solid rgba(255,255,255,0.55);
+    border-radius: 92px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1.5px #ffffff;
+  }
+  .screen {
+    width: 628px; height: 1365px;
+    display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .bganim {
+    position: absolute; inset: 0;
+    background: linear-gradient(105deg, #ee82c8, #ec8f7e, #e8995f, #f06fa8, #ee82c8);
+    background-size: 320% 320%;
+    animation: flow 12s ease-in-out infinite;
+  }
+  .blob {
+    position: absolute;
+    width: 520px; height: 520px;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.55;
+  }
+  .blob.b1 { background: #f25fae; left: -160px; bottom: -80px; animation: drift1 14s ease-in-out infinite; }
+  .blob.b2 { background: #f0a04e; right: -180px; bottom: 120px; animation: drift2 17s ease-in-out infinite; }
+  @keyframes flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes drift1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(180px, -120px) scale(1.15); }
+  }
+  @keyframes drift2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-200px, 60px) scale(0.9); }
+  }
+  .sheet {
+    background: #f3f2f5;
+    border-radius: 0 0 44px 44px;
+    position: relative; z-index: 1;
+  }
+  .notch {
+    width: 197px; height: 58px;
+    background: #000;
+    border-radius: 29px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .notch::after {
+    content: '';
+    position: absolute;
+    right: 12px; top: 50%;
+    transform: translateY(-50%);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 36% 32%, #2a3442 0%, #131a24 38%, #05070a 72%, #000 100%);
+    box-shadow: inset 0 0 5px rgba(80,110,160,0.3);
+  }
+  .statusbar {
+    position: absolute;
+    top: 24px; left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 56px 0 74px;
+    pointer-events: none;
+  }
+  .sbtime { font-size: 26px; font-weight: 600; color: #111; letter-spacing: 0.2px; }
+  .sbicons { display: flex; align-items: center; gap: 12px; }
+  .header { display: flex; justify-content: space-between; align-items: flex-start; padding: 52px 58px 0 70px; }
+  .day { font-size: 47px; font-weight: 700; color: #171717; letter-spacing: -1px; line-height: 1.04; }
+  .phase { font-size: 30px; font-weight: 400; color: var(--phase-follicular); letter-spacing: -0.3px; margin-top: 3px; }
+  :root {
+    --phase-period: #c0392b;
+    --phase-follicular: #d4537e;
+    --phase-ovulation: #4a8fc7;
+    --phase-luteal: #c98a2e;
+  }
+  .avatar {
+    width: 104px; height: 104px; border-radius: 50%;
+    background: #d9d3e8;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .weekrow {
+    display: grid; grid-template-columns: repeat(6, 1fr);
+    text-align: center;
+    padding: 56px 40px 26px;
+  }
+  .topcard {
+    background: #fff;
+    padding-top: 17px;
+    border-radius: 0 0 36px 36px;
+    box-shadow: 0 18px 22px -14px rgba(90,50,60,0.22);
+    position: relative; z-index: 2;
+  }
+  .weekrow span { font-size: 14px; font-weight: 700; color: #b9b4b6; letter-spacing: 0.5px; }
+  .weekrow span.on { color: #111111; }
+  .daterow {
+    display: grid; grid-template-columns: repeat(6, 1fr);
+    text-align: center; align-items: start;
+    padding: 26px 40px 0;
+  }
+  .dnum { font-size: 19px; font-weight: 500; color: #1d1d1d; padding-top: 28px; line-height: 22px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: #cb2e6e; margin: 11px auto 0; }
+  .dots { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 11px; }
+  .dots .dot { margin: 0; }
+  .selwrap { display: flex; justify-content: center; }
+  .sel {
+    width: 60px; height: 98px;
+    background: #0c0c0c;
+    border-radius: 34px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  }
+  .sel b { font-size: 19px; font-weight: 600; color: #fff; }
+  .sel i { width: 9px; height: 9px; border-radius: 50%; background: #5aa7d8; }
+  .label { font-size: 14px; font-weight: 600; color: #1b1b1b; padding: 88px 0 14px 61px; display: flex; align-items: center; gap: 7px; transition: opacity 0.5s ease; }
+  .cards { padding: 0 34px; margin-bottom: 250px; }
+  .card {
+    border-radius: 30px;
+    height: 164px;
+    padding: 30px 27px 0;
+    position: relative;
+    transition: background-color 0.7s ease;
+  }
+  .card + .card { margin-top: -84px; box-shadow: 0 -10px 16px -12px rgba(60,30,40,0.13); }
+  .playchip {
+    position: absolute;
+    top: 20px; right: 24px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(60,40,20,0.10);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .playchip svg { width: 16px; height: 16px; margin-left: 2px; }
+  .pillbtn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 16px; font-weight: 600; color: rgba(0,0,0,0.4);
+  }
+  .pillbtn svg { width: 15px; height: 15px; }
+  .card span { transition: opacity 0.35s ease; font-family: 'Canela Trial', 'Canela Deck Trial', 'Canela Text Trial', 'Canela', 'Lora', Georgia, serif; font-size: 26px; font-weight: 600; color: #28201c; letter-spacing: 0.2px; }
+  .c1 { background: #f9e6cb; z-index: 1; }
+  .c2 { background: #f4e09e; z-index: 2; }
+  .c3 { background: #f5c3d7; z-index: 3; }
+  .cbig {
+    box-shadow: 0 -10px 16px -12px rgba(60,30,40,0.13);
+    transition: background-color 0.7s ease;
+    background: #ddd2ee;
+    border-radius: 32px;
+    margin: -334px 34px 0;
+    position: relative; z-index: 4;
+    height: 300px;
+    text-align: center;
+    padding: 0 40px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    transition: height 0.85s cubic-bezier(.45,0,.2,1), margin-top 0.85s cubic-bezier(.45,0,.2,1);
+    overflow: hidden;
+  }
+  .cbig.open {
+    height: 540px;
+    margin-top: -574px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: 52px;
+    text-align: left;
+  }
+  .cbig.open .article { text-align: left; }
+  .article {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: rgba(0,0,0,0.72);
+    text-align: left;
+    max-width: 480px;
+    margin-top: 22px;
+    opacity: 0;
+    max-height: 0;
+    transition: opacity 0.25s ease, max-height 0.85s cubic-bezier(.45,0,.2,1);
+  }
+  .cbig.open .article {
+    opacity: 1;
+    max-height: 300px;
+    transition: opacity 0.5s ease, max-height 0.85s cubic-bezier(.45,0,.2,1);
+  }
+  .article p + p { margin-top: 16px; }
+  .cbig h2 {
+    transition: opacity 0.3s ease;
+    font-family: 'Canela Trial', 'Canela Deck Trial', 'Canela Text Trial', 'Canela', 'Lora', Georgia, serif;
+    font-size: 41px; font-weight: 700;
+    color: #231d2e;
+    line-height: 1.15;
+    letter-spacing: -0.3px;
+  }
+  .read { position: absolute; bottom: 30px; left: 0; right: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: opacity 0.45s ease 0.85s; }
+  .cbig.open .read { opacity: 0; transition: opacity 0.25s ease; }
+  .read svg { width: 16px; height: 16px; }
+  .dock {
+    flex: 1;
+    position: relative; z-index: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 44px 52px;
+  }
+  .ask {
+    width: 92px; height: 92px; border-radius: 50%;
+    background: rgba(255,255,255,0.22);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 25px; font-weight: 500; color: #fff;
+    position: relative; z-index: 0;
+  }
+  .ask::before {
+    content: '';
+    position: absolute; inset: -5px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, rgba(255,255,255,0.15), rgba(255,255,255,0.95) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.85) 75%, rgba(255,255,255,0.15));
+    z-index: -1;
+    filter: blur(7px);
+    animation: siriSpin 3.5s linear infinite;
+  }
+  .ask::after {
+    content: '';
+    position: absolute; inset: -20px;
+    border-radius: 50%;
+    background: conic-gradient(from 180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 30%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.7) 85%, rgba(255,255,255,0) 100%);
+    z-index: -2;
+    filter: blur(26px);
+    opacity: 0.65;
+    animation: siriSpin 5s linear infinite reverse, siriPulse 2.6s ease-in-out infinite;
+  }
+  @keyframes siriSpin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes siriPulse {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 0.85; }
+  }
+  .logtoday {
+    font-size: 27px; font-weight: 500;
+    margin-bottom: 30px;
+    background: linear-gradient(100deg, rgba(255,255,255,0.55) 42%, #ffffff 50%, rgba(255,255,255,0.55) 58%);
+    background-size: 280% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine 3s linear infinite;
+  }
+  @keyframes shine {
+    0% { background-position: 130% 0; }
+    100% { background-position: -130% 0; }
+  }
+  .plus {
+    width: 92px; height: 92px; border-radius: 50%;
+    background: rgba(255,255,255,0.22);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    box-shadow: inset 0 0 16px rgba(255,255,255,0.38), inset 0 0 3px rgba(255,255,255,0.25);
+  }
+  .plus svg {
+    position: absolute;
+    transition: opacity 0.45s ease, transform 0.55s cubic-bezier(.45,0,.2,1);
+  }
+  .plus .ic-play {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.4);
+  }
+  .cbig.open ~ .dock .plus .ic-plus {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.4);
+  }
+  .cbig.open ~ .dock .plus .ic-play {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+  .plus svg { width: 38px; height: 38px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="stagegrad"></div>
+  <div class="noise"></div>
+  <div class="phone">
+    <div class="screen">
+      <div class="bganim"></div>
+      <div class="blob b1"></div>
+      <div class="blob b2"></div>
+      <div class="sheet">
+        <div class="topcard">
+        <div class="statusbar">
+          <span class="sbtime">9:41</span>
+          <span class="sbicons">
+            <svg width="28" height="20" viewBox="0 0 28 20" fill="#111"><rect x="0" y="12" width="5" height="7" rx="1.4"/><rect x="7" y="9" width="5" height="10" rx="1.4"/><rect x="14" y="5.5" width="5" height="13.5" rx="1.4"/><rect x="21" y="2" width="5" height="17" rx="1.4"/></svg>
+            <span style="font-size: 24px; font-weight: 600; color: #111; letter-spacing: 0.3px;">5G</span>
+            <svg width="40" height="20" viewBox="0 0 40 20" fill="none"><rect x="1" y="3" width="33" height="14" rx="4.5" stroke="#111" stroke-opacity="0.4" stroke-width="1.6"/><rect x="3.4" y="5.4" width="22" height="9.2" rx="2.6" fill="#111"/><path d="M36.5 7 a3.6 3.6 0 0 1 0 6" stroke="#111" stroke-opacity="0.4" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span>
+        </div>
+        <div class="notch"></div>
+        <div class="header">
+          <div>
+            <div style="font-size: 16px; font-weight: 600; color: #b8b2b6; letter-spacing: 0.2px; margin-bottom: 8px;">Good morning, Diana</div>
+            <div class="day">Day 12</div>
+            <div class="phase">Follicular phase</div>
+          </div>
+          <div class="avatar">
+            <img src="cycle-avatar.png" alt="Profile photo">
+          </div>
+        </div>
+        <div class="weekrow"><span>S</span><span class="on">M</span><span>T</span><span>W</span><span>T</span><span>S</span></div>
+        </div>
+        <div class="daterow">
+          <div><div class="dnum">22</div><div class="dots"><div class="dot"></div><div class="dot" style="background: #3aa860;"></div></div></div>
+          <div class="selwrap"><div class="sel"><b>23</b><i></i></div></div>
+          <div><div class="dnum">24</div><div class="dot" style="background: #5aa7d8;"></div></div>
+          <div><div class="dnum">25</div><div class="dot" style="background: #5aa7d8;"></div></div>
+          <div><div class="dnum">26</div><div class="dot" style="background: #5aa7d8;"></div></div>
+          <div><div class="dnum">27</div><div class="dot" style="background: transparent;"></div></div>
+        </div>
+        <div class="label">Small things that help</div>
+        <div class="cards">
+          <div class="card c1"><span>Warmth on the belly</span></div>
+          <div class="card c2"><span>Drop the shoulders, unclench the jaw</span></div>
+          <div class="card c3"><span>One-word check-in</span></div>
+        </div>
+      </div>
+      <div class="cbig">
+        <h2 id="herotitle">Relief, without overthinking</h2>
+        <div class="article">
+          <p>When your mind starts to spiral, the longest way out is thinking your way out. The body offers a shortcut.</p>
+          <p>Breathe in through your nose for four counts. Let the exhale stretch to eight, slow and thin, like fogging a mirror. As the breath lengthens, your nervous system reads it as safety.</p>
+          <p>Repeat for two minutes. Nothing to fix, nothing to solve. Just air doing the quiet work.</p>
+          <p>If your thoughts wander, that counts as noticing.</p>
+          <p>Just come back to the exhale.</p>
+        </div>
+        <div class="read" style="gap: 26px;">
+          <span class="pillbtn"><svg viewBox="0 0 24 24" fill="rgba(0,0,0,0.4)"><path d="M7 4.5 L19 12 L7 19.5 Z"/></svg>Listen</span>
+          <span class="pillbtn"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5 C 10.2 4.9 7.6 4.5 5 4.5 L 5 18 C 7.6 18 10.2 18.4 12 20 C 13.8 18.4 16.4 18 19 18 L 19 4.5 C 16.4 4.5 13.8 4.9 12 6.5 Z"/><path d="M12 6.5 L 12 20"/></svg>Read</span>
+        </div>
+      </div>
+      <div class="dock">
+        <div class="ask">Ask</div>
+        <div class="logtoday">Log today</div>
+        <div class="plus">
+          <svg class="ic-plus" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="1.8" stroke-linecap="round"><path d="M12 4v16M4 12h16"/></svg>
+          <svg class="ic-play" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" stroke="rgba(255,255,255,0.9)" stroke-width="3.5" stroke-linejoin="round"><path d="M8.5 6 L18.5 12 L8.5 18 Z"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const big = document.querySelector('.cbig');
+const title = document.getElementById('herotitle');
+const art = document.querySelector('.article');
+const label = document.querySelector('.label');
+const titles = [...document.querySelectorAll('.card span')];
+function openCard() {
+  title.style.opacity = '0';
+  art.style.opacity = '0';
+  titles[2].style.opacity = '0';
+  setTimeout(() => { titles[1].style.opacity = '0'; }, 130);
+  setTimeout(() => { titles[0].style.opacity = '0'; }, 260);
+  setTimeout(() => { label.style.opacity = '0'; }, 420);
+  setTimeout(() => big.classList.add('open'), 300);
+  setTimeout(() => { title.style.opacity = '1'; }, 1200);
+  setTimeout(() => { art.style.opacity = ''; }, 1850);
+  setTimeout(closeCard, 17000);
+}
+function closeCard() {
+  art.style.transition = 'opacity 0.22s ease';
+  art.style.opacity = '0';
+  title.style.opacity = '0';
+  setTimeout(() => { label.style.opacity = '1'; }, 900);
+  setTimeout(() => { titles[0].style.opacity = '1'; }, 1050);
+  setTimeout(() => { titles[1].style.opacity = '1'; }, 1180);
+  setTimeout(() => { titles[2].style.opacity = '1'; }, 1310);
+  setTimeout(() => big.classList.remove('open'), 320);
+  setTimeout(() => { art.style.transition = ''; }, 700);
+  setTimeout(() => { title.style.opacity = '1'; }, 1200);
+  setTimeout(openCard, 4200);
+}
+setTimeout(openCard, 1400);
+</script>
+<script>
+const phoneEl = document.querySelector('.phone');
+function fitPhone() {
+  const s = Math.min(window.innerHeight / 1560, window.innerWidth / 860);
+  phoneEl.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
+}
+fitPhone();
+window.addEventListener('resize', fitPhone);
+</script>
+</body>
+</html>
