@@ -21,7 +21,6 @@
 </head>
 <body>
 <canvas id="world"></canvas>
-<div class="hint">click — drop more · R — restart</div>
 <script>
 /*!
  * matter-js 0.19.0 by @liabru
@@ -43,12 +42,13 @@ const EMOJIS = [
 const { Engine, Render: _R, Runner, Bodies, Composite, Body, Events } = Matter;
 const canvas = document.getElementById('world');
 const ctx = canvas.getContext('2d');
+const DPR = Math.min(devicePixelRatio || 1, 1.5);
 let W = innerWidth, H = innerHeight;
-canvas.width = W * devicePixelRatio;
-canvas.height = H * devicePixelRatio;
+canvas.width = W * DPR;
+canvas.height = H * DPR;
 canvas.style.width = W + 'px';
 canvas.style.height = H + 'px';
-ctx.scale(devicePixelRatio, devicePixelRatio);
+ctx.scale(DPR, DPR);
 
 let engine, bodies, spawnTimer, filled;
 
@@ -68,7 +68,7 @@ function setup() {
   ]);
 
   clearInterval(spawnTimer);
-  spawnTimer = setInterval(spawn, 90);
+  spawnTimer = setInterval(spawn, 130);
 }
 
 function spawn(burstX) {
@@ -97,7 +97,7 @@ function spawn(burstX) {
       highest = b.position.y;
     }
   }
-  if (highest < H * 0.12 || bodies.length > 650) {
+  if (highest < H * 0.12 || bodies.length > 180) {
     filled = true;
     clearInterval(spawnTimer);
   }
@@ -149,25 +149,28 @@ setup();
 Runner.run(runner, engine);
 requestAnimationFrame(draw);
 
-canvas.addEventListener('click', e => {
-  filled = false;
-  for (let i = 0; i < 12; i++) setTimeout(() => spawn(e.clientX), i * 60);
+// Pause physics + rendering when the tab/page isn't visible — saves CPU
+// and prevents a backlog of physics steps when returning to the tab.
+document.addEventListener('visibilitychange', () => {
+  const active = !document.hidden;
+  runner.enabled = active;
+  clearInterval(spawnTimer);
+  if (active && !filled) spawnTimer = setInterval(spawn, 130);
 });
-document.addEventListener('keydown', e => {
-  if (e.key === 'r' || e.key === 'R') {
+
+let resizeTimer;
+addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    W = innerWidth; H = innerHeight;
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.scale(DPR, DPR);
     Composite.clear(engine.world);
     setup();
-  }
-});
-addEventListener('resize', () => {
-  W = innerWidth; H = innerHeight;
-  canvas.width = W * devicePixelRatio;
-  canvas.height = H * devicePixelRatio;
-  canvas.style.width = W + 'px';
-  canvas.style.height = H + 'px';
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-  Composite.clear(engine.world);
-  setup();
+  }, 200);
 });
 </script>
 </body>
