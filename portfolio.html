@@ -757,6 +757,12 @@
             object-fit: cover;
             display: block;
         }
+        .hero-trio-cell .hero-trio-embed {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
         /* Badge sits on the centre cell (the frame), not inside the image */
         .hero-trio-cell--center { position: relative; }
         .hero-trio-cell img.hero-badge {
@@ -4807,7 +4813,7 @@ margin-top: 3px;
             <div class="hero-trio-wrap">
                 <div class="hero-trio">
                     <div class="hero-trio-cell">
-                        <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto,w_900/v1776558077/logo_giant_ycehuz.webp" alt="Standard Bank">
+                        <iframe class="hero-trio-embed" src="/emoji_fall.html" title="Emoji fall" loading="lazy" scrolling="no"></iframe>
                     </div>
                     <div class="hero-trio-cell hero-trio-cell--center">
                         <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/q_100/portfolio/galp-man-clean.jpg" alt="Galp Man">
@@ -4997,11 +5003,12 @@ margin-top: 3px;
                             </div>
                         </div>
                         <div class="gallery-stacked-hero gradient-slate" style="background:url('https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/v1773859317/sBbbbArtboard_10_vqlchs.png') center/cover no-repeat;">
+                            <div class="card-coming-soon">Coming Soon</div>
                             <div class="gallery-stacked-info">
-                                <div class="gallery-stacked-status status-launched"><span class="status-dot"></span><span data-i18n="status.launched">Launched</span></div>
+                                <div class="gallery-stacked-status status-coming"><span class="status-dot"></span><span>Coming Soon</span></div>
                                 <div class="gallery-stacked-label">Illustration</div>
                                 <div class="gallery-stacked-project-title">Lyft Illustrations</div>
-                                <a href="/project.html?p=lyft" class="gallery-stacked-btn gallery-stacked-btn-outline"><span data-i18n="card.viewCase">View Case</span></a>
+                                <span class="gallery-stacked-btn gallery-stacked-btn-outline" aria-disabled="true" style="opacity:0.55;pointer-events:none;cursor:not-allowed;">Coming Soon</span>
                             </div>
                             <div class="gallery-stacked-badge"><span data-i18n="card.viewProject">VIEW</span><br><span data-i18n="card.projectWord">PROJECT</span></div>
                         </div>
