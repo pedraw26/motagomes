@@ -70,9 +70,18 @@
   }
   .btn-liquid-text {
     position: relative; z-index: 10;
-    display: inline-flex; align-items: center; justify-content: center; gap: inherit;
+    display: inline-grid; place-items: center;
     user-select: none;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.30);
+  }
+  .btn-liquid-text .greet { grid-area: 1 / 1; white-space: nowrap; }
+  .btn-liquid-text .greet-en { animation: greet-en 4.5s ease-in-out infinite; }
+  .btn-liquid-text .greet-pt { animation: greet-pt 4.5s ease-in-out infinite; }
+  @keyframes greet-en { 0%,40% { opacity: 1; } 50%,90% { opacity: 0; } 100% { opacity: 1; } }
+  @keyframes greet-pt { 0%,40% { opacity: 0; } 50%,90% { opacity: 1; } 100% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .btn-liquid-text .greet { animation: none; }
+    .btn-liquid-text .greet-pt { opacity: 0; }
   }
   @media (hover: hover) { .btn-liquid:hover { transform: scale(1.03); } }
   .btn-liquid:active { transform: scale(0.96); }
@@ -91,7 +100,7 @@
 <div class="hello-center">
   <button class="btn-liquid" type="button" aria-label="Hello">
     <span class="btn-liquid-lens" aria-hidden="true"></span>
-    <span class="btn-liquid-text">Hello!</span>
+    <span class="btn-liquid-text"><span class="greet greet-en">Hello!</span><span class="greet greet-pt">Olá!</span></span>
   </button>
 </div>
 <script>
