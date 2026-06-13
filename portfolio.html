@@ -822,18 +822,20 @@
         .hero { position: relative; }
         .scroll-hint {
             position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
-            display: inline-flex; flex-direction: column; align-items: center; gap: 6px;
-            text-decoration: none; color: rgba(255,255,255,0.5);
-            font-family: var(--sf-pro); font-size: 9.5px; font-weight: 500; letter-spacing: 0.34em; text-transform: uppercase;
-            z-index: 7; transition: color 0.3s ease;
-            animation: scrollHintIn 900ms 700ms cubic-bezier(0.16,1,0.3,1) both;
+            text-decoration: none; z-index: 7;
+            font-family: var(--sf-pro); font-size: 0.95rem; font-weight: 400; letter-spacing: -0.005em; line-height: 1;
+            background: linear-gradient(100deg, #ffffff 0%, #ffffff 38%, #6f6f6f 50%, #ffffff 62%, #ffffff 100%);
+            background-size: 220% 100%;
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
+            animation: scrollSweep 3.4s linear infinite, scrollHintIn 900ms 700ms cubic-bezier(0.16,1,0.3,1) both;
         }
-        .scroll-hint:hover { color: rgba(255,255,255,0.85); }
-        .scroll-hint-chev { width: 18px; height: 18px; animation: scrollBob 1.9s ease-in-out infinite; }
-        @keyframes scrollBob { 0%, 100% { transform: translateY(0); opacity: 0.5; } 50% { transform: translateY(5px); opacity: 1; } }
+        @keyframes scrollSweep { from { background-position: 200% 0; } to { background-position: -40% 0; } }
         @keyframes scrollHintIn { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
         @media (max-width: 768px) { .scroll-hint { display: none; } }
-        @media (prefers-reduced-motion: reduce) { .scroll-hint-chev { animation: none; } }
+        @media (prefers-reduced-motion: reduce) {
+            .scroll-hint { animation: scrollHintIn 900ms 700ms cubic-bezier(0.16,1,0.3,1) both; background: none; color: rgba(255,255,255,0.6); -webkit-text-fill-color: rgba(255,255,255,0.6); }
+        }
         .hero-hl-tag {
             font-family: var(--sf-pro);
             font-size: clamp(10px, 0.78vw, 11.5px);
@@ -4898,10 +4900,7 @@ margin-top: 3px;
                 <p class="hero-hl-tag">Portfolio last updated &middot; 3 March 2026</p>
             </div>
 
-            <a class="scroll-hint" href="#work" aria-label="Scroll to work">
-                <span class="scroll-hint-text">Scroll</span>
-                <svg class="scroll-hint-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-            </a>
+            <a class="scroll-hint" href="#work" aria-label="Scroll to work">Scroll</a>
 
         </section>
 
