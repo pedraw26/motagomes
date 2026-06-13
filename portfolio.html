@@ -824,11 +824,9 @@
             position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
             text-decoration: none; z-index: 7;
             font-family: var(--sf-pro); font-size: 0.95rem; font-weight: 400; letter-spacing: -0.005em; line-height: 1;
-            color: rgba(255,255,255,0.6);
-            transition: color 0.3s ease;
+            color: #ffffff;
             animation: scrollNudge 2.6s ease-in-out infinite, scrollFadeIn 900ms 700ms ease both;
         }
-        .scroll-hint:hover { color: rgba(255,255,255,0.92); }
         @keyframes scrollNudge { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(5px); } }
         @keyframes scrollFadeIn { from { opacity: 0; } to { opacity: 1; } }
         @media (max-width: 768px) { .scroll-hint { display: none; } }
