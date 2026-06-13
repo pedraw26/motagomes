@@ -284,21 +284,21 @@
         }
         /* Logo wordmark: MⒼ ⇄ MOTA GOMES expanding loop */
         .header-logo .mg-word { white-space: nowrap; }
-        .header-logo .mg-seg { display: inline-block; overflow: hidden; white-space: nowrap; max-width: 0; opacity: 0; vertical-align: bottom; }
-        .header-logo .mg-ota { animation: mg-ota 9s cubic-bezier(.7,0,.2,1) infinite; }
-        .header-logo .mg-omes { animation: mg-omes 9s cubic-bezier(.7,0,.2,1) infinite; }
-        .header-logo .mg-gswap { position: relative; display: inline-block; width: 1.04em; height: 1em; text-align: center; vertical-align: bottom; animation: mg-gw 9s cubic-bezier(.7,0,.2,1) infinite; }
+        .header-logo .mg-seg { display: inline-block; overflow: hidden; white-space: nowrap; max-width: 0; vertical-align: bottom; }
+        .header-logo .mg-ota { animation: mg-ota 9s cubic-bezier(.65,0,.35,1) infinite; }
+        .header-logo .mg-omes { animation: mg-omes 9s cubic-bezier(.65,0,.35,1) infinite; }
+        .header-logo .mg-gswap { position: relative; display: inline-block; width: 1.12em; height: 1em; text-align: center; vertical-align: bottom; animation: mg-gw 9s cubic-bezier(.65,0,.35,1) infinite; }
         .header-logo .mg-gswap > span { position: absolute; left: 0; right: 0; bottom: 0; line-height: 1; }
-        .header-logo .mg-circ { font-size: 1.18em; animation: mg-circ 9s cubic-bezier(.7,0,.2,1) infinite; }
-        .header-logo .mg-plain { opacity: 0; animation: mg-plain 9s cubic-bezier(.7,0,.2,1) infinite; }
-        @keyframes mg-ota { 0%,4% { max-width: 0; opacity: 0; } 13%,46% { max-width: 2.7em; opacity: 1; } 55%,100% { max-width: 0; opacity: 0; } }
-        @keyframes mg-omes { 0%,4% { max-width: 0; opacity: 0; } 13%,46% { max-width: 3.7em; opacity: 1; } 55%,100% { max-width: 0; opacity: 0; } }
-        @keyframes mg-gw { 0%,4% { width: 1.04em; } 13%,46% { width: .62em; } 55%,100% { width: 1.04em; } }
-        @keyframes mg-circ { 0%,6% { opacity: 1; } 13%,46% { opacity: 0; } 55%,100% { opacity: 1; } }
-        @keyframes mg-plain { 0%,6% { opacity: 0; } 13%,46% { opacity: 1; } 55%,100% { opacity: 0; } }
+        .header-logo .mg-circ { font-size: 1.18em; animation: mg-circ 9s cubic-bezier(.65,0,.35,1) infinite; }
+        .header-logo .mg-plain { opacity: 0; animation: mg-plain 9s cubic-bezier(.65,0,.35,1) infinite; }
+        @keyframes mg-ota { 0%,3% { max-width: 0; } 14%,46% { max-width: 2.35em; } 57%,100% { max-width: 0; } }
+        @keyframes mg-omes { 0%,3% { max-width: 0; } 14%,46% { max-width: 2.98em; } 57%,100% { max-width: 0; } }
+        @keyframes mg-gw { 0%,3% { width: 1.12em; } 14%,46% { width: .78em; } 57%,100% { width: 1.12em; } }
+        @keyframes mg-circ { 0%,7% { opacity: 1; } 14%,46% { opacity: 0; } 57%,100% { opacity: 1; } }
+        @keyframes mg-plain { 0%,7% { opacity: 0; } 14%,46% { opacity: 1; } 57%,100% { opacity: 0; } }
         @media (prefers-reduced-motion: reduce) {
             .header-logo .mg-seg, .header-logo .mg-gswap, .header-logo .mg-circ, .header-logo .mg-plain { animation: none; }
-            .header-logo .mg-gswap { width: 1.04em; }
+            .header-logo .mg-gswap { width: 1.12em; }
         }
 
         @keyframes logoDrift {
@@ -5593,6 +5593,15 @@ margin-top: 3px;
                 line-height: 1.05;
                 color: #0b0b0e;
             }
+            .mgf-sub {
+                font-size: clamp(15px, 1.5vw, 19px);
+                line-height: 1.55;
+                font-weight: 400;
+                letter-spacing: -0.005em;
+                color: rgba(11, 11, 14, 0.62);
+                max-width: 34em;
+                margin: -6px 0 0;
+            }
             .mgf-cta {
                 margin-top: 32px;
                 align-self: center;
@@ -5633,6 +5642,7 @@ margin-top: 3px;
             <div class="mgf-glass">
                 <div class="mgf-content">
                     <h2 class="mgf-title">Thank you for watching my portfolio.<br>Let's get in touch.</h2>
+                    <p class="mgf-sub">I&rsquo;m currently open to new design roles.<br>Feel free to drop me an email, I&rsquo;d love to hear from you.</p>
                     <a href="mailto:hi@motagomes.com" class="mgf-cta" aria-label="Contact me">
                         <span>Contact me</span>
                         <svg viewBox="0 0 24 24" aria-hidden="true">
