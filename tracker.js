@@ -63,30 +63,35 @@
     } catch (e) {}
   }
 
-  // Look up IP / geo / network org once per session (cached), so we don't hammer the API
+  // Look up IP / geo / network org once per session (cached), so we don't hammer the API.
+  // ipwho.is: HTTPS, free, returns connection.org / connection.isp / asn.
   function getNet(cb) {
     var cached = sessionStorage.getItem("_pa_net");
     if (cached) { try { return cb(JSON.parse(cached)); } catch (e) {} }
-    fetch("https://ipapi.co/json/")
+    fetch("https://ipwho.is/")
       .then(function (r) { return r.json(); })
       .then(function (d) {
+        if (!d || d.success === false) throw new Error("geo failed");
+        var conn = d.connection || {};
         var net = {
           ip: d.ip || null,
           city: d.city || null,
           region: d.region || null,
-          country: d.country_name || null,
-          org: d.org || d.asn || null,
+          country: d.country || null,
+          org: conn.org || conn.isp || null,
+          isp: conn.isp || "",
         };
         try { sessionStorage.setItem("_pa_net", JSON.stringify(net)); } catch (e) {}
         cb(net);
       })
       .catch(function () {
-        cb({ ip: null, city: null, region: null, country: null, org: null });
+        cb({ ip: null, city: null, region: null, country: null, org: null, isp: "" });
       });
   }
 
-  function isAmazon(org) {
-    return !!org && /amazon|aws|a2z|awsdns/i.test(org);
+  function isAmazon(net) {
+    var s = ((net.org || "") + " " + (net.isp || "")).toLowerCase();
+    return /amazon|aws|a2z/.test(s);
   }
 
   function track() {
@@ -103,7 +108,7 @@
         region: net.region,
         country: net.country,
         org: net.org,
-        is_amazon: isAmazon(net.org),
+        is_amazon: isAmazon(net),
       });
     });
   }
