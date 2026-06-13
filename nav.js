@@ -31,16 +31,9 @@
     ".mg-nav .mg-nav-logo .mg-seg{display:inline-block;overflow:hidden;white-space:nowrap;max-width:0;vertical-align:bottom;}" +
     ".mg-nav .mg-nav-logo .mg-ota{animation:mg-ota 9s cubic-bezier(.65,0,.35,1) infinite;}" +
     ".mg-nav .mg-nav-logo .mg-omes{animation:mg-omes 9s cubic-bezier(.65,0,.35,1) infinite;}" +
-    ".mg-nav .mg-nav-logo .mg-gswap{display:inline-grid;justify-items:center;align-items:baseline;width:1.12em;vertical-align:baseline;animation:mg-gw 9s cubic-bezier(.65,0,.35,1) infinite;}" +
-    ".mg-nav .mg-nav-logo .mg-gswap>span{grid-area:1/1;line-height:1;}" +
-    ".mg-nav .mg-nav-logo .mg-circ{font-size:1.18em;animation:mg-circ 9s cubic-bezier(.65,0,.35,1) infinite;}" +
-    ".mg-nav .mg-nav-logo .mg-plain{opacity:0;animation:mg-plain 9s cubic-bezier(.65,0,.35,1) infinite;}" +
     "@keyframes mg-ota{0%,3%{max-width:0}14%,46%{max-width:2.35em}57%,100%{max-width:0}}" +
     "@keyframes mg-omes{0%,3%{max-width:0}14%,46%{max-width:2.98em}57%,100%{max-width:0}}" +
-    "@keyframes mg-gw{0%,3%{width:1.12em}14%,46%{width:.78em}57%,100%{width:1.12em}}" +
-    "@keyframes mg-circ{0%,7%{opacity:1}14%,46%{opacity:0}57%,100%{opacity:1}}" +
-    "@keyframes mg-plain{0%,7%{opacity:0}14%,46%{opacity:1}57%,100%{opacity:0}}" +
-    "@media (prefers-reduced-motion:reduce){.mg-nav .mg-nav-logo .mg-seg,.mg-nav .mg-nav-logo .mg-gswap,.mg-nav .mg-nav-logo .mg-circ,.mg-nav .mg-nav-logo .mg-plain{animation:none}.mg-nav .mg-nav-logo .mg-gswap{width:1.12em}}" +
+    "@media (prefers-reduced-motion:reduce){.mg-nav .mg-nav-logo .mg-seg{animation:none}}" +
     ".mg-nav .mg-nav-links{justify-self:end;display:flex;align-items:center;gap:28px;}" +
     ".mg-nav .mg-nav-links a{font-size:.95rem;color:rgba(255,255,255,.9);text-decoration:none;font-weight:400;letter-spacing:-.005em;position:relative;line-height:1;display:inline-flex;align-items:center;transition:color .3s ease;}" +
     ".mg-nav .mg-nav-links a::before{content:'';position:absolute;bottom:-6px;left:0;right:0;height:1px;background:currentColor;transform:scaleX(0);transform-origin:center;transition:transform .35s cubic-bezier(.22,1,.36,1);}" +
@@ -89,7 +82,7 @@
     header.innerHTML =
       '<div class="mg-nav-content">' +
       '<div id="navClock">00:00</div>' +
-      '<a class="mg-nav-logo" href="/portfolio.html" aria-label="Mota Gomes — Home"><span class="mg-word">M<span class="mg-seg mg-ota">OTA </span><span class="mg-gswap"><span class="mg-circ">Ⓖ</span><span class="mg-plain">G</span></span><span class="mg-seg mg-omes">OMES</span></span></a>' +
+      '<a class="mg-nav-logo" href="/portfolio.html" aria-label="Mota Gomes — Home"><span class="mg-word">M<span class="mg-seg mg-ota">OTA </span><span class="mg-g">Ⓖ</span><span class="mg-seg mg-omes">OMES</span></span></a>' +
       '<nav class="mg-nav-links" aria-label="Primary">' + navHTML + "</nav>" +
       "</div>";
     document.body.insertBefore(header, document.body.firstChild);

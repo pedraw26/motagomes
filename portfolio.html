@@ -287,18 +287,10 @@
         .header-logo .mg-seg { display: inline-block; overflow: hidden; white-space: nowrap; max-width: 0; vertical-align: bottom; }
         .header-logo .mg-ota { animation: mg-ota 9s cubic-bezier(.65,0,.35,1) infinite; }
         .header-logo .mg-omes { animation: mg-omes 9s cubic-bezier(.65,0,.35,1) infinite; }
-        .header-logo .mg-gswap { display: inline-grid; justify-items: center; align-items: baseline; width: 1.12em; vertical-align: baseline; animation: mg-gw 9s cubic-bezier(.65,0,.35,1) infinite; }
-        .header-logo .mg-gswap > span { grid-area: 1 / 1; line-height: 1; }
-        .header-logo .mg-circ { font-size: 1.18em; animation: mg-circ 9s cubic-bezier(.65,0,.35,1) infinite; }
-        .header-logo .mg-plain { opacity: 0; animation: mg-plain 9s cubic-bezier(.65,0,.35,1) infinite; }
         @keyframes mg-ota { 0%,3% { max-width: 0; } 14%,46% { max-width: 2.35em; } 57%,100% { max-width: 0; } }
         @keyframes mg-omes { 0%,3% { max-width: 0; } 14%,46% { max-width: 2.98em; } 57%,100% { max-width: 0; } }
-        @keyframes mg-gw { 0%,3% { width: 1.12em; } 14%,46% { width: .78em; } 57%,100% { width: 1.12em; } }
-        @keyframes mg-circ { 0%,7% { opacity: 1; } 14%,46% { opacity: 0; } 57%,100% { opacity: 1; } }
-        @keyframes mg-plain { 0%,7% { opacity: 0; } 14%,46% { opacity: 1; } 57%,100% { opacity: 0; } }
         @media (prefers-reduced-motion: reduce) {
-            .header-logo .mg-seg, .header-logo .mg-gswap, .header-logo .mg-circ, .header-logo .mg-plain { animation: none; }
-            .header-logo .mg-gswap { width: 1.12em; }
+            .header-logo .mg-seg { animation: none; }
         }
 
         @keyframes logoDrift {
@@ -4745,7 +4737,7 @@ margin-top: 3px;
         <div class="header-content">
             <div class="header-left" id="navClock">00:00</div>
             <div class="header-center">
-                <a href="javascript:void(0)" class="header-logo" onclick="scrollToTop()" aria-label="Mota Gomes"><span class="mg-word">M<span class="mg-seg mg-ota">OTA&nbsp;</span><span class="mg-gswap"><span class="mg-circ">Ⓖ</span><span class="mg-plain">G</span></span><span class="mg-seg mg-omes">OMES</span></span></a>
+                <a href="javascript:void(0)" class="header-logo" onclick="scrollToTop()" aria-label="Mota Gomes"><span class="mg-word">M<span class="mg-seg mg-ota">OTA&nbsp;</span><span class="mg-g">Ⓖ</span><span class="mg-seg mg-omes">OMES</span></span></a>
             </div>
 
             <div class="header-right">
