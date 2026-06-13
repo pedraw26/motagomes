@@ -24,7 +24,7 @@
     "mask-image:linear-gradient(to bottom,#000 55%,rgba(0,0,0,0) 100%);}" +
     ".mg-nav .mg-nav-content{width:100%;padding:28px 32px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;box-sizing:border-box;}" +
     ".mg-nav #navClock{font-family:'EB Garamond',Georgia,'Times New Roman',serif;font-style:normal;font-weight:500;font-size:17px;letter-spacing:.02em;color:rgba(255,255,255,.6);font-variant-numeric:tabular-nums;line-height:1;justify-self:start;}" +
-    ".mg-nav .mg-nav-logo{justify-self:center;font-size:16px;font-weight:400;letter-spacing:.04em;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:6px;opacity:.92;transition:opacity .2s ease;}" +
+    ".mg-nav .mg-nav-logo{justify-self:center;font-size:14.4px;font-weight:400;letter-spacing:.04em;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:6px;opacity:.92;transition:opacity .2s ease;}" +
     ".mg-nav .mg-nav-logo:hover{opacity:1;}" +
     ".mg-nav .mg-nav-logo .mg-g{font-size:1.22em;line-height:1;vertical-align:-.08em;}" +
     ".mg-nav .mg-nav-logo .mg-word{white-space:nowrap;letter-spacing:.04em;}" +
