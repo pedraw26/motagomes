@@ -77,8 +77,8 @@
   .btn-liquid-text .greet { grid-area: 1 / 1; white-space: nowrap; }
   .btn-liquid-text .greet-en { animation: greet-en 4.5s ease-in-out infinite; }
   .btn-liquid-text .greet-pt { animation: greet-pt 4.5s ease-in-out infinite; }
-  @keyframes greet-en { 0%,40% { opacity: 1; } 50%,90% { opacity: 0; } 100% { opacity: 1; } }
-  @keyframes greet-pt { 0%,40% { opacity: 0; } 50%,90% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes greet-en { 0% { opacity: 0; } 6% { opacity: 1; } 40% { opacity: 1; } 46% { opacity: 0; } 100% { opacity: 0; } }
+  @keyframes greet-pt { 0%,50% { opacity: 0; } 56% { opacity: 1; } 90% { opacity: 1; } 96% { opacity: 0; } 100% { opacity: 0; } }
   @media (prefers-reduced-motion: reduce) {
     .btn-liquid-text .greet { animation: none; }
     .btn-liquid-text .greet-pt { opacity: 0; }
