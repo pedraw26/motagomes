@@ -5519,14 +5519,14 @@ margin-top: 3px;
                 min-height: 100vh;
                 margin-top: -60px;
                 border-radius: 0;
-                background: rgba(255, 255, 255, 0.82);
+                background: rgba(255, 255, 255, 0.78);
                 border: 1px solid rgba(255,255,255,0.5);
                 border-bottom: none;
-                /* blur 50px -> 16px to ease the per-frame re-blur cost.
-                   (No contain:paint here — it breaks backdrop-filter, which
-                   is what lets the MG supergraphic show through the glass.) */
-                -webkit-backdrop-filter: blur(16px) saturate(150%);
-                        backdrop-filter: blur(16px) saturate(150%);
+                /* saturate+brightness make the rainbow MG supergraphic pop
+                   through the frost; lower white opacity lets it show. blur 40px
+                   (down from the original 50px) trims a little per-frame cost. */
+                -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(115%);
+                        backdrop-filter: blur(40px) saturate(200%) brightness(115%);
                 box-shadow:
                     0 -30px 60px -30px rgba(0,0,0,0.5),
                     0 -2px 0 rgba(255,255,255,0.18) inset;
