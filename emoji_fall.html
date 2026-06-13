@@ -132,13 +132,24 @@ canvas.style.width = W + 'px';
 canvas.style.height = H + 'px';
 ctx.scale(DPR, DPR);
 
-let engine, bodies, spawnTimer, filled;
+let engine, bodies, spawnTimer, filled, restartTimer, pendingRestart = false;
 
 function setup() {
-  engine = Engine.create({ enableSleeping: true });
-  engine.gravity.y = 1;
-  engine.positionIterations = 4;
-  engine.velocityIterations = 3;
+  // Engine persists across restarts so the Runner stays bound to it.
+  if (!engine) {
+    engine = Engine.create({ enableSleeping: true });
+    engine.gravity.y = 1;
+    engine.positionIterations = 4;
+    engine.velocityIterations = 3;
+  }
+  buildWorld();
+}
+
+// (Re)populate the world: wipe bodies, rebuild walls, start dropping emojis.
+function buildWorld() {
+  clearTimeout(restartTimer);
+  pendingRestart = false;
+  Composite.clear(engine.world, false);   // remove all bodies incl. walls
   bodies = [];
   filled = false;
 
@@ -151,6 +162,17 @@ function setup() {
 
   clearInterval(spawnTimer);
   spawnTimer = setInterval(spawn, 130);
+}
+
+// Once the pile completes, hold 10s then drop a fresh batch — endless loop.
+function scheduleRestart() {
+  clearTimeout(restartTimer);
+  restartTimer = setTimeout(restart, 10000);
+}
+function restart() {
+  // Don't restart while off-screen/hidden — defer until we're visible again.
+  if (paused || document.hidden) { pendingRestart = true; return; }
+  buildWorld();
 }
 
 function spawn(burstX) {
@@ -182,6 +204,7 @@ function spawn(burstX) {
   if (highest < H * 0.12 || bodies.length > 180) {
     filled = true;
     clearInterval(spawnTimer);
+    scheduleRestart();
   }
 }
 
@@ -241,7 +264,8 @@ document.addEventListener('visibilitychange', () => {
   const active = !document.hidden;
   runner.enabled = active && !paused;
   clearInterval(spawnTimer);
-  if (active && !paused && !filled) spawnTimer = setInterval(spawn, 130);
+  if (active && !paused && pendingRestart) buildWorld();
+  else if (active && !paused && !filled) spawnTimer = setInterval(spawn, 130);
 });
 
 // Parent (portfolio hero) pauses/resumes us as it enters/leaves the viewport.
@@ -253,7 +277,8 @@ addEventListener('message', (e) => {
   } else if (e.data === 'mg-resume' && paused) {
     paused = false;
     runner.enabled = true;
-    if (!filled) { clearInterval(spawnTimer); spawnTimer = setInterval(spawn, 130); }
+    if (pendingRestart) buildWorld();
+    else if (!filled) { clearInterval(spawnTimer); spawnTimer = setInterval(spawn, 130); }
   }
 });
 
