@@ -45,8 +45,9 @@
   }
 
   function build() {
-    // Drop any bespoke header so there's exactly one, identical nav
-    var olds = document.querySelectorAll("header.header");
+    // Drop any bespoke header/chrome so there's exactly one, identical nav.
+    // (.ui-logo / .ui-title are gen-studio's standalone corner logo + title.)
+    var olds = document.querySelectorAll("header.header, .ui-logo, .ui-title");
     for (var i = 0; i < olds.length; i++) olds[i].remove();
 
     var path = location.pathname;
