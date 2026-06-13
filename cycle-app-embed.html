@@ -92,23 +92,12 @@
     position: relative; z-index: 1;
   }
   .notch {
-    width: 197px; height: 58px;
-    background: #000;
-    border-radius: 29px;
+    width: 197px;
     margin: 0 auto;
     position: relative;
+    line-height: 0;
   }
-  .notch::after {
-    content: '';
-    position: absolute;
-    right: 12px; top: 50%;
-    transform: translateY(-50%);
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 36% 32%, #2a3442 0%, #131a24 38%, #05070a 72%, #000 100%);
-    box-shadow: inset 0 0 5px rgba(80,110,160,0.3);
-    opacity: 0.6;
-  }
+  .notch .island-svg { width: 100%; height: auto; display: block; }
   .statusbar {
     position: absolute;
     top: 24px; left: 0; right: 0;
@@ -364,7 +353,7 @@
             <svg width="40" height="20" viewBox="0 0 40 20" fill="none"><rect x="1" y="3" width="33" height="14" rx="4.5" stroke="#111" stroke-opacity="0.4" stroke-width="1.6"/><rect x="3.4" y="5.4" width="22" height="9.2" rx="2.6" fill="#111"/><path d="M36.5 7 a3.6 3.6 0 0 1 0 6" stroke="#111" stroke-opacity="0.4" stroke-width="1.6" stroke-linecap="round"/></svg>
           </span>
         </div>
-        <div class="notch"></div>
+        <div class="notch"><img class="island-svg" src="img/dynamic-island.svg" alt=""></div>
         <div class="header">
           <div>
             <div style="font-size: 16px; font-weight: 600; color: #b8b2b6; letter-spacing: 0.2px; margin-bottom: 8px;">Good morning, Diana</div>
