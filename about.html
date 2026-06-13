@@ -3,836 +3,286 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pedro Mota Gomes — About</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<title>Pedro Gomes — About</title>
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --black: #0a0a0a;
-    --white: #f5f4f0;
-    --accent: #002FA7;
-    --gold:   #c8922a;
-    --muted:  rgba(245,244,240,0.42);
-    --border: rgba(245,244,240,0.10);
-    --mono: 'SF Mono', 'Fira Code', monospace;
+    --sf: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    --bg: #000000;
+    --text: #ffffff;
+    --text-70: rgba(255,255,255,0.7);
+    --text-50: rgba(255,255,255,0.5);
+    --text-35: rgba(255,255,255,0.34);
+    --line: rgba(255,255,255,0.14);
+    --line-soft: rgba(255,255,255,0.08);
   }
-
   html { scroll-behavior: smooth; }
-
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--black);
-    color: var(--white);
+    font-family: var(--sf);
+    background: var(--bg);
+    color: var(--text);
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
     overflow-x: hidden;
   }
+  a { color: inherit; }
 
-  /* ── NAV ─────────────────────────────────── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 22px 48px;
-    background: rgba(10,10,10,0.80);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
+  /* ── MAIN SITE NAV (matches the portfolio header) ── */
+  .header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; }
+  .header-content {
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    padding: 28px 32px;
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, rgba(0,0,0,0) 100%);
+            mask-image: linear-gradient(to bottom, #000 55%, rgba(0,0,0,0) 100%);
   }
+  #navClock {
+    justify-self: start;
+    font-family: 'EB Garamond', Georgia, serif; font-weight: 500;
+    font-size: 17px; letter-spacing: 0.02em; color: var(--text-50);
+    font-variant-numeric: tabular-nums; line-height: 1;
+  }
+  .header-logo {
+    justify-self: center;
+    font-size: 16px; font-weight: 400; letter-spacing: 0.04em;
+    color: var(--text); text-decoration: none; opacity: 0.92;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: opacity .2s;
+  }
+  .header-logo:hover { opacity: 1; }
+  .mg-g { font-size: 1.22em; line-height: 1; vertical-align: -0.08em; }
+  .header-nav { justify-self: end; display: flex; align-items: center; gap: 28px; }
+  .header-nav a {
+    font-size: 14px; font-weight: 400; letter-spacing: 0.01em;
+    color: var(--text); text-decoration: none; opacity: 0.78; transition: opacity .2s;
+  }
+  .header-nav a:hover { opacity: 1; }
+  .header-nav a.is-current { opacity: 1; }
+  .header-nav a.nav-gen { color: #8ab4ff; opacity: 0.9; }
 
-  .nav-logo {
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    color: var(--white);
-    text-decoration: none;
-    opacity: 0.9;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 36px;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.25s;
-  }
-  .nav-links a:hover { color: var(--white); }
-
-  @media (max-width: 640px) {
-    nav { padding: 18px 24px; }
-    .nav-links { display: none; }
-  }
-
-  /* ── SHARED ──────────────────────────────── */
-  section {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 120px 80px 80px;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-  }
-
-  .section-index {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 48px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .section-index::after {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: var(--muted);
-  }
-
-  @media (max-width: 768px) {
-    section { padding: 100px 28px 60px; }
-  }
-
-  /* ── REVEAL ANIMATION ─────────────────────── */
-  [data-reveal] {
-    opacity: 0;
-    transform: translateY(32px);
-    transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1),
-                transform 0.9s cubic-bezier(0.16,1,0.3,1);
-  }
-  [data-reveal].is-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ── § 1 — IDENTITY ──────────────────────── */
-  #identity {
-    background: var(--accent);
-    min-height: 100vh;
-  }
-
-  .identity-grid {
+  /* ── CV LAYOUT ── */
+  .cv {
+    max-width: 1320px; margin: 0 auto;
+    padding: clamp(120px, 18vh, 200px) clamp(24px, 5vw, 80px) 120px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: end;
-  }
-
-  .identity-headline {
-    font-size: clamp(3.5rem, 8vw, 8rem);
-    font-weight: 200;
-    line-height: 0.92;
-    letter-spacing: -0.04em;
-    color: #fff;
-  }
-
-  .identity-headline em {
-    font-style: normal;
-    opacity: 0.45;
-  }
-
-  .identity-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
-    padding-bottom: 8px;
-  }
-
-  .identity-meta-item {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid rgba(255,255,255,0.14);
-  }
-
-  .identity-meta-label {
-    font-size: 8px;
-    font-weight: 500;
-    letter-spacing: 0.20em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.40);
-  }
-
-  .identity-meta-value {
-    font-size: 14px;
-    font-weight: 300;
-    color: rgba(255,255,255,0.88);
-    letter-spacing: 0.005em;
-    line-height: 1.6;
-  }
-
-  @media (max-width: 768px) {
-    .identity-grid { grid-template-columns: 1fr; gap: 48px; }
-    .identity-meta { order: -1; }
-  }
-
-  /* ── § 2 — DISCIPLINES ───────────────────── */
-  #disciplines { background: #0d0d0d; }
-
-  .disciplines-header {
-    margin-bottom: 72px;
-  }
-
-  .section-title {
-    font-size: clamp(2.4rem, 5vw, 5rem);
-    font-weight: 200;
-    letter-spacing: -0.035em;
-    line-height: 1.05;
-    color: var(--white);
-  }
-
-  .section-subtitle {
-    font-size: 15px;
-    font-weight: 300;
-    color: var(--muted);
-    line-height: 1.7;
-    max-width: 520px;
-    margin-top: 20px;
-  }
-
-  .disciplines-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-  }
-
-  .discipline-card {
-    background: var(--black);
-    padding: 40px 36px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    transition: background 0.3s ease;
-  }
-  .discipline-card:hover { background: #111; }
-
-  .discipline-number {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    color: var(--muted);
-  }
-
-  .discipline-name {
-    font-size: 22px;
-    font-weight: 300;
-    letter-spacing: -0.02em;
-    color: var(--white);
-    line-height: 1.2;
-  }
-
-  .discipline-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
-  }
-
-  .discipline-tag {
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 4px 10px;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-  }
-
-  @media (max-width: 768px) {
-    .disciplines-grid { grid-template-columns: 1fr; }
-  }
-
-  /* ── § 3 — EXPERIENCE ────────────────────── */
-  #experience { background: #080808; }
-
-  .timeline {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    max-width: 860px;
-  }
-
-  .timeline-item {
-    display: grid;
-    grid-template-columns: 140px 1fr;
-    gap: 48px;
-    padding: 36px 0;
-    border-top: 1px solid var(--border);
-    transition: border-color 0.3s;
-  }
-  .timeline-item:hover { border-color: rgba(245,244,240,0.25); }
-
-  .timeline-year {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: var(--muted);
-    padding-top: 4px;
-  }
-
-  .timeline-content { }
-
-  .timeline-role {
-    font-size: 18px;
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    color: var(--white);
-    margin-bottom: 6px;
-  }
-
-  .timeline-company {
-    font-size: 13px;
-    font-weight: 400;
-    letter-spacing: 0.02em;
-    color: var(--muted);
-    margin-bottom: 14px;
-  }
-
-  .timeline-desc {
-    font-size: 13px;
-    font-weight: 300;
-    line-height: 1.75;
-    color: rgba(245,244,240,0.50);
-    max-width: 580px;
-  }
-
-  @media (max-width: 640px) {
-    .timeline-item { grid-template-columns: 1fr; gap: 8px; }
-  }
-
-  /* ── § 4 — AWARDS ───────────────────────── */
-  #awards {
-    background: #ffffff;
-    padding-top: 100px;
-    padding-bottom: 100px;
-  }
-
-  /* Layout: image left, content right */
-  .awards-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
+    grid-template-columns: clamp(260px, 30%, 380px) 1fr;
+    gap: clamp(40px, 6vw, 96px);
     align-items: start;
   }
 
-  /* Image column — sticky so it stays while awards scroll */
-  .awards-image-col {
-    position: sticky;
-    top: 100px;
+  /* sticky left — photo + contact */
+  .cv-aside { position: sticky; top: 120px; display: flex; flex-direction: column; gap: 26px; }
+  .cv-photo {
+    width: 100%; aspect-ratio: 4 / 5; border-radius: 14px; overflow: hidden;
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)),
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0 12px, transparent 12px 24px);
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center; position: relative;
+  }
+  .cv-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cv-photo .ph { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-35); }
+  .cv-name { font-size: clamp(26px, 3vw, 36px); font-weight: 600; letter-spacing: -0.02em; line-height: 1; }
+  .cv-role { font-size: 14px; color: var(--text-50); margin-top: 8px; letter-spacing: 0.02em; }
+  .cv-contact { display: flex; flex-direction: column; gap: 9px; margin-top: 6px; font-size: 13.5px; }
+  .cv-contact a, .cv-contact span { color: var(--text-70); text-decoration: none; transition: color .2s; width: fit-content; }
+  .cv-contact a { border-bottom: 1px solid transparent; }
+  .cv-contact a:hover { color: var(--text); border-bottom-color: var(--text-35); }
+  .cv-contact .k { color: var(--text-35); }
+
+  /* right — content */
+  .cv-main { display: flex; flex-direction: column; }
+  .cv-section { padding: clamp(26px, 4vh, 44px) 0; border-top: 1px solid var(--line-soft); }
+  .cv-section:first-child { border-top: 0; padding-top: 0; }
+  .cv-eyebrow { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-35); margin-bottom: 18px; }
+  .cv-lead { font-size: clamp(17px, 1.5vw, 22px); line-height: 1.5; letter-spacing: -0.01em; max-width: 60ch; color: var(--text); }
+  .cv-lead b { font-weight: 600; }
+
+  .cv-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cv-tag {
+    font-size: 12.5px; padding: 7px 13px; border-radius: 999px;
+    border: 1px solid var(--line); color: var(--text-70);
   }
 
-  .awards-portrait-wrap {
-    width: 100%;
-    aspect-ratio: 3 / 4;
-    background: #eeece5;
-    border-radius: 6px;
-    overflow: hidden;
+  /* experience */
+  .cv-job { padding: 22px 0; border-bottom: 1px solid var(--line-soft); }
+  .cv-job:last-child { border-bottom: 0; }
+  .cv-job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .cv-job-title { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+  .cv-job-org { font-size: 14px; color: var(--text-50); margin-top: 3px; }
+  .cv-job-date { font-size: 12.5px; color: var(--text-35); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; white-space: nowrap; }
+  .cv-job ul { list-style: none; margin-top: 14px; display: flex; flex-direction: column; gap: 9px; }
+  .cv-job li { position: relative; padding-left: 18px; font-size: 14px; line-height: 1.5; color: var(--text-70); max-width: 70ch; }
+  .cv-job li::before { content: ''; position: absolute; left: 0; top: 0.62em; width: 5px; height: 5px; border-radius: 50%; background: var(--text-35); }
+
+  /* education / certs */
+  .cv-rows { display: flex; flex-direction: column; gap: 14px; }
+  .cv-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .cv-row .t { font-size: 15px; font-weight: 500; }
+  .cv-row .s { font-size: 13.5px; color: var(--text-50); }
+  .cv-row .d { font-size: 12.5px; color: var(--text-35); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .cv-list { display: flex; flex-direction: column; gap: 10px; }
+  .cv-list .li { font-size: 14px; color: var(--text-70); line-height: 1.5; }
+  .cv-interests { font-size: 15px; line-height: 1.6; color: var(--text-70); max-width: 64ch; }
+
+  @media (max-width: 820px) {
+    .cv { grid-template-columns: 1fr; }
+    .cv-aside { position: static; flex-direction: row; flex-wrap: wrap; align-items: center; }
+    .cv-photo { width: 160px; }
   }
-
-  .awards-portrait {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  /* Placeholder shown when no image src */
-  .awards-portrait-wrap:not(:has(img[src]:not([src=""])))::after {
-    content: 'Image';
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(10,10,10,0.25);
-    position: absolute;
-    inset: 0;
-  }
-  .awards-portrait-wrap { position: relative; }
-
-  /* Content column */
-  .awards-content-col { }
-
-  .awards-intro {
-    max-width: 640px;
-    margin-bottom: 56px;
-  }
-
-  /* White-bg overrides for shared classes */
-  #awards .section-index         { color: rgba(10,10,10,0.38); }
-  #awards .section-index::after  { background: rgba(10,10,10,0.22); }
-  #awards .section-title         { color: #0a0a0a; }
-  #awards .section-subtitle      { color: rgba(10,10,10,0.50); }
-
-  .awards-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .award-item {
-    display: grid;
-    grid-template-columns: 1fr 140px 100px;
-    align-items: center;
-    gap: 24px;
-    padding: 22px 0;
-    border-top: 1px solid rgba(0,0,0,0.08);
-    transition: background 0.2s;
-  }
-  .award-item:last-child { border-bottom: 1px solid rgba(0,0,0,0.08); }
-  .award-item:hover { background: rgba(0,0,0,0.025); margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
-
-  .award-name {
-    font-size: 15px;
-    font-weight: 300;
-    letter-spacing: -0.01em;
-    color: #0a0a0a;
-  }
-
-  .award-org {
-    font-size: 10px;
-    font-weight: 400;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    color: rgba(10,10,10,0.45);
-    text-align: right;
-  }
-
-  .award-tier {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-align: right;
-  }
-
-  .award-tier.gold {
-    background: linear-gradient(100deg,#7a5a1c,#c89a3a,#f3d77a,#c89a3a,#7a5a1c);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: metal-sweep 8s linear infinite;
-  }
-  .award-tier.silver {
-    background: linear-gradient(100deg,#5a5a60,#9a9aa0,#d8d8de,#9a9aa0,#5a5a60);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: metal-sweep 8s linear infinite;
-  }
-
-  @keyframes metal-sweep {
-    from { background-position: 200% 50%; }
-    to   { background-position:   0% 50%; }
-  }
-
-  @media (max-width: 768px) {
-    .awards-layout { grid-template-columns: 1fr; gap: 48px; }
-    .awards-image-col { position: static; }
-    .awards-portrait-wrap { aspect-ratio: 4 / 3; }
-  }
-
-  @media (max-width: 640px) {
-    .award-item { grid-template-columns: 1fr; gap: 4px; }
-    .award-org, .award-tier { text-align: left; }
-    .award-item:hover { margin: 0; padding-left: 0; padding-right: 0; }
-  }
-
-  /* ── § 5 — PERSONAL ─────────────────────── */
-  #personal { background: #060606; min-height: 100vh; }
-
-  .personal-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: start;
-  }
-
-  .personal-statement {
-    font-size: clamp(1.5rem, 2.6vw, 2.4rem);
-    font-weight: 200;
-    line-height: 1.4;
-    letter-spacing: -0.025em;
-    color: var(--white);
-  }
-
-  .personal-details {
-    display: flex;
-    flex-direction: column;
-    gap: 48px;
-  }
-
-  .personal-block {}
-
-  .personal-block-label {
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 14px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .personal-block-text {
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 1.8;
-    color: rgba(245,244,240,0.65);
-  }
-
-  .contact-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    margin-top: 32px;
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    color: var(--white);
-    text-decoration: none;
-    padding: 14px 24px;
-    border: 1px solid rgba(245,244,240,0.25);
-    border-radius: 999px;
-    transition: background 0.3s, border-color 0.3s;
-  }
-  .contact-link:hover {
-    background: var(--white);
-    color: var(--black);
-    border-color: var(--white);
-  }
-  .contact-link svg { width: 14px; height: 14px; transition: transform 0.3s; }
-  .contact-link:hover svg { transform: translateX(4px); }
-
-  @media (max-width: 768px) {
-    .personal-grid { grid-template-columns: 1fr; gap: 48px; }
-  }
-
-  /* ── FOOTER ──────────────────────────────── */
-  footer {
-    padding: 28px 80px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid var(--border);
-  }
-
-  footer span {
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  @media (max-width: 640px) { footer { padding: 24px 28px; flex-direction: column; gap: 8px; } }
 </style>
 </head>
 <body>
 
-<!-- ── NAV ─────────────────────────────── -->
-<nav>
-  <a href="#identity" class="nav-logo">PMG</a>
-  <ul class="nav-links">
-    <li><a href="#identity">Identity</a></li>
-    <li><a href="#disciplines">Disciplines</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#awards">Awards</a></li>
-    <li><a href="#personal">Personal</a></li>
-  </ul>
-</nav>
+  <header class="header">
+    <div class="header-content">
+      <div id="navClock">00:00</div>
+      <a href="/portfolio.html" class="header-logo"><span>M<span class="mg-g">Ⓖ</span></span></a>
+      <nav class="header-nav">
+        <a href="/portfolio.html#work">Work</a>
+        <a href="/about.html" class="is-current">About</a>
+        <a href="/gen-studio.html" class="nav-gen">Gen Studies</a>
+      </nav>
+    </div>
+  </header>
 
+  <main class="cv">
 
-<!-- ── § 1 — IDENTITY ─────────────────── -->
-<section id="identity">
-  <div class="section-index" data-reveal>01 — Identity</div>
-  <div class="identity-grid">
-    <div data-reveal style="transition-delay:0.1s">
-      <h1 class="identity-headline">
-        Hybrid<br>
-        <em>Designer.</em>
-      </h1>
-    </div>
-    <div class="identity-meta" data-reveal style="transition-delay:0.22s">
-      <div class="identity-meta-item">
-        <span class="identity-meta-label">Full name</span>
-        <span class="identity-meta-value">Pedro Mota Gomes</span>
+    <!-- LEFT: photo placeholder + contact -->
+    <aside class="cv-aside">
+      <div class="cv-photo">
+        <!-- Swap this placeholder for your photo:
+             <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/your-photo.jpg" alt="Pedro Gomes"> -->
+        <span class="ph">Portrait — placeholder</span>
       </div>
-      <div class="identity-meta-item">
-        <span class="identity-meta-label">Based in</span>
-        <span class="identity-meta-value">Lisbon, Portugal</span>
+      <div>
+        <div class="cv-name">Pedro Gomes</div>
+        <div class="cv-role">Visual Designer</div>
       </div>
-      <div class="identity-meta-item">
-        <span class="identity-meta-label">Disciplines</span>
-        <span class="identity-meta-value">Brand Identity · Art Direction<br>Digital Design · Motion & Gen AI</span>
+      <div class="cv-contact">
+        <span><span class="k">Based in</span> London, UK</span>
+        <a href="mailto:hello@pedraw.co.uk">hello@pedraw.co.uk</a>
+        <a href="tel:+447765440505">+44 (0) 7765 440505</a>
+        <a href="https://linkedin.com/in/pedraw" target="_blank" rel="noopener">linkedin.com/in/pedraw ↗</a>
+        <a href="/portfolio.html">portfolio ↗</a>
       </div>
-      <div class="identity-meta-item">
-        <span class="identity-meta-label">Experience</span>
-        <span class="identity-meta-value">10+ years across brand, digital<br>and campaign design</span>
-      </div>
-    </div>
-  </div>
-</section>
+    </aside>
 
+    <!-- RIGHT: CV content -->
+    <div class="cv-main">
 
-<!-- ── § 2 — DISCIPLINES ──────────────── -->
-<section id="disciplines">
-  <div class="section-index" data-reveal>02 — Disciplines</div>
-  <div class="disciplines-header" data-reveal style="transition-delay:0.08s">
-    <h2 class="section-title">What I do.</h2>
-    <p class="section-subtitle">
-      I work across brand, identity, and digital — bridging the gap between
-      conceptual thinking and precise execution. Every project starts with a
-      question and ends with something that ships.
-    </p>
-  </div>
-  <div class="disciplines-grid" data-reveal style="transition-delay:0.18s">
-    <div class="discipline-card">
-      <span class="discipline-number">001</span>
-      <h3 class="discipline-name">Brand Identity</h3>
-      <div class="discipline-tags">
-        <span class="discipline-tag">Logo</span>
-        <span class="discipline-tag">Visual System</span>
-        <span class="discipline-tag">Typography</span>
-        <span class="discipline-tag">Colour</span>
-      </div>
-    </div>
-    <div class="discipline-card">
-      <span class="discipline-number">002</span>
-      <h3 class="discipline-name">Art Direction</h3>
-      <div class="discipline-tags">
-        <span class="discipline-tag">Campaign</span>
-        <span class="discipline-tag">Photo Direction</span>
-        <span class="discipline-tag">Storyboard</span>
-        <span class="discipline-tag">360°</span>
-      </div>
-    </div>
-    <div class="discipline-card">
-      <span class="discipline-number">003</span>
-      <h3 class="discipline-name">Digital Design</h3>
-      <div class="discipline-tags">
-        <span class="discipline-tag">UI / UX</span>
-        <span class="discipline-tag">Web</span>
-        <span class="discipline-tag">Ecommerce</span>
-        <span class="discipline-tag">Mobile</span>
-      </div>
-    </div>
-    <div class="discipline-card">
-      <span class="discipline-number">004</span>
-      <h3 class="discipline-name">Motion & Video</h3>
-      <div class="discipline-tags">
-        <span class="discipline-tag">After Effects</span>
-        <span class="discipline-tag">Editing</span>
-        <span class="discipline-tag">Kinetic Type</span>
-      </div>
-    </div>
-    <div class="discipline-card">
-      <span class="discipline-number">005</span>
-      <h3 class="discipline-name">Illustration</h3>
-      <div class="discipline-tags">
-        <span class="discipline-tag">Character</span>
-        <span class="discipline-tag">Digital Painting</span>
-        <span class="discipline-tag">3D (C4D)</span>
-      </div>
-    </div>
-    <div class="discipline-card">
-      <span class="discipline-number">006</span>
-      <h3 class="discipline-name">Generative AI</h3>
-      <div class="discipline-tags">
-        <span class="discipline-tag">Concept</span>
-        <span class="discipline-tag">Retouching</span>
-        <span class="discipline-tag">Upscaling</span>
-        <span class="discipline-tag">Workflows</span>
-      </div>
-    </div>
-  </div>
-</section>
+      <section class="cv-section">
+        <div class="cv-eyebrow">Professional summary</div>
+        <p class="cv-lead">Multidisciplinary <b>Visual Designer</b> with 9+ years of experience creating customer-focused visual experiences across print and digital channels, driving measurable engagement increases of <b>15–29%</b>. Strong in motion graphics, with hands-on experience across brand identity, packaging, campaign systems, and AI-accelerated workflows. Proven ability to turn creative concepts into scalable assets that support brand, customer, and performance goals.</p>
+      </section>
 
-
-<!-- ── § 3 — EXPERIENCE ───────────────── -->
-<section id="experience">
-  <div class="section-index" data-reveal>03 — Experience</div>
-  <div data-reveal style="transition-delay:0.08s; margin-bottom:56px;">
-    <h2 class="section-title">Where I've been.</h2>
-  </div>
-  <div class="timeline" data-reveal style="transition-delay:0.18s">
-    <div class="timeline-item">
-      <span class="timeline-year">2024 – Now</span>
-      <div class="timeline-content">
-        <p class="timeline-role">Senior Designer / Creative Lead</p>
-        <p class="timeline-company">Freelance — Lisbon, PT</p>
-        <p class="timeline-desc">Leading brand and digital projects for clients across Portugal, Angola and the UK. Specialising in complete brand systems, campaign art direction and ecommerce design from brief to final delivery.</p>
-      </div>
-    </div>
-    <div class="timeline-item">
-      <span class="timeline-year">2022 – 2024</span>
-      <div class="timeline-content">
-        <p class="timeline-role">Art Director</p>
-        <p class="timeline-company">Studio — Luanda, AO</p>
-        <p class="timeline-desc">Led visual direction for 360° campaigns, brand launches and social content across FMCG, retail, and financial clients. Managed design production from concept to execution.</p>
-      </div>
-    </div>
-    <div class="timeline-item">
-      <span class="timeline-year">2018 – 2022</span>
-      <div class="timeline-content">
-        <p class="timeline-role">Graphic Designer</p>
-        <p class="timeline-company">Agency — Angola</p>
-        <p class="timeline-desc">Designed campaigns for Standard Bank Angola, Luandina, Wammo, and other regional brands. Worked across print, digital, OOH, and motion — often as the sole all-round designer on high-priority accounts.</p>
-      </div>
-    </div>
-    <div class="timeline-item">
-      <span class="timeline-year">2015 – 2018</span>
-      <div class="timeline-content">
-        <p class="timeline-role">Junior Designer</p>
-        <p class="timeline-company">Various — Angola</p>
-        <p class="timeline-desc">Built foundational skills in print design, brand identity, illustration, and photo retouching. Developed a versatile approach working across multiple studios and disciplines.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ── § 4 — AWARDS ───────────────────── -->
-<section id="awards">
-  <div class="awards-layout">
-
-    <!-- Left: portrait image -->
-    <div class="awards-image-col" data-reveal>
-      <div class="awards-portrait-wrap">
-        <img class="awards-portrait" src="" alt="Pedro Mota Gomes">
-      </div>
-    </div>
-
-    <!-- Right: content -->
-    <div class="awards-content-col">
-      <div class="section-index" data-reveal>04 — Awards</div>
-      <div class="awards-intro" data-reveal style="transition-delay:0.08s">
-        <h2 class="section-title">Recognition.</h2>
-        <p class="section-subtitle">Work recognised across industry awards for creative impact, cultural resonance, and craft.</p>
-      </div>
-      <div class="awards-list" data-reveal style="transition-delay:0.18s">
-        <div class="award-item">
-          <span class="award-name">The Voice of Experience — Standard Bank Angola</span>
-          <span class="award-org">Meios & Publicidade</span>
-          <span class="award-tier gold">Gold</span>
+      <section class="cv-section">
+        <div class="cv-eyebrow">Skills</div>
+        <div class="cv-tags">
+          <span class="cv-tag">Brand Design</span><span class="cv-tag">Packaging Design</span><span class="cv-tag">Motion Graphics</span><span class="cv-tag">Animation</span><span class="cv-tag">Video Editing</span><span class="cv-tag">Social Media Content</span><span class="cv-tag">UI/UX Design</span><span class="cv-tag">Campaign Design</span><span class="cv-tag">Art Direction</span><span class="cv-tag">Visual Identity</span><span class="cv-tag">Adobe Creative Suite</span><span class="cv-tag">After Effects</span><span class="cv-tag">Figma</span><span class="cv-tag">AI-Driven Design</span><span class="cv-tag">Prompt Engineering</span><span class="cv-tag">Workflow Optimisation</span><span class="cv-tag">Team Mentorship</span><span class="cv-tag">Stakeholder Management</span><span class="cv-tag">Performance Analytics</span><span class="cv-tag">Photography</span><span class="cv-tag">Retouching</span><span class="cv-tag">Illustration</span>
         </div>
-        <div class="award-item">
-          <span class="award-name">The Voice of Experience — Standard Bank Angola</span>
-          <span class="award-org">Lusófonos Creativity</span>
-          <span class="award-tier silver">Silver</span>
+      </section>
+
+      <section class="cv-section">
+        <div class="cv-eyebrow">Experience</div>
+
+        <div class="cv-job">
+          <div class="cv-job-head">
+            <div><div class="cv-job-title">Freelance Designer — Print &amp; Digital</div><div class="cv-job-org">One1x · Tottenham FC · AXE · Moope · Compal</div></div>
+            <div class="cv-job-date">Mar 2025 – Present</div>
+          </div>
+          <ul>
+            <li>Redesigned the complete packaging system for the One1x serum line, simplifying brand architecture from concept to production-ready packaging and retail collateral.</li>
+            <li>Designed official match-day illustrations for Tottenham FC — stadium-scale graphics and digital assets reaching 60,000+ attendees per match.</li>
+            <li>Concepted and executed a full AXE campaign from strategy through final creative, across digital, social, and retail activation.</li>
+            <li>Designed a period-tracking app from concept to launch — UI/UX, brand system, marketing collateral, and multi-channel campaign assets.</li>
+            <li>Delivered end-to-end brand and marketing solutions for Moope and Compal across print and digital touchpoints.</li>
+            <li>Contributed to 8–12% higher reach on social assets and a 10% increase in campaign visibility and enquiries.</li>
+          </ul>
         </div>
-        <div class="award-item">
-          <span class="award-name">Brand Identity — RAS Real Estate</span>
-          <span class="award-org">Client Recognition</span>
-          <span class="award-tier" style="color:rgba(10,10,10,0.35)">Merit</span>
+
+        <div class="cv-job">
+          <div class="cv-job-head">
+            <div><div class="cv-job-title">Brand Designer — Print &amp; Digital</div><div class="cv-job-org">The University of Law · London / Guildford</div></div>
+            <div class="cv-job-date">Jun 2022 – Mar 2025</div>
+          </div>
+          <ul>
+            <li>Increased student enquiries by 15% through bold, targeted campaign design aligned with brand guidelines across print and digital.</li>
+            <li>Boosted social media reach by 17% with platform-specific visuals for course promotions and graduation events.</li>
+            <li>Achieved a 9% rise in email open rates via refined layout design and messaging clarity.</li>
+            <li>Trained teams in AI-driven design workflows, reducing concept-to-execution time for digital campaigns.</li>
+            <li>Developed a branded asset library with templates and motion graphics for consistent, high-quality output.</li>
+            <li>Mentored junior designers in motion design best practices; coordinated photoshoots and retouched campaign imagery.</li>
+          </ul>
         </div>
-        <div class="award-item">
-          <span class="award-name">Galp Christmas 360° Campaign</span>
-          <span class="award-org">Campaign of the Year</span>
-          <span class="award-tier" style="color:rgba(10,10,10,0.35)">Finalist</span>
+
+        <div class="cv-job">
+          <div class="cv-job-head">
+            <div><div class="cv-job-title">Art Director / Designer</div><div class="cv-job-org">Kumuika</div></div>
+            <div class="cv-job-date">Oct 2018 – Oct 2021</div>
+          </div>
+          <ul>
+            <li>Designed packaging and visual identity for new product lines, ensuring a cohesive brand presence.</li>
+            <li>Led promotional materials for in-store displays and digital platforms, boosting visibility and engagement.</li>
+            <li>Achieved a 20% increase in product interest after a packaging redesign that improved brand perception.</li>
+            <li>Drove 29% higher engagement through motion graphics for digital and social campaigns.</li>
+            <li>Improved workflow efficiency by 12% by implementing a streamlined design system.</li>
+            <li>Mentored junior designers and conducted strategic market research to inform branding decisions.</li>
+          </ul>
         </div>
-        <div class="award-item">
-          <span class="award-name">Amal Clooney Scholarship — ULaw</span>
-          <span class="award-org">University of Law</span>
-          <span class="award-tier" style="color:rgba(10,10,10,0.35)">Featured</span>
+
+        <div class="cv-job">
+          <div class="cv-job-head">
+            <div><div class="cv-job-title">Art Director / Designer</div><div class="cv-job-org">Born.pt</div></div>
+            <div class="cv-job-date">Jun 2017 – Jul 2018</div>
+          </div>
+          <ul>
+            <li>Led creative social campaigns, boosting engagement and visibility across channels.</li>
+            <li>Art directed cross-channel campaigns, turning sketches into final designs and producing 122+ scalable assets.</li>
+            <li>Contributed to the award-winning Standard Bank campaign, supporting all stages from concept to execution.</li>
+            <li>Achieved a 22% boost in campaign results through improved visual strategy and a 15% uplift in engagement from motion-led content.</li>
+            <li>Cut production expenses by handling advanced retouching internally; mentored junior designers in motion design.</li>
+          </ul>
         </div>
-      </div>
+      </section>
+
+      <section class="cv-section">
+        <div class="cv-eyebrow">Education</div>
+        <div class="cv-rows">
+          <div class="cv-row"><div><div class="t">BA (Hons) Animation</div><div class="s">University of Westminster · London</div></div><div class="d">2012 – 2015</div></div>
+          <div class="cv-row"><div><div class="t">BTEC Diploma in Art &amp; Design</div><div class="s">College of North West London</div></div><div class="d">2011 – 2012</div></div>
+        </div>
+      </section>
+
+      <section class="cv-section">
+        <div class="cv-eyebrow">Certifications &amp; Courses</div>
+        <div class="cv-list">
+          <div class="li">Creative Coding for Interactive Design — Domestika (2026)</div>
+          <div class="li">Content Creation with AI — Domestika (2026)</div>
+          <div class="li">Product Design Online Course — Domestika (2024–2025)</div>
+        </div>
+      </section>
+
+      <section class="cv-section">
+        <div class="cv-eyebrow">Interests</div>
+        <p class="cv-interests">Street photography, generative AI experimentation, VR design and immersive storytelling, sustainable design practices, fitness, community art and travel.</p>
+      </section>
+
     </div>
+  </main>
 
-  </div>
-</section>
-
-
-<!-- ── § 5 — PERSONAL ─────────────────── -->
-<section id="personal">
-  <div class="section-index" data-reveal>05 — Personal</div>
-  <div class="personal-grid">
-    <div data-reveal style="transition-delay:0.08s">
-      <p class="personal-statement">
-        I believe the best design is almost invisible — it just feels right.
-        Good work happens at the intersection of rigour and intuition.
-      </p>
-      <a href="mailto:hi@motagomes.com" class="contact-link">
-        hi@motagomes.com
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14M13 5l7 7-7 7"/>
-        </svg>
-      </a>
-    </div>
-    <div class="personal-details" data-reveal style="transition-delay:0.2s">
-      <div class="personal-block">
-        <p class="personal-block-label">Background</p>
-        <p class="personal-block-text">
-          Born and raised in Angola, I grew up surrounded by music, colour, and
-          visual culture that shaped the way I see the world. I moved to Lisbon
-          to pursue design professionally and haven't looked back.
-        </p>
-      </div>
-      <div class="personal-block">
-        <p class="personal-block-label">Outside work</p>
-        <p class="personal-block-text">
-          Music producer, cinema obsessive, and occasional cinema 4D
-          experimenter. I believe the richest creative work comes from
-          people who are curious about more than their own field.
-        </p>
-      </div>
-      <div class="personal-block">
-        <p class="personal-block-label">Currently</p>
-        <p class="personal-block-text">
-          Available for brand, identity and art direction projects. Open to
-          agencies, startups, and creative studios — in Lisbon and remote.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ── FOOTER ─────────────────────────── -->
-<footer>
-  <span>Pedro Mota Gomes — 2026</span>
-  <span>Lisbon, Portugal</span>
-</footer>
-
-
-<script>
-  // Scroll reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('is-visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
-
-  document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
-</script>
-
+  <script>
+    // London clock in the nav
+    const clock = document.getElementById('navClock');
+    function tick() {
+      if (!clock) return;
+      clock.textContent = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date());
+    }
+    tick(); setInterval(tick, 15000);
+  </script>
 </body>
 </html>
