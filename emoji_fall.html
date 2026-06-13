@@ -47,7 +47,11 @@
     background-color: oklch(from var(--foreground) l c h / 18%);
     /* Chrome/Edge refract via the SVG normal map; Safari falls back to blur.
        saturate trimmed 150% -> 95% so refracted colours read as soft glass. */
-    backdrop-filter: blur(20px) url(#liquid-glass-hello) saturate(95%) brightness(104%);
+    /* Dropped url(#liquid-glass) displacement: it ran every frame over the live
+       emoji canvas (Chrome-only, very expensive — the scroll killer) and made
+       the button render differently across browsers. Frosted blur instead:
+       cheap, smooth, and identical in every browser. */
+    backdrop-filter: blur(20px) saturate(95%) brightness(104%);
     -webkit-backdrop-filter: blur(20px) saturate(95%) brightness(104%);
     box-shadow:
       /* soft inner glow — frosted luminosity around the rim */
