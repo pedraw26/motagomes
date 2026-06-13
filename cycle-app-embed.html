@@ -62,6 +62,41 @@
     overflow: hidden;
     background: #000;
   }
+  /* Subtle glass light-sweep over the app screen only (clipped by .screen's overflow) */
+  .screen-glare {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    pointer-events: none;
+    overflow: hidden;
+    mix-blend-mode: screen;
+  }
+  .screen-glare::before {
+    content: "";
+    position: absolute;
+    top: -50%; left: 0;
+    width: 42%; height: 200%;
+    background: linear-gradient(90deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.05) 42%,
+      rgba(255,255,255,0.13) 50%,
+      rgba(255,255,255,0.05) 58%,
+      rgba(255,255,255,0) 100%);
+    transform: translateX(-320%) rotate(16deg);
+    filter: blur(3px);
+    will-change: transform, opacity;
+    animation: screenSweep 9s ease-in-out infinite;
+  }
+  @keyframes screenSweep {
+    0%   { transform: translateX(-320%) rotate(16deg); opacity: 0; }
+    6%   { opacity: 1; }
+    24%  { opacity: 1; }
+    30%  { transform: translateX(520%) rotate(16deg); opacity: 0; }
+    100% { transform: translateX(520%) rotate(16deg); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .screen-glare::before { animation: none; opacity: 0; }
+  }
   .bganim {
     position: absolute; inset: 0;
     background: linear-gradient(105deg, #ee82c8, #ec8f7e, #e8995f, #f06fa8, #ee82c8);
@@ -346,6 +381,7 @@
   <div class="phone">
     <img class="phone-frame" src="img/phone-frame.svg" alt="">
     <div class="screen">
+      <div class="screen-glare" aria-hidden="true"></div>
       <div class="bganim"></div>
       <div class="blob b1"></div>
       <div class="blob b2"></div>
