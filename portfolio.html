@@ -5668,6 +5668,53 @@ margin-top: 3px;
             @media (prefers-reduced-motion: reduce) {
                 .mgf-mark { animation: none; }
             }
+            /* ── Contact: Apple-grade form + square email button ── */
+            .mgf-contact { width: 100%; max-width: 520px; margin-top: 6px; display: flex; flex-direction: column; gap: 14px; text-align: left; }
+            .mgf-row { display: flex; gap: 14px; }
+            .mgf-field {
+                width: 100%; flex: 1;
+                font-family: var(--sf-pro); font-size: 15px; color: #1d1d1f; line-height: 1.4;
+                background: rgba(255,255,255,0.5);
+                border: 1px solid rgba(0,0,0,0.09);
+                border-radius: 14px; padding: 15px 16px; outline: none;
+                -webkit-appearance: none; appearance: none;
+                transition: border-color 240ms ease, background 240ms ease, box-shadow 240ms ease;
+            }
+            .mgf-field::placeholder { color: rgba(0,0,0,0.32); }
+            .mgf-field:focus { border-color: rgba(0,0,0,0.3); background: rgba(255,255,255,0.96); box-shadow: 0 0 0 4px rgba(0,0,0,0.04); }
+            textarea.mgf-field { min-height: 118px; resize: vertical; }
+            .mgf-actions { display: flex; align-items: center; gap: 14px; margin-top: 4px; }
+            .mgf-email {
+                display: inline-flex; align-items: center; gap: 12px; text-decoration: none; flex-shrink: 0;
+                background: rgba(255,255,255,0.5); border: 1px solid rgba(0,0,0,0.09);
+                border-radius: 18px; padding: 11px 18px 11px 11px;
+                transition: border-color 240ms ease, background 240ms ease, transform 320ms cubic-bezier(0.22,1,0.36,1), box-shadow 320ms ease;
+            }
+            .mgf-email:hover { background: rgba(255,255,255,0.96); border-color: rgba(0,0,0,0.16); transform: translateY(-1px); box-shadow: 0 12px 28px -16px rgba(0,0,0,0.4); }
+            .mgf-email-icon { width: 42px; height: 42px; border-radius: 13px; flex-shrink: 0; background: #0b0b0e; color: #fff; display: inline-flex; align-items: center; justify-content: center; }
+            .mgf-email-icon svg { width: 19px; height: 19px; }
+            .mgf-email-text { display: flex; flex-direction: column; gap: 2px; }
+            .mgf-email-label { font-family: var(--sf-pro); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(0,0,0,0.38); }
+            .mgf-email-addr { font-family: var(--sf-pro); font-size: 15px; font-weight: 500; color: #1d1d1f; letter-spacing: -0.01em; }
+            .mgf-send {
+                flex: 1; cursor: pointer; border: none;
+                font-family: var(--sf-pro); font-size: 14px; font-weight: 500; color: #fff;
+                background: #0b0b0e; border-radius: 16px; padding: 16px 22px;
+                display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+                transition: background 240ms ease, transform 320ms cubic-bezier(0.22,1,0.36,1), box-shadow 320ms ease;
+            }
+            .mgf-send:hover { background: #1d1d1f; transform: translateY(-1px); box-shadow: 0 14px 30px -14px rgba(0,0,0,0.5); }
+            .mgf-send:active { transform: translateY(0); }
+            .mgf-send:disabled { opacity: 0.55; cursor: default; box-shadow: none; transform: none; }
+            .mgf-send svg { width: 15px; height: 15px; }
+            .mgf-formnote { font-family: var(--sf-pro); font-size: 13px; color: #0b0b0e; opacity: 0; transition: opacity 320ms ease; min-height: 16px; padding-top: 2px; }
+            .mgf-formnote.show { opacity: 0.62; }
+            @media (max-width: 640px) {
+                .mgf-contact { max-width: 100%; }
+                .mgf-row { flex-direction: column; }
+                .mgf-actions { flex-direction: column-reverse; align-items: stretch; }
+                .mgf-email { justify-content: center; }
+            }
         </style>
 
         <section class="mgf-stage-wrap">
@@ -5679,16 +5726,48 @@ margin-top: 3px;
                 <div class="mgf-content">
                     <h2 class="mgf-title">Thank you for watching my portfolio.<br>Let's get in touch.</h2>
                     <p class="mgf-sub">I&rsquo;m currently open to new design roles.<br>Feel free to drop me an email, I&rsquo;d love to hear from you.</p>
-                    <a href="mailto:hi@motagomes.com" class="mgf-cta" aria-label="Contact me">
-                        <span>Contact me</span>
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <line x1="5" y1="12" x2="19" y2="12"/>
-                            <polyline points="13 6 19 12 13 18"/>
-                        </svg>
-                    </a>
+                    <form class="mgf-contact" id="contactForm" novalidate>
+                        <div class="mgf-row">
+                            <input class="mgf-field" type="text" name="name" placeholder="Name" autocomplete="name" required>
+                            <input class="mgf-field" type="email" name="email" placeholder="Email" autocomplete="email" required>
+                        </div>
+                        <textarea class="mgf-field" name="message" placeholder="Tell me about your project…" required></textarea>
+                        <div class="mgf-actions">
+                            <a class="mgf-email" href="mailto:info@motagomes.com" aria-label="Email info@motagomes.com">
+                                <span class="mgf-email-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg></span>
+                                <span class="mgf-email-text"><span class="mgf-email-label">Email</span><span class="mgf-email-addr">info@motagomes.com</span></span>
+                            </a>
+                            <button class="mgf-send" type="submit">
+                                <span class="mgf-send-label">Send message</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                        <div class="mgf-formnote" id="contactNote" role="status" aria-live="polite"></div>
+                    </form>
                 </div>
             </div>
         </section>
+        <script>
+        (function(){
+            var form=document.getElementById('contactForm'); if(!form) return;
+            var note=document.getElementById('contactNote');
+            var sendBtn=form.querySelector('.mgf-send');
+            var sendLabel=form.querySelector('.mgf-send-label');
+            var SB="https://bgsmzkfaxmgwvdupqhlp.supabase.co";
+            var ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnc216a2ZheG1nd3ZkdXBxaGxwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyOTk2NDIsImV4cCI6MjA5Njg3NTY0Mn0.DTIqPhVGJ4wbPbbyFXkeEwyfZ02X5ieCgF4BIJLtQq4";
+            function showNote(t){ note.textContent=t; note.classList.add('show'); }
+            form.addEventListener('submit',function(e){
+                e.preventDefault();
+                var d={ name:(form.elements['name'].value||'').trim(), email:(form.elements['email'].value||'').trim(), message:(form.elements['message'].value||'').trim() };
+                if(!d.name||!d.email||!d.message){ showNote('Please fill in all three fields.'); return; }
+                sendBtn.disabled=true; if(sendLabel) sendLabel.textContent='Sending…'; note.classList.remove('show');
+                fetch(SB+"/rest/v1/contact_messages",{method:"POST",headers:{apikey:ANON,Authorization:"Bearer "+ANON,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify(d)})
+                    .then(function(r){ if(!r.ok) throw 0; form.reset(); showNote("Thanks, "+d.name.split(' ')[0]+" — your message is on its way."); })
+                    .catch(function(){ window.location.href="mailto:info@motagomes.com?subject="+encodeURIComponent("Portfolio enquiry — "+d.name)+"&body="+encodeURIComponent(d.message+"\n\n— "+d.name+" ("+d.email+")"); showNote("Opening your email app…"); })
+                    .finally(function(){ sendBtn.disabled=false; if(sendLabel) sendLabel.textContent="Send message"; });
+            });
+        })();
+        </script>
 
         <section class="snap-section footer-swiss" id="contact" hidden style="display:none">
             <a href="https://linkedin.com/in/pedraw" target="_blank" rel="noopener" class="swiss-linkedin">
