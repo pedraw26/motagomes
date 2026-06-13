@@ -31,7 +31,7 @@
     ".mg-nav .mg-nav-logo .mg-seg{display:inline-block;overflow:hidden;white-space:nowrap;max-width:0;vertical-align:bottom;}" +
     ".mg-nav .mg-nav-logo .mg-ota{animation:mg-ota 9s cubic-bezier(.65,0,.35,1) infinite;}" +
     ".mg-nav .mg-nav-logo .mg-omes{animation:mg-omes 9s cubic-bezier(.65,0,.35,1) infinite;}" +
-    "@keyframes mg-ota{0%,3%{max-width:0}14%,46%{max-width:2.35em}57%,100%{max-width:0}}" +
+    "@keyframes mg-ota{0%,3%{max-width:0}14%,46%{max-width:2.1em}57%,100%{max-width:0}}" +
     "@keyframes mg-omes{0%,3%{max-width:0}14%,46%{max-width:2.98em}57%,100%{max-width:0}}" +
     "@media (prefers-reduced-motion:reduce){.mg-nav .mg-nav-logo .mg-seg{animation:none}}" +
     ".mg-nav .mg-nav-links{justify-self:end;display:flex;align-items:center;gap:28px;}" +
@@ -82,7 +82,7 @@
     header.innerHTML =
       '<div class="mg-nav-content">' +
       '<div id="navClock">00:00</div>' +
-      '<a class="mg-nav-logo" href="/portfolio.html" aria-label="Mota Gomes — Home"><span class="mg-word">M<span class="mg-seg mg-ota">OTA </span><span class="mg-g">Ⓖ</span><span class="mg-seg mg-omes">OMES</span></span></a>' +
+      '<a class="mg-nav-logo" href="/portfolio.html" aria-label="Mota Gomes — Home"><span class="mg-word">M<span class="mg-seg mg-ota">OTA</span><span class="mg-g">Ⓖ</span><span class="mg-seg mg-omes">OMES</span></span></a>' +
       '<nav class="mg-nav-links" aria-label="Primary">' + navHTML + "</nav>" +
       "</div>";
     document.body.insertBefore(header, document.body.firstChild);
