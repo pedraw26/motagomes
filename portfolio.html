@@ -2699,6 +2699,10 @@
             max-height: 85vh;
             box-shadow: 0 0 50px rgba(0,0,0,0.3);
             z-index: 1;
+            /* width/height come from JS — contain isolates the per-frame resize
+               so it doesn't reflow the rest of the page */
+            contain: layout paint;
+            will-change: width, height;
             /* width/height come from JS */
         }
         .motion-embed__media video,
@@ -6430,13 +6434,12 @@ margin-top: 3px;
 
             function compute() {
                 rafPending = false;
-                // Distance scrolled into the section, measured in scrollContainer coordinates
-                const rect = pin.getBoundingClientRect();
-                const hostRect = scrollContainer.getBoundingClientRect();
-                const sectionTop = section.offsetTop - scrollContainer.scrollTop;
-                // Progress: how far through the 100vh pin runway we are
-                // runway = sectionHeight - viewportHeight (= 100vh on a 200vh section)
                 const viewportH = scrollContainer.clientHeight;
+                const top = section.offsetTop - scrollContainer.scrollTop; // section top vs viewport
+                // Skip entirely when the section isn't near view. Otherwise every
+                // scroll ANYWHERE on the page reflows the video box every frame,
+                // which is the main cause of the scroll stutter/freeze.
+                if (top > viewportH + 100 || top < -section.offsetHeight) return;
                 const runway = section.offsetHeight - viewportH;
                 const travelled = scrollContainer.scrollTop - section.offsetTop;
                 const p = runway > 0 ? travelled / runway : 0;
@@ -6553,9 +6556,10 @@ margin-top: 3px;
                 ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
             }
 
+            let clockVisible = true;
             function drawLondonClock() {
-                resizeClock();
-                if (!cssSize) { requestAnimationFrame(drawLondonClock); return; }
+                if (!clockVisible) return;          // paused while the widget is off-screen
+                if (!cssSize) { resizeClock(); if (!cssSize) { requestAnimationFrame(drawLondonClock); return; } }
 
                 const size = cssSize;
                 const C = size / 2;
@@ -6620,6 +6624,14 @@ margin-top: 3px;
             window.addEventListener('resize', resizeClock, { passive: true });
             window.addEventListener('load', resizeClock);
 
+            // Pause the 60fps clock redraw whenever the widget is off-screen.
+            if (typeof IntersectionObserver !== 'undefined') {
+                new IntersectionObserver((es) => {
+                    const vis = es[0].isIntersecting;
+                    if (vis && !clockVisible) { clockVisible = true; drawLondonClock(); }
+                    else if (!vis) { clockVisible = false; }
+                }, { threshold: 0 }).observe(londonCanvas);
+            }
             drawLondonClock();
         }
 
