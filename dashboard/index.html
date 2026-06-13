@@ -1099,7 +1099,9 @@
                 const h = await sha256Hex(val);
                 if (h === '34c90359b61832ca5fd0593f233058b0dcd66809ade65acb763ca7a82c3e7bc5') {
                     sessionStorage.setItem('dash_auth', '1');
+                    sessionStorage.setItem('_dpw', val);
                     document.getElementById('authGate').style.display = 'none';
+                    if (typeof loadDashboard === 'function') loadDashboard();
                     // Offer passkey enrollment AFTER gate hides — non-blocking, errors swallowed
                     setTimeout(async () => {
                         try {
@@ -2008,9 +2010,38 @@
 
         async function loadDashboard() {
             try {
-                const res = await fetch('/api/analytics?range=' + currentRange);
-                const data = await res.json();
-                if (data.error) { console.error('API error:', data.error); return; }
+                const pwd = sessionStorage.getItem('_dpw');
+                if (!pwd) { var g = document.getElementById('authGate'); if (g) { g.style.display = 'flex'; var sub = document.getElementById('authSub'); if (sub) sub.textContent = 'Enter password to load analytics data'; } return; }
+                const SB_URL = 'https://bgsmzkfaxmgwvdupqhlp.supabase.co';
+                const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnc216a2ZheG1nd3ZkdXBxaGxwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyOTk2NDIsImV4cCI6MjA5Njg3NTY0Mn0.DTIqPhVGJ4wbPbbyFXkeEwyfZ02X5ieCgF4BIJLtQq4';
+                const res = await fetch(SB_URL + '/rest/v1/rpc/get_stats', {
+                    method: 'POST',
+                    headers: { apikey: SB_ANON, Authorization: 'Bearer ' + SB_ANON, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ p_pwd: pwd, p_range: parseInt(currentRange) || 7 })
+                });
+                const s = await res.json();
+                if (!s || s.code || s.message) { console.error('Analytics error:', s); return; }
+
+                // Adapt get_stats() payload → dashboard data shape
+                const data = {
+                    overview: { total_views: s.total_views || 0, unique_visitors: s.unique_visitors || 0, avg_session_duration: 0, contact_rate: 0, bounce_rate: 0, avg_scroll_depth: 0 },
+                    trends: null,
+                    chart: { labels: (s.chart && s.chart.labels) || [], views: (s.chart && s.chart.views) || [], unique: (s.chart && s.chart.unique) || [] },
+                    visitors: { new: s.new_visitors || 0, returning: s.returning_visitors || 0 },
+                    live_activity: (s.recent || []).slice(0, 30).map(r => ({ city: r.city, country: r.country, page: r.page, time: r.created_at, org: r.org, is_amazon: r.is_amazon, ip: r.ip })),
+                    projects: {},
+                    conversions: {},
+                    regions: (s.by_country || []).map(r => ({ country: r.country, count: r.c })),
+                    top_pages: (s.by_page || []).map(r => ({ page: r.page, views: r.c })),
+                    hourly: s.hourly || [],
+                    time_per_page: [],
+                    funnel: null,
+                    referrers: (s.by_referrer || []).map(r => ({ source: r.source, count: r.c })),
+                    devices: s.by_device || {},
+                    browsers: s.by_browser || {},
+                    _amazon_hits: s.amazon_hits || 0,
+                    _amazon_recent: s.amazon_recent || []
+                };
                 lastData = data;
 
                 const el = id => document.getElementById(id);
@@ -2056,11 +2087,11 @@
                 const liveEl = el('liveActivity');
                 if (data.live_activity && data.live_activity.length > 0) {
                     liveEl.innerHTML = data.live_activity.map(a => `
-                        <div class="live-item">
-                            <div class="live-dot"></div>
+                        <div class="live-item" style="${a.is_amazon ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
+                            <div class="live-dot" style="${a.is_amazon ? 'background:#ff9900;' : ''}"></div>
                             <div class="live-info">
-                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''}</div>
-                                <div class="live-page">${a.page || 'home'}</div>
+                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${a.is_amazon ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}</div>
+                                <div class="live-page">${a.page || 'home'}${a.org ? ' · ' + a.org : ''}</div>
                             </div>
                             <div class="live-time">${timeAgo(a.time)}</div>
                         </div>
@@ -2291,17 +2322,37 @@
                 const liveFullEl = el('liveActivityFull');
                 if (data.live_activity && data.live_activity.length > 0) {
                     liveFullEl.innerHTML = data.live_activity.map(a => `
-                        <div class="live-item">
-                            <div class="live-dot"></div>
+                        <div class="live-item" style="${a.is_amazon ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
+                            <div class="live-dot" style="${a.is_amazon ? 'background:#ff9900;' : ''}"></div>
                             <div class="live-info">
-                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''}</div>
-                                <div class="live-page">${a.page || 'home'}</div>
+                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${a.is_amazon ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}</div>
+                                <div class="live-page">${a.page || 'home'}${a.org ? ' · ' + a.org : ''}</div>
                             </div>
                             <div class="live-time">${timeAgo(a.time)}</div>
                         </div>`).join('');
                 } else {
                     liveFullEl.innerHTML = '<div style="color:var(--text-muted);padding:24px;text-align:center;">No recent activity. Visit your portfolio to see live data here.</div>';
                 }
+
+                // ===== AMAZON / AWS ALERT BANNER =====
+                (function () {
+                    var n = data._amazon_hits || 0;
+                    var b = document.getElementById('amazonBanner');
+                    if (n > 0) {
+                        if (!b) {
+                            b = document.createElement('div');
+                            b.id = 'amazonBanner';
+                            b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#ff9900;color:#1a1a1a;font:600 13px -apple-system,BlinkMacSystemFont,sans-serif;padding:9px 16px;text-align:center;box-shadow:0 2px 14px rgba(0,0,0,.25);';
+                            document.body.appendChild(b);
+                        }
+                        var last = (data._amazon_recent && data._amazon_recent[0]) || null;
+                        var when = last ? ' · last ' + timeAgo(last.created_at) : '';
+                        b.textContent = '🚨 ' + n + ' visit' + (n > 1 ? 's' : '') + ' from Amazon / AWS networks in this period' + when;
+                        b.style.display = 'block';
+                    } else if (b) {
+                        b.style.display = 'none';
+                    }
+                })();
 
             } catch (err) {
                 console.error('Failed to load analytics:', err);
