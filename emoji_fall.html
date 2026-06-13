@@ -43,11 +43,15 @@
   .btn-liquid-lens {
     position: absolute; inset: 0; z-index: -1;
     border-radius: inherit; pointer-events: none;
-    background-color: oklch(from var(--foreground) l c h / 5%);
-    /* Chrome/Edge refract via the SVG normal map; Safari falls back to blur */
-    backdrop-filter: blur(18px) url(#liquid-glass-hello) saturate(150%);
-    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    /* milky white frost veil mutes the vivid emoji colours behind it */
+    background-color: oklch(from var(--foreground) l c h / 18%);
+    /* Chrome/Edge refract via the SVG normal map; Safari falls back to blur.
+       saturate trimmed 150% -> 95% so refracted colours read as soft glass. */
+    backdrop-filter: blur(20px) url(#liquid-glass-hello) saturate(95%) brightness(104%);
+    -webkit-backdrop-filter: blur(20px) saturate(95%) brightness(104%);
     box-shadow:
+      /* soft inner glow — frosted luminosity around the rim */
+      inset 0 0 34px 6px color-mix(in srgb, white calc(var(--glass-reflex-light) * 20%), transparent),
       inset 0 0 0 2.5px color-mix(in srgb, white calc(var(--glass-reflex-light) * 10%), transparent),
       inset 4.5px 7.5px 0px -5px color-mix(in srgb, white calc(var(--glass-reflex-light) * 90%), transparent),
       inset -5px -5px 0px -5px color-mix(in srgb, white calc(var(--glass-reflex-light) * 80%), transparent),
@@ -193,7 +197,11 @@ function sprite(emoji, size) {
   return c;
 }
 
+let paused = false;
 function draw() {
+  // When the hero is scrolled off-screen the parent pauses us — skip ALL
+  // canvas work so we don't compete with the page's scroll compositing.
+  if (paused) { requestAnimationFrame(draw); return; }
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, W, H);
   for (const b of bodies) {
@@ -218,9 +226,22 @@ requestAnimationFrame(draw);
 // and prevents a backlog of physics steps when returning to the tab.
 document.addEventListener('visibilitychange', () => {
   const active = !document.hidden;
-  runner.enabled = active;
+  runner.enabled = active && !paused;
   clearInterval(spawnTimer);
-  if (active && !filled) spawnTimer = setInterval(spawn, 130);
+  if (active && !paused && !filled) spawnTimer = setInterval(spawn, 130);
+});
+
+// Parent (portfolio hero) pauses/resumes us as it enters/leaves the viewport.
+addEventListener('message', (e) => {
+  if (e.data === 'mg-pause' && !paused) {
+    paused = true;
+    runner.enabled = false;
+    clearInterval(spawnTimer);
+  } else if (e.data === 'mg-resume' && paused) {
+    paused = false;
+    runner.enabled = true;
+    if (!filled) { clearInterval(spawnTimer); spawnTimer = setInterval(spawn, 130); }
+  }
 });
 
 let resizeTimer;

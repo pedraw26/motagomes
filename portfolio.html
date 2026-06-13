@@ -213,8 +213,10 @@
             right: 0;
             z-index: 1000;
             background: transparent;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            /* fixed blurred bar re-blurs the page beneath it every scroll frame;
+               20px -> 12px trims that constant cost */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             -webkit-mask-image: linear-gradient(to bottom, #000 55%, rgba(0,0,0,0) 100%);
                     mask-image: linear-gradient(to bottom, #000 55%, rgba(0,0,0,0) 100%);
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
@@ -5508,11 +5510,14 @@ margin-top: 3px;
                 min-height: 100vh;
                 margin-top: -60px;
                 border-radius: 0;
-                background: rgba(255, 255, 255, 0.78);
+                background: rgba(255, 255, 255, 0.82);
                 border: 1px solid rgba(255,255,255,0.5);
                 border-bottom: none;
-                -webkit-backdrop-filter: blur(50px) saturate(200%) brightness(115%);
-                        backdrop-filter: blur(50px) saturate(200%) brightness(115%);
+                /* blur 50px -> 16px: a 100vh blurred surface was re-blurring the
+                   backdrop every scroll frame. contain:paint isolates repaints. */
+                -webkit-backdrop-filter: blur(16px) saturate(150%);
+                        backdrop-filter: blur(16px) saturate(150%);
+                contain: paint;
                 box-shadow:
                     0 -30px 60px -30px rgba(0,0,0,0.5),
                     0 -2px 0 rgba(255,255,255,0.18) inset;
@@ -5877,6 +5882,30 @@ margin-top: 3px;
 
             heroObserver.observe(heroSection);
         }
+
+        // ========================================
+        // SCROLL PERF: pause heavy hero animations when off-screen.
+        // The emoji_fall canvas (Matter.js physics) + its url() glass filter
+        // and the autoplay video otherwise run every frame forever and steal
+        // compositor budget, making scrolling stutter in Chrome.
+        // ========================================
+        (function () {
+            const hero = document.getElementById('hero');
+            if (!hero) return;
+            const heroVideo = document.querySelector('.hero-trio-cell--center video');
+            const emojiFrame = document.querySelector('.hero-trio-cell .hero-trio-embed');
+            let on = true;
+            const setActive = (next) => {
+                if (next === on) return;
+                on = next;
+                try { emojiFrame && emojiFrame.contentWindow && emojiFrame.contentWindow.postMessage(next ? 'mg-resume' : 'mg-pause', '*'); } catch (e) {}
+                if (heroVideo) { next ? heroVideo.play().catch(() => {}) : heroVideo.pause(); }
+            };
+            const io = new IntersectionObserver((entries) => {
+                setActive(entries[0].isIntersecting);
+            }, { threshold: 0, rootMargin: '150px' });
+            io.observe(hero);
+        })();
 
         // ========================================
         // FOOTER SCROLL REVEAL (same as hero)
