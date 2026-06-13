@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galp Christmas — Phone Videos</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #edafd2;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  }
+
+  .stage {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(28px, 4vw, 80px);
+    padding: clamp(24px, 4vh, 64px);
+    background: #edafd2;
+  }
+
+  /* ── Phone-style vertical video card ── */
+  .phone {
+    height: clamp(280px, 80vh, 820px);
+    aspect-ratio: 9 / 16;
+    border-radius: clamp(18px, 2.4vh, 38px);
+    overflow: hidden;
+    box-shadow:
+      0 1px 0 rgba(0, 0, 0, 0.04),
+      0 20px 40px rgba(60, 30, 50, 0.18),
+      0 60px 80px rgba(60, 30, 50, 0.12);
+    background: transparent;
+    position: relative;
+  }
+
+  .phone video,
+  .phone img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background: transparent;
+    /* Subtle contrast + saturation bump masks low-res softness */
+    filter: contrast(1.06) saturate(1.08);
+    image-rendering: auto;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <!-- Video 1: Galp Christmas — "Quando dizemos..." -->
+  <div class="phone">
+    <video
+      src="https://res.cloudinary.com/dzgqzeebg/video/upload/q_auto:best,w_720,c_scale,e_improve/galp/video-natal.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"></video>
+  </div>
+
+  <!-- Video 2: Cookies de Natal -->
+  <div class="phone">
+    <video
+      src="https://res.cloudinary.com/dzgqzeebg/video/upload/q_auto:best,w_720,c_scale,e_improve/galp/video-cookies.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"></video>
+  </div>
+</div>
+
+</body>
+</html>

@@ -744,14 +744,16 @@
             grid-template-columns: 1fr 1.35fr 1fr;
             gap: 8px;
             height: 52vh;
-            /* wider than viewport so outer images bleed off both edges */
-            width: calc(100% + 14vw);
-            margin-left: -7vw;
+            /* contained within the viewport so cells stay centered and scale
+               proportionally on resize (no off-screen bleed) */
+            width: 100%;
+            margin-left: 0;
         }
         .hero-trio-cell {
             overflow: hidden;
         }
-        .hero-trio-cell img {
+        .hero-trio-cell img,
+        .hero-trio-cell video {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -781,7 +783,7 @@
 
 
         @media (max-width: 768px) {
-            .hero-trio { height: 40vh; width: calc(100% + 24vw); margin-left: -12vw; }
+            .hero-trio { height: 40vh; width: 100%; margin-left: 0; }
         }
 
         /* ── Bottom text strip ── */
@@ -4816,7 +4818,7 @@ margin-top: 3px;
                         <iframe class="hero-trio-embed" src="/emoji_fall.html" title="Emoji fall" loading="lazy" scrolling="no"></iframe>
                     </div>
                     <div class="hero-trio-cell hero-trio-cell--center">
-                        <img src="https://res.cloudinary.com/dzgqzeebg/image/upload/q_100/portfolio/galp-man-clean.jpg" alt="Galp Man">
+                        <video src="https://res.cloudinary.com/dzgqzeebg/video/upload/q_auto:best,w_1400,c_limit/galp/kling-young-man.mp4" autoplay muted loop playsinline preload="auto" aria-label="Galp campaign — portrait"></video>
                         <img class="hero-badge" src="https://res.cloudinary.com/dzgqzeebg/image/upload/q_100/portfolio/galp-badge.png" alt="">
                     </div>
                     <div class="hero-trio-cell">
@@ -4827,7 +4829,7 @@ margin-top: 3px;
 
             <!-- Bottom title strip -->
             <div class="hero-bottom-strip">
-                <h1 class="hero-hl">Hybrid Designer.</h1>
+                <h1 class="hero-hl">Visual Designer.</h1>
                 <p class="hero-hl-tag">Focused on elevating brands &amp; experiences<br>that balance aesthetics with purpose and results.</p>
             </div>
 
@@ -4932,8 +4934,8 @@ margin-top: 3px;
                     </div>
                 </div>
 
-                <!-- Card 4: RAS Real Estate -->
-                <div class="gallery-stacked-card" style="--card-index: 3; --card-offset: 50px;">
+                <!-- Card 4: RAS Real Estate (hidden) -->
+                <div class="gallery-stacked-card" hidden style="display:none; --card-index: 3; --card-offset: 50px;">
                     <div class="gallery-stacked-card-inner" style="transform: perspective(1200px) rotateX(27.1303deg) scale(0.898261);">
                         <div class="gallery-stacked-bar">
                             <div class="gallery-stacked-dot"></div>
@@ -5200,13 +5202,7 @@ margin-top: 3px;
                 <div class="motion-embed__bg" id="motionBg"></div>
 
                 <div class="motion-embed__media" id="motionMedia">
-                    <div class="motion-embed__fake-video" aria-label="Motion reel placeholder — showreel coming soon">
-                        <div class="mfv-frame mfv-frame-1"></div>
-                        <div class="mfv-frame mfv-frame-2"></div>
-                        <div class="mfv-frame mfv-frame-3"></div>
-                        <div class="mfv-frame mfv-frame-4"></div>
-                        <div class="mfv-frame mfv-frame-5"></div>
-                    </div>
+                    <iframe src="/galp-phone-videos.html" title="Galp Christmas — phone videos" loading="lazy" scrolling="no"></iframe>
                     <div class="motion-embed__shade" id="motionShade"></div>
                 </div>
 
@@ -5361,7 +5357,6 @@ margin-top: 3px;
                     <span class="name">Luandina</span><span class="dot" aria-hidden="true"></span>
                     <span class="name">One1x</span><span class="dot" aria-hidden="true"></span>
                     <span class="name">Wammo</span><span class="dot" aria-hidden="true"></span>
-                    <span class="name">RAS Real Estate</span><span class="dot" aria-hidden="true"></span>
                     <span class="name">Aura Studio</span><span class="dot" aria-hidden="true"></span>
                     <!-- Duplicate for seamless loop -->
                     <span class="name" aria-hidden="true">Standard Bank</span><span class="dot" aria-hidden="true"></span>
@@ -5372,7 +5367,6 @@ margin-top: 3px;
                     <span class="name" aria-hidden="true">Luandina</span><span class="dot" aria-hidden="true"></span>
                     <span class="name" aria-hidden="true">One1x</span><span class="dot" aria-hidden="true"></span>
                     <span class="name" aria-hidden="true">Wammo</span><span class="dot" aria-hidden="true"></span>
-                    <span class="name" aria-hidden="true">RAS Real Estate</span><span class="dot" aria-hidden="true"></span>
                     <span class="name" aria-hidden="true">Aura Studio</span><span class="dot" aria-hidden="true"></span>
                 </div>
             </div>
@@ -6178,12 +6172,12 @@ margin-top: 3px;
         // standard-bank → galp → candando → ras → wammo → lyft → one1x → luandina → moope → aura
         const galleryBrands = [
             'Standard Bank', 'Galp', 'Candando',
-            'RAS Real Estate', 'Wammo', 'Lyft',
+            'Wammo', 'Lyft',
             'One1x', 'Luandina', 'Aura Studio'
         ];
         const galleryProjects = [
             '360 Campaign', 'Christmas Campaign', 'Retail Branding',
-            'Real Estate Branding', 'Retail Campaign', 'Illustration',
+            'Retail Campaign', 'Illustration',
             'Rebrand', 'Geo-Targeted Campaign', 'UX Design', 'Brand & Web'
         ];
 
