@@ -1777,9 +1777,26 @@
         .gallery-stacked-header {
             margin-bottom: 60px;
             display: flex;
-            justify-content: center;   /* "Selected Projects" centred in the section */
-            align-items: flex-end;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;       /* intro statement + "Selected Projects" stacked, centred */
+            gap: 56px;
             text-align: center;
+        }
+        .work-intro {
+            font-family: var(--sf-pro);
+            max-width: 920px;
+            margin: 0 auto;
+            font-size: clamp(1.45rem, 2.6vw, 2.25rem);
+            font-weight: 400;
+            line-height: 1.38;
+            letter-spacing: -0.012em;
+            color: #0a0a0a;
+            text-wrap: balance;
+        }
+        @media (max-width: 768px) {
+            .work-intro { font-size: clamp(1.2rem, 5vw, 1.6rem); max-width: 90%; }
+            .gallery-stacked-header { gap: 40px; }
         }
         
         .gallery-stacked-title {
@@ -4842,7 +4859,7 @@ margin-top: 3px;
             <!-- Bottom title strip -->
             <div class="hero-bottom-strip">
                 <h1 class="hero-hl">Visual Designer.</h1>
-                <p class="hero-hl-tag">I&rsquo;m a multidisciplinary designer creating customer-focused visual experiences across brand, digital and campaign design. I combine strong design craft with performance insight to make work that is clear, engaging and measurable, with a growing focus on interactive design through HTML, CSS, JavaScript and p5.js.</p>
+                <p class="hero-hl-tag">Portfolio last updated &middot; 13 June 2026</p>
             </div>
 
         </section>
@@ -4850,6 +4867,7 @@ margin-top: 3px;
         <!-- SECTION 2: GALLERY STACKED WITH GRADIENTS -->
         <section class="snap-section gallery-stacked" id="work">
             <div class="gallery-stacked-header">
+                <p class="work-intro">I&rsquo;m a multidisciplinary designer creating customer-focused visual experiences across brand, digital and campaign design. I combine strong design craft with performance insight to make work that is clear, engaging and measurable, with a growing focus on interactive design through HTML, CSS, JavaScript and p5.js.</p>
                 <h2 class="gallery-stacked-title"><span data-i18n="work.title">Selected Projects</span></h2>
                 <span class="gallery-stacked-updated" data-i18n="nav.lastUpdated" hidden style="display:none">Last updated · February 2026</span>
             </div>
