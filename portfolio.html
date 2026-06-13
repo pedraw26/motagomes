@@ -287,8 +287,8 @@
         .header-logo .mg-seg { display: inline-block; overflow: hidden; white-space: nowrap; max-width: 0; vertical-align: bottom; }
         .header-logo .mg-ota { animation: mg-ota 9s cubic-bezier(.65,0,.35,1) infinite; }
         .header-logo .mg-omes { animation: mg-omes 9s cubic-bezier(.65,0,.35,1) infinite; }
-        .header-logo .mg-gswap { position: relative; display: inline-block; width: 1.12em; height: 1em; text-align: center; vertical-align: bottom; animation: mg-gw 9s cubic-bezier(.65,0,.35,1) infinite; }
-        .header-logo .mg-gswap > span { position: absolute; left: 0; right: 0; bottom: 0; line-height: 1; }
+        .header-logo .mg-gswap { display: inline-grid; justify-items: center; align-items: baseline; width: 1.12em; vertical-align: baseline; animation: mg-gw 9s cubic-bezier(.65,0,.35,1) infinite; }
+        .header-logo .mg-gswap > span { grid-area: 1 / 1; line-height: 1; }
         .header-logo .mg-circ { font-size: 1.18em; animation: mg-circ 9s cubic-bezier(.65,0,.35,1) infinite; }
         .header-logo .mg-plain { opacity: 0; animation: mg-plain 9s cubic-bezier(.65,0,.35,1) infinite; }
         @keyframes mg-ota { 0%,3% { max-width: 0; } 14%,46% { max-width: 2.35em; } 57%,100% { max-width: 0; } }
@@ -4745,7 +4745,7 @@ margin-top: 3px;
         <div class="header-content">
             <div class="header-left" id="navClock">00:00</div>
             <div class="header-center">
-                <a href="javascript:void(0)" class="header-logo" onclick="scrollToTop()" aria-label="Mota Gomes"><span class="mg-word">M<span class="mg-seg mg-ota">OTA </span><span class="mg-gswap"><span class="mg-circ">Ⓖ</span><span class="mg-plain">G</span></span><span class="mg-seg mg-omes">OMES</span></span></a>
+                <a href="javascript:void(0)" class="header-logo" onclick="scrollToTop()" aria-label="Mota Gomes"><span class="mg-word">M<span class="mg-seg mg-ota">OTA&nbsp;</span><span class="mg-gswap"><span class="mg-circ">Ⓖ</span><span class="mg-plain">G</span></span><span class="mg-seg mg-omes">OMES</span></span></a>
             </div>
 
             <div class="header-right">

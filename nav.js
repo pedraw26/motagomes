@@ -31,8 +31,8 @@
     ".mg-nav .mg-nav-logo .mg-seg{display:inline-block;overflow:hidden;white-space:nowrap;max-width:0;vertical-align:bottom;}" +
     ".mg-nav .mg-nav-logo .mg-ota{animation:mg-ota 9s cubic-bezier(.65,0,.35,1) infinite;}" +
     ".mg-nav .mg-nav-logo .mg-omes{animation:mg-omes 9s cubic-bezier(.65,0,.35,1) infinite;}" +
-    ".mg-nav .mg-nav-logo .mg-gswap{position:relative;display:inline-block;width:1.12em;height:1em;text-align:center;vertical-align:bottom;animation:mg-gw 9s cubic-bezier(.65,0,.35,1) infinite;}" +
-    ".mg-nav .mg-nav-logo .mg-gswap>span{position:absolute;left:0;right:0;bottom:0;line-height:1;}" +
+    ".mg-nav .mg-nav-logo .mg-gswap{display:inline-grid;justify-items:center;align-items:baseline;width:1.12em;vertical-align:baseline;animation:mg-gw 9s cubic-bezier(.65,0,.35,1) infinite;}" +
+    ".mg-nav .mg-nav-logo .mg-gswap>span{grid-area:1/1;line-height:1;}" +
     ".mg-nav .mg-nav-logo .mg-circ{font-size:1.18em;animation:mg-circ 9s cubic-bezier(.65,0,.35,1) infinite;}" +
     ".mg-nav .mg-nav-logo .mg-plain{opacity:0;animation:mg-plain 9s cubic-bezier(.65,0,.35,1) infinite;}" +
     "@keyframes mg-ota{0%,3%{max-width:0}14%,46%{max-width:2.35em}57%,100%{max-width:0}}" +
