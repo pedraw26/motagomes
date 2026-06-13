@@ -34,7 +34,7 @@
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
     font-size: 40px; font-weight: 500; line-height: 1;
     letter-spacing: -0.02em;            /* tracking-tight */
-    color: oklch(from var(--foreground) l c h / 95%);
+    color: rgba(255, 255, 255, 0.95);
     --glass-reflex-light: 1;
     --glass-reflex-dark: 1;
     transition: transform 300ms ease-out;
@@ -44,7 +44,7 @@
     position: absolute; inset: 0; z-index: -1;
     border-radius: inherit; pointer-events: none;
     /* milky white frost veil mutes the vivid emoji colours behind it */
-    background-color: oklch(from var(--foreground) l c h / 18%);
+    background-color: rgba(255, 255, 255, 0.18);
     /* Chrome/Edge refract via the SVG normal map; Safari falls back to blur.
        saturate trimmed 150% -> 95% so refracted colours read as soft glass. */
     /* Dropped url(#liquid-glass) displacement: it ran every frame over the live
@@ -55,24 +55,24 @@
     -webkit-backdrop-filter: blur(20px) saturate(95%) brightness(104%);
     box-shadow:
       /* soft inner glow — frosted luminosity around the rim */
-      inset 0 0 34px 6px color-mix(in srgb, white calc(var(--glass-reflex-light) * 20%), transparent),
-      inset 0 0 0 2.5px color-mix(in srgb, white calc(var(--glass-reflex-light) * 10%), transparent),
-      inset 4.5px 7.5px 0px -5px color-mix(in srgb, white calc(var(--glass-reflex-light) * 90%), transparent),
-      inset -5px -5px 0px -5px color-mix(in srgb, white calc(var(--glass-reflex-light) * 80%), transparent),
-      inset -7.5px -20px 2.5px -15px color-mix(in srgb, white calc(var(--glass-reflex-light) * 60%), transparent),
-      inset -0.75px -2.5px 10px 0px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 12%), transparent),
-      inset -3.75px 6.25px 0px -5px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 20%), transparent),
-      inset 0px 7.5px 10px -5px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 20%), transparent),
-      inset 5px -16.25px 2.5px -10px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 10%), transparent),
-      0px 2.5px 12.5px 0px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 10%), transparent),
-      0px 15px 40px 0px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 8%), transparent);
+      inset 0 0 34px 6px rgba(255, 255, 255, 0.20),
+      inset 0 0 0 2.5px rgba(255, 255, 255, 0.10),
+      inset 4.5px 7.5px 0px -5px rgba(255, 255, 255, 0.90),
+      inset -5px -5px 0px -5px rgba(255, 255, 255, 0.80),
+      inset -7.5px -20px 2.5px -15px rgba(255, 255, 255, 0.60),
+      inset -0.75px -2.5px 10px 0px rgba(0, 0, 0, 0.12),
+      inset -3.75px 6.25px 0px -5px rgba(0, 0, 0, 0.20),
+      inset 0px 7.5px 10px -5px rgba(0, 0, 0, 0.20),
+      inset 5px -16.25px 2.5px -10px rgba(0, 0, 0, 0.10),
+      0px 2.5px 12.5px 0px rgba(0, 0, 0, 0.10),
+      0px 15px 40px 0px rgba(0, 0, 0, 0.08);
     transition: background-color 400ms cubic-bezier(1, 0, 0.4, 1), box-shadow 400ms cubic-bezier(1, 0, 0.4, 1);
   }
   .btn-liquid-text {
     position: relative; z-index: 10;
     display: inline-flex; align-items: center; justify-content: center; gap: inherit;
     user-select: none;
-    text-shadow: 0 1px 2px oklch(from var(--background) l c h / 30%);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.30);
   }
   @media (hover: hover) { .btn-liquid:hover { transform: scale(1.03); } }
   .btn-liquid:active { transform: scale(0.96); }
