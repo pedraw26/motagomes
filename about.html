@@ -135,6 +135,24 @@
     .cv-aside { position: static; flex-direction: row; flex-wrap: wrap; align-items: center; }
     .cv-photo { width: 160px; }
   }
+
+  @media (max-width: 600px) {
+    /* Header: tighten padding and nav gap so the row fits narrow phones */
+    .header-content { padding: 20px 18px; }
+    .header-nav { gap: 18px; }
+    .header-nav a { font-size: 13px; }
+    #navClock { font-size: 15px; }
+  }
+
+  @media (max-width: 430px) {
+    /* About lead: ease the top of the clamp so it doesn't dominate small screens */
+    .about-lead { font-size: clamp(1.25rem, 6vw, 1.55rem); }
+    /* Photo a touch smaller so name/contact sit comfortably beside it */
+    .cv-photo { width: 132px; }
+    /* Keep job/education date on its own line, left-aligned, when the head wraps */
+    .cv-job-head, .cv-row { gap: 6px 16px; }
+    .cv-job-date, .cv-row .d { white-space: normal; }
+  }
 </style>
 </head>
 <body>

@@ -213,7 +213,15 @@
   .footer a:hover { color: var(--fg); }
 
   @media (max-width: 720px) {
-    .stage { padding: 20px; }
+    /* Stacked layout can exceed one viewport — allow the page to scroll
+       instead of being clipped by body{overflow:hidden} + 100vh stage. */
+    html, body { overflow-y: auto; height: auto; }
+    .stage {
+      padding: 20px;
+      height: auto;
+      min-height: 100vh;
+      grid-template-rows: auto 1fr auto;
+    }
     .header, .main, .footer {
       grid-template-columns: 1fr;
     }

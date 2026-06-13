@@ -829,6 +829,17 @@
             .research-footer-nav {
                 padding: 40px 16px;
             }
+            /* Long mono strings (tools list) can push past the viewport edge */
+            .research-meta-value,
+            .research-tools,
+            .research-tools span {
+                overflow-wrap: anywhere;
+                word-break: break-word;
+            }
+            .coming-soon-bar {
+                width: 100%;
+                max-width: 200px;
+            }
         }
     </style>
 </head>

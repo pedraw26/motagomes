@@ -838,6 +838,14 @@
             .hero-trio { width: calc(100% + 32vw); margin-left: -16vw; }
             .hero-hl-tag { display: none; }
         }
+        @media (max-width: 480px) {
+            /* On the narrowest phones the -16vw bleed cuts the side cells too
+               hard and squeezes the centre Galp frame. Pull the trio back to
+               full viewport width so all three cells stay readable. */
+            .hero-trio { width: 100%; margin-left: 0; gap: 5px; }
+            .hero-trio-cell img.hero-badge { top: 8px; right: 8px; width: 64px; }
+            .hero-hl { font-size: clamp(1.7rem, 9vw, 2.2rem); }
+        }
 
         /* Keep old hero-label/title/subtitle for any JS still referencing them */
         .hero .hero-label { color: rgba(255,255,255,0.55); }
@@ -4334,6 +4342,17 @@ margin-top: 3px;
                 padding: 0 24px;
             }
 
+            /* Selected Projects gallery: drop the 80px side gutters so the
+               stacked cards aren't squeezed into a thin column on phones. */
+            .gallery-stacked {
+                padding: 100px 20px 0px;
+            }
+            .gallery-stacked-header {
+                margin-bottom: 40px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
             .gallery-1-header, .gallery-1-track, .gallery-1-nav {
                 padding-left: 24px;
                 padding-right: 24px;
@@ -4404,9 +4423,18 @@ margin-top: 3px;
             .research-item {
                 padding: 16px 0;
             }
-            
+
             .research-name {
                 font-size: 0.95rem;
+            }
+
+            .gallery-stacked {
+                padding: 88px 14px 0px;
+            }
+            /* Card titles ride the section width — pull the cap heading down a
+               touch so "Selected Projects" doesn't dominate the small screen. */
+            .gallery-stacked-title {
+                font-size: clamp(1.6rem, 7vw, 2rem);
             }
         }
 
@@ -5621,6 +5649,22 @@ margin-top: 3px;
             }
             .mgf-cta:active { transform: translateY(0); }
             .mgf-cta svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+            @media (max-width: 768px) {
+                /* Glass card: trim the generous desktop padding so the title,
+                   subtitle and CTA breathe on a phone without touching edges. */
+                .mgf-glass { padding: 64px 22px; }
+                .mgf-content { gap: 24px; }
+                .mgf-title { font-size: clamp(28px, 8vw, 40px); }
+                .mgf-sub { font-size: 15px; line-height: 1.5; }
+                .mgf-cta { margin-top: 24px; padding: 14px 22px; letter-spacing: 0.2em; }
+                /* Caption is absolute + nowrap + wide tracking — it runs past a
+                   narrow viewport. Tighten tracking and shrink so it fits. */
+                .mgf-caption { font-size: 8px; letter-spacing: 0.22em; bottom: 28px; }
+            }
+            @media (max-width: 480px) {
+                .mgf-glass { padding: 52px 18px; }
+                .mgf-caption { letter-spacing: 0.14em; }
+            }
             @media (prefers-reduced-motion: reduce) {
                 .mgf-mark { animation: none; }
             }

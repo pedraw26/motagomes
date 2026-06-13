@@ -44,6 +44,7 @@
             color: var(--text);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
         }
 
         /* ========================================
@@ -1995,6 +1996,12 @@
             /* Statement text: reduce clamp minimum on very small screens */
             .overview__statement-text {
                 font-size: clamp(1.45rem, 5.5vw, 1.8rem);
+            }
+
+            /* Hero title: trim the clamp minimum so long titles don't crowd narrow screens */
+            .project-hero-title {
+                font-size: clamp(2rem, 9vw, 2.6rem);
+                margin-bottom: 20px;
             }
 
             /* Meta-item row layout: constrain label + wrap value */
