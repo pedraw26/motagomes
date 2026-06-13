@@ -8,7 +8,7 @@
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=EB+Garamond:ital,wght@1,500&display=swap" rel="stylesheet">
     <script>(function(){try{var l=localStorage.getItem('mg_lang');if(l==='pt')document.documentElement.lang='pt-PT';}catch(e){}})();</script>
     <script src="/i18n.js" defer></script>
     <script src="/guard.js" defer></script>
@@ -498,12 +498,12 @@
             justify-self: center;
         }
         #navClock {
-            font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+            font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
             font-style: italic;
             font-weight: 500;
-            font-size: 16px;
-            letter-spacing: 0.01em;
-            color: rgba(255, 255, 255, 0.62);
+            font-size: 17px;
+            letter-spacing: 0.02em;
+            color: rgba(255, 255, 255, 0.6);
             font-variant-numeric: tabular-nums;
             line-height: 1;
             text-transform: none;
@@ -4721,7 +4721,7 @@ margin-top: 3px;
          ======================================== -->
     <header class="header" id="header">
         <div class="header-content">
-            <div class="header-left" id="navClock">GMT 00:00</div>
+            <div class="header-left" id="navClock">00:00</div>
             <div class="header-center">
                 <a href="javascript:void(0)" class="header-logo" onclick="scrollToTop()"><span>M<span class="mg-g">Ⓖ</span></span></a>
             </div>
@@ -6497,7 +6497,7 @@ margin-top: 3px;
                 hour: '2-digit', minute: '2-digit',
                 hour12: false
             });
-            el.textContent = 'LONDON ' + fmt.format(new Date());
+            el.textContent = fmt.format(new Date());
         }
         updateNavClock();
         setInterval(updateNavClock, 1000);
