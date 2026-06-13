@@ -8,7 +8,7 @@
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
     <script>(function(){try{var l=localStorage.getItem('mg_lang');if(l==='pt')document.documentElement.lang='pt-PT';}catch(e){}})();</script>
     <script src="/i18n.js" defer></script>
     <script src="/guard.js" defer></script>
@@ -250,10 +250,11 @@
         }
 
         .header-logo {
-            /* Pinned to match Gen Studio's MG position pixel-for-pixel */
+            /* Centered in the header (swapped position with the clock) */
             position: fixed;
             top: 28px;
-            left: 32px;
+            left: 50%;
+            transform: translateX(-50%);
             z-index: 1001;
             font-size: 16px;
             font-weight: 400;
@@ -288,8 +289,8 @@
         }
 
         @keyframes mgEdgeIn {
-            from { transform: translateX(-32px); opacity: 0; }
-            to { transform: translateX(0); opacity: 0.92; }
+            from { transform: translateX(calc(-50% - 24px)); opacity: 0; }
+            to { transform: translateX(-50%); opacity: 0.92; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -495,13 +496,17 @@
 
         .header-center {
             justify-self: center;
-            font-family: var(--sf-pro);
-            font-size: 10px;
-            letter-spacing: 0.1em;
-            color: rgba(255, 255, 255, 0.38);
+        }
+        #navClock {
+            font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+            font-style: italic;
+            font-weight: 500;
+            font-size: 16px;
+            letter-spacing: 0.01em;
+            color: rgba(255, 255, 255, 0.62);
             font-variant-numeric: tabular-nums;
             line-height: 1;
-            text-transform: uppercase;
+            text-transform: none;
         }
 
         .header-contact {
@@ -798,7 +803,7 @@
         }
         .hero-hl {
             font-family: var(--sf-pro);
-            font-size: clamp(1.3rem, 2vw, 2.1rem);
+            font-size: clamp(1.95rem, 3vw, 3.15rem);
             font-weight: 300;
             letter-spacing: -0.025em;
             color: rgba(255,255,255,0.9);
@@ -4716,10 +4721,10 @@ margin-top: 3px;
          ======================================== -->
     <header class="header" id="header">
         <div class="header-content">
-            <div class="header-left">
+            <div class="header-left" id="navClock">GMT 00:00</div>
+            <div class="header-center">
                 <a href="javascript:void(0)" class="header-logo" onclick="scrollToTop()"><span>M<span class="mg-g">Ⓖ</span></span></a>
             </div>
-            <div class="header-center" id="navClock">GMT 00:00</div>
 
             <div class="header-right">
                 <nav class="header-nav">
@@ -4821,7 +4826,7 @@ margin-top: 3px;
                     </div>
                     <div class="hero-trio-cell hero-trio-cell--center">
                         <video src="https://res.cloudinary.com/dzgqzeebg/video/upload/q_auto:best,w_1400,c_limit/galp/kling-young-man.mp4" autoplay muted loop playsinline preload="auto" aria-label="Galp campaign — portrait"></video>
-                        <img class="hero-badge" src="https://res.cloudinary.com/dzgqzeebg/image/upload/q_100/portfolio/galp-badge.png" alt="">
+                        <img class="hero-badge" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto/portfolio/galp-badge.png" alt="">
                     </div>
                     <div class="hero-trio-cell">
                         <iframe src="cycle-app-embed.html" title="Moope — cycle app concept" loading="lazy" style="width:100%; height:100%; border:0; display:block; pointer-events:none;"></iframe>
