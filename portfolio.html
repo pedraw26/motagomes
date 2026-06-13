@@ -5469,11 +5469,21 @@ margin-top: 3px;
             .mgf-mark .mgf-g-sym {
                 display: inline-block;
                 line-height: 1;
-                will-change: transform, opacity;
                 opacity: 0;
                 transition:
                     transform 1.6s cubic-bezier(.16, 1, .3, 1),
                     opacity 0.9s ease-out;
+                /* The gradient + text-clip MUST live on the letters themselves.
+                   They sit on their own layers (transform), so the parent's
+                   background-clip:text can't reach their glyphs — without this
+                   the whole MG renders invisible. */
+                background-image: linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);
+                background-size: 200% 100%;
+                -webkit-background-clip: text;
+                        background-clip: text;
+                -webkit-text-fill-color: transparent;
+                        color: transparent;
+                animation: mgf-slide 12s linear infinite;
             }
             .mgf-mark .mgf-m-sym {
                 transform: translateX(calc(-50vw - 0.05em));
@@ -6068,7 +6078,9 @@ margin-top: 3px;
                     mgfMark.classList.toggle('is-reveal', entry.isIntersecting);
                 });
             }, {
-                // Trigger when the mark crosses the middle band of the viewport
+                // The page scrolls inside .scroll-container, not the window — so the
+                // observer must use that as its root, or it never fires.
+                root: document.querySelector('.scroll-container'),
                 rootMargin: '-35% 0px -35% 0px',
                 threshold: 0
             });
