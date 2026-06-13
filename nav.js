@@ -27,6 +27,20 @@
     ".mg-nav .mg-nav-logo{justify-self:center;font-size:16px;font-weight:400;letter-spacing:.04em;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:6px;opacity:.92;transition:opacity .2s ease;}" +
     ".mg-nav .mg-nav-logo:hover{opacity:1;}" +
     ".mg-nav .mg-nav-logo .mg-g{font-size:1.22em;line-height:1;vertical-align:-.08em;}" +
+    ".mg-nav .mg-nav-logo .mg-word{white-space:nowrap;letter-spacing:.04em;}" +
+    ".mg-nav .mg-nav-logo .mg-seg{display:inline-block;overflow:hidden;white-space:nowrap;max-width:0;opacity:0;vertical-align:bottom;}" +
+    ".mg-nav .mg-nav-logo .mg-ota{animation:mg-ota 9s cubic-bezier(.7,0,.2,1) infinite;}" +
+    ".mg-nav .mg-nav-logo .mg-omes{animation:mg-omes 9s cubic-bezier(.7,0,.2,1) infinite;}" +
+    ".mg-nav .mg-nav-logo .mg-gswap{position:relative;display:inline-block;width:1.04em;height:1em;text-align:center;vertical-align:bottom;animation:mg-gw 9s cubic-bezier(.7,0,.2,1) infinite;}" +
+    ".mg-nav .mg-nav-logo .mg-gswap>span{position:absolute;left:0;right:0;bottom:0;line-height:1;}" +
+    ".mg-nav .mg-nav-logo .mg-circ{font-size:1.18em;animation:mg-circ 9s cubic-bezier(.7,0,.2,1) infinite;}" +
+    ".mg-nav .mg-nav-logo .mg-plain{opacity:0;animation:mg-plain 9s cubic-bezier(.7,0,.2,1) infinite;}" +
+    "@keyframes mg-ota{0%,4%{max-width:0;opacity:0}13%,46%{max-width:2.7em;opacity:1}55%,100%{max-width:0;opacity:0}}" +
+    "@keyframes mg-omes{0%,4%{max-width:0;opacity:0}13%,46%{max-width:3.7em;opacity:1}55%,100%{max-width:0;opacity:0}}" +
+    "@keyframes mg-gw{0%,4%{width:1.04em}13%,46%{width:.62em}55%,100%{width:1.04em}}" +
+    "@keyframes mg-circ{0%,6%{opacity:1}13%,46%{opacity:0}55%,100%{opacity:1}}" +
+    "@keyframes mg-plain{0%,6%{opacity:0}13%,46%{opacity:1}55%,100%{opacity:0}}" +
+    "@media (prefers-reduced-motion:reduce){.mg-nav .mg-nav-logo .mg-seg,.mg-nav .mg-nav-logo .mg-gswap,.mg-nav .mg-nav-logo .mg-circ,.mg-nav .mg-nav-logo .mg-plain{animation:none}.mg-nav .mg-nav-logo .mg-gswap{width:1.04em}}" +
     ".mg-nav .mg-nav-links{justify-self:end;display:flex;align-items:center;gap:28px;}" +
     ".mg-nav .mg-nav-links a{font-size:.95rem;color:rgba(255,255,255,.9);text-decoration:none;font-weight:400;letter-spacing:-.005em;position:relative;line-height:1;display:inline-flex;align-items:center;transition:color .3s ease;}" +
     ".mg-nav .mg-nav-links a::before{content:'';position:absolute;bottom:-6px;left:0;right:0;height:1px;background:currentColor;transform:scaleX(0);transform-origin:center;transition:transform .35s cubic-bezier(.22,1,.36,1);}" +
@@ -75,7 +89,7 @@
     header.innerHTML =
       '<div class="mg-nav-content">' +
       '<div id="navClock">00:00</div>' +
-      '<a class="mg-nav-logo" href="/portfolio.html" aria-label="Home"><span>M<span class="mg-g">Ⓖ</span></span></a>' +
+      '<a class="mg-nav-logo" href="/portfolio.html" aria-label="Mota Gomes — Home"><span class="mg-word">M<span class="mg-seg mg-ota">OTA </span><span class="mg-gswap"><span class="mg-circ">Ⓖ</span><span class="mg-plain">G</span></span><span class="mg-seg mg-omes">OMES</span></span></a>' +
       '<nav class="mg-nav-links" aria-label="Primary">' + navHTML + "</nav>" +
       "</div>";
     document.body.insertBefore(header, document.body.firstChild);
