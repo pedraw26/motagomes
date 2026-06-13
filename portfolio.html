@@ -5522,11 +5522,11 @@ margin-top: 3px;
                 background: rgba(255, 255, 255, 0.82);
                 border: 1px solid rgba(255,255,255,0.5);
                 border-bottom: none;
-                /* blur 50px -> 16px: a 100vh blurred surface was re-blurring the
-                   backdrop every scroll frame. contain:paint isolates repaints. */
+                /* blur 50px -> 16px to ease the per-frame re-blur cost.
+                   (No contain:paint here — it breaks backdrop-filter, which
+                   is what lets the MG supergraphic show through the glass.) */
                 -webkit-backdrop-filter: blur(16px) saturate(150%);
                         backdrop-filter: blur(16px) saturate(150%);
-                contain: paint;
                 box-shadow:
                     0 -30px 60px -30px rgba(0,0,0,0.5),
                     0 -2px 0 rgba(255,255,255,0.18) inset;
