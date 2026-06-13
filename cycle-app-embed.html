@@ -46,19 +46,19 @@
     left: 50%; top: 50%;
     transform: translate(-50%, -50%);
     transform-origin: center;
-    width: 2000px;
+    width: 5000px;
     z-index: 1;
     pointer-events: none;
     will-change: transform;
   }
   .cover-art {
     width: 100%; height: auto; display: block;
-    filter: drop-shadow(0 46px 120px rgba(150,40,95,0.34));
-    animation: coverFloat 13s ease-in-out infinite;
+    transform-origin: center center;
+    animation: coverSpin 90s linear infinite;
   }
-  @keyframes coverFloat {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50%      { transform: translateY(-16px) rotate(0.45deg); }
+  @keyframes coverSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
   }
   .cover-art .blob { transform-box: fill-box; transform-origin: center; }
   .cover-art .blob-a { animation: blobDriftA 19s ease-in-out infinite alternate; }
@@ -379,7 +379,7 @@
     <svg class="cover-art" viewBox="0 0 1600 960" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <g clip-path="url(#cv-a)" filter="url(#cv-b)">
         <g clip-path="url(#cv-c)">
-          <rect width="1540" height="896" x="30" y="32" fill="#fff" rx="20"/>
+          <rect width="1540" height="896" x="30" y="32" fill="url(#cv-base)" rx="20"/>
           <g class="blob blob-a" filter="url(#cv-d)"><ellipse cx="946.5" cy="849" fill="url(#cv-e)" fill-opacity=".1" rx="411.5" ry="414"/></g>
           <g class="blob blob-b" filter="url(#cv-f)"><ellipse cx="945.5" cy="848" fill="url(#cv-g)" rx="386.5" ry="398"/></g>
           <g class="blob blob-c" filter="url(#cv-h)"><path fill="#FE3F9B" d="M1322 847.007C1322 1075.61 745.362 1438 525.382 1438 305.402 1438 245 968.544 245 739.941 245 511.338 785.577 360 1005.56 360 1225.54 360 1322 618.404 1322 847.007Z"/></g>
@@ -388,6 +388,11 @@
         </g>
       </g>
       <defs>
+        <linearGradient id="cv-base" x1="120" y1="40" x2="1500" y2="940" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#FFE7D4"/>
+          <stop offset=".45" stop-color="#FFC3CB"/>
+          <stop offset="1" stop-color="#FFA277"/>
+        </linearGradient>
         <filter id="cv-grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".82" numOctaves="2" stitchTiles="stitch" result="n"/><feColorMatrix in="n" type="saturate" values="0"/></filter>
         <filter id="cv-b" width="2104" height="1935" x="-252" y="-21" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
           <feFlood flood-opacity="0" result="BackgroundImageFix"/>
