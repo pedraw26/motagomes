@@ -176,6 +176,7 @@
         .scroll-container {
             height: 100vh;
             overflow-y: scroll;
+            overflow-x: hidden;   /* clip rogue horizontal overflow so the page can't slide sideways */
             /* scroll-behavior: smooth removed — when applied to a
                container it intercepts every wheel/trackpad event
                and re-animates with its own easing, which fights
