@@ -17,19 +17,20 @@
   }
   .stagegrad {
     position: absolute;
-    inset: -40%;
+    inset: -60%;
+    transform-origin: center center;
     background:
-      radial-gradient(circle at 2% 96%, #d7a456 0%, rgba(215,164,86,0) 40%),
-      radial-gradient(circle at 0% 45%, #ee5c93 0%, rgba(238,92,147,0) 52%),
-      radial-gradient(circle at 18% 2%, #f08e53 0%, rgba(240,142,83,0) 38%),
-      radial-gradient(circle at 85% 100%, #ba3fe4 0%, rgba(186,63,228,0) 42%),
-      linear-gradient(193deg, #ee6f8e 0%, #e8b255 55%, #e87c35 100%);
-    animation: stageflow 22s ease-in-out infinite alternate;
-    filter: saturate(1.05);
+      radial-gradient(circle at 24% 20%, #ffffff 0%, rgba(255,255,255,0) 30%),
+      radial-gradient(circle at 6% 58%, #ff1f8f 0%, rgba(255,31,143,0) 48%),
+      radial-gradient(circle at 88% 90%, #ff2e9a 0%, rgba(255,46,154,0) 46%),
+      radial-gradient(circle at 82% 10%, #ff7a45 0%, rgba(255,122,69,0) 40%),
+      linear-gradient(193deg, #ff4f95 0%, #f3a85f 55%, #ef7e3a 100%);
+    animation: stageSpin 30s linear infinite;
+    filter: saturate(1.12);
   }
-  @keyframes stageflow {
-    0% { transform: translate(-2%, -1.5%) scale(1.03); }
-    100% { transform: translate(2%, 1.5%) scale(1.1); }
+  @keyframes stageSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
   }
   .noise {
     position: absolute;
