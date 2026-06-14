@@ -301,38 +301,41 @@
   }
   .ask {
     width: 92px; height: 92px; border-radius: 50%;
-    background: rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.16);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.22);
     display: flex; align-items: center; justify-content: center;
-    font-size: 25px; font-weight: 500; color: #fff;
     position: relative; z-index: 0;
+    overflow: hidden;            /* clip the glow to the circle — no bleed */
   }
+  /* rotating white glow, fully contained inside the circle */
   .ask::before {
     content: '';
-    position: absolute; inset: -5px;
-    border-radius: 50%;
-    background: conic-gradient(from 0deg, rgba(255,255,255,0.15), rgba(255,255,255,0.95) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.85) 75%, rgba(255,255,255,0.15));
-    z-index: -1;
-    filter: blur(7px);
-    animation: siriSpin 3.5s linear infinite;
+    position: absolute; left: -30%; top: -30%; width: 160%; height: 160%;
+    background: conic-gradient(from 0deg,
+      rgba(255,255,255,0) 0deg,
+      rgba(255,255,255,0.95) 55deg,
+      rgba(255,255,255,0) 135deg,
+      rgba(255,255,255,0) 210deg,
+      rgba(255,255,255,0.8) 275deg,
+      rgba(255,255,255,0) 350deg);
+    filter: blur(9px);
+    transform-origin: center;
+    animation: siriSpin 4s linear infinite;
+    z-index: 0;
   }
+  /* soft luminous core */
   .ask::after {
     content: '';
-    position: absolute; inset: -20px;
+    position: absolute; inset: 20%;
     border-radius: 50%;
-    background: conic-gradient(from 180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 30%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.7) 85%, rgba(255,255,255,0) 100%);
-    z-index: -2;
-    filter: blur(26px);
-    opacity: 0.65;
-    animation: siriSpin 5s linear infinite reverse, siriPulse 2.6s ease-in-out infinite;
+    background: radial-gradient(circle, rgba(255,255,255,0.30), rgba(255,255,255,0) 72%);
+    z-index: 1;
   }
+  .ask-label { position: relative; z-index: 2; font-size: 25px; font-weight: 500; color: #fff; }
   @keyframes siriSpin {
     to { transform: rotate(360deg); }
-  }
-  @keyframes siriPulse {
-    0%, 100% { opacity: 0.45; }
-    50% { opacity: 0.85; }
   }
   .logtoday {
     font-size: 27px; font-weight: 500;
@@ -438,7 +441,7 @@
         </div>
       </div>
       <div class="dock">
-        <div class="ask">Ask</div>
+        <div class="ask"><span class="ask-label">Ask</span></div>
         <div class="logtoday">Log today</div>
         <div class="plus">
           <svg class="ic-plus" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="1.8" stroke-linecap="round"><path d="M12 4v16M4 12h16"/></svg>
