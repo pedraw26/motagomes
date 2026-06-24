@@ -4756,10 +4756,6 @@ margin-top: 3px;
                 <div class="intro-loader-line" id="introLoaderLine"></div>
             </div>
         </div>
-        <div class="intro-pw" id="introPw">
-            <input type="password" class="intro-pw-input" id="introPwInput" placeholder="" autocomplete="off">
-            <div class="intro-pw-hint" id="introPwHint" data-i18n="pw.wrong">Incorrect password</div>
-        </div>
     </div>
 
     <!-- Hover Image Container — emptied. The Research section is
@@ -5943,13 +5939,7 @@ margin-top: 3px;
         const introLoader = document.getElementById('introLoader');
         const introLoaderLine = document.getElementById('introLoaderLine');
 
-        const introPw = document.getElementById('introPw');
-        const introPwInput = document.getElementById('introPwInput');
-        const introPwHint = document.getElementById('introPwHint');
-
         function unlockSite() {
-            introPw.style.opacity = '0';
-            introPw.style.pointerEvents = 'none';
             setTimeout(() => {
                 introGate.classList.add('hidden');
                 setTimeout(() => {
@@ -5960,11 +5950,9 @@ margin-top: 3px;
         }
 
         if (introGate && introLoader && introLoaderLine) {
-            // Skip gate if already unlocked via coming soon landing
-            if (sessionStorage.getItem('mg_unlocked') === '1') {
-                introGate.remove();
-                startFirstScreenSequence();
-            } else {
+            // No password — play the loader, then auto-unlock the site.
+            sessionStorage.setItem('mg_unlocked', '1');
+
             setTimeout(() => {
                 introLoaderLine.classList.add('animate');
             }, 250);
@@ -5974,29 +5962,8 @@ margin-top: 3px;
             }, 2400);
 
             setTimeout(() => {
-                introPw.classList.add('visible');
-                introPwInput.focus();
-            }, 3000);
-
-            introPwInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    if (this.value === 'gomesmota') {
-                        sessionStorage.setItem('mg_unlocked', '1');
-                        unlockSite();
-                    } else {
-                        this.classList.add('error');
-                        introPwHint.classList.add('visible');
-                        this.value = '';
-                        setTimeout(() => {
-                            this.classList.remove('error');
-                        }, 400);
-                        setTimeout(() => {
-                            introPwHint.classList.remove('visible');
-                        }, 2000);
-                    }
-                }
-            });
-            }
+                unlockSite();
+            }, 2800);
         } else {
             startFirstScreenSequence();
         }
@@ -6814,42 +6781,6 @@ margin-top: 3px;
             drawLondonClock();
         }
 
-    </script>
-    <!-- Password Modal -->
-    <div class="pw-modal" id="pwModal">
-        <button class="pw-modal-close" onclick="closePwModal()">&times;</button>
-        <div class="pw-modal-box">
-            <div class="pw-modal-label" data-i18n="pw.title">Password Required</div>
-            <input type="password" class="pw-modal-input" id="pwInput" placeholder="Enter password" autocomplete="off" data-i18n-attr="placeholder:pw.placeholder">
-        </div>
-    </div>
-    <script>
-        function openPwModal() {
-            const modal = document.getElementById('pwModal');
-            const input = document.getElementById('pwInput');
-            modal.classList.add('open');
-            input.value = '';
-            input.classList.remove('error');
-            setTimeout(() => input.focus(), 100);
-        }
-        function closePwModal() {
-            document.getElementById('pwModal').classList.remove('open');
-        }
-        document.getElementById('pwModal').addEventListener('click', function(e) {
-            if (e.target === this) closePwModal();
-        });
-        document.getElementById('pwInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                if (this.value === 'ulaw') {
-                    closePwModal();
-                    window.location.href = '/project.html?p=ulaw';
-                } else {
-                    this.classList.add('error');
-                    this.value = '';
-                    setTimeout(() => this.classList.remove('error'), 400);
-                }
-            }
-        });
     </script>
     <script src="/tracker.js" defer></script>
 </body>
