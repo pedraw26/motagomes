@@ -8,7 +8,9 @@
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html,body{width:100%;height:100%;overflow:hidden;background:#f6f4f1;
     font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;}
-  .stage{position:absolute;inset:0;display:flex;align-items:center;overflow:hidden;background:#f6f4f1;}
+  .stage{position:absolute;inset:0;display:flex;align-items:center;overflow:hidden;background:#f6f4f1;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);}
   .marquee{display:flex;align-items:center;gap:clamp(20px,2.5vw,52px);width:max-content;
     padding:0 clamp(20px,2.5vw,52px);
     animation:scroll-right 45s linear infinite;will-change:transform;}
@@ -28,13 +30,11 @@
     <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto:best,w_1800,c_limit/v1782423020/ioqjsnmmcwwowiztizxf.jpg" alt="Candando gift card">
     <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto:best,w_1800,c_limit/v1782423022/isqgtd6qhypi8xu7jh18.jpg" alt="Candando gift card">
     <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto:best,w_1800,c_limit/v1782423023/rfkm3jjbftha1sfquihl.jpg" alt="Candando gift card">
-    <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto:best,w_1800,c_limit/v1782423020/ioqjsnmmcwwowiztizxf.jpg" alt="Candando gift card">
     <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto:best,w_1800,c_limit/v1782423026/fyhhz5vief0ayswxbvff.webp" alt="Candando gift card">
     <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto:best,w_1800,c_limit/v1782423642/z6hin6cuxixwmrfz2to7.jpg" alt="Candando gift card">
     <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto:best,w_1800,c_limit/v1782423020/ioqjsnmmcwwowiztizxf.jpg" alt="" aria-hidden="true">
     <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto:best,w_1800,c_limit/v1782423022/isqgtd6qhypi8xu7jh18.jpg" alt="" aria-hidden="true">
     <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto:best,w_1800,c_limit/v1782423023/rfkm3jjbftha1sfquihl.jpg" alt="" aria-hidden="true">
-    <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto:best,w_1800,c_limit/v1782423020/ioqjsnmmcwwowiztizxf.jpg" alt="" aria-hidden="true">
     <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto:best,w_1800,c_limit/v1782423026/fyhhz5vief0ayswxbvff.webp" alt="" aria-hidden="true">
     <img class="card" src="https://res.cloudinary.com/dzgqzeebg/image/upload/f_auto,q_auto:best,w_1800,c_limit/v1782423642/z6hin6cuxixwmrfz2to7.jpg" alt="" aria-hidden="true">
   </div>
