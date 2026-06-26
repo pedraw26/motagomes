@@ -6,6 +6,13 @@
 <title>Candando — iPad Email (Mail.app)</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  @font-face {
+    font-family: 'Eveleth Clean';
+    src: url('fonts/EvelethClean-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -239,10 +246,11 @@
     display: block;
   }
   .email-body h1 {
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    line-height: 1.05;
+    font-family: 'Eveleth Clean', 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.12;
     margin-bottom: 12px;
   }
   .email-body .lede {
