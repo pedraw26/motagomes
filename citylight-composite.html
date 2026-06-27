@@ -9,11 +9,16 @@
     margin: 0;
     padding: 0;
     background: #1a1a1a;
+    width: 100%;
     height: 100%;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
   }
+  /* Stage scales to fill the viewport (4:3) — keeps the homography intact
+     because it all lives in 1000×750 stage space and scales uniformly. */
+  #stage { transform-origin: center center; }
 
   /* ---- STAGE: the 1000×750 working space (mockup is 4000×3000 → 1/4 scale) ---- */
   #stage {
@@ -210,6 +215,16 @@ function applyWarp() {
 window.addEventListener('load', applyWarp);
 // Recompute if SCREEN is edited live in devtools, etc.
 window.addEventListener('resize', applyWarp);
+
+/* Scale the whole 1000×750 stage to fill the viewport (the slide is 4:3,
+   so it fills exactly with no letterboxing). */
+function fitStage(){
+  var sc = Math.min(window.innerWidth/1000, window.innerHeight/750);
+  document.getElementById('stage').style.transform = 'scale(' + sc + ')';
+}
+window.addEventListener('load', fitStage);
+window.addEventListener('resize', fitStage);
+fitStage();
 
 /* Strip the embedded poster's standalone chrome (rounded corners, drop
    shadow, dark page background) so the animation fills the display
