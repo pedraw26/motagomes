@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Citylight Composite — perspective-warped live poster</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #1a1a1a;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ---- STAGE: the 1000×750 working space (mockup is 4000×3000 → 1/4 scale) ---- */
+  #stage {
+    position: relative;
+    width: 1000px;
+    height: 750px;
+    overflow: hidden;
+    box-shadow: 0 10px 60px rgba(0,0,0,0.5);
+  }
+
+  /* The mockup photo fills the whole stage exactly (4:3 → object-fit:fill is exact) */
+  #mockup {
+    position: absolute;
+    top: 0; left: 0;
+    width: 1000px;
+    height: 750px;
+    object-fit: fill;
+    display: block;
+    z-index: 1;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* The live poster iframe. Its un-transformed rectangle is SRC_W × SRC_H px.
+     transform-origin:0 0 is REQUIRED so the matrix maps (0,0)-(W,H) correctly. */
+  #poster {
+    position: absolute;
+    top: 0; left: 0;
+    border: 0;
+    transform-origin: 0 0;
+    z-index: 2;
+    overflow: hidden;            /* nothing spills past the warped edges */
+    background: #000;
+    /* width/height set in JS from SRC_W / SRC_H */
+  }
+
+  /* No fake outline. A whisper of inner shadow only, so the lit poster reads
+     as seated in the existing photo bezel (the mockup's own bezel/lighting/
+     shadows are preserved untouched behind it). */
+  #screenOverlay {
+    position: absolute;
+    top: 0; left: 0;
+    transform-origin: 0 0;
+    z-index: 3;
+    pointer-events: none;
+    box-sizing: border-box;
+    box-shadow: inset 0 0 22px rgba(0,0,0,0.12);
+    /* width/height set in JS from SRC_W / SRC_H, same as #poster */
+  }
+</style>
+</head>
+<body>
+
+  <div id="stage">
+    <img id="mockup" src="citylight-mockup.webp" alt="citylight billboard mockup">
+    <iframe id="poster" src="candando-mupi-v7-portrait.html" scrolling="no"></iframe>
+    <div id="screenOverlay"></div>
+  </div>
+
+<script>
+/* =========================================================================
+   SINGLE SOURCE OF TRUTH — the four screen corners in 1000×750 stage px.
+   Tune ONLY these four points to fit the white screen exactly.
+   Order: TL, TR, BR, BL (clockwise from top-left).
+   3/4 view: right edge nearer/higher, left edge recedes/lower.
+   ========================================================================= */
+/* Corners DETECTED mathematically from the mockup pixels (not estimated):
+   the bright display region enclosed by the dark bezel, in 1000×750 stage
+   space (full-res 4000×3000 ÷ 4). Verified against a pixel overlay. */
+const SCREEN = {
+  TL: [377, 154],   // pixel-derived screen boundary (bezel→panel light transition)
+  TR: [554, 139],   // right edge = white-screen edge (gray frame beyond is NOT screen)
+  BR: [554, 493],   // pulled up ~3px so the bright drift edge sits inside the screen
+  BL: [377, 494]    //   (avoids white-on-bezel bleed at the bottom)
+};
+
+/* Source rectangle size for the iframe (its natural, un-warped pixel box).
+   Aspect ratio 120/175 ≈ 0.6857 (portrait). The homography then maps this
+   exact rectangle onto the SCREEN quad, so the chosen size only affects
+   internal render resolution, not the final placement. */
+const SRC_W = 343;                       // px
+const SRC_H = Math.round(SRC_W * 175/120); // = 500 px  (keeps 120:175 ratio)
+
+/* -------------------------------------------------------------------------
+   GENERAL 2D PROJECTIVE (homography) SOLVER
+   The well-known general2DProjection / getTransform approach.
+
+   basisToPoints():  finds the 3x3 matrix that maps the unit "basis"
+   (the 4 reference points used by projective geometry) onto 4 arbitrary
+   2D points, by solving for the homogeneous scale coefficients of the
+   first three points so the fourth is reproduced — via the adjugate
+   (adjoint) of the 3x3 and one matrix-vector multiply.
+
+   general2DProjection(): composes  dest∘src⁻¹  to get the 3x3 homography H
+   that sends the SOURCE quad to the DEST quad.
+
+   We use SRC quad = (0,0),(W,0),(W,H),(0,H) and DEST quad = SCREEN.
+   ------------------------------------------------------------------------- */
+
+function adj(m) { // adjugate (transposed cofactor matrix) of a 3x3
+  return [
+    m[4]*m[8] - m[5]*m[7], m[2]*m[7] - m[1]*m[8], m[1]*m[5] - m[2]*m[4],
+    m[5]*m[6] - m[3]*m[8], m[0]*m[8] - m[2]*m[6], m[2]*m[3] - m[0]*m[5],
+    m[3]*m[7] - m[4]*m[6], m[1]*m[6] - m[0]*m[7], m[0]*m[4] - m[1]*m[3]
+  ];
+}
+
+function multmm(a, b) { // 3x3 * 3x3
+  const c = [];
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      let acc = 0;
+      for (let k = 0; k < 3; k++) acc += a[3*i + k] * b[3*k + j];
+      c[3*i + j] = acc;
+    }
+  }
+  return c;
+}
+
+function multmv(m, v) { // 3x3 * vec3
+  return [
+    m[0]*v[0] + m[1]*v[1] + m[2]*v[2],
+    m[3]*v[0] + m[4]*v[1] + m[5]*v[2],
+    m[6]*v[0] + m[7]*v[1] + m[8]*v[2]
+  ];
+}
+
+// Map the projective basis to 4 image points -> 3x3 matrix.
+function basisToPoints(x1, y1, x2, y2, x3, y3, x4, y4) {
+  const m = [
+    x1, x2, x3,
+    y1, y2, y3,
+     1,  1,  1
+  ];
+  const v = multmv(adj(m), [x4, y4, 1]);   // homogeneous coeffs for cols 1..3
+  return multmm(m, [
+    v[0], 0,    0,
+    0,    v[1], 0,
+    0,    0,    v[2]
+  ]);
+}
+
+// 3x3 homography mapping source quad -> destination quad.
+function general2DProjection(
+  s1x,s1y, s2x,s2y, s3x,s3y, s4x,s4y,   // source 4 points
+  d1x,d1y, d2x,d2y, d3x,d3y, d4x,d4y    // dest 4 points
+) {
+  const S = basisToPoints(s1x,s1y, s2x,s2y, s3x,s3y, s4x,s4y);
+  const D = basisToPoints(d1x,d1y, d2x,d2y, d3x,d3y, d4x,d4y);
+  return multmm(D, adj(S)); // D * S⁻¹  (adj == inverse up to scale; scale cancels)
+}
+
+/* Build the CSS matrix3d string that maps the (0,0)-(W,H) rectangle
+   onto [TL,TR,BR,BL]. The 3x3 homography H is lifted into a 4x4 by
+   inserting an identity-like z row/column (the screen lives on the z=0
+   plane), then emitted in CSS column-major order. */
+function quadToMatrix3d(W, H, TL, TR, BR, BL) {
+  // source rect corners in the SAME order as dest corners (TL,TR,BR,BL)
+  let H3 = general2DProjection(
+    0, 0,  W, 0,  W, H,  0, H,
+    TL[0], TL[1],  TR[0], TR[1],  BR[0], BR[1],  BL[0], BL[1]
+  );
+
+  // normalize so H3[8] === 1 (cosmetic; keeps numbers well-scaled)
+  for (let i = 0; i < 9; i++) H3[i] = H3[i] / H3[8];
+
+  // Lift 3x3 -> 4x4. CSS matrix3d is COLUMN-MAJOR:
+  // matrix3d(a1,b1,c1,d1, a2,b2,c2,d2, a3,b3,c3,d3, a4,b4,c4,d4)
+  // Row/col index 2 (z) is the pass-through identity term.
+  const m = [
+    H3[0], H3[3], 0, H3[6],
+    H3[1], H3[4], 0, H3[7],
+    0,     0,     1, 0,
+    H3[2], H3[5], 0, H3[8]
+  ];
+  return "matrix3d(" + m.map(n => n.toFixed(9)).join(",") + ")";
+}
+
+function applyWarp() {
+  const poster  = document.getElementById('poster');
+  const overlay = document.getElementById('screenOverlay');
+
+  // The iframe's un-transformed rectangle is exactly SRC_W × SRC_H.
+  poster.style.width  = SRC_W + 'px';
+  poster.style.height = SRC_H + 'px';
+  overlay.style.width  = SRC_W + 'px';
+  overlay.style.height = SRC_H + 'px';
+
+  const mtx = quadToMatrix3d(SRC_W, SRC_H, SCREEN.TL, SCREEN.TR, SCREEN.BR, SCREEN.BL);
+  poster.style.transform  = mtx;
+  overlay.style.transform = mtx;
+}
+
+window.addEventListener('load', applyWarp);
+// Recompute if SCREEN is edited live in devtools, etc.
+window.addEventListener('resize', applyWarp);
+
+/* Strip the embedded poster's standalone chrome (rounded corners, drop
+   shadow, dark page background) so the animation fills the display
+   edge-to-edge with square corners — same-origin, so we can inject CSS. */
+const poster = document.getElementById('poster');
+poster.addEventListener('load', () => {
+  try {
+    const doc = poster.contentDocument;
+    const st = doc.createElement('style');
+    st.textContent =
+      'html,body{background:#ffffff!important;margin:0!important;}' +
+      '.mupi{border-radius:0!important;box-shadow:none!important;' +
+      'width:100%!important;height:100%!important;max-width:none!important;}';
+    doc.head.appendChild(st);
+  } catch (e) { /* cross-origin guard */ }
+});
+</script>
+</body>
+</html>
