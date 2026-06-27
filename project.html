@@ -2051,7 +2051,7 @@
   </form>
 </div>
 <script>
-(function(){var KEY='mg_auth',HASH='34c90359b61832ca5fd0593f233058b0dcd66809ade65acb763ca7a82c3e7bc5',g=document.getElementById('pwgate');if(sessionStorage.getItem(KEY)==='1'){g.remove();return;}document.documentElement.style.overflow='hidden';var f=document.getElementById('pwform'),i=document.getElementById('pwinput'),e=document.getElementById('pwerr');i.focus();async function h(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}f.addEventListener('submit',async function(ev){ev.preventDefault();if(await h(i.value||'')===HASH){sessionStorage.setItem(KEY,'1');document.documentElement.style.overflow='';g.remove();}else{e.style.opacity='1';i.value='';i.focus();}});})();
+(function(){var KEY='mg_auth',HASH='34c90359b61832ca5fd0593f233058b0dcd66809ade65acb763ca7a82c3e7bc5',g=document.getElementById('pwgate');if(sessionStorage.getItem(KEY)==='1'){g.remove();return;}document.documentElement.style.overflow='hidden';var f=document.getElementById('pwform'),i=document.getElementById('pwinput'),e=document.getElementById('pwerr');i.focus();async function h(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}f.addEventListener('submit',async function(ev){ev.preventDefault();if(await h(i.value||'')===HASH){sessionStorage.setItem(KEY,'1');document.documentElement.style.overflow='';g.remove();window.dispatchEvent(new Event('resize'));}else{e.style.opacity='1';i.value='';i.focus();}});})();
 </script>
     <!-- ========================================
          NAVIGATION HEADER
