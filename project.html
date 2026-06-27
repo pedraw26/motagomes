@@ -2041,18 +2041,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@100;200;300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-<div id="pwgate" style="position:fixed;inset:0;z-index:2147483647;background:#0b0b0c;display:flex;align-items:center;justify-content:center;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;">
-  <form id="pwform" style="display:flex;flex-direction:column;align-items:center;gap:20px;width:240px;">
-    <div style="width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-    </div>
-    <input id="pwinput" type="password" autocomplete="current-password" placeholder="Password" style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.22);color:#fff;font-size:15px;letter-spacing:.04em;text-align:center;padding:9px 4px;outline:none;width:100%;">
-    <div id="pwerr" style="color:#ff5a5a;font-size:12px;height:14px;opacity:0;transition:opacity .2s;">Incorrect password</div>
-  </form>
-</div>
-<script>
-(function(){var KEY='mg_auth',HASH='34c90359b61832ca5fd0593f233058b0dcd66809ade65acb763ca7a82c3e7bc5',g=document.getElementById('pwgate');if(sessionStorage.getItem(KEY)==='1'){g.remove();return;}document.documentElement.style.overflow='hidden';var f=document.getElementById('pwform'),i=document.getElementById('pwinput'),e=document.getElementById('pwerr');i.focus();async function h(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}f.addEventListener('submit',async function(ev){ev.preventDefault();if(await h(i.value||'')===HASH){sessionStorage.setItem(KEY,'1');document.documentElement.style.overflow='';g.remove();window.dispatchEvent(new Event('resize'));}else{e.style.opacity='1';i.value='';i.focus();}});})();
-</script>
     <!-- ========================================
          NAVIGATION HEADER
          ======================================== -->
