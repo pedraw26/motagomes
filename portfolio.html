@@ -4922,8 +4922,8 @@ margin-top: 3px;
                     </div>
                 </div>
 
-                <!-- Card 11: Aura Studio -->
-                <div class="gallery-stacked-card" style="--card-index: 9; --card-offset: 50px;">
+                <!-- Card 11: Aura Studio (hidden site-wide) -->
+                <div class="gallery-stacked-card" hidden style="display:none;--card-index: 9; --card-offset: 50px;">
                     <div class="gallery-stacked-card-inner">
                         <div class="gallery-stacked-bar">
                             <div class="gallery-stacked-dot"></div>
@@ -5111,7 +5111,6 @@ margin-top: 3px;
                     <span class="name">University of Law</span><span class="dot" aria-hidden="true"></span>
                     <span class="name">Luandina</span><span class="dot" aria-hidden="true"></span>
                     <span class="name">Wammo</span><span class="dot" aria-hidden="true"></span>
-                    <span class="name">Aura Studio</span><span class="dot" aria-hidden="true"></span>
                     <!-- Duplicate for seamless loop -->
                     <span class="name" aria-hidden="true">Standard Bank</span><span class="dot" aria-hidden="true"></span>
                     <span class="name" aria-hidden="true">Galp</span><span class="dot" aria-hidden="true"></span>
@@ -5120,7 +5119,6 @@ margin-top: 3px;
                     <span class="name" aria-hidden="true">University of Law</span><span class="dot" aria-hidden="true"></span>
                     <span class="name" aria-hidden="true">Luandina</span><span class="dot" aria-hidden="true"></span>
                     <span class="name" aria-hidden="true">Wammo</span><span class="dot" aria-hidden="true"></span>
-                    <span class="name" aria-hidden="true">Aura Studio</span><span class="dot" aria-hidden="true"></span>
                 </div>
             </div>
         </section>
@@ -6046,14 +6044,14 @@ margin-top: 3px;
         // Order must mirror the VISIBLE card order in the DOM above.
         // RAS and One1x are hidden via [hidden], so they're filtered out
         // (galleryCards uses :not([hidden])). Visible DOM order:
-        // standard-bank → galp → candando → ulaw → wammo → lyft → luandina → aura
+        // standard-bank → galp → candando → ulaw → wammo → lyft → luandina  (Aura hidden site-wide)
         const galleryBrands = [
             'Standard Bank', 'Galp', 'Candando', 'Amal Clooney',
-            'Wammo', 'Lyft', 'Luandina', 'Aura Studio'
+            'Wammo', 'Lyft', 'Luandina'
         ];
         const galleryProjects = [
             '360 Campaign', 'Christmas Campaign', 'Retail Branding', 'Scholarship Initiative',
-            'Retail Campaign', 'Illustration', 'Geo-Targeted Campaign', 'Brand & Web'
+            'Retail Campaign', 'Illustration', 'Geo-Targeted Campaign'
         ];
 
         // Inject bottom-corner labels inside each card (brand bottom-left, type bottom-right)
