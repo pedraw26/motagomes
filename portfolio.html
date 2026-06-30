@@ -5240,294 +5240,140 @@ margin-top: 3px;
           </div>
         </section>
 
-        <!-- FOOTER -->
         <!-- ===================================================
-             NEW FOOTER: MG supergraphic + Glass overlay
+             FOOTER — minimal black contact footer
              =================================================== -->
         <style>
-            .mgf-stage-wrap {
-                position: relative;
-                background: #000;
+            .mgf2 { background:#000; color:#fff; border-top:1px solid rgba(255,255,255,0.10); }
+            .mgf2-inner {
+                max-width:1280px; margin:0 auto;
+                padding: clamp(72px,11vh,150px) clamp(24px,6vw,80px) clamp(26px,4vh,46px);
+                display:grid; grid-template-columns:1.05fr 0.95fr;
+                column-gap: clamp(48px,8vw,130px); row-gap: clamp(56px,8vh,92px);
+                align-items:start;
             }
-            .mgf-sticky {
-                position: sticky;
-                top: 0;
-                height: 100vh;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                overflow: hidden;
-                background: #000;
+            /* Left: pitch + large copyable email */
+            .mgf2-lead { display:flex; flex-direction:column; align-items:flex-start; }
+            .mgf2-eyebrow {
+                font-family:var(--sf-pro); font-size:11px; letter-spacing:0.28em; text-transform:uppercase;
+                color:rgba(255,255,255,0.45); display:inline-flex; align-items:center; gap:10px;
+                margin-bottom: clamp(26px,3vw,40px);
             }
-            /* One gradient across the whole 'MⒼ' mark (unigraphic). Each
-               letter shows its own slice of the SAME gradient based on its
-               layout position — same technique as the Gen Studies link. */
-            .mgf-mark {
-                font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
-                font-weight: 200;
-                font-size: clamp(216px, 39.6vw, 648px);
-                line-height: 0.8;
-                letter-spacing: -0.04em;
-                user-select: none;
-                white-space: nowrap;
-                background-image: linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);
-                background-size: 200% 100%;
-                background-repeat: repeat;
-                -webkit-background-clip: text;
-                        background-clip: text;
-                -webkit-text-fill-color: transparent;
-                        color: transparent;
-                animation: mgf-slide 12s linear infinite;
+            .mgf2-eyebrow::before { content:''; width:7px; height:7px; border-radius:50%; background:#57e389; box-shadow:0 0 0 4px rgba(87,227,137,0.18); }
+            .mgf2-email {
+                font-family:var(--sf-pro); font-size: clamp(30px,4vw,52px); font-weight:300;
+                letter-spacing:-0.025em; line-height:1.0; color:#fff; text-decoration:none;
+                display:inline-block; overflow-wrap:anywhere; transition:opacity 240ms ease;
             }
-            /* Child spans inherit the parent's text-clip gradient. They only
-               animate transform + opacity; no background/color of their own,
-               so the gradient flows across both letters as one mark. */
-            .mgf-mark .mgf-m-sym,
-            .mgf-mark .mgf-g-sym {
-                display: inline-block;
-                line-height: 1;
-                opacity: 0;
-                transition:
-                    transform 1.6s cubic-bezier(.16, 1, .3, 1),
-                    opacity 0.9s ease-out;
-                /* The gradient + text-clip MUST live on the letters themselves.
-                   They sit on their own layers (transform), so the parent's
-                   background-clip:text can't reach their glyphs — without this
-                   the whole MG renders invisible. */
-                background-image: linear-gradient(90deg, #ff7a7a, #ffb347, #ffe66d, #6ee7b7, #67c8ff, #c084fc, #ff7a7a);
-                background-size: 200% 100%;
-                -webkit-background-clip: text;
-                        background-clip: text;
-                -webkit-text-fill-color: transparent;
-                        color: transparent;
-                animation: mgf-slide 12s linear infinite;
+            .mgf2-email:hover { opacity:0.6; }
+            .mgf2-copy {
+                margin-top:24px; display:inline-flex; align-items:center; gap:9px; cursor:pointer;
+                background:transparent; border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.8);
+                font-family:var(--sf-pro); font-size:11px; letter-spacing:0.16em; text-transform:uppercase;
+                padding:11px 18px; border-radius:999px;
+                transition:border-color 220ms ease,color 220ms ease,background 220ms ease;
             }
-            .mgf-mark .mgf-m-sym {
-                transform: translateX(calc(-50vw - 0.05em));
+            .mgf2-copy:hover { border-color:rgba(255,255,255,0.55); color:#fff; background:rgba(255,255,255,0.04); }
+            .mgf2-copy svg { width:14px; height:14px; }
+            .mgf2-copy.copied { border-color:#57e389; color:#57e389; }
+            .mgf2-social { display:inline-flex; gap:26px; margin-top: clamp(34px,4vw,54px); }
+            .mgf2-social a {
+                font-family:var(--sf-pro); font-size:13px; color:rgba(255,255,255,0.55); text-decoration:none;
+                display:inline-flex; align-items:center; gap:8px; transition:color 220ms ease;
             }
-            .mgf-mark .mgf-g-sym {
-                font-size: 1.22em;
-                vertical-align: -0.08em;
-                transform: translateX(calc(50vw + 0.05em));
-                transition-delay: 0.12s;
+            .mgf2-social a:hover { color:#fff; }
+            .mgf2-social svg { width:15px; height:15px; }
+            /* Right: ultra-minimal underline form */
+            .mgf2-form { display:flex; flex-direction:column; width:100%; }
+            .mgf2-hp { position:absolute !important; left:-9999px !important; width:1px; height:1px; overflow:hidden; opacity:0; pointer-events:none; }
+            .mgf2-row { display:grid; grid-template-columns:1fr 1fr; column-gap: clamp(20px,3vw,40px); }
+            .mgf2-field {
+                width:100%; font-family:var(--sf-pro); font-size:16px; color:#fff; line-height:1.5;
+                background:transparent; border:none; border-bottom:1px solid rgba(255,255,255,0.16);
+                border-radius:0; padding:16px 0; outline:none; -webkit-appearance:none; appearance:none;
+                transition:border-color 240ms ease;
             }
-            .mgf-mark.is-reveal .mgf-m-sym,
-            .mgf-mark.is-reveal .mgf-g-sym {
-                opacity: 1;
-                transform: translateX(0);
+            .mgf2-field::placeholder { color:rgba(255,255,255,0.4); }
+            .mgf2-field:focus { border-bottom-color:#fff; }
+            textarea.mgf2-field { min-height:92px; resize:vertical; margin-top:8px; }
+            .mgf2-send {
+                align-self:flex-start; margin-top:36px; cursor:pointer; display:inline-flex; align-items:center; gap:12px;
+                background:#fff; color:#000; border:none; border-radius:999px;
+                font-family:var(--sf-pro); font-size:12px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase;
+                padding:16px 30px; transition:transform 320ms cubic-bezier(0.22,1,0.36,1),box-shadow 320ms ease,opacity 220ms ease;
             }
-            @media (prefers-reduced-motion: reduce) {
-                .mgf-mark .mgf-m-sym,
-                .mgf-mark .mgf-g-sym {
-                    opacity: 1;
-                    transform: none;
-                    transition: none;
-                }
+            .mgf2-send:hover { transform:translateY(-2px); box-shadow:0 16px 34px -16px rgba(255,255,255,0.45); }
+            .mgf2-send:active { transform:translateY(0); }
+            .mgf2-send:disabled { opacity:0.5; cursor:default; box-shadow:none; transform:none; }
+            .mgf2-send svg { width:15px; height:15px; stroke:currentColor; fill:none; }
+            .mgf-formnote { font-family:var(--sf-pro); font-size:13px; color:#fff; opacity:0; transition:opacity 320ms ease; min-height:16px; margin-top:14px; }
+            .mgf-formnote.show { opacity:0.7; }
+            /* Bottom meta */
+            .mgf2-meta {
+                grid-column:1 / -1; display:flex; align-items:center; justify-content:space-between; gap:20px;
+                padding-top: clamp(28px,4vh,44px); border-top:1px solid rgba(255,255,255,0.10);
+                font-family:var(--sf-pro); font-size:12px; color:rgba(255,255,255,0.4);
             }
-            .mgf-caption {
-                position: absolute;
-                left: 50%;
-                bottom: 44px;
-                transform: translateX(-50%);
-                font-size: 10px;
-                letter-spacing: 0.4em;
-                text-transform: uppercase;
-                color: rgba(255,255,255,0.4);
-                white-space: nowrap;
-            }
-            .mgf-caption .mgf-role { color: rgba(255,255,255,0.2); margin-right: 2px; }
-            @keyframes mgf-slide {
-                from { background-position: 0% 50%; }
-                to   { background-position: -200% 50%; }
-            }
-            .mgf-glass {
-                position: relative;
-                z-index: 2;
-                min-height: 100vh;
-                margin-top: -60px;
-                border-radius: 0;
-                background: rgba(255, 255, 255, 0.78);
-                border: 1px solid rgba(255,255,255,0.5);
-                border-bottom: none;
-                /* saturate+brightness make the rainbow MG supergraphic pop
-                   through the frost; lower white opacity lets it show. blur 40px
-                   (down from the original 50px) trims a little per-frame cost. */
-                -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(115%);
-                        backdrop-filter: blur(40px) saturate(200%) brightness(115%);
-                box-shadow:
-                    0 -30px 60px -30px rgba(0,0,0,0.5),
-                    0 -2px 0 rgba(255,255,255,0.18) inset;
-                padding: 80px 48px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                color: #0b0b0e;
-            }
-            .mgf-glass::before {
-                content: '';
-                position: absolute;
-                left: 50%;
-                top: 14px;
-                transform: translateX(-50%);
-                width: 48px;
-                height: 4px;
-                border-radius: 2px;
-                background: rgba(255,255,255,0.18);
-            }
-            .mgf-content {
-                max-width: 720px;
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                gap: 32px;
-            }
-            .mgf-title {
-                font-size: clamp(36px, 5vw, 68px);
-                font-weight: 300;
-                letter-spacing: -0.02em;
-                line-height: 1.05;
-                color: #0b0b0e;
-            }
-            .mgf-sub {
-                font-size: clamp(15px, 1.5vw, 19px);
-                line-height: 1.55;
-                font-weight: 400;
-                letter-spacing: -0.005em;
-                color: rgba(11, 11, 14, 0.62);
-                max-width: 34em;
-                margin: -6px 0 0;
-            }
-            .mgf-cta {
-                margin-top: 32px;
-                align-self: center;
-                display: inline-flex;
-                align-items: center;
-                gap: 10px;
-                padding: 14px 24px;
-                border-radius: 999px;
-                background: #0b0b0e;
-                color: #fff;
-                text-decoration: none;
-                font-size: 11px;
-                letter-spacing: 0.26em;
-                text-transform: uppercase;
-                font-weight: 500;
-                transition:
-                    transform 400ms cubic-bezier(0.22, 1, 0.36, 1),
-                    gap 400ms cubic-bezier(0.22, 1, 0.36, 1),
-                    box-shadow 400ms ease;
-            }
-            .mgf-cta:hover {
-                transform: translateY(-2px);
-                gap: 16px;
-                box-shadow: 0 12px 30px -10px rgba(0,0,0,0.35);
-            }
-            .mgf-cta:active { transform: translateY(0); }
-            .mgf-cta svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-            @media (max-width: 768px) {
-                /* Glass card: trim the generous desktop padding so the title,
-                   subtitle and CTA breathe on a phone without touching edges. */
-                .mgf-glass { padding: 64px 22px; }
-                .mgf-content { gap: 24px; }
-                .mgf-title { font-size: clamp(28px, 8vw, 40px); }
-                .mgf-sub { font-size: 15px; line-height: 1.5; }
-                .mgf-cta { margin-top: 24px; padding: 14px 22px; letter-spacing: 0.2em; }
-                /* Caption is absolute + nowrap + wide tracking — it runs past a
-                   narrow viewport. Tighten tracking and shrink so it fits. */
-                .mgf-caption { font-size: 8px; letter-spacing: 0.22em; bottom: 28px; }
-            }
-            @media (max-width: 480px) {
-                .mgf-glass { padding: 52px 18px; }
-                .mgf-caption { letter-spacing: 0.14em; }
-            }
-            @media (prefers-reduced-motion: reduce) {
-                .mgf-mark { animation: none; }
-            }
-            /* ── Contact: Apple-grade form + square email button ── */
-            .mgf-contact { width: 100%; max-width: 520px; margin-top: 6px; display: flex; flex-direction: column; gap: 14px; text-align: left; }
-            .mgf-hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
-            .mgf-row { display: flex; gap: 14px; }
-            .mgf-field {
-                width: 100%; flex: 1;
-                font-family: var(--sf-pro); font-size: 15px; color: #1d1d1f; line-height: 1.4;
-                background: rgba(255,255,255,0.5);
-                border: 1px solid rgba(0,0,0,0.09);
-                border-radius: 14px; padding: 15px 16px; outline: none;
-                -webkit-appearance: none; appearance: none;
-                transition: border-color 240ms ease, background 240ms ease, box-shadow 240ms ease;
-            }
-            .mgf-field::placeholder { color: rgba(0,0,0,0.32); }
-            .mgf-field:focus { border-color: rgba(0,0,0,0.3); background: rgba(255,255,255,0.96); box-shadow: 0 0 0 4px rgba(0,0,0,0.04); }
-            textarea.mgf-field { min-height: 118px; resize: vertical; }
-            .mgf-actions { display: flex; align-items: center; gap: 14px; margin-top: 4px; }
-            .mgf-email {
-                display: inline-flex; align-items: center; gap: 12px; text-decoration: none; flex-shrink: 0;
-                background: rgba(255,255,255,0.5); border: 1px solid rgba(0,0,0,0.09);
-                border-radius: 18px; padding: 11px 18px 11px 11px;
-                transition: border-color 240ms ease, background 240ms ease, transform 320ms cubic-bezier(0.22,1,0.36,1), box-shadow 320ms ease;
-            }
-            .mgf-email:hover { background: rgba(255,255,255,0.96); border-color: rgba(0,0,0,0.16); transform: translateY(-1px); box-shadow: 0 12px 28px -16px rgba(0,0,0,0.4); }
-            .mgf-email-icon { width: 42px; height: 42px; border-radius: 13px; flex-shrink: 0; background: #0b0b0e; color: #fff; display: inline-flex; align-items: center; justify-content: center; }
-            .mgf-email-icon svg { width: 19px; height: 19px; }
-            .mgf-email-text { display: flex; flex-direction: column; gap: 2px; }
-            .mgf-email-label { font-family: var(--sf-pro); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(0,0,0,0.38); }
-            .mgf-email-addr { font-family: var(--sf-pro); font-size: 15px; font-weight: 500; color: #1d1d1f; letter-spacing: -0.01em; }
-            .mgf-send {
-                flex: 1; cursor: pointer; border: none;
-                font-family: var(--sf-pro); font-size: 14px; font-weight: 500; color: #fff;
-                background: #0b0b0e; border-radius: 16px; padding: 16px 22px;
-                display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-                transition: background 240ms ease, transform 320ms cubic-bezier(0.22,1,0.36,1), box-shadow 320ms ease;
-            }
-            .mgf-send:hover { background: #1d1d1f; transform: translateY(-1px); box-shadow: 0 14px 30px -14px rgba(0,0,0,0.5); }
-            .mgf-send:active { transform: translateY(0); }
-            .mgf-send:disabled { opacity: 0.55; cursor: default; box-shadow: none; transform: none; }
-            .mgf-send svg { width: 15px; height: 15px; }
-            .mgf-formnote { font-family: var(--sf-pro); font-size: 13px; color: #0b0b0e; opacity: 0; transition: opacity 320ms ease; min-height: 16px; padding-top: 2px; }
-            .mgf-formnote.show { opacity: 0.62; }
-            @media (max-width: 640px) {
-                .mgf-contact { max-width: 100%; }
-                .mgf-row { flex-direction: column; }
-                .mgf-actions { flex-direction: column-reverse; align-items: stretch; }
-                .mgf-email { justify-content: center; }
+            .mgf2-meta button { background:none; border:none; color:rgba(255,255,255,0.4); cursor:pointer; font:inherit; letter-spacing:0.16em; text-transform:uppercase; transition:color 220ms ease; }
+            .mgf2-meta button:hover { color:#fff; }
+            @media (max-width:900px) { .mgf2-inner { grid-template-columns:1fr; row-gap: clamp(44px,8vh,64px); } }
+            @media (max-width:560px) {
+                .mgf2-row { grid-template-columns:1fr; }
+                .mgf2-meta { flex-direction:column; align-items:flex-start; gap:12px; }
+                .mgf2-send { width:100%; justify-content:center; }
             }
         </style>
 
-        <section class="mgf-stage-wrap">
-            <div class="mgf-sticky" aria-hidden="true">
-                <div class="mgf-mark" id="mgfMark"><span class="mgf-m-sym">M</span><span class="mgf-g-sym">Ⓖ</span></div>
-                <div class="mgf-caption"><span class="mgf-role">SR Designer</span> · Mota Gomes · Studio</div>
-            </div>
-            <div class="mgf-glass">
-                <div class="mgf-content">
-                    <h2 class="mgf-title">Thank you for watching my portfolio.<br>Let's get in touch.</h2>
-                    <p class="mgf-sub">I&rsquo;m currently open to new design roles.<br>Feel free to drop me an email, I&rsquo;d love to hear from you.</p>
-                    <form class="mgf-contact" id="contactForm" novalidate>
-                        <input type="text" name="company" class="mgf-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-                        <div class="mgf-row">
-                            <input class="mgf-field" type="text" name="name" placeholder="Name" autocomplete="name" required>
-                            <input class="mgf-field" type="email" name="email" placeholder="Email" autocomplete="email" required>
-                        </div>
-                        <textarea class="mgf-field" name="message" placeholder="Tell me about your project…" required></textarea>
-                        <div class="mgf-actions">
-                            <a class="mgf-email" href="mailto:info@motagomes.com" aria-label="Email info@motagomes.com">
-                                <span class="mgf-email-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg></span>
-                                <span class="mgf-email-text"><span class="mgf-email-label">Email</span><span class="mgf-email-addr">info@motagomes.com</span></span>
-                            </a>
-                            <button class="mgf-send" type="submit">
-                                <span class="mgf-send-label">Send message</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-                            </button>
-                        </div>
-                        <div class="mgf-formnote" id="contactNote" role="status" aria-live="polite"></div>
-                    </form>
+        <footer class="mgf2" id="contact">
+            <div class="mgf2-inner">
+                <div class="mgf2-lead">
+                    <span class="mgf2-eyebrow">Available for new design roles</span>
+                    <a class="mgf2-email" id="mgf2Email" href="mailto:info@motagomes.com">info@motagomes.com</a>
+                    <button class="mgf2-copy" id="mgf2Copy" type="button" aria-label="Copy email address">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                        <span class="mgf2-copy-label">Copy email</span>
+                    </button>
+                    <div class="mgf2-social">
+                        <a href="https://linkedin.com/in/pedraw" target="_blank" rel="noopener">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zm1.78 13.02H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+                            LinkedIn
+                        </a>
+                        <a href="/cv.pdf" download>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Curriculum
+                        </a>
+                    </div>
+                </div>
+
+                <form class="mgf2-form" id="contactForm" novalidate>
+                    <input type="text" name="company" class="mgf2-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+                    <div class="mgf2-row">
+                        <input class="mgf2-field" type="text" name="name" placeholder="Name" autocomplete="name" required>
+                        <input class="mgf2-field" type="email" name="email" placeholder="Email" autocomplete="email" required>
+                    </div>
+                    <textarea class="mgf2-field" name="message" placeholder="Tell me about your project…" required></textarea>
+                    <button class="mgf-send mgf2-send" type="submit">
+                        <span class="mgf-send-label">Send message</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                    </button>
+                    <div class="mgf-formnote" id="contactNote" role="status" aria-live="polite"></div>
+                </form>
+
+                <div class="mgf2-meta">
+                    <span>© 2026 Mota Gomes — Senior Designer</span>
+                    <button type="button" onclick="scrollToTop()">Back to top ↑</button>
                 </div>
             </div>
-        </section>
+        </footer>
+        <script>
+        (function(){
+            var btn=document.getElementById('mgf2Copy'); if(!btn) return;
+            var label=btn.querySelector('.mgf2-copy-label'); var EMAIL='info@motagomes.com';
+            function done(){ btn.classList.add('copied'); if(label) label.textContent='Copied'; setTimeout(function(){ btn.classList.remove('copied'); if(label) label.textContent='Copy email'; },1800); }
+            function fallback(){ var t=document.createElement('textarea'); t.value=EMAIL; t.style.cssText='position:fixed;left:-9999px'; document.body.appendChild(t); t.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(t); done(); }
+            btn.addEventListener('click',function(){ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(EMAIL).then(done).catch(fallback);} else { fallback(); } });
+        })();
+        </script>
         <script>
         (function(){
             var form=document.getElementById('contactForm'); if(!form) return;
