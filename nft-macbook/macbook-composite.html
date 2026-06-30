@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MacBook Composite — website warped into the green screen</title>
+<style>
+  html, body {
+    margin: 0; padding: 0; background: #ece3f0;
+    width: 100%; height: 100%; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  /* STAGE: the 1138×640 working space (mockup is 4552×2560 → 1/4 scale). */
+  #stage {
+    position: relative;
+    width: 1138px; height: 640px;
+    overflow: hidden;
+    transform-origin: center center;   /* scaled by fitStage() to fill the slide */
+  }
+  #mockup {
+    position: absolute; top: 0; left: 0;
+    width: 1138px; height: 640px;
+    object-fit: fill; display: block; z-index: 1;
+    user-select: none; pointer-events: none;
+  }
+  /* The website iframe — its un-transformed rect is SRC_W×SRC_H, warped by matrix3d. */
+  #screen {
+    position: absolute; top: 0; left: 0;
+    border: 0; transform-origin: 0 0; z-index: 2;
+    overflow: hidden; background: #0b0b0b;
+    /* match the MacBook screen's rounded TOP corners */
+    border-top-left-radius: 26px;
+    border-top-right-radius: 26px;
+  }
+  /* Black cover over the screen — hides the green + any load flash, then
+     fades out once the page is fully loaded (clean "screen-on" reveal). */
+  #cover {
+    position: absolute; top: 0; left: 0;
+    transform-origin: 0 0; z-index: 3;
+    background: #0b0b0b; pointer-events: none;
+    border-top-left-radius: 26px; border-top-right-radius: 26px;
+    opacity: 1; transition: opacity 0.35s ease;
+  }
+  #cover.hide { opacity: 0; }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <img id="mockup" src="macbook.webp" alt="MacBook green-screen mockup">
+    <iframe id="screen" scrolling="no"></iframe>
+    <div id="cover"></div>
+  </div>
+
+<script>
+/* ======================= THE ONE LINE TO EDIT ============================
+   The website that goes inside the screen. Can be a live URL
+   (e.g. 'https://motagomes.com') or a local file ('candando-cards.html').
+   NOTE: live external sites only embed if they allow iframing
+   (X-Frame-Options / CSP frame-ancestors). Local files always work. */
+const SITE_URL = 'AURA%20HAIR%20STUDIO/internet-archive/nft-art-finance/nft-art-finance-local.html';
+/* ======================================================================== */
+
+/* Screen corners — DETECTED one-to-one from the chroma-green pixels,
+   in 1138×640 stage space (full-res 4552×2560 ÷ 4). Verified by overlay. */
+/* +4px outward overscan on every corner so the site fully covers the green
+   (the extra sits on the black bezel and is invisible). */
+const SCREEN = {
+  TL: [289.5, 131.0],
+  TR: [852.5, 131.0],
+  BR: [854.7, 494.3],
+  BL: [287.3, 494.3]
+};
+
+/* Source rectangle for the iframe. 1.575 aspect = the screen's true ratio,
+   so the homography maps it with no distortion. */
+const SRC_W = 1440;
+const SRC_H = Math.round(SRC_W / 1.575);   // ≈ 914
+
+/* ---- General 2D projective (homography) solver ---- */
+function adj(m){return[m[4]*m[8]-m[5]*m[7],m[2]*m[7]-m[1]*m[8],m[1]*m[5]-m[2]*m[4],m[5]*m[6]-m[3]*m[8],m[0]*m[8]-m[2]*m[6],m[2]*m[3]-m[0]*m[5],m[3]*m[7]-m[4]*m[6],m[1]*m[6]-m[0]*m[7],m[0]*m[4]-m[1]*m[3]];}
+function multmm(a,b){const c=[];for(let i=0;i<3;i++)for(let j=0;j<3;j++){let s=0;for(let k=0;k<3;k++)s+=a[3*i+k]*b[3*k+j];c[3*i+j]=s;}return c;}
+function multmv(m,v){return[m[0]*v[0]+m[1]*v[1]+m[2]*v[2],m[3]*v[0]+m[4]*v[1]+m[5]*v[2],m[6]*v[0]+m[7]*v[1]+m[8]*v[2]];}
+function basisToPoints(x1,y1,x2,y2,x3,y3,x4,y4){const m=[x1,x2,x3,y1,y2,y3,1,1,1];const v=multmv(adj(m),[x4,y4,1]);return multmm(m,[v[0],0,0,0,v[1],0,0,0,v[2]]);}
+function general2DProjection(s1x,s1y,s2x,s2y,s3x,s3y,s4x,s4y,d1x,d1y,d2x,d2y,d3x,d3y,d4x,d4y){
+  const S=basisToPoints(s1x,s1y,s2x,s2y,s3x,s3y,s4x,s4y);
+  const D=basisToPoints(d1x,d1y,d2x,d2y,d3x,d3y,d4x,d4y);
+  return multmm(D,adj(S));
+}
+function quadToMatrix3d(W,H,TL,TR,BR,BL){
+  let h=general2DProjection(0,0,W,0,W,H,0,H,TL[0],TL[1],TR[0],TR[1],BR[0],BR[1],BL[0],BL[1]);
+  for(let i=0;i<9;i++)h[i]=h[i]/h[8];
+  const m=[h[0],h[3],0,h[6], h[1],h[4],0,h[7], 0,0,1,0, h[2],h[5],0,h[8]];
+  return "matrix3d("+m.map(n=>n.toFixed(9)).join(",")+")";
+}
+function applyWarp(){
+  const mtx=quadToMatrix3d(SRC_W,SRC_H,SCREEN.TL,SCREEN.TR,SCREEN.BR,SCREEN.BL);
+  for(const id of ['screen','cover']){
+    const el=document.getElementById(id);
+    el.style.width=SRC_W+'px'; el.style.height=SRC_H+'px';
+    el.style.transform=mtx;
+  }
+}
+const screenEl=document.getElementById('screen');
+const coverEl=document.getElementById('cover');
+function reveal(){ coverEl.classList.add('hide'); }
+screenEl.addEventListener('load',()=>setTimeout(reveal,120)); // fade out once loaded
+setTimeout(reveal,2500);                                       // safety fallback
+screenEl.src=SITE_URL;
+window.addEventListener('load',applyWarp);
+window.addEventListener('resize',applyWarp);
+applyWarp();
+
+/* Scale the whole 1138×640 stage (16:9) to fill the slide viewport — no
+   letterboxing, and the homography stays intact (uniform scale of stage space). */
+function fitStage(){
+  var sc = Math.min(window.innerWidth/1138, window.innerHeight/640);
+  document.getElementById('stage').style.transform = 'scale(' + sc + ')';
+}
+window.addEventListener('load', fitStage);
+window.addEventListener('resize', fitStage);
+fitStage();
+</script>
+</body>
+</html>
