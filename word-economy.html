@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Economy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; background:#ffffff; overflow:hidden; width:100%; height:100%; }
+  * { box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif; }
+  #stage {
+    position:absolute; left:50%; top:50%;
+    width:1996px; height:1115px;
+    transform-origin:center center;
+    background:#ffffff;
+  }
+  .abs { position:absolute; }
+
+  /* ---------- typography / layout ---------- */
+  .title {
+    left:100px; top:78px;
+    font-size:93px; font-weight:800; letter-spacing:-0.052em;
+    color:#0a0a0a; line-height:1.3; white-space:nowrap;
+  }
+  .heading {
+    left:101px; top:253px;
+    font-size:45px; font-weight:600; letter-spacing:-0.035em;
+    color:#0e0e0e; line-height:1.3; white-space:nowrap;
+  }
+  .subline {
+    left:102px; top:314px;
+    font-size:22px; font-weight:400; color:#141414; line-height:1.4;
+  }
+  .quotewrap {
+    left:1221px; top:271px;
+  }
+  .quote {
+    margin:0; padding:0;
+    font-size:18px; font-style:italic; font-weight:500; color:#2c2c2e;
+    line-height:22.5px; letter-spacing:-0.01em; white-space:nowrap;
+  }
+  .attrib {
+    display:block; margin-top:10px;
+    font-size:14px; font-style:normal; color:#808080; font-weight:400; line-height:1.2;
+  }
+  .divider {
+    left:102px; top:453px; width:1794px; height:1px;
+    background:rgb(30,30,240);
+    transform-origin:left center;
+  }
+  .lead {
+    left:102px; top:530px;
+    font-size:21px; font-weight:400; color:#101010;
+  }
+
+  /* ---------- cards ---------- */
+  .card {
+    top:613px; width:562px; height:209px; border-radius:16px;
+  }
+  .card.light {
+    background:#fdfdff;
+    box-shadow:
+      inset 0 0 34px rgba(70,110,245,0.10),
+      inset 0 0 6px  rgba(90,125,248,0.07);
+  }
+  .card.blue {
+    background:
+      radial-gradient(90% 90% at 102% 112%, rgba(185,185,255,0.9) 0%, rgba(185,185,255,0) 40%),
+      linear-gradient(105deg, #2444f6 0%, #1e28f7 50%, #2129f7 100%);
+    background-size: 150% 150%, 160% 160%;
+    background-position: 100% 100%, 0% 0%;
+    box-shadow: 0 20px 50px rgba(45,70,240,0.28);
+    animation: drift 9s ease-in-out infinite alternate;
+  }
+  @keyframes drift {
+    0%   { background-position: 100% 100%, 0% 0%; }
+    100% { background-position: 55% 60%, 100% 100%; }
+  }
+  .card-inner {
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:flex-start;
+  }
+  /* per-card internal offsets measured from the reference */
+  .card[data-cardidx="0"] .card-inner { padding-left:48px; }
+  .card[data-cardidx="1"] .card-inner { padding-left:63px; }
+  .card[data-cardidx="2"] .card-inner { padding-left:118px; }
+  .card[data-cardidx="0"] .stat { width:154px; }
+  .card[data-cardidx="1"] .stat { width:134px; }
+  .card[data-cardidx="2"] .stat { width:141px; }
+  .stat {
+    font-size:53px; font-weight:700; letter-spacing:-0.025em;
+    flex:0 0 auto;
+    font-variant-numeric: tabular-nums;
+    line-height:1;
+    background-image:
+      linear-gradient(110deg, rgba(255,255,255,0) 42%, rgba(235,242,255,0.85) 50%, rgba(255,255,255,0) 58%),
+      linear-gradient(100deg, #2424ec 15%, #7d7df7 95%);
+    background-size: 250% 100%, 100% 100%;
+    background-position: 200% 0, 0 0;
+    background-repeat: no-repeat;
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:#3434f7;
+    animation: shine 5.6s linear infinite;
+  }
+  /* staggered glide: card 1 sweeps first, then 2, then 3 */
+  .card[data-cardidx="0"] .stat { animation-delay: 0s; }
+  .card[data-cardidx="1"] .stat { animation-delay: 0.4s; }
+  .card[data-cardidx="2"] .stat { animation-delay: 0.8s; }
+  .card.blue .stat {
+    background-image:
+      linear-gradient(110deg, rgba(255,255,255,0) 42%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0) 58%),
+      linear-gradient(100deg, #eceefe 15%, #c3c6fa 95%);
+    background-size: 250% 100%, 100% 100%;
+    background-position: 200% 0, 0 0;
+    background-repeat: no-repeat;
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:#dfe2fe;
+  }
+  @keyframes shine {
+    0%    { background-position: 200% 0, 0 0; }
+    35.7% { background-position: -100% 0, 0 0; }  /* ~2.0s gentle glide */
+    100%  { background-position: -100% 0, 0 0; }  /* rest until next round */
+  }
+  .stat .num { display:inline-block; text-align:right; }
+  .labels { display:flex; flex-direction:column; gap:5px; }
+  .label {
+    font-size:14.5px; font-weight:600; letter-spacing:-0.005em;
+    color:#0a0a0a; text-transform:uppercase; white-space:nowrap;
+  }
+  .source { font-size:14px; color:#8c8c8e; font-weight:400; white-space:nowrap; }
+  .card.blue .label { color:#ffffff; }
+  .card.blue .source { color:#cdd6ff; }
+
+  /* ---------- footer band ---------- */
+  .footnotes {
+    left:101px; top:876px;
+    font-size:12.5px; color:#1a1a1a; line-height:15.6px; font-weight:400;
+  }
+  .methodology {
+    top:874px; right:145px;
+    font-size:12.5px; color:#1414ff; font-weight:600;
+    display:flex; align-items:center; gap:7px; white-space:nowrap;
+  }
+
+  /* ---------- animation ---------- */
+  .anim {
+    opacity:0;
+    transform:translateY(24px);
+    transition:
+      opacity 0.85s cubic-bezier(0.16,1,0.3,1),
+      transform 0.85s cubic-bezier(0.16,1,0.3,1);
+    will-change:opacity, transform;
+  }
+  .anim.card { transform:translateY(24px) scale(0.97); }
+  .anim.in { opacity:1; transform:translateY(0); }
+  .anim.card.in { transform:translateY(0) scale(1); }
+
+  .divider.anim {
+    opacity:0;
+    transform:scaleX(0);
+    transition:
+      opacity 0.5s cubic-bezier(0.16,1,0.3,1),
+      transform 1.1s cubic-bezier(0.16,1,0.3,1);
+  }
+  .divider.anim.in { opacity:1; transform:scaleX(1); }
+
+  .noanim .anim, .noanim .divider.anim { transition:none !important; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .anim, .divider.anim { opacity:1 !important; transform:none !important; transition:none !important; }
+    .stat, .card.blue { animation:none !important; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="abs title anim" data-step="0">Word Economy</div>
+
+  <div class="abs heading anim" data-step="1">Maximum Impact with Minimum Words</div>
+  <div class="abs subline anim" data-step="1">In a world of infinite content and finite attention, precision isn&rsquo;t a luxury it&rsquo;s essential.</div>
+
+  <div class="abs quotewrap anim" data-step="2">
+    <blockquote class="quote">&ldquo;Perfection is achieved not when there is nothing more to add,<br>but when there is nothing left to take away.&rdquo;</blockquote>
+    <cite class="attrib">&mdash;Antoine de Saint-Exup&eacute;ry</cite>
+  </div>
+
+  <div class="abs divider anim" data-step="3"></div>
+
+  <div class="abs lead anim" data-step="4">Impact of concise communication compared to traditional business writing:</div>
+
+  <!-- Card 1 -->
+  <div class="abs card light anim" data-step="5" data-cardidx="0">
+    <div class="card-inner">
+      <div class="stat"><span class="num" data-target="68" data-decimals="0">68</span>%</div>
+      <div class="labels">
+        <div class="label">Reading Comprehension Improvement</div>
+        <div class="source">Nielsen Norman Group, 2023&sup1;</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="abs card blue anim" data-step="5" data-cardidx="1">
+    <div class="card-inner">
+      <div class="stat"><span class="num" data-target="3.2" data-decimals="1">3.2</span>&times;</div>
+      <div class="labels">
+        <div class="label">Increased Message Retention</div>
+        <div class="source">Harvard Business Review, 2022&sup2;</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 3 -->
+  <div class="abs card light anim" data-step="5" data-cardidx="2">
+    <div class="card-inner">
+      <div class="stat"><span class="num" data-target="57" data-decimals="0">57</span>%</div>
+      <div class="labels">
+        <div class="label">Time Saved for Recipients</div>
+        <div class="source">McKinsey Global Institute, 2024&sup3;</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="abs footnotes anim" data-step="6">
+    &sup1;Based on analysis of 3,200+ digital communications across 18 industries<br>
+    &sup2;Longitudinal study of executive information retention, n=842<br>
+    &sup3;Global workplace efficiency analysis spanning 24 countries
+  </div>
+
+  <div class="abs methodology anim" data-step="6">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+      <path d="M2 2v11a1 1 0 0 0 1 1h11" stroke="#1414ff" stroke-width="1.7" stroke-linecap="round"/>
+      <path d="M5 10l3-3 2 2 4-4" stroke="#1414ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Full Methodology Available
+  </div>
+</div>
+
+<script>
+(function(){
+  /* ---------- stage fit ---------- */
+  var stage = document.getElementById('stage');
+  function fitStage(){
+    var sc = Math.min(window.innerWidth/1996, window.innerHeight/1115);
+    stage.style.transform = 'translate(-50%,-50%) scale(' + sc + ')';
+  }
+  window.addEventListener('resize', fitStage);
+  fitStage();
+
+  /* ---------- card layout: position cards ---------- */
+  var cardX = [100, 715, 1330];
+  document.querySelectorAll('.card').forEach(function(c){
+    c.style.left = cardX[+c.dataset.cardidx] + 'px';
+  });
+
+  /* ---------- reserve stat widths so count-up never reflows ---------- */
+  function reserveNumWidths(){
+    document.querySelectorAll('.stat .num').forEach(function(n){
+      var dec = parseInt(n.dataset.decimals,10)||0;
+      n.style.width = '';
+      n.textContent = parseFloat(n.dataset.target).toFixed(dec);
+      n.style.width = Math.ceil(n.getBoundingClientRect() ? n.offsetWidth : 0) + 'px';
+    });
+  }
+  reserveNumWidths();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(reserveNumWidths);
+
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- count-up ---------- */
+  function countUp(el, dur){
+    var target = parseFloat(el.dataset.target);
+    var dec = parseInt(el.dataset.decimals, 10) || 0;
+    var t0 = null;
+    function frame(t){
+      if (t0 === null) t0 = t;
+      var p = Math.min((t - t0) / dur, 1);
+      var e = 1 - Math.pow(1 - p, 3);   /* ease-out cubic */
+      el.textContent = (target * e).toFixed(dec);
+      if (p < 1) requestAnimationFrame(frame);
+      else el.textContent = target.toFixed(dec);
+    }
+    requestAnimationFrame(frame);
+    /* hard guarantee: land exactly on final value even if rAF stalls */
+    timeouts.push(setTimeout(function(){ el.textContent = target.toFixed(dec); }, dur + 150));
+  }
+
+  /* ---------- sequence ---------- */
+  var STEP_MS = 140, BASE_DELAY = 300, CARD_STAGGER = 120;
+  var timeouts = [];
+  var played = false;
+
+  function clearTimers(){ timeouts.forEach(clearTimeout); timeouts = []; }
+
+  function showFinal(){
+    document.querySelectorAll('.anim').forEach(function(el){ el.classList.add('in'); });
+    document.querySelectorAll('.stat .num').forEach(function(n){
+      n.textContent = parseFloat(n.dataset.target).toFixed(parseInt(n.dataset.decimals,10)||0);
+    });
+  }
+
+  function reset(){
+    clearTimers();
+    /* suppress transitions during reset so nothing fades out visibly */
+    stage.classList.add('noanim');
+    document.querySelectorAll('.anim').forEach(function(el){ el.classList.remove('in'); });
+    document.querySelectorAll('.stat .num').forEach(function(n){
+      n.textContent = (0).toFixed(parseInt(n.dataset.decimals,10)||0);
+    });
+    /* force reflow so removal registers before replaying */
+    void stage.offsetWidth;
+    stage.classList.remove('noanim');
+    void stage.offsetWidth;
+  }
+
+  var forceStatic = /[?&]static=1/.test(location.search);
+
+  function play(){
+    if (reduced || forceStatic){ showFinal(); played = true; return; }
+    reset();
+    document.querySelectorAll('.anim').forEach(function(el){
+      var step = +el.dataset.step;
+      var delay = BASE_DELAY + step * STEP_MS;
+      if (el.classList.contains('card')){
+        delay += (+el.dataset.cardidx) * CARD_STAGGER;
+        (function(card, d){
+          timeouts.push(setTimeout(function(){
+            card.classList.add('in');
+            card.querySelectorAll('.stat .num').forEach(function(n){ countUp(n, 1200); });
+          }, d));
+        })(el, delay);
+      } else {
+        (function(e, d){
+          timeouts.push(setTimeout(function(){ e.classList.add('in'); }, d));
+        })(el, delay);
+      }
+    });
+    played = true;
+  }
+
+  window.restartAnimation = play;
+
+  /* restart on postMessage */
+  window.addEventListener('message', function(ev){
+    if (ev && (ev.data === 'restart' || (ev.data && ev.data.type === 'restart'))) play();
+  });
+
+  /* play when slide becomes visible (iframe-friendly) */
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting){
+          if (!played) play(); else if (en.intersectionRatio > 0.4 && !document.querySelector('.anim.in')) play();
+        }
+      });
+    }, { threshold: [0.1, 0.4] });
+    io.observe(document.body);
+  }
+
+  /* fallback: play on load */
+  if (document.readyState === 'complete') play();
+  else window.addEventListener('load', function(){ if (!played) play(); });
+
+  /* master loop: replay the full entrance sequence every 7s */
+  if (!reduced && !forceStatic){
+    setInterval(function(){ play(); }, 7000);
+  }
+})();
+</script>
+</body>
+</html>
