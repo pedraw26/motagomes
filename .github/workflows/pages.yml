@@ -18,13 +18,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Assemble clean site (strip .git + cruft so publish is fast)
+        run: |
+          mkdir -p _site
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='_site' \
+            --exclude='.netlify' \
+            --exclude='.DS_Store' \
+            --exclude='*.backup' \
+            --exclude='*-backup-*' \
+            --exclude='*.cloudinary-backup*' \
+            ./ _site/
+          touch _site/.nojekyll
+          echo "Assembled site size:"; du -sh _site
+          echo "file count:"; find _site -type f | wc -l
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
-        timeout-minutes: 30
-        with:
-          timeout: 1800000
-          error_count: 25
