@@ -1097,7 +1097,7 @@
                 if (authError) authError.style.display = 'none';
                 const val = document.getElementById('authInput').value || '';
                 const h = await sha256Hex(val);
-                if (h === '34c90359b61832ca5fd0593f233058b0dcd66809ade65acb763ca7a82c3e7bc5') {
+                if (h === '4dd5741c9b153068b907807b1e65c65aa6bd6464ccdd1a7c89f7e2bf4f6f33f2') {
                     sessionStorage.setItem('dash_auth', '1');
                     sessionStorage.setItem('_dpw', val);
                     document.getElementById('authGate').style.display = 'none';
