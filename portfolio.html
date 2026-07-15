@@ -1860,17 +1860,33 @@
             position: relative;
             max-width: 1600px;
             margin: 0 auto;
-            padding-bottom: 0;
+            padding-bottom: 100px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 26px;
         }
+        @media (max-width: 760px){ .gallery-stacked-container { grid-template-columns: 1fr; gap: 18px; } }
         
         .gallery-stacked-card {
-            position: sticky;
-            top: 40px;
-            padding-top: calc(var(--card-index, 0) * var(--card-offset, 50px));
-            margin-bottom: 40px;
+            position: static;
+            top: auto;
+            padding-top: 0;
+            margin-bottom: 0;
             cursor: pointer;
-            z-index: calc(1 + var(--card-index, 0));
+            z-index: auto;
         }
+        /* grid mode: neutralise the scroll-tilt transforms, round + lift cards, hide scroll trackers */
+        .gallery-stacked-container .gallery-stacked-card-inner {
+            transform: none !important;
+            border-radius: 18px;
+            box-shadow: 0 26px 54px -32px rgba(18,28,60,0.38);
+            transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease;
+        }
+        .gallery-stacked-card:hover .gallery-stacked-card-inner {
+            transform: translateY(-6px) !important;
+            box-shadow: 0 40px 70px -34px rgba(18,28,60,0.5);
+        }
+        .gallery-stacked-side { display: none !important; }
         
         .gallery-stacked-card-inner {
             /* Lock aspect ratio so cards look identical on every viewport — all 2:1. */
