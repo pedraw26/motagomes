@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equation Layout — 16:9</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: #cfcfcf;
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Amazon Ember", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  /* 16:9 stage */
+  .stage {
+    position: relative;
+    width: min(100vw, 177.78vh);
+    aspect-ratio: 16 / 9;
+    background: #e7e7e7;
+    overflow: hidden;
+  }
+
+  /* the centered equation row */
+  .row {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    gap: 3.4%;
+    padding: 0 11%;            /* more breathing room on the left & right */
+  }
+
+  /* image placeholders */
+  .ph {
+    background: #d6d6d6;
+    display: flex; align-items: center; justify-content: center;
+    flex: 0 0 auto;
+  }
+  .ph.portrait { height: 42%; aspect-ratio: 1920 / 2731; position: relative; } /* left photo (A) */
+
+  /* small "AI" badge — like a © mark — on the top-right corner of image A */
+  .ai-badge {
+    position: absolute; top: 3%; right: 3%;
+    width: clamp(7px, 1.04cqw, 18px); aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.9);
+    color: rgba(255,255,255,0.95);
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Inter", -apple-system, system-ui, sans-serif;
+    font-weight: 300; letter-spacing: 0.3px; line-height: 1;
+    font-size: clamp(3px, 0.46cqw, 8px);
+  }
+  .ph.box      { height: 14%; aspect-ratio: 1920 / 815;  } /* the box     (B) */
+  .ph.result   { height: 42%; aspect-ratio: 1920 / 2731; } /* result (C) — same size as A */
+
+  /* the generic "image" placeholder icon */
+  .ph svg { width: 34%; height: 34%; max-width: 88px; color: #9a9a9a; display: block; }
+  .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* + and = symbols */
+  .sym {
+    flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center;
+    background: #ffffff;
+    color: #111;
+    font-weight: 700;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.10);
+  }
+  .sym.plus {
+    width: 3.7%; aspect-ratio: 1 / 1; border-radius: 50%;
+  }
+  .sym.eq {
+    width: 3.8%; aspect-ratio: 1 / 1; border-radius: 9%;
+  }
+  .stage { container-type: inline-size; }
+  .sym.plus, .sym.eq { font-size: clamp(11px, 2.3cqw, 38px); line-height: 1; }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="row">
+
+      <!-- left photo (A) -->
+      <div class="ph portrait">
+        <img src="artboard-A.avif" alt="artboard 4">
+        <span class="ai-badge">AI</span>
+      </div>
+
+      <!-- plus -->
+      <div class="sym plus">+</div>
+
+      <!-- the box (B) -->
+      <div class="ph box">
+        <img src="boximage.webp" alt="box">
+      </div>
+
+      <!-- equals -->
+      <div class="sym eq">=</div>
+
+      <!-- result poster (C) -->
+      <div class="ph result">
+        <img src="eyes%20on%20the%20deals.avif" alt="eyes on the deals">
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
