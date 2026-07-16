@@ -7,25 +7,21 @@
 <style>
   *{ box-sizing:border-box; margin:0; padding:0; }
   html,body{ height:100%; }
-  .frame{
-    width:100%; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center;
-    gap:3.6%; background:#eceef0;
-    font-family:-apple-system,"Helvetica Neue",system-ui,sans-serif; overflow:hidden;
-  }
-  .card{
-    height:82%; aspect-ratio:3/4; border-radius:10px; overflow:hidden;
-    box-shadow:0 22px 50px -26px rgba(20,28,45,.38);
-  }
-  .card.subway img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .card.phone{ background:#ffffff; display:flex; align-items:center; justify-content:center; padding:6% 0; }
-  .card.phone img{ height:100%; width:auto; object-fit:contain; display:block;
-    filter:drop-shadow(0 14px 34px rgba(20,28,45,.22)); }
+  /* frame is 3:2 -> two 3:4 halves fill it edge to edge */
+  .frame{ width:100%; aspect-ratio:3/2; display:flex; overflow:hidden;
+    font-family:-apple-system,"Helvetica Neue",system-ui,sans-serif; }
+  .half{ flex:0 0 50%; width:50%; height:100%; overflow:hidden; }
+  /* subway citylight poster fills its half */
+  .half.subway img{ width:100%; height:100%; object-fit:cover; display:block; }
+  /* iPhone 17 fills its half (white matches mockup bg) */
+  .half.phone{ background:#ffffff; display:flex; align-items:center; justify-content:center; }
+  .half.phone img{ height:98%; width:auto; max-width:100%; object-fit:contain; display:block; }
 </style>
 </head>
 <body>
   <div class="frame">
-    <div class="card subway"><img src="subway-poster.avif?v=3" alt="Amazon Eyes on the Deals — subway citylight poster"></div>
-    <div class="card phone"><img src="iphone17.avif?v=1" alt="Amazon Eyes on the Deals — iPhone 17 lock-screen push notification"></div>
+    <div class="half subway"><img src="subway-poster.avif?v=3" alt="Amazon Eyes on the Deals — subway citylight poster"></div>
+    <div class="half phone"><img src="iphone17.avif?v=1" alt="Amazon Eyes on the Deals — iPhone 17 lock-screen push notification"></div>
   </div>
 </body>
 </html>
