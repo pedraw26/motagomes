@@ -10,23 +10,20 @@
   .frame{
     width:100%; aspect-ratio:16/9; display:flex;
     font-family:-apple-system,"Helvetica Neue",system-ui,sans-serif; overflow:hidden;
+    background:#f0f0f2;
   }
-  /* LEFT — subway citylight poster */
-  .left{
-    flex:0 0 50%; width:50%; background:#f0f0f2;
-    display:flex; align-items:center; justify-content:center; padding:5% 6%;
-  }
+  /* LEFT — subway citylight poster, full-bleed cover */
+  .left{ flex:0 0 50%; width:50%; position:relative; overflow:hidden; }
   .left img{
-    max-height:100%; max-width:100%; width:auto; height:auto; object-fit:contain; display:block;
-    filter:drop-shadow(0 30px 60px rgba(20,28,45,.24));
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;
   }
-  /* RIGHT — phone mockup */
+  /* RIGHT — phone mockup, centered on grey */
   .right{
     flex:0 0 50%; width:50%; background:#f0f0f2;
-    display:flex; align-items:center; justify-content:center; padding:5% 6%;
+    display:flex; align-items:center; justify-content:center; padding:6% 6%;
   }
   .right img{
-    height:90%; width:auto; max-width:100%; object-fit:contain; display:block;
+    height:88%; width:auto; max-width:100%; object-fit:contain; display:block;
     filter:drop-shadow(0 40px 70px rgba(20,28,45,.28));
   }
 </style>
