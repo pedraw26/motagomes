@@ -5330,48 +5330,44 @@ margin-top: 3px;
             }
         </style>
 
-        <footer class="mgf2" id="contact">
-            <div class="mgf2-inner">
-                <div class="mgf2-main">
-                <div class="mgf2-lead">
-                    <a class="mgf2-email" id="mgf2Email" href="mailto:info@motagomes.com">info@motagomes.com</a>
-                    <button class="mgf2-copy" id="mgf2Copy" type="button" aria-label="Copy email address">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
-                        <span class="mgf2-copy-label">Copy email</span>
-                    </button>
-                    <div class="mgf2-social">
-                        <a href="https://linkedin.com/in/pedraw" target="_blank" rel="noopener">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zm1.78 13.02H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
-                            LinkedIn
-                        </a>
-                        <a href="/cv.pdf" download>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            Curriculum
-                        </a>
-                    </div>
-                </div>
-
-                <form class="mgf2-form" id="contactForm" novalidate>
-                    <input type="text" name="company" class="mgf2-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-                    <div class="mgf2-row">
-                        <input class="mgf2-field" type="text" name="name" placeholder="Name" autocomplete="name" required>
-                        <input class="mgf2-field" type="email" name="email" placeholder="Email" autocomplete="email" required>
-                    </div>
-                    <textarea class="mgf2-field" name="message" placeholder="Tell me about your project…" required></textarea>
-                    <button class="mgf-send mgf2-send" type="submit">
-                        <span class="mgf-send-label">Send message</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-                    </button>
-                    <div class="mgf-formnote" id="contactNote" role="status" aria-live="polite"></div>
-                </form>
-                </div>
-
-                <div class="mgf2-meta">
-                    <span>© 2026 Mota Gomes — Senior Designer</span>
-                    <button type="button" onclick="scrollToTop()">Back to top ↑</button>
-                </div>
-            </div>
-        </footer>
+        <style>
+  .ufoot{ background:#000; color:#fff; min-height:100vh; display:flex; flex-direction:column;
+    justify-content:space-between; padding: clamp(40px,6vh,80px) clamp(18px,2.4vw,40px) clamp(22px,3vh,38px); }
+  .ufoot-mark{ flex:1; display:flex; align-items:center; justify-content:center; width:100%; }
+  .ufoot-mark h2{
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif; font-weight:500; color:#fff;
+    text-transform:uppercase; letter-spacing:-0.012em; line-height:0.9;
+    font-size: 120px; white-space:nowrap; text-align:center; margin:0; will-change:font-size;
+  }
+  .ufoot-meta{ display:grid; grid-template-columns:1fr 1fr 1fr; align-items:end; gap:20px;
+    font-family:"Helvetica Neue",Arial,sans-serif; font-size:11px; font-weight:400; letter-spacing:0.13em;
+    text-transform:uppercase; color:rgba(255,255,255,0.5); line-height:1.55; }
+  .ufoot-meta .mid{ text-align:center; }
+  .ufoot-meta .right{ text-align:right; }
+  .ufoot-meta a{ color:inherit; text-decoration:none; transition:color .2s ease; }
+  .ufoot-meta a:hover{ color:#fff; }
+  @media(max-width:720px){
+    .ufoot-meta{ grid-template-columns:1fr; gap:16px; }
+    .ufoot-meta .mid,.ufoot-meta .right{ text-align:left; }
+  }
+</style>
+<footer class="ufoot" id="contact">
+    <div class="ufoot-mark"><h2>Mota Gomes</h2></div>
+    <div class="ufoot-meta">
+        <div class="left">Mota Gomes 2026&copy;<br>All rights reserved</div>
+        <div class="mid">Generalist Designer<br>Available for work</div>
+        <div class="right"><a href="mailto:info@motagomes.com">info@motagomes.com</a><br><a href="https://linkedin.com/in/pedraw" target="_blank" rel="noopener">LinkedIn &#8599;</a></div>
+    </div>
+</footer>
+<script>
+(function(){
+    var m=document.querySelector('.ufoot-mark h2'); if(!m) return;
+    function fit(){ m.style.fontSize='100px'; var w=m.parentElement.clientWidth; if(!w) return; m.style.fontSize=(100*(w/m.scrollWidth)*0.98)+'px'; }
+    fit(); window.addEventListener('resize',fit);
+    if(document.fonts&&document.fonts.ready){ document.fonts.ready.then(fit); }
+    setTimeout(fit,300);
+})();
+</script>
         <script>
         (function(){
             var btn=document.getElementById('mgf2Copy'); if(!btn) return;
