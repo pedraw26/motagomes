@@ -64,7 +64,7 @@
 
     var links = [
       { label: "Work", href: "/portfolio.html#work", match: "/portfolio.html" },
-      { label: "About", href: "/about.html", match: "/about.html" },
+      { label: "About", href: "/portfolio.html#about" },
       { label: "Gen Studies", href: "/gen-studio.html", match: "/gen-studio.html", cls: "nav-gen" },
     ];
 
