@@ -716,6 +716,25 @@
             grid-column: 1 / -1;
         }
 
+        .ai-frame-pair {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: clamp(8px, 1.2vw, 24px);
+            padding: clamp(8px, 1.2vw, 24px);
+            background: #000;
+        }
+        .ai-frame-pair img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            background: #000;
+        }
+        .showcase-item:hover .ai-frame-pair img { transform: none; }
+
         .showcase-item.half {
             aspect-ratio: unset;
         }
@@ -2402,17 +2421,15 @@
             year: '2026',
             services: 'Creative Direction, AI Video Experimentation, Motion Design, Visual Development',
             gradient: 'gradient-slate',
+            heroImage: 'assets/ai-motion-ferrari-06.png',
             description: 'A self-initiated motion study exploring how generative image-making can become a cinematic design material — shaped through pacing, composition, atmosphere, and visual continuity.',
             challenge: 'Creating an F1 advertising concept from AI-generated shots — capturing the speed, tension and cinematic polish of a real campaign while maintaining a consistent visual language from frame to frame.',
             solution: 'Developed and refined the visual direction as a connected motion piece, selecting and sequencing frames for continuity, balancing texture with clarity, and using the edit to turn experimentation into a resolved film.',
             images: [
                 { type: 'mp4', src: 'assets/ai-motion-studies-final-ii.mp4', caption: 'Final II — AI motion study', layout: 'full', aspectRatio: '92/39' },
-                { src: 'assets/ai-motion-ferrari-01.png', caption: 'Generated Frames (Retouched) — 01', layout: 'full', aspectRatio: '1920/815' },
-                { src: 'assets/ai-motion-ferrari-02.png', caption: 'Generated Frames (Retouched) — 02', layout: 'full', aspectRatio: '1920/815' },
-                { src: 'assets/ai-motion-ferrari-03.png', caption: 'Generated Frames (Retouched) — 03', layout: 'full', aspectRatio: '1920/815' },
-                { src: 'assets/ai-motion-ferrari-04.png', caption: 'Generated Frames (Retouched) — 04', layout: 'full', aspectRatio: '1920/815' },
-                { src: 'assets/ai-motion-ferrari-05.png', caption: 'Generated Frames (Retouched) — 05', layout: 'full', aspectRatio: '1920/815' },
-                { src: 'assets/ai-motion-ferrari-06.png', caption: 'Generated Frames (Retouched) — 06', layout: 'full', aspectRatio: '1920/815' }
+                { type: 'html', html: '<div class="ai-frame-pair"><img src="assets/ai-motion-ferrari-01.png" alt="Ferrari generated frame 01, retouched" loading="lazy"><img src="assets/ai-motion-ferrari-04.png" alt="Ferrari generated frame 04, retouched" loading="lazy"></div>', caption: 'Generated Frames (Retouched) — 01 + 04', layout: 'full', aspectRatio: '3840/815' },
+                { type: 'html', html: '<div class="ai-frame-pair"><img src="assets/ai-motion-ferrari-02.png" alt="Ferrari generated frame 02, retouched" loading="lazy"><img src="assets/ai-motion-ferrari-05.png" alt="Ferrari generated frame 05, retouched" loading="lazy"></div>', caption: 'Generated Frames (Retouched) — 02 + 05', layout: 'full', aspectRatio: '3840/815' },
+                { type: 'html', html: '<div class="ai-frame-pair"><img src="assets/ai-motion-ferrari-03.png" alt="Ferrari generated frame 03, retouched" loading="lazy"><img src="assets/ai-motion-ferrari-06.png" alt="Ferrari generated frame 06, retouched" loading="lazy"></div>', caption: 'Generated Frames (Retouched) — 03 + 06', layout: 'full', aspectRatio: '3840/815' }
             ],
             metrics: [
                 { value: '13s', label: 'Final motion study' },
