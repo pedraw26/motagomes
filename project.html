@@ -2427,7 +2427,7 @@
             challenge: 'Creating an F1 advertising concept from AI-generated shots — capturing the speed, tension and cinematic polish of a real campaign while maintaining a consistent visual language from frame to frame.',
             solution: 'Developed and refined the visual direction as a connected motion piece, selecting and sequencing frames for continuity, balancing texture with clarity, and editing the sequence in After Effects to turn experimentation into a resolved film.',
             images: [
-                { type: 'mp4', src: 'assets/ai-motion-studies-final-ii.mp4', caption: 'Final II — AI motion study', layout: 'full', aspectRatio: '92/39' },
+                { type: 'mp4', src: 'assets/ai-motion-studies-final-ii.mp4', player: true, caption: 'Final II — AI motion study', layout: 'full', aspectRatio: '92/39' },
                 { type: 'html', html: '<div class="ai-frame-pair"><img src="assets/ai-motion-ferrari-01.png" alt="Ferrari generated frame 01, retouched" loading="lazy"><img src="assets/ai-motion-ferrari-04.png" alt="Ferrari generated frame 04, retouched" loading="lazy"></div>', caption: 'Generated Frames (Retouched) — 01 + 04', layout: 'full', aspectRatio: '3840/815' },
                 { type: 'html', html: '<div class="ai-frame-pair"><img src="assets/ai-motion-ferrari-02.png" alt="Ferrari generated frame 02, retouched" loading="lazy"><img src="assets/ai-motion-ferrari-05.png" alt="Ferrari generated frame 05, retouched" loading="lazy"></div>', caption: 'Generated Frames (Retouched) — 02 + 05', layout: 'full', aspectRatio: '3840/815' },
                 { type: 'html', html: '<div class="ai-frame-pair"><img src="assets/ai-motion-ferrari-03.png" alt="Ferrari generated frame 03, retouched" loading="lazy"><img src="assets/ai-motion-ferrari-06.png" alt="Ferrari generated frame 06, retouched" loading="lazy"></div>', caption: 'Generated Frames (Retouched) — 03 + 06', layout: 'full', aspectRatio: '3840/815' }
@@ -2731,6 +2731,16 @@
                                        </div>`
                                     : img.type === 'video'
                                     ? `<iframe src="${img.src}" loading="lazy" title="${img.caption}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`
+                                    : img.type === 'mp4' && img.player
+                                    ? `<div class="doc-player native-doc-player playing show-controls">
+                                        <video class="doc-frame native-doc-video" src="${img.src}" autoplay muted loop playsinline preload="metadata" poster="${img.poster || ''}" style="object-fit:cover;background:#000;"></video>
+                                        <div class="doc-controls">
+                                            <button class="doc-btn doc-play" aria-label="Pause"><svg class="i-pause" viewBox="0 0 24 24"><rect x="7" y="5" width="3.2" height="14" rx=".6"/><rect x="13.8" y="5" width="3.2" height="14" rx=".6"/></svg><svg class="i-play" viewBox="0 0 24 24" style="display:none"><polygon points="7,5 7,19 19,12"/></svg></button>
+                                            <button class="doc-btn doc-mute" aria-label="Unmute"><svg class="i-muted" viewBox="0 0 24 24"><path d="M4 9v6h4l6 4V5L8 9H4z"/><line x1="16" y1="9" x2="22" y2="15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/><line x1="22" y1="9" x2="16" y2="15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg><svg class="i-sound" viewBox="0 0 24 24" style="display:none"><path d="M4 9v6h4l6 4V5L8 9H4z"/><path d="M17 8.5a5 5 0 0 1 0 7" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M19.5 6.5a8 8 0 0 1 0 11" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></button>
+                                            <div class="doc-progress"><div class="doc-progress-fill"></div></div>
+                                            <div class="doc-time">00:00 / --:--</div>
+                                        </div>
+                                       </div>`
                                     : img.type === 'mp4'
                                     ? `<video src="${img.src}" autoplay muted loop playsinline preload="metadata" poster="${img.poster || ''}" class="${img.effect === 'cinematic-zoom' ? 'cinematic-zoom' : ''}" style="width:100%;height:100%;object-fit:cover;display:block;background:#000;"></video>`
                                     : img.type === 'slideshow'
@@ -3047,7 +3057,77 @@
         return vimeoSdkPromise;
     }
 
-    document.querySelectorAll('.doc-player').forEach(dp => {
+    document.querySelectorAll('.native-doc-player').forEach(dp => {
+        const video = dp.querySelector('.native-doc-video');
+        const playBtn = dp.querySelector('.doc-play');
+        const muteBtn = dp.querySelector('.doc-mute');
+        const iPlay = playBtn.querySelector('.i-play');
+        const iPause = playBtn.querySelector('.i-pause');
+        const iSound = muteBtn.querySelector('.i-sound');
+        const iMuted = muteBtn.querySelector('.i-muted');
+        const fill = dp.querySelector('.doc-progress-fill');
+        const time = dp.querySelector('.doc-time');
+        const progress = dp.querySelector('.doc-progress');
+        let hideTimer = null;
+
+        const setPlayUI = () => {
+            iPlay.style.display = video.paused ? 'block' : 'none';
+            iPause.style.display = video.paused ? 'none' : 'block';
+            playBtn.setAttribute('aria-label', video.paused ? 'Play' : 'Pause');
+        };
+        const setMuteUI = () => {
+            iSound.style.display = video.muted ? 'none' : 'block';
+            iMuted.style.display = video.muted ? 'block' : 'none';
+            muteBtn.setAttribute('aria-label', video.muted ? 'Unmute' : 'Mute');
+        };
+        const updateProgress = () => {
+            const duration = video.duration || 0;
+            if (duration) fill.style.width = (video.currentTime / duration * 100) + '%';
+            time.textContent = fmtTime(video.currentTime) + ' / ' + fmtTime(duration);
+        };
+        const showControls = () => {
+            clearTimeout(hideTimer);
+            dp.classList.add('show-controls');
+            hideTimer = setTimeout(() => dp.classList.remove('show-controls'), 2600);
+        };
+
+        video.addEventListener('loadedmetadata', updateProgress);
+        video.addEventListener('timeupdate', updateProgress);
+        video.addEventListener('play', setPlayUI);
+        video.addEventListener('pause', setPlayUI);
+        video.addEventListener('volumechange', setMuteUI);
+        dp.addEventListener('mousemove', showControls);
+        dp.addEventListener('click', (e) => {
+            if (e.target.closest('.doc-controls')) return;
+            if (video.muted) video.muted = false;
+            if (video.paused) video.play().catch(() => {});
+            showControls();
+        });
+        playBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (video.paused) video.play().catch(() => {});
+            else video.pause();
+            showControls();
+        });
+        muteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            video.muted = !video.muted;
+            if (video.paused) video.play().catch(() => {});
+            showControls();
+        });
+        progress.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!video.duration) return;
+            const rect = progress.getBoundingClientRect();
+            const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+            video.currentTime = pct * video.duration;
+            showControls();
+        });
+        setPlayUI();
+        setMuteUI();
+    });
+
+    document.querySelectorAll('.doc-player:not(.native-doc-player)').forEach(dp => {
         const playBtn = dp.querySelector('.doc-play');
         const muteBtn = dp.querySelector('.doc-mute');
         const iPlay  = playBtn && playBtn.querySelector('.i-play');
