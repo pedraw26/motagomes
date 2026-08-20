@@ -5424,7 +5424,7 @@ margin-top: 3px;
   }
 </style>
 <footer class="ufoot" id="contact">
-    <div class="ufoot-mark"><h2><a class="ufoot-marquee-item" href="mailto:info@motagomes.com">Info@motagomes.com <svg class="contact-asterisk" viewBox="0 0 100 100" aria-hidden="true"><rect x="41.5" y="5" width="17" height="48" fill="currentColor"/><rect x="41.5" y="5" width="17" height="48" fill="currentColor" transform="rotate(72 50 50)"/><rect x="41.5" y="5" width="17" height="48" fill="currentColor" transform="rotate(144 50 50)"/><rect x="41.5" y="5" width="17" height="48" fill="currentColor" transform="rotate(216 50 50)"/><rect x="41.5" y="5" width="17" height="48" fill="currentColor" transform="rotate(288 50 50)"/></svg></a><a class="ufoot-marquee-item" href="mailto:info@motagomes.com" aria-hidden="true" tabindex="-1">Info@motagomes.com <svg class="contact-asterisk" viewBox="0 0 100 100" aria-hidden="true"><rect x="41.5" y="5" width="17" height="48" fill="currentColor"/><rect x="41.5" y="5" width="17" height="48" fill="currentColor" transform="rotate(72 50 50)"/><rect x="41.5" y="5" width="17" height="48" fill="currentColor" transform="rotate(144 50 50)"/><rect x="41.5" y="5" width="17" height="48" fill="currentColor" transform="rotate(216 50 50)"/><rect x="41.5" y="5" width="17" height="48" fill="currentColor" transform="rotate(288 50 50)"/></svg></a></h2></div>
+    <div class="ufoot-mark"><h2><a class="ufoot-marquee-item" href="mailto:hi@motagomes.com">Hi@motagomes.com <svg class="contact-asterisk" viewBox="0 0 100 100" aria-hidden="true"><rect x="41.5" y="5" width="17" height="48" fill="currentColor"/><rect x="41.5" y="5" width="17" height="48" fill="currentColor" transform="rotate(72 50 50)"/><rect x="41.5" y="5" width="17" height="48" fill="currentColor" transform="rotate(144 50 50)"/><rect x="41.5" y="5" width="17" height="48" fill="currentColor" transform="rotate(216 50 50)"/><rect x="41.5" y="5" width="17" height="48" fill="currentColor" transform="rotate(288 50 50)"/></svg></a><a class="ufoot-marquee-item" href="mailto:hi@motagomes.com" aria-hidden="true" tabindex="-1">Hi@motagomes.com <svg class="contact-asterisk" viewBox="0 0 100 100" aria-hidden="true"><rect x="41.5" y="5" width="17" height="48" fill="currentColor"/><rect x="41.5" y="5" width="17" height="48" fill="currentColor" transform="rotate(72 50 50)"/><rect x="41.5" y="5" width="17" height="48" fill="currentColor" transform="rotate(144 50 50)"/><rect x="41.5" y="5" width="17" height="48" fill="currentColor" transform="rotate(216 50 50)"/><rect x="41.5" y="5" width="17" height="48" fill="currentColor" transform="rotate(288 50 50)"/></svg></a></h2></div>
     <div class="ufoot-meta">
         <div class="left">Mota Gomes 2026&copy;</div>
         <div class="mid">Generalist Designer</div>
@@ -5443,7 +5443,7 @@ margin-top: 3px;
         <script>
         (function(){
             var btn=document.getElementById('mgf2Copy'); if(!btn) return;
-            var label=btn.querySelector('.mgf2-copy-label'); var EMAIL='info@motagomes.com';
+            var label=btn.querySelector('.mgf2-copy-label'); var EMAIL='hi@motagomes.com';
             function done(){ btn.classList.add('copied'); if(label) label.textContent='Copied'; setTimeout(function(){ btn.classList.remove('copied'); if(label) label.textContent='Copy email'; },1800); }
             function fallback(){ var t=document.createElement('textarea'); t.value=EMAIL; t.style.cssText='position:fixed;left:-9999px'; document.body.appendChild(t); t.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(t); done(); }
             btn.addEventListener('click',function(){ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(EMAIL).then(done).catch(fallback);} else { fallback(); } });
@@ -5471,7 +5471,7 @@ margin-top: 3px;
                 sendBtn.disabled=true; if(sendLabel) sendLabel.textContent='Sending…'; note.classList.remove('show');
                 fetch(SB+"/rest/v1/contact_messages",{method:"POST",headers:{apikey:ANON,Authorization:"Bearer "+ANON,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify(d)})
                     .then(function(r){ if(!r.ok) throw 0; form.reset(); showNote("Thanks, "+d.name.split(' ')[0]+" — your message is on its way."); })
-                    .catch(function(){ window.location.href="mailto:info@motagomes.com?subject="+encodeURIComponent("Portfolio enquiry — "+d.name)+"&body="+encodeURIComponent(d.message+"\n\n— "+d.name+" ("+d.email+")"); showNote("Opening your email app…"); })
+                    .catch(function(){ window.location.href="mailto:hi@motagomes.com?subject="+encodeURIComponent("Portfolio enquiry — "+d.name)+"&body="+encodeURIComponent(d.message+"\n\n— "+d.name+" ("+d.email+")"); showNote("Opening your email app…"); })
                     .finally(function(){ sendBtn.disabled=false; if(sendLabel) sendLabel.textContent="Send message"; });
             });
         })();
