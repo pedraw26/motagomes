@@ -1160,13 +1160,19 @@
         .showcase-placeholders .ph-track {
             display: flex;
             align-items: center;
-            gap: 24px;
             width: max-content;
             animation: ph-marquee 28s linear infinite;
         }
+        .showcase-placeholders .ph-set {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding-right: 24px;
+            flex-shrink: 0;
+        }
         .showcase-placeholders .ph-cell {
             aspect-ratio: 3 / 4;
-            width: 210px;
+            width: 315px;
             flex-shrink: 0;
             background: #ffffff;
             border: 1px solid rgba(18,16,16,0.08);
@@ -1193,9 +1199,9 @@
             100% { transform: translateX(-50%); }
         }
         @media (max-width: 768px) {
-            .showcase-item.has-placeholders { min-height: 280px; }
-            .showcase-placeholders .ph-track { gap: 16px; }
-            .showcase-placeholders .ph-cell { width: 140px; }
+            .showcase-item.has-placeholders { min-height: 400px; }
+            .showcase-placeholders .ph-set { gap: 16px; padding-right: 16px; }
+            .showcase-placeholders .ph-cell { width: 210px; }
             .showcase-placeholders .ph-cell svg { width: 16px; height: 16px; }
         }
 
@@ -2814,7 +2820,7 @@
                                         const igSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>`;
                                         const arrow = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13,6 19,12 13,18"/></svg>`;
                                         return `<div class="ph-kicker"><span>${kicker}</span>${eyebrow ? `<span>${eyebrow}</span>` : ''}</div>
-                                                <div class="showcase-placeholders"><div class="ph-track">${setA}${setA}</div></div>
+                                                <div class="showcase-placeholders"><div class="ph-track"><div class="ph-set">${setA}</div><div class="ph-set" aria-hidden="true">${setA}</div></div></div>
                                                 <div class="ph-footer"><a class="ph-cta" href="${ctaHref}" target="_blank" rel="noopener">${cta} ${arrow}</a><a class="ph-ig" href="${igHref}" target="_blank" rel="noopener" aria-label="${I18N ? I18N.t('project.ph.igAria') : 'Instagram'}">${igSvg}</a></div>`;
                                     })()
                                     : img.type === 'colorstrip'
