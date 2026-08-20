@@ -9,8 +9,7 @@
     </radialGradient>
   </defs>
   <rect width="1600" height="900" fill="url(#stage)"/>
-  <g transform="translate(800 420)">
+  <g transform="translate(800 450)">
     <polygon points="0,-174 46,-49 177,-49 71,29 111,158 0,79 -111,158 -71,29 -177,-49 -46,-49" fill="#ffd700"/>
-    <text x="0" y="305" fill="#fff" text-anchor="middle" font-family="Impact, 'Arial Narrow', sans-serif" font-size="154" letter-spacing="2">A NOSSA</text>
   </g>
 </svg>
