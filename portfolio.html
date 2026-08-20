@@ -5398,12 +5398,17 @@ margin-top: 3px;
     margin:0 .16em;
   }
   @keyframes ufoot-wordmark-loop{ to{ transform:translateX(-50%); } }
-  .ufoot-meta{ display:grid; grid-template-columns:2fr 1fr; align-items:end; gap:20px;
+  .ufoot-meta{ display:grid; grid-template-columns:1fr 1fr; align-items:end; gap:20px;
     font-family:"PP Neue Montreal","Helvetica Neue",Arial,sans-serif; font-size:11px; font-weight:400;
     letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.55); line-height:1.55; }
-  .ufoot-meta .mid{ text-align:left; }
+  .ufoot-meta .left,.ufoot-meta .mid{ white-space:nowrap; }
+  .ufoot-meta .left{ justify-self:start; }
+  .ufoot-meta .mid{ justify-self:start; text-align:left; }
   .ufoot-meta a{ color:inherit; text-decoration:none; transition:color .2s ease; }
   .ufoot-meta a:hover{ color:#fff; }
+  #siteBanner:not([hidden]) ~ .scroll-container .ufoot{
+    padding-bottom:calc(clamp(22px,3vh,38px) + 56px);
+  }
   @media(prefers-reduced-motion:reduce){
     .ufoot-mark h2{ animation:none; }
     .ufoot-mark h2 .ufoot-marquee-item[aria-hidden="true"]{ display:none; }
@@ -5411,7 +5416,10 @@ margin-top: 3px;
   @media(max-width:720px){
     .ufoot{ padding-left:18px; padding-right:18px; }
     .ufoot-meta{ grid-template-columns:1fr 1fr; gap:16px; font-size:9px; }
-    .ufoot-meta .mid{ text-align:right; }
+    .ufoot-meta .mid{ justify-self:end; text-align:right; }
+    #siteBanner:not([hidden]) ~ .scroll-container .ufoot{
+      padding-bottom:calc(clamp(22px,3vh,38px) + 100px);
+    }
   }
 </style>
 <footer class="ufoot" id="contact">
