@@ -1,7 +1,7 @@
 /* ============================================================
-   guard.js — image right-click guard for the main site.
-   If someone tries to open the context menu on an <img>, swallow
-   the event and flash a small "GOTCHA 👀" toast near the cursor.
+   guard.js — image right-click joke for the main site.
+   When someone opens the context menu on an <img>, keep the native
+   menu available and flash a small "GOTCHA 👀" toast near the cursor.
    Scoped to <img>, <picture>, and any element with [data-no-rclick]
    so links/UI still behave normally.
    ============================================================ */
@@ -63,7 +63,6 @@
 
     document.addEventListener('contextmenu', function (e) {
         if (!isGuarded(e.target)) return;
-        e.preventDefault();
         flash(e.clientX, e.clientY);
     }, { capture: true });
 
