@@ -1083,6 +1083,8 @@
         .showcase-item.has-placeholders {
             background: #ffffff;
             min-height: 520px;
+            min-width: 0;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1149,19 +1151,21 @@
         }
         .showcase-placeholders {
             width: 100%;
+            max-width: 100%;
+            min-width: 0;
             background: #ffffff;
             overflow: hidden;
             position: relative;
             display: flex;
             align-items: center;
-            -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
-                    mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
         }
         .showcase-placeholders .ph-track {
             display: flex;
             align-items: center;
             width: max-content;
-            animation: ph-marquee 28s linear infinite;
+            animation: ph-marquee 42s linear infinite;
+            will-change: transform;
+            backface-visibility: hidden;
         }
         .showcase-placeholders .ph-set {
             display: flex;
@@ -1172,7 +1176,7 @@
         }
         .showcase-placeholders .ph-cell {
             aspect-ratio: 3 / 4;
-            width: 315px;
+            width: 472.5px;
             flex-shrink: 0;
             background: #ffffff;
             border: 1px solid rgba(18,16,16,0.08);
@@ -1195,13 +1199,14 @@
         }
         .showcase-item:hover .showcase-placeholders .ph-cell img { transform: none; }
         @keyframes ph-marquee {
-            0%   { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            0%   { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
         }
         @media (max-width: 768px) {
             .showcase-item.has-placeholders { min-height: 400px; }
             .showcase-placeholders .ph-set { gap: 16px; padding-right: 16px; }
-            .showcase-placeholders .ph-cell { width: 210px; }
+            .showcase-placeholders .ph-track { animation-duration: 28s; }
+            .showcase-placeholders .ph-cell { width: 315px; }
             .showcase-placeholders .ph-cell svg { width: 16px; height: 16px; }
         }
 
