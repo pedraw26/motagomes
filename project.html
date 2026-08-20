@@ -1181,6 +1181,13 @@
             display: block;
             opacity: .85;
         }
+        .showcase-placeholders .ph-cell img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .showcase-item:hover .showcase-placeholders .ph-cell img { transform: none; }
         @keyframes ph-marquee {
             0%   { transform: translateX(0); }
             100% { transform: translateX(-50%); }
@@ -2274,7 +2281,12 @@
             solution: 'Collaborated on creating sketches and digital paintings and moodboards to guide the photoshoot direction. Developed storyboards for the final video documentary. Executed image retouching and designed posters while strictly following brand guidelines.',
             images: [
                 { src: '/assets/v1776311200_standart_bank_copy_bnauat.jpg', caption: 'Concept art — Soba portrait studies and digital paintings', layout: 'full' },
-                { type: 'placeholders', count: 8, kicker: 'Conceptual Illustration · Campaign Development · 2018', eyebrow: '', ctaText: 'See more personal work', ctaHref: 'https://www.instagram.com/motagomes_/', igHref: 'https://www.instagram.com/motagomes_/', caption: 'Conceptual illustration for campaign', layout: 'full' },
+                { type: 'placeholders', images: [
+                    'assets/standard-bank-concept-01.avif',
+                    'assets/standard-bank-concept-02.avif',
+                    'assets/standard-bank-concept-03.avif',
+                    'assets/standard-bank-concept-04.avif'
+                ], kicker: 'Conceptual Illustration · Campaign Development · 2018', eyebrow: '', ctaText: 'See more personal work', ctaHref: 'https://www.instagram.com/motagomes_/', igHref: 'https://www.instagram.com/motagomes_/', caption: 'Conceptual illustration for campaign', layout: 'full' },
                 { type: 'mp4', src: '/assets/v1776453073_hf_20260417_161823_be42aff6-94ae-4add-836f-ea6904f9f135_wnk0ul.mp4', grain: true, caption: 'Campaign film', layout: 'full' },
                 { src: '/assets/v1773803838_L08zbS8tME0zWnJTbS95enNDam44L2hzRGpFcy1ac1NPa1NuTVNKS01aL1BNVHoxU0VyTVR0S2ozMURNLVNqMTdqMVlTMGsxS2pKRFNuN1NuMTR0WVMwaw_albnbl.webp', caption: 'Photoshoot moodboard and visual direction', layout: 'half' },
                 { type: 'mp4', src: '/assets/v1776560394_old_1_tc3avv.mp4', caption: 'Campaign motion — living poster', layout: 'half' },
@@ -2788,7 +2800,9 @@
                                     : img.type === 'placeholders'
                                     ? (() => {
                                         const cellSvg = `<div class="ph-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-4.5-4.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg></div>`;
-                                        const setA = Array.from({length: img.count || 8}, () => cellSvg).join('');
+                                        const setA = Array.isArray(img.images) && img.images.length
+                                            ? img.images.map((u, i) => `<div class="ph-cell"><img src="${u}" alt="Conceptual illustration ${i + 1}" loading="eager" decoding="async"></div>`).join('')
+                                            : Array.from({length: img.count || 8}, () => cellSvg).join('');
                                         const kickerRaw = img.kicker || 'Conceptual illustration';
                                         const kicker = (kickerRaw === 'Conceptual illustration' && I18N) ? I18N.t('project.ph.kicker') : kickerRaw;
                                         const eyebrowRawPh = img.eyebrow != null ? img.eyebrow : 'For the campaign';
