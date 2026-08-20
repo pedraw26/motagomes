@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project — Mota Gomes</title>
-    <script>if(location.pathname.endsWith('.html'))history.replaceState(null,'',location.pathname.slice(0,-5)+location.search+location.hash);</script>
+    <script>(function(){if(!location.pathname.endsWith('.html'))return;var clean=location.pathname.slice(0,-5)+location.search+location.hash;if(location.protocol==='file:')location.replace('https://motagomes.com/project'+location.search+location.hash);else history.replaceState(null,'',clean);})();</script>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
     <script>(function(){try{var l=localStorage.getItem('mg_lang');if(l==='pt')document.documentElement.lang='pt-PT';}catch(e){}})();</script>
     <script src="/i18n.js" defer></script>
