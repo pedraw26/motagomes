@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Luandina A Nossa</title>
+  <desc id="desc">A yellow star and A Nossa wordmark on a royal blue background.</desc>
+  <defs>
+    <radialGradient id="stage" cx="32%" cy="22%" r="95%">
+      <stop offset="0" stop-color="#3158ca"/>
+      <stop offset="0.58" stop-color="#1e40af"/>
+      <stop offset="1" stop-color="#173299"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#stage)"/>
+  <g transform="translate(800 420)">
+    <polygon points="0,-174 46,-49 177,-49 71,29 111,158 0,79 -111,158 -71,29 -177,-49 -46,-49" fill="#ffd700"/>
+    <text x="0" y="305" fill="#fff" text-anchor="middle" font-family="Impact, 'Arial Narrow', sans-serif" font-size="154" letter-spacing="2">A NOSSA</text>
+  </g>
+</svg>
