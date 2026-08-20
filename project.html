@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project — Mota Gomes</title>
+    <script>if(location.pathname.endsWith('.html'))history.replaceState(null,'',location.pathname.slice(0,-5)+location.search+location.hash);</script>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
     <script>(function(){try{var l=localStorage.getItem('mg_lang');if(l==='pt')document.documentElement.lang='pt-PT';}catch(e){}})();</script>
     <script src="/i18n.js" defer></script>
@@ -2086,7 +2087,7 @@
             <div class="header-center" id="gmtTime">GMT 00:00</div>
             <div class="header-right">
                 <nav class="header-nav">
-                    <a href="/gen-studio.html" class="nav-gen" data-i18n="menu.gen">Gen Studies</a>
+                    <a href="/gen-studio" class="nav-gen" data-i18n="menu.gen">Gen Studies</a>
                 </nav>
                 <span class="header-updated" data-i18n="nav.lastUpdated" hidden style="display:none">Last updated · February 2026</span>
                 <div class="header-lang" role="group" aria-label="Language" hidden style="display:none">
@@ -2107,7 +2108,7 @@
         <div class="menu-overlay-items">
             <a href="/#work" class="menu-overlay-link" data-i18n="menu.work">Work</a>
             <a href="/#about" class="menu-overlay-link" data-i18n="menu.about" hidden style="display:none">About</a>
-            <a href="/gen-studio.html" class="menu-overlay-link" data-i18n="menu.gen">Gen Studies</a>
+            <a href="/gen-studio" class="menu-overlay-link" data-i18n="menu.gen">Gen Studies</a>
             <a href="/dashboard/" class="menu-overlay-link" data-i18n="menu.dashboard">Dashboard</a>
             <a href="mailto:hi@motagomes.com" class="menu-overlay-cta" data-i18n="menu.letstalk">Let's Talk</a>
         </div>
@@ -2829,8 +2830,8 @@
                 <nav class="footer-nav">
                     <div class="footer-nav-inner">
                         <a href="/#work" class="footer-nav-link" data-i18n="project.cta.back">Back</a>
-                        <a href="project.html?p=${prevSlug}" class="footer-nav-link">${prevProject.client === 'Self-Initiated' ? prevProject.title : prevProject.client}</a>
-                        <a href="project.html?p=${nextSlug}" class="footer-nav-link">${nextProject.client === 'Self-Initiated' ? nextProject.title : nextProject.client}</a>
+                        <a href="/project?p=${prevSlug}" class="footer-nav-link">${prevProject.client === 'Self-Initiated' ? prevProject.title : prevProject.client}</a>
+                        <a href="/project?p=${nextSlug}" class="footer-nav-link">${nextProject.client === 'Self-Initiated' ? nextProject.title : nextProject.client}</a>
                         <a href="/" class="footer-nav-link" data-i18n="project.cta.mainMenu">Main Menu</a>
                     </div>
                 </nav>

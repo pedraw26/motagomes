@@ -60,12 +60,12 @@
     for (var i = 0; i < olds.length; i++) olds[i].remove();
 
     var path = location.pathname;
-    if (path === "/" || path === "/index.html") path = "/portfolio.html";
+    if (path === "/" || path === "/index.html" || path === "/portfolio.html") path = "/portfolio";
 
     var links = [
-      { label: "Work", href: "/portfolio.html#work", match: "/portfolio.html" },
-      { label: "About", href: "/portfolio.html#about" },
-      { label: "Gen Studies", href: "/gen-studio.html", match: "/gen-studio.html", cls: "nav-gen" },
+      { label: "Work", href: "/portfolio#work", match: "/portfolio" },
+      { label: "About", href: "/portfolio#about" },
+      { label: "Gen Studies", href: "/gen-studio", match: "/gen-studio", cls: "nav-gen" },
     ];
 
     var navHTML = links
@@ -83,7 +83,7 @@
     header.innerHTML =
       '<div class="mg-nav-content">' +
       '<div id="navClock">00:00</div>' +
-      '<a class="mg-nav-logo" href="/portfolio.html" aria-label="Mota Gomes — Home"><span class="mg-word">M<span class="mg-seg mg-ota">OTA</span><span class="mg-g">Ⓖ</span><span class="mg-seg mg-omes">OMES</span></span></a>' +
+      '<a class="mg-nav-logo" href="/portfolio" aria-label="Mota Gomes — Home"><span class="mg-word">M<span class="mg-seg mg-ota">OTA</span><span class="mg-g">Ⓖ</span><span class="mg-seg mg-omes">OMES</span></span></a>' +
       '<nav class="mg-nav-links" aria-label="Primary">' + navHTML + "</nav>" +
       "</div>";
     document.body.insertBefore(header, document.body.firstChild);
