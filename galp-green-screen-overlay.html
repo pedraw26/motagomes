@@ -213,55 +213,5 @@
     <img class="room" src="/assets/v1779932620_first_img_bk_ejizls.png" alt="Room with display">
   </main>
 
-  <div class="controls">
-    <label class="file-button" for="gifPicker">Choose GIF</label>
-    <input id="gifPicker" type="file" accept="image/gif,image/*,video/mp4,video/webm">
-    <span class="file-name" id="fileName">Using Cloudinary GIF</span>
-  </div>
-
-  <script>
-    const picker = document.querySelector('#gifPicker');
-    let screen = document.querySelector('#gifScreen');
-    const fileName = document.querySelector('#fileName');
-    let currentObjectUrl = null;
-
-    picker.addEventListener('change', () => {
-      const file = picker.files && picker.files[0];
-      if (!file) return;
-
-      if (currentObjectUrl) {
-        URL.revokeObjectURL(currentObjectUrl);
-      }
-
-      currentObjectUrl = URL.createObjectURL(file);
-      fileName.textContent = file.name;
-
-      if (file.type.startsWith('video/')) {
-        const video = document.createElement('video');
-        video.className = screen.className;
-        video.id = screen.id;
-        video.src = currentObjectUrl;
-        video.autoplay = true;
-        video.loop = true;
-        video.muted = true;
-        video.playsInline = true;
-        video.setAttribute('aria-hidden', 'true');
-        screen.replaceWith(video);
-        screen = video;
-        return;
-      }
-
-      if (screen.tagName.toLowerCase() !== 'img') {
-        const img = document.createElement('img');
-        img.className = screen.className;
-        img.id = screen.id;
-        img.alt = '';
-        screen.replaceWith(img);
-        screen = img;
-      }
-
-      screen.src = currentObjectUrl;
-    });
-  </script>
 </body>
 </html>
