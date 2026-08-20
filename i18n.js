@@ -402,7 +402,6 @@
         'International markets reached': 'Mercados internacionais alcançados',
         'Delivery timeline': 'Prazo de entrega',
         'Social engagement': 'Envolvimento em redes sociais',
-        'Human rights prestige boost': 'Prestígio em direitos humanos',
         'Retention improvement': 'Melhoria de retenção',
         'Task completion speed': 'Rapidez de conclusão de tarefas',
         'Usability score': 'Pontuação de usabilidade',
