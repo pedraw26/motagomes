@@ -552,7 +552,8 @@
         }
 
         .overview__meta-list--with-software {
-            grid-template-columns: 0.85fr 1.1fr 0.55fr 1.8fr 1.65fr;
+            grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+            gap: clamp(18px, 2vw, 32px);
         }
 
         .overview__meta-item {
@@ -628,6 +629,21 @@
             line-height: 1.75;
             color: var(--text-60);
             letter-spacing: 0.005em;
+        }
+
+        .overview__software {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .overview__software-value {
+            font-family: var(--sf-pro);
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 1.5;
+            color: var(--text-40);
         }
 
         /* Zone 4: Metrics */
@@ -2179,6 +2195,9 @@
             url: 'galp.com',
             year: '2024',
             services: 'Art Direction, Illustration Support',
+            role: 'Art Direction & Illustration Support',
+            contribution: 'Illustration development, campaign design support and final artwork',
+            team: 'Creative director, copywriter and account manager',
             gradient: 'gradient-midnight',
             heroImage: '/assets/v1776301771_Papel-embrulho1_dukbrt.jpg',
             description: 'A festive holiday campaign for Galp across Portugal and Spain, showcasing their exclusive seasonal products — from Christmas cookies to traditional cakes — with a playful twist on the Portuguese saying "comer e chorar por mais." The visuals balanced Galp\'s brand identity with warm, nostalgic holiday charm.',
@@ -2216,7 +2235,9 @@
             url: 'law.ac.uk',
             year: '2024',
             services: 'Visual Design, Photo Retouching, Brand Design, Video Editing, Campaign Design',
-            role: 'Lead Designer, Art Direction, Campaign Design and Retouching',
+            role: 'Lead Designer',
+            contribution: 'Campaign design, retouching, video editing and final artwork',
+            team: 'Creative director, copywriter and account manager',
             software: 'Photoshop, InDesign, After Effects',
             gradient: 'gradient-ocean',
             heroImage: '/assets/amal-clooney_frame-1.jpg',
@@ -2244,7 +2265,9 @@
             url: '',
             year: '2025',
             services: 'Concept, Art Direction, Advertising Design',
-            role: 'Creative Lead, Concept Development and Art Direction',
+            role: 'Creative Direction',
+            contribution: 'Concept development, art direction, AI image-making and campaign design',
+            team: 'Independent project',
             software: 'Claude, ComfyUI, Nano Banana Pro, Photoshop, After Effects',
             gradient: 'gradient-midnight',
             heroImage: 'assets/amazon-project-hero.avif',
@@ -2267,7 +2290,7 @@
         'standard-bank': {
             title: 'The Voice of Experience',
             category: '360 Campaign',
-            client: 'Standard Bank Angola',
+            client: 'Standard Bank',
             url: 'standardbank.co.ao',
             year: '2018',
             services: 'Art Direction, Visual Design, Digital Painting, Photo Retouching, Campaign Development',
@@ -2338,7 +2361,9 @@
             url: 'candando.com',
             year: '2023',
             services: 'Gift Card Design, Brand Storytelling, Art Direction, Pattern Application, Email + Mobile UI',
-            role: 'Lead Designer, Art Direction and Gift Card System',
+            role: 'Lead Designer',
+            contribution: 'Concept development, gift card system, campaign design and final artwork',
+            team: 'Creative director, copywriter, account manager and design partner',
             software: 'Photoshop, Illustrator, InDesign, After Effects',
             gradient: 'gradient-crimson',
             heroImage: '/assets/v1777144369_candando-logo.svg',
@@ -2367,6 +2392,9 @@
             url: '',
             year: '2019',
             services: 'Art Direction, Brand Storytelling, Photo Retouching, Campaign Development, Strategy, Layout Design, OOH Design',
+            role: 'Art Direction & Campaign Design',
+            contribution: 'Concept development, art direction, campaign design and final artwork',
+            team: 'Creative director, copywriter and account manager',
             gradient: 'gradient-amber',
             heroImage: '/assets/luandina-a-nossa-hero.svg',
             heroOpacity: 1,
@@ -2393,7 +2421,9 @@
             url: '',
             year: '2018',
             services: 'Art Direction, Campaign Design, Visual Design, Motion Graphics, Photo Retouching, Influencer Collaboration',
-            role: 'Lead Designer, Art Direction, Campaign Design and Photography',
+            role: 'Lead Designer',
+            contribution: 'Concept development, photography, campaign design and final artwork',
+            team: 'Creative director, copywriter, account manager and design partner',
             software: 'Photoshop, Illustrator, InDesign, After Effects',
             gradient: 'gradient-gold',
             heroImage: '/assets/wammo-hero.avif',
@@ -2422,7 +2452,9 @@
             url: '',
             year: '2026',
             services: 'Art Direction, Creative Direction, AI Video Experimentation, Motion Design, Visual Development, Photo Retouching',
-            role: 'Creative Lead, Art Direction, Motion Design and Visual Development',
+            role: 'Creative Direction & Motion Design',
+            contribution: 'Concept development, art direction, AI image-making, motion design and final edit',
+            team: 'Independent project',
             software: 'Claude, ComfyUI, Nano Banana Pro, Photoshop, After Effects',
             gradient: 'gradient-slate',
             heroImage: 'assets/ai-motion-ferrari-06.png',
@@ -2449,7 +2481,9 @@
             url: '',
             year: '2021',
             services: 'Art Direction, Illustration, Visual Design, Digital Painting',
-            role: 'Creative Lead, Art Direction and Digital Illustration',
+            role: 'Art Direction & Illustration',
+            contribution: 'Concept development, illustration, digital painting and final artwork',
+            team: 'Independent project',
             software: 'Photoshop, Illustrator, Cinema 4D',
             gradient: 'gradient-purple',
             heroImage: '/assets/sundial-peter-gomes-hero.avif',
@@ -2524,6 +2558,13 @@
         const nextSlug = PROJECT_ORDER[nextIndex];
         const prevProject = PROJECTS[prevSlug];
         const nextProject = PROJECTS[nextSlug];
+        const projectCredits = project.credits || [
+            { label: 'Role', value: project.role },
+            { label: 'Contribution', value: project.contribution },
+            { label: 'Team', value: project.team },
+            { label: 'Client', value: project.client },
+            { label: 'Year', value: project.year }
+        ];
 
         page.innerHTML = `
             <div class="page-content">
@@ -2540,43 +2581,22 @@
                 <!-- OVERVIEW -->
                 <section class="overview" data-reveal-group>
                     <div class="overview__meta" data-reveal-child>
-                        ${project.credits ? `
                         <dl class="overview__meta-list overview__meta-list--credits">
-                            ${project.credits.map(item => `
+                            ${projectCredits.map(item => `
                             <div class="overview__meta-item">
                                 <dt class="overview__label">${item.label}</dt>
                                 <dd class="overview__value">${item.value}</dd>
                             </div>`).join('')}
                         </dl>
-                        ` : `
-                        <dl class="overview__meta-list${project.software ? ' overview__meta-list--with-software' : ''}">
-                            <div class="overview__meta-item">
-                                <dt class="overview__label" data-i18n="project.label.client">Client</dt>
-                                <dd class="overview__value">${project.client}</dd>
-                            </div>
-                            <div class="overview__meta-item">
-                                <dt class="overview__label" data-i18n="project.label.industry">Industry</dt>
-                                <dd class="overview__value">${I18N ? I18N.tCategory(project.category) : project.category}</dd>
-                            </div>
-                            <div class="overview__meta-item">
-                                <dt class="overview__label" data-i18n="project.label.year">Year</dt>
-                                <dd class="overview__value">${project.year}</dd>
-                            </div>
-                            <div class="overview__meta-item">
-                                <dt class="overview__label">My Role</dt>
-                                <dd class="overview__value">${project.role || (I18N ? I18N.tServices(project.services) : project.services)}</dd>
-                            </div>
-                            ${project.software ? `
-                            <div class="overview__meta-item">
-                                <dt class="overview__label">Software</dt>
-                                <dd class="overview__value">${project.software}</dd>
-                            </div>` : ''}
-                        </dl>
-                        `}
                     </div>
 
                     <div class="overview__statement" data-reveal-child>
                         <p class="overview__statement-text">${project.description}</p>
+                        ${project.software ? `
+                        <div class="overview__software">
+                            <span class="overview__label">Software</span>
+                            <span class="overview__software-value">${project.software}</span>
+                        </div>` : ''}
                     </div>
 
                     ${project.challenge ? `
