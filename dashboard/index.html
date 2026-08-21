@@ -648,6 +648,10 @@
         .live-ip { font-size: 11px; margin-top: 2px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
         .live-ip a { color: var(--text-muted); text-decoration: none; border-bottom: 1px dotted currentColor; opacity: 0.8; }
         .live-ip a:hover { color: var(--text-primary); opacity: 1; }
+        .live-org { font-size: 12px; margin-top: 3px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; font-weight: 600; }
+        .live-org.biz { color: var(--text-primary); }
+        .live-org .biz-tag { font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: #0a7d3c; background: rgba(52,211,153,.16); padding: 2px 6px; border-radius: 5px; white-space: nowrap; }
+        .live-item.live-biz { border-left: 3px solid #34d399; padding-left: 9px; background: rgba(52,211,153,0.06); }
         .live-time { font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
 
         .live-ip { font-size: 11px; color: var(--text-muted); font-family: monospace; margin-top: 2px; }
@@ -2011,6 +2015,16 @@
         // ========== Fetch & Render ==========
         let currentRange = 7;
 
+        // A "business" network = a named company, not a mobile/consumer ISP, cloud host, or bot.
+        function isBizOrg(org){
+            return !!org && !/mobile|broadband|residential|fibre|fiber|hosting|datacent|data cent|amazon|aws|google|\bmeta\b|facebook|microsoft|azure|cloud|akamai|cloudflare|fastly|digitalocean|digital ocean|linode|\bovh\b|hetzner|leaseweb|virgin media|sky broadband|\bbt\b|talktalk|vodafone|\bee\b|\bthree\b|\bo2\b|orange|telefonica|deutsche telekom|comcast|verizon|at&t|charter|spectrum|unknown/i.test(org);
+        }
+        function orgLine(org){
+            if(!org) return '';
+            var b = isBizOrg(org);
+            return '<div class="live-org'+(b?' biz':'')+'">'+(b?'<span class="biz-tag">BUSINESS</span>':'')+'<span>'+org+'</span></div>';
+        }
+
         async function loadDashboard() {
             try {
                 const pwd = sessionStorage.getItem('_dpw');
@@ -2090,11 +2104,12 @@
                 const liveEl = el('liveActivity');
                 if (data.live_activity && data.live_activity.length > 0) {
                     liveEl.innerHTML = data.live_activity.map(a => `
-                        <div class="live-item" style="${a.is_amazon ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
+                        <div class="live-item${!a.is_amazon && isBizOrg(a.org) ? ' live-biz' : ''}" style="${a.is_amazon ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
                             <div class="live-dot" style="${a.is_amazon ? 'background:#ff9900;' : ''}"></div>
                             <div class="live-info">
                                 <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${a.is_amazon ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}</div>
-                                <div class="live-page">${a.page || 'home'}${a.org ? ' · ' + a.org : ''}</div>
+                                <div class="live-page">${a.page || 'home'}</div>
+                                ${orgLine(a.org)}
                                 ${a.ip ? `<div class="live-ip"><a href="https://ipinfo.io/${a.ip}" target="_blank" rel="noopener">${a.ip}</a></div>` : ''}
                             </div>
                             <div class="live-time">${timeAgo(a.time)}</div>
@@ -2326,11 +2341,12 @@
                 const liveFullEl = el('liveActivityFull');
                 if (data.live_activity && data.live_activity.length > 0) {
                     liveFullEl.innerHTML = data.live_activity.map(a => `
-                        <div class="live-item" style="${a.is_amazon ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
+                        <div class="live-item${!a.is_amazon && isBizOrg(a.org) ? ' live-biz' : ''}" style="${a.is_amazon ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
                             <div class="live-dot" style="${a.is_amazon ? 'background:#ff9900;' : ''}"></div>
                             <div class="live-info">
                                 <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${a.is_amazon ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}</div>
-                                <div class="live-page">${a.page || 'home'}${a.org ? ' · ' + a.org : ''}</div>
+                                <div class="live-page">${a.page || 'home'}</div>
+                                ${orgLine(a.org)}
                                 ${a.ip ? `<div class="live-ip"><a href="https://ipinfo.io/${a.ip}" target="_blank" rel="noopener">${a.ip}</a></div>` : ''}
                             </div>
                             <div class="live-time">${timeAgo(a.time)}</div>
