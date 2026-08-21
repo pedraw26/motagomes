@@ -26,9 +26,9 @@
             'meta.title.notfound':  'Project Not Found — Mota Gomes',
 
             // Site banner
-            'banner.text': 'Portfolio in refinement. New case studies and refreshed layouts are rolling out over the coming days — a few sections may shift as the edit continues.',
-            'banner.textEm': 'Portfolio in refinement.',
-            'banner.textRest': ' New case studies and refreshed layouts are rolling out over the coming days — a few sections may shift as the edit continues.',
+            'banner.text': 'Portfolio is being refreshed. New case studies and refreshed layouts are being added.',
+            'banner.textEm': 'Portfolio is being refreshed.',
+            'banner.textRest': ' New case studies and refreshed layouts are being added.',
             'banner.dismiss': 'Dismiss notice',
             'banner.aria': 'Site notice',
 
@@ -159,9 +159,9 @@
             'meta.title.notfound':  'Projeto não encontrado — Mota Gomes',
 
             // Site banner
-            'banner.text': 'Portefólio em aperfeiçoamento. Novos casos de estudo e layouts renovados serão publicados nos próximos dias — algumas secções poderão sofrer alterações.',
-            'banner.textEm': 'Portefólio em aperfeiçoamento.',
-            'banner.textRest': ' Novos casos de estudo e layouts renovados serão publicados nos próximos dias — algumas secções poderão sofrer alterações.',
+            'banner.text': 'O portefólio está a ser atualizado. Estão a ser adicionados novos casos de estudo e layouts renovados.',
+            'banner.textEm': 'O portefólio está a ser atualizado.',
+            'banner.textRest': ' Estão a ser adicionados novos casos de estudo e layouts renovados.',
             'banner.dismiss': 'Ignorar aviso',
             'banner.aria': 'Aviso do site',
 
@@ -297,7 +297,6 @@
         'Gift Card Design': 'Design de Cartões Presente',
         'Advertising Concept': 'Conceito Publicitário',
         'AI Video Experimentation': 'Experimentação de Vídeo com IA',
-        'Geo-Targeted Beer Campaign': 'Campanha de Cerveja Geolocalizada',
         'Scholarship Initiative': 'Iniciativa de Bolsas',
         'UX Design': 'Design de UX',
         'Retail Campaign': 'Campanha de Retalho',
