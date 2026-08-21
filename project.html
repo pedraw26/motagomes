@@ -544,10 +544,15 @@
             padding: 0;
         }
 
-        .overview__meta-list--credits {
+        .overview__meta-list--credits,
+        .overview__meta-list--with-software {
             display: grid;
             grid-template-columns: 0.7fr 2.15fr 1.65fr 1fr 0.55fr;
             gap: clamp(24px, 3vw, 56px);
+        }
+
+        .overview__meta-list--with-software {
+            grid-template-columns: 0.85fr 1.1fr 0.55fr 1.8fr 1.65fr;
         }
 
         .overview__meta-item {
@@ -1932,7 +1937,8 @@
                 gap: 32px 48px;
             }
 
-            .overview__meta-list--credits {
+            .overview__meta-list--credits,
+            .overview__meta-list--with-software {
                 display: grid;
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 32px 40px;
@@ -2010,7 +2016,8 @@
                 gap: 24px;
             }
 
-            .overview__meta-list--credits {
+            .overview__meta-list--credits,
+            .overview__meta-list--with-software {
                 display: flex;
             }
 
@@ -2209,11 +2216,13 @@
             url: 'law.ac.uk',
             year: '2024',
             services: 'Visual Design, Photo Retouching, Brand Design, Video Editing, Campaign Design',
+            role: 'Lead Designer, Art Direction, Campaign Design and Retouching',
+            software: 'Photoshop, InDesign, After Effects',
             gradient: 'gradient-ocean',
             heroImage: '/assets/amal-clooney_frame-1.jpg',
             description: 'A digital campaign supporting the launch of The University of Law\'s Amal Clooney Scholarship for Human Rights Advocates, created in partnership with Amal Clooney and the Clooney Foundation for Justice. The visual direction brought the scholarship\'s human rights focus into ULaw\'s established campaign system.',
             challenge: 'The submitted files were low resolution. I had to act quickly, using AI upscalers and manual retouching to recover details and enhance image quality for large-scale use, while seamlessly integrating the scholarship into the existing "Law & So Much More" campaign framework.',
-            solution: 'Designed the complete suite of digital campaign assets across all channels, executing precision retouching and adaptive video editing. Used AI upscalers and manual retouching to recover low-res assets. Seamlessly incorporated the Amal Clooney Scholarship into the existing brand architecture.',
+            solution: 'I led the design and delivery of the complete suite of digital campaign assets across all channels, including precision retouching and adaptive video editing. I used AI upscalers and manual retouching to recover low-resolution assets, then incorporated the Amal Clooney Scholarship into the existing brand architecture.',
             images: [
                 { type: 'html', html: '<style>@font-face{font-family:"AmMC";src:local("ITC Avant Garde Gothic Medium Condensed"),local("AvantGarde-CondMedium");font-weight:500}@font-face{font-family:"AmBkC";src:url("fonts/avantgarde-cond-book.otf") format("opentype");font-weight:400}@font-face{font-family:"AmDC";src:local("ITC Avant Garde Gothic Demi Condensed"),local("AvantGarde-CondDemi");font-weight:700}@font-face{font-family:"AmCB";src:local("ITC Avant Garde Gothic Bold Condensed"),local("AvantGarde-CondBold"),url("https://db.onlinewebfonts.com/t/69f29fea3510c85199fd5b9df57aa59a.woff2") format("woff2"),url("https://db.onlinewebfonts.com/t/69f29fea3510c85199fd5b9df57aa59a.woff") format("woff");font-weight:700;font-style:normal;font-display:swap}@font-face{font-family:"AmD";src:local("AvantGardeITCbyBT-Demi"),local("ITC Avant Garde Gothic Demi"),local("AvantGarde-Demi"),url("fonts/avantgarde-demi.ttf") format("truetype");font-weight:700}@keyframes amG1{0%,30%{opacity:0;translate:0 -18px}35%,100%{opacity:1;translate:0 0}}@keyframes amG2{0%,40%{opacity:0;translate:0 -18px}45%,100%{opacity:1;translate:0 0}}@keyframes amUL{0%,45%{transform:scaleX(0)}50%,100%{transform:scaleX(1)}}@keyframes amG3{0%,50%{opacity:0;translate:-36px 0}55%,100%{opacity:1;translate:0 0}}@keyframes amFade{0%,9%{opacity:0}10%,93%{opacity:1}98%,100%{opacity:0}}.am-f1{width:100%;height:100%;position:relative;overflow:hidden}.am-f1-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.am-f1-lk{position:absolute;left:5%;top:-11%;height:100%;width:52%;display:flex;flex-direction:column;justify-content:center;transform:scale(0.8772);transform-origin:left center;padding:0 5.5%;text-transform:uppercase;line-height:0.9;color:#f7f7f4;-webkit-font-smoothing:antialiased;text-shadow:0.035em 0.045em 0 rgba(0,0,0,0.62);animation:amFade 10s infinite}.am-f1-lk .al{display:block;white-space:nowrap}.am-f1-lk .ac{display:inline-block;animation:amG1 10s infinite;opacity:0}.am-f1-lk .asp{display:inline-block;width:0.2em}.am-f1-cm{font-family:"AmMC","Avenir Next Condensed","Arial Narrow",sans-serif;font-size:clamp(22px,4.55vw,63px);font-weight:500;letter-spacing:0.01em;margin-bottom:-0.06em;text-shadow:0.025em 0.035em 0 rgba(0,0,0,0.46)}.am-f1-bd{font-family:"AmD","Century Gothic","Futura",sans-serif;font-size:clamp(24px,4.75vw,66px);font-weight:700;letter-spacing:0.004em;line-height:0.93}.am-f1-aml{letter-spacing:0.006em;word-spacing:-0.08em}.am-f1-scl{letter-spacing:0.004em;transform:translateX(-1px)}.am-f1-gap{margin-bottom:clamp(16px,2.8vw,38px)}.am-f1-fl{display:flex;align-items:flex-start;gap:clamp(8px,1.4vw,20px);margin-bottom:2px;line-height:1;transform:scale(0.968);transform-origin:left center}.am-f1-for{position:relative;display:inline-block;font-family:"AmBkC";font-size:clamp(14px,2.83vw,39px);font-weight:400;letter-spacing:0.045em;line-height:0.86;transform-origin:left center;-webkit-text-stroke:0.5px currentColor;paint-order:stroke fill;text-shadow:0.025em 0.035em 0 rgba(0,0,0,0.46);animation:amG2 10s infinite;opacity:0}.am-f1-for::after{content:"";position:absolute;left:0;right:0.01em;bottom:-0.075em;height:0.065em;background:currentColor;box-shadow:0 0.07em 0 rgba(0,0,0,0.52);transform:scaleX(0);transform-origin:left center;animation:amUL 10s infinite}.am-f1-rts{display:flex;gap:0.22em;font-family:"AmCB","AmDC","Avenir Next Condensed","Arial Narrow",sans-serif;font-size:clamp(18px,3.55vw,49px);font-weight:700;letter-spacing:0.012em;line-height:0.9}.am-f1-adv{font-family:"AmCB","AmDC","Avenir Next Condensed","Arial Narrow",sans-serif;font-size:clamp(18px,3.55vw,49px);font-weight:700;letter-spacing:-0.022em;transform:scale(0.968);transform-origin:left center;margin-top:clamp(4px,0.6vw,10px)}.am-f1-lw{display:inline-block;animation:amG3 10s infinite;opacity:0}.am-f1-hw{animation-delay:0ms}.am-f1-rw{animation-delay:170ms}.am-f1-aw{animation-delay:340ms}@media(prefers-reduced-motion:reduce){.am-f1-lk .ac,.am-f1-for,.am-f1-lw{animation:none!important;opacity:1;translate:0 0}.am-f1-for::after{animation:none!important;transform:scaleX(1)}}</style><div class="am-f1"><img class="am-f1-bg" src="/assets/amal-clooney_frame-1.jpg" loading="eager"><div class="am-f1-lk"><span class="al am-f1-bd am-f1-aml"><span class="am-f1-cm"><span class="ac" style="animation-delay:80ms">T</span><span class="ac" style="animation-delay:110ms;margin-left:-0.014em">H</span><span class="ac" style="animation-delay:140ms;margin-left:-0.038em">E</span></span><span class="asp" style="width:0.22em"></span><span class="ac" style="animation-delay:220ms">A</span><span class="ac" style="animation-delay:250ms;margin-left:-0.016em">m</span><span class="ac" style="animation-delay:280ms">a</span><span class="ac" style="animation-delay:310ms;margin-left:-0.006em">l</span><span class="asp" style="width:0.19em"></span><span class="ac" style="animation-delay:340ms">C</span><span class="ac" style="animation-delay:370ms;margin-left:-0.02em">l</span><span class="ac" style="animation-delay:400ms;margin-left:-0.006em">o</span><span class="ac" style="animation-delay:430ms">o</span><span class="ac" style="animation-delay:460ms;margin-left:-0.004em">n</span><span class="ac" style="animation-delay:490ms">e</span><span class="ac" style="animation-delay:520ms;margin-left:0.002em">y</span></span><span class="al am-f1-bd am-f1-scl am-f1-gap"><span class="ac" style="animation-delay:430ms">S</span><span class="ac" style="animation-delay:465ms;margin-left:-0.016em">c</span><span class="ac" style="animation-delay:500ms">h</span><span class="ac" style="animation-delay:535ms">o</span><span class="ac" style="animation-delay:570ms;margin-right:0.038em">l</span><span class="ac" style="animation-delay:605ms;margin-right:0.022em">a</span><span class="ac" style="animation-delay:640ms">r</span><span class="ac" style="animation-delay:675ms;margin-left:-0.006em">s</span><span class="ac" style="animation-delay:710ms">h</span><span class="ac" style="animation-delay:745ms;margin-left:-0.008em">i</span><span class="ac" style="animation-delay:780ms;margin-left:-0.004em">p</span></span><span class="am-f1-fl"><span class="am-f1-for">For</span><span class="am-f1-rts"><span class="am-f1-lw am-f1-hw">Human</span><span class="am-f1-lw am-f1-rw">Rights</span></span></span><span class="al am-f1-adv"><span class="am-f1-lw am-f1-aw">Advocates</span></span></div></div>', caption: 'The Amal Clooney Scholarship — animated typography over hero', layout: 'full' },
                 { type: 'html', html: '<div style="width:100%;height:100%;background:#ececec;display:flex;align-items:center;justify-content:center;padding:clamp(16px,3vw,56px);position:relative;overflow:hidden;"><style>@keyframes amalCrossfade{0%,42%{opacity:1}50%,92%{opacity:0}100%{opacity:1}}@keyframes amalCrossfadeAlt{0%,42%{opacity:0}50%,92%{opacity:1}100%{opacity:0}}.amal-slide{position:absolute;inset:clamp(16px,3vw,56px);display:flex;align-items:center;justify-content:center;animation:amalCrossfade 7s ease-in-out infinite}.amal-slide-alt{animation:amalCrossfadeAlt 7s ease-in-out infinite}.amal-slide img{max-width:75%;max-height:80%;object-fit:contain;display:block}</style><div class="amal-slide"><img src="/assets/v1780402583_copy_of_p30z8jforrm3qopzzyev.jpg" alt="Amal Clooney Scholarship — campaign visual A" loading="lazy"></div><div class="amal-slide amal-slide-alt"><img src="/assets/v1780525391_amal-clooney_campaign-visual-alt.webp" alt="Amal Clooney Scholarship — campaign visual B" loading="lazy"></div></div>', caption: 'Amal Clooney Scholarship — campaign visuals (slideshow)', layout: 'full' },
@@ -2235,9 +2244,11 @@
             url: '',
             year: '2025',
             services: 'Concept, Art Direction, Advertising Design',
+            role: 'Creative Lead, Concept Development and Art Direction',
+            software: 'Claude, ComfyUI, Nano Banana Pro, Photoshop, After Effects',
             gradient: 'gradient-midnight',
             heroImage: 'assets/amazon-project-hero.avif',
-            description: 'A self-initiated AI advertising study for Prime Day, exploring a visual equation in which a bold portrait and the Amazon smile become the key visual: “Eyes on the Deals.” This speculative case study was not commissioned by, endorsed by or affiliated with Amazon.',
+            description: 'I led the concept and visual direction for this self-initiated AI advertising study for Prime Day, exploring a visual equation in which a bold portrait and the Amazon smile become the key visual: “Eyes on the Deals.” This speculative case study was not commissioned by, endorsed by or affiliated with Amazon.',
             images: [
                 { type: 'html', src: 'amazon-eyes/equation-layout-16x9.html', caption: 'Eyes on the Deals — Prime Day key-visual equation', layout: 'full', aspectRatio: '16/9' },
                 { src: 'amazon-eyes/eyes-lineup.avif?v=2', caption: 'Underground citylight run — “Eyes on the Deals”', layout: 'full', aspectRatio: '16/9' },
@@ -2327,6 +2338,8 @@
             url: 'candando.com',
             year: '2023',
             services: 'Gift Card Design, Brand Storytelling, Art Direction, Pattern Application, Email + Mobile UI',
+            role: 'Lead Designer, Art Direction and Gift Card System',
+            software: 'Photoshop, Illustrator, InDesign, After Effects',
             gradient: 'gradient-crimson',
             heroImage: '/assets/v1777144369_candando-logo.svg',
             heroBackground: '#d41f3d',
@@ -2334,7 +2347,7 @@
             heroOpacity: 1,
             description: 'A gift card programme for Candando that turns one signature pattern into a flexible range of cards — physical and digital — built for every kind of moment a customer wants to mark.',
             challenge: 'Candando needed a single gift card system that worked across countless occasions, from a new baby to a thank-you, without losing brand cohesion. Each card had to feel personal yet sit clearly inside the same Candando world.',
-            solution: 'Working alongside another designer, I developed a modular gift card range using the brand\'s signature wave-and-dot pattern, paired with a tight palette of warm tones: amber, crimson, sky and coral, so each variant owns its moment while reading instantly as Candando. Extended the system into digital delivery via email and mobile messaging, so the gift arrives with the same care online as in store.',
+            solution: 'I led the development of a modular gift card range in partnership with another designer and a copywriter. We used the brand\'s signature wave-and-dot pattern with a tight palette of warm tones: amber, crimson, sky and coral, so each variant owns its moment while reading instantly as Candando. I extended the system into digital delivery via email and mobile messaging, so the gift arrives with the same care online as in store.',
             images: [
                 { type: 'html', src: '/candando-cards-marquee.html', caption: 'Gift card range — colour variants', layout: 'full', aspectRatio: '16/9' },
                 { type: 'html', src: '/candando-ipad-email.html', caption: 'Digital delivery — gift card email rendered on iPad Mail.app', layout: 'full', aspectRatio: '16/11' },
@@ -2380,12 +2393,14 @@
             url: '',
             year: '2018',
             services: 'Art Direction, Campaign Design, Visual Design, Motion Graphics, Photo Retouching, Influencer Collaboration',
+            role: 'Lead Designer, Art Direction, Campaign Design and Photography',
+            software: 'Photoshop, Illustrator, InDesign, After Effects',
             gradient: 'gradient-gold',
             heroImage: '/assets/wammo-hero.avif',
             heroOpacity: 1,
             description: 'A high-energy campaign promoting Wammo\'s exclusive 40" TV deals during the World Cup, featuring in-store FIFA gaming tournaments and starring Angola\'s top comedy group Os Tuneza to drive viral engagement.',
-            challenge: 'An extremely tight deadline and limited budget for a high-priority client. As the only generalist designer at the studio, I had to strategically stretch resources while producing studio-quality assets entirely in-house.',
-            solution: 'Photographed each participant individually, capturing authentic reactions, then composited portraits into dynamic group scenes. Led the Os Tuneza campaign from initial sketches through to final execution across digital, print, and motion.',
+            challenge: 'An extremely tight deadline and limited budget for a high-priority client. Working within a small creative team, I had to strategically stretch resources while producing studio-quality assets entirely in-house.',
+            solution: 'I led the Os Tuneza campaign in partnership with another designer and a copywriter, taking it from initial sketches through to final execution across digital, print and motion. I photographed each participant individually, capturing authentic reactions, then composited the portraits into dynamic group scenes.',
             images: [
                 { src: '/assets/wammo-first-slide.webp', caption: 'World Cup campaign \u2014 FIFA gaming tournament activation', layout: 'full', aspectRatio: '2346/1404' },
                 { src: '/assets/v1780505105_wammo_wammo-poster-system.jpg', caption: 'Wammo \u2014 poster system', layout: 'full' },
@@ -2407,11 +2422,13 @@
             url: '',
             year: '2026',
             services: 'Art Direction, Creative Direction, AI Video Experimentation, Motion Design, Visual Development, Photo Retouching',
+            role: 'Creative Lead, Art Direction, Motion Design and Visual Development',
+            software: 'Claude, ComfyUI, Nano Banana Pro, Photoshop, After Effects',
             gradient: 'gradient-slate',
             heroImage: 'assets/ai-motion-ferrari-06.png',
             description: 'A self-initiated motion study exploring how generative image-making can become a cinematic design material — shaped through pacing, composition, atmosphere, and visual continuity. This speculative study was not commissioned by, endorsed by or affiliated with Ferrari, Formula 1 or any featured individuals.',
             challenge: 'Creating an F1 advertising concept from AI-generated shots — capturing the speed, tension and cinematic polish of a real campaign while maintaining a consistent visual language from frame to frame.',
-            solution: 'Developed and refined the visual direction as a connected motion piece, selecting and sequencing frames for continuity, balancing texture with clarity, and editing the sequence in After Effects to turn experimentation into a resolved film.',
+            solution: 'I led and refined the visual direction as a connected motion piece, selecting and sequencing frames for continuity, balancing texture with clarity, and editing the sequence in After Effects to turn experimentation into a resolved film.',
             images: [
                 { type: 'mp4', src: 'assets/ai-motion-studies-final-ii.mp4', player: true, caption: 'Final II — AI motion study', layout: 'full', aspectRatio: '92/39' },
                 { type: 'html', html: '<div class="ai-frame-pair"><img src="assets/ai-motion-ferrari-01.png" alt="Ferrari generated frame 01, retouched" loading="lazy"><img src="assets/ai-motion-ferrari-04.png" alt="Ferrari generated frame 04, retouched" loading="lazy"></div>', caption: 'Generated Frames (Retouched) — 01 + 04', layout: 'full', aspectRatio: '3840/815' },
@@ -2432,12 +2449,14 @@
             url: '',
             year: '2021',
             services: 'Art Direction, Illustration, Visual Design, Digital Painting',
+            role: 'Creative Lead, Art Direction and Digital Illustration',
+            software: 'Photoshop, Illustrator, Cinema 4D',
             gradient: 'gradient-purple',
             heroImage: '/assets/sundial-peter-gomes-hero.avif',
             heroOpacity: 1,
             description: 'An exploration of duality in digital existence, where geometric precision meets human expression. The artwork examines how structured virtual environments influence organic identity, visualising the intersection between mathematical order and artistic spontaneity.',
             challenge: 'Creating a visually distinctive piece for a new NFT platform that would stand out among thousands of digital artworks while conveying conceptual depth.',
-            solution: 'I created this NFT artwork using Photoshop for digital painting and Cinema 4D for the geometric elements. I developed the gradient lighting system, colour harmonies, and compositional balance that made the piece visually distinctive in the marketplace.',
+            solution: 'I led the concept and art direction for this NFT artwork, using Photoshop for digital painting and Cinema 4D for the geometric elements. I developed the gradient lighting system, colour harmonies and compositional balance that made the piece visually distinctive in the marketplace.',
             images: [
                 { src: '/assets/sundial-pedraw.jpg', caption: 'Sundial \u2014 geometric precision meets human expression', layout: 'full', aspectRatio: '16/9' },
                 { src: '/assets/sundial-enterart-blog-flat.avif', caption: 'enter.art listing & enter.blog feature \u2014 NFT-ART.finance', layout: 'full', aspectRatio: '3690/1416' },
@@ -2530,7 +2549,7 @@
                             </div>`).join('')}
                         </dl>
                         ` : `
-                        <dl class="overview__meta-list">
+                        <dl class="overview__meta-list${project.software ? ' overview__meta-list--with-software' : ''}">
                             <div class="overview__meta-item">
                                 <dt class="overview__label" data-i18n="project.label.client">Client</dt>
                                 <dd class="overview__value">${project.client}</dd>
@@ -2544,9 +2563,14 @@
                                 <dd class="overview__value">${project.year}</dd>
                             </div>
                             <div class="overview__meta-item">
-                                <dt class="overview__label" data-i18n="project.label.services">Services</dt>
-                                <dd class="overview__value">${I18N ? I18N.tServices(project.services) : project.services}</dd>
+                                <dt class="overview__label">My Role</dt>
+                                <dd class="overview__value">${project.role || (I18N ? I18N.tServices(project.services) : project.services)}</dd>
                             </div>
+                            ${project.software ? `
+                            <div class="overview__meta-item">
+                                <dt class="overview__label">Software</dt>
+                                <dd class="overview__value">${project.software}</dd>
+                            </div>` : ''}
                         </dl>
                         `}
                     </div>
