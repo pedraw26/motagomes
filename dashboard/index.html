@@ -645,6 +645,9 @@
         .live-info { flex: 1; min-width: 0; }
         .live-location { font-size: 13px; font-weight: 600; color: var(--text-primary); }
         .live-page { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .live-ip { font-size: 11px; margin-top: 2px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+        .live-ip a { color: var(--text-muted); text-decoration: none; border-bottom: 1px dotted currentColor; opacity: 0.8; }
+        .live-ip a:hover { color: var(--text-primary); opacity: 1; }
         .live-time { font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
 
         .live-ip { font-size: 11px; color: var(--text-muted); font-family: monospace; margin-top: 2px; }
@@ -2092,6 +2095,7 @@
                             <div class="live-info">
                                 <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${a.is_amazon ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}</div>
                                 <div class="live-page">${a.page || 'home'}${a.org ? ' · ' + a.org : ''}</div>
+                                ${a.ip ? `<div class="live-ip"><a href="https://ipinfo.io/${a.ip}" target="_blank" rel="noopener">${a.ip}</a></div>` : ''}
                             </div>
                             <div class="live-time">${timeAgo(a.time)}</div>
                         </div>
@@ -2327,6 +2331,7 @@
                             <div class="live-info">
                                 <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${a.is_amazon ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}</div>
                                 <div class="live-page">${a.page || 'home'}${a.org ? ' · ' + a.org : ''}</div>
+                                ${a.ip ? `<div class="live-ip"><a href="https://ipinfo.io/${a.ip}" target="_blank" rel="noopener">${a.ip}</a></div>` : ''}
                             </div>
                             <div class="live-time">${timeAgo(a.time)}</div>
                         </div>`).join('');
