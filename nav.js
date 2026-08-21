@@ -91,12 +91,13 @@
     function tick() {
       var el = document.getElementById("navClock");
       if (!el) return;
-      el.textContent = new Intl.DateTimeFormat("en-GB", {
+      var londonTime = new Intl.DateTimeFormat("en-GB", {
         timeZone: "Europe/London",
         hour: "2-digit",
         minute: "2-digit",
         hour12: false,
       }).format(new Date());
+      el.textContent = "London · " + londonTime;
     }
     tick();
     setInterval(tick, 15000);

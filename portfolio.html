@@ -6162,7 +6162,7 @@ margin-top: 3px;
                 hour: '2-digit', minute: '2-digit',
                 hour12: false
             });
-            el.textContent = fmt.format(new Date());
+            el.textContent = `London · ${fmt.format(new Date())}`;
         }
         updateNavClock();
         setInterval(updateNavClock, 1000);
