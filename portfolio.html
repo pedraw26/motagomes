@@ -4704,8 +4704,8 @@ margin-top: 3px;
             
             <!-- Side indicators -->
             <div class="gallery-stacked-side gallery-stacked-side-left">
-                <div class="gallery-stacked-category" id="galleryCategory">Standard Bank</div>
-                <div class="gallery-stacked-type" id="galleryType">360 Campaign</div>
+                <div class="gallery-stacked-category" id="galleryCategory">Luandina</div>
+                <div class="gallery-stacked-type" id="galleryType">Geo-Targeted Campaign</div>
             </div>
             <div class="gallery-stacked-side gallery-stacked-side-right">
                 <div class="gallery-stacked-scroll-label"></div>
@@ -5915,6 +5915,19 @@ margin-top: 3px;
         // ========================================
         // STACKED GALLERY SCROLL TRACKING
         // ========================================
+        // Keep Luandina first and move Standard Bank into Luandina's former slot.
+        const galleryContainer = document.getElementById('galleryContainer');
+        if (galleryContainer) {
+            const standardBankCard = galleryContainer.querySelector('.gallery-stacked-btn[href="/project?p=standard-bank"]')?.closest('.gallery-stacked-card');
+            const luandinaCard = galleryContainer.querySelector('.gallery-stacked-btn[href="/project?p=luandina"]')?.closest('.gallery-stacked-card');
+            if (standardBankCard && luandinaCard) {
+                const swapMarker = document.createComment('portfolio-card-swap');
+                galleryContainer.replaceChild(swapMarker, standardBankCard);
+                galleryContainer.replaceChild(standardBankCard, luandinaCard);
+                galleryContainer.replaceChild(luandinaCard, swapMarker);
+            }
+        }
+
         const galleryCards = document.querySelectorAll('.gallery-stacked-card:not([hidden])');
         const galleryCardInners = document.querySelectorAll('.gallery-stacked-card:not([hidden]) .gallery-stacked-card-inner');
         const galleryIndex = document.getElementById('galleryIndex');
@@ -5926,14 +5939,14 @@ margin-top: 3px;
         
         // Order must mirror the VISIBLE card order in the DOM above.
         // galleryCards uses :not([hidden]). Visible DOM order:
-        // standard-bank → galp → candando → ulaw → wammo → lyft → luandina → sundial → ai-motion-studies → amazon
+        // luandina → galp → candando → ulaw → wammo → lyft → standard-bank → sundial → ai-motion-studies → amazon
         const galleryBrands = [
-            'Standard Bank', 'Galp', 'Candando', 'Amal Clooney',
-            'Wammo', 'Lyft', 'Luandina', 'NFTART Finance', 'AI Motion Studies', 'Amazon'
+            'Luandina', 'Galp', 'Candando', 'Amal Clooney',
+            'Wammo', 'Lyft', 'Standard Bank', 'NFTART Finance', 'AI Motion Studies', 'Amazon'
         ];
         const galleryProjects = [
-            '360 Campaign', 'Christmas Campaign', 'Gift Card Design', 'Scholarship Initiative',
-            'Retail Campaign', 'Illustration', 'Geo-Targeted Campaign', 'Digital Art / NFT', 'AI Video Experimentation', 'Advertising Concept'
+            'Geo-Targeted Campaign', 'Christmas Campaign', 'Gift Card Design', 'Scholarship Initiative',
+            'Retail Campaign', 'Illustration', '360 Campaign', 'Digital Art / NFT', 'AI Video Experimentation', 'Advertising Concept'
         ];
 
         // Inject bottom-corner labels inside each card (brand bottom-left, type bottom-right)

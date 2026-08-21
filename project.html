@@ -544,6 +544,12 @@
             padding: 0;
         }
 
+        .overview__meta-list--credits {
+            display: grid;
+            grid-template-columns: 0.7fr 2.15fr 1.65fr 1fr 0.55fr;
+            gap: clamp(24px, 3vw, 56px);
+        }
+
         .overview__meta-item {
             display: flex;
             flex-direction: column;
@@ -1926,6 +1932,12 @@
                 gap: 32px 48px;
             }
 
+            .overview__meta-list--credits {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 32px 40px;
+            }
+
             .overview__statement {
                 padding: 56px 0 72px;
             }
@@ -1996,6 +2008,10 @@
             .overview__meta-list {
                 flex-direction: column;
                 gap: 24px;
+            }
+
+            .overview__meta-list--credits {
+                display: flex;
             }
 
             .overview__meta-item {
@@ -2244,6 +2260,13 @@
             url: 'standardbank.co.ao',
             year: '2018',
             services: 'Art Direction, Visual Design, Digital Painting, Photo Retouching, Campaign Development',
+            credits: [
+                { label: 'Role', value: 'Designer' },
+                { label: 'Contribution', value: 'Concept development, illustration, campaign design and final artwork' },
+                { label: 'Team', value: 'Creative director, copywriter and account team' },
+                { label: 'Client', value: 'Standard Bank' },
+                { label: 'Year', value: '2018' }
+            ],
             gradient: 'gradient-emerald',
             heroImage: '/assets/v1776563936_Asset_1zx_eq5oje.webp',
             description: 'A cinematic tribute to Angola\'s Sobas (ancestral leaders), blending their centuries-old wisdom with Standard Bank\'s legacy. The campaign "Listen to the Voice of Experience" visually paralleled the Sobas\' guidance with the bank\'s trusted expertise, using documentary storytelling and striking portraiture.',
@@ -2498,6 +2521,15 @@
                 <!-- OVERVIEW -->
                 <section class="overview" data-reveal-group>
                     <div class="overview__meta" data-reveal-child>
+                        ${project.credits ? `
+                        <dl class="overview__meta-list overview__meta-list--credits">
+                            ${project.credits.map(item => `
+                            <div class="overview__meta-item">
+                                <dt class="overview__label">${item.label}</dt>
+                                <dd class="overview__value">${item.value}</dd>
+                            </div>`).join('')}
+                        </dl>
+                        ` : `
                         <dl class="overview__meta-list">
                             <div class="overview__meta-item">
                                 <dt class="overview__label" data-i18n="project.label.client">Client</dt>
@@ -2516,6 +2548,7 @@
                                 <dd class="overview__value">${I18N ? I18N.tServices(project.services) : project.services}</dd>
                             </div>
                         </dl>
+                        `}
                     </div>
 
                     <div class="overview__statement" data-reveal-child>
