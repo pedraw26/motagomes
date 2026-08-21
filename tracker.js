@@ -15,6 +15,14 @@
   // Skip bots / prerender
   if (navigator.webdriver || document.visibilityState === "prerender") return;
 
+  // Admin whitelist — a flagged device (or a known admin IP) is never tracked.
+  // Mark any browser as admin by visiting the site once with ?admin=1
+  try {
+    if (new URLSearchParams(location.search).get("admin") === "1") localStorage.setItem("_pa_admin", "1");
+    if (localStorage.getItem("_pa_admin") === "1") return;
+  } catch (e) {}
+  var ADMIN_IPS = ["92.40.216.120"];
+
   function vid() {
     var id = localStorage.getItem("_pa_vid");
     if (!id) { id = crypto.randomUUID(); localStorage.setItem("_pa_vid", id); }
@@ -96,6 +104,11 @@
 
   function track() {
     getNet(function (net) {
+      // Admin IP → mark this device admin and stop tracking it
+      if (net.ip && ADMIN_IPS.indexOf(net.ip) > -1) {
+        try { localStorage.setItem("_pa_admin", "1"); } catch (e) {}
+        return;
+      }
       insert({
         visitor_id: visitor,
         session_id: session,
