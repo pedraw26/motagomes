@@ -652,6 +652,8 @@
         .live-org.biz { color: var(--text-primary); }
         .live-org .biz-tag { font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: #0a7d3c; background: rgba(52,211,153,.16); padding: 2px 6px; border-radius: 5px; white-space: nowrap; }
         .live-item.live-biz { border-left: 3px solid #34d399; padding-left: 9px; background: rgba(52,211,153,0.06); }
+        .live-org .interest-tag { font-size: 8.5px; font-weight: 800; letter-spacing: .08em; color: #fff; background: #10b981; padding: 2px 7px; border-radius: 5px; white-space: nowrap; }
+        .live-item.live-interested { border-left-width: 4px; border-left-color: #10b981; background: rgba(16,185,129,0.10); }
         .live-time { font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
 
         .live-ip { font-size: 11px; color: var(--text-muted); font-family: monospace; margin-top: 2px; }
@@ -2019,10 +2021,40 @@
         function isBizOrg(org){
             return !!org && !/mobile|broadband|residential|fibre|fiber|hosting|datacent|data cent|amazon|aws|google|\bmeta\b|facebook|microsoft|azure|cloud|akamai|cloudflare|fastly|digitalocean|digital ocean|linode|\bovh\b|hetzner|leaseweb|virgin media|sky broadband|\bbt\b|talktalk|vodafone|\bee\b|\bthree\b|\bo2\b|orange|telefonica|deutsche telekom|comcast|verizon|at&t|charter|spectrum|unknown/i.test(org);
         }
+        // Flag "interested" companies: a business network seen from >1 computer (distinct IPs)
+        // OR returning across separate sessions (visits >30 min apart).
+        function buildInterest(list){
+            var byOrg = {};
+            (list || []).forEach(function(a){
+                if(!a.org || !isBizOrg(a.org)) return;
+                var k = a.org.toLowerCase();
+                (byOrg[k] = byOrg[k] || { ips:{}, times:[] });
+                if(a.ip) byOrg[k].ips[a.ip] = 1;
+                if(a.time) byOrg[k].times.push(new Date(a.time).getTime());
+            });
+            var set = {};
+            Object.keys(byOrg).forEach(function(k){
+                var o = byOrg[k];
+                var distinctIPs = Object.keys(o.ips).length;
+                var t = o.times.sort(function(x,y){ return x-y; });
+                var sessions = t.length ? 1 : 0;
+                for(var i=1;i<t.length;i++){ if(t[i]-t[i-1] > 30*60*1000) sessions++; }
+                if(distinctIPs >= 2 || sessions >= 2) set[k] = { ips: distinctIPs, sessions: sessions };
+            });
+            return set;
+        }
+        function isInterested(org){ return !!(org && window.__orgInterest && window.__orgInterest[org.toLowerCase()]); }
+        function liveItemClass(a){
+            if(a.is_amazon) return '';
+            if(isInterested(a.org)) return ' live-biz live-interested';
+            if(isBizOrg(a.org)) return ' live-biz';
+            return '';
+        }
         function orgLine(org){
             if(!org) return '';
-            var b = isBizOrg(org);
-            return '<div class="live-org'+(b?' biz':'')+'">'+(b?'<span class="biz-tag">BUSINESS</span>':'')+'<span>'+org+'</span></div>';
+            var b = isBizOrg(org), it = isInterested(org);
+            var badges = (b ? '<span class="biz-tag">BUSINESS</span>' : '') + (it ? '<span class="interest-tag">INTERESTED</span>' : '');
+            return '<div class="live-org'+(b?' biz':'')+(it?' interested':'')+'">'+badges+'<span>'+org+'</span></div>';
         }
 
         async function loadDashboard() {
@@ -2060,6 +2092,7 @@
                     _amazon_recent: s.amazon_recent || []
                 };
                 lastData = data;
+                window.__orgInterest = buildInterest(data.live_activity);
 
                 const el = id => document.getElementById(id);
 
@@ -2104,7 +2137,7 @@
                 const liveEl = el('liveActivity');
                 if (data.live_activity && data.live_activity.length > 0) {
                     liveEl.innerHTML = data.live_activity.map(a => `
-                        <div class="live-item${!a.is_amazon && isBizOrg(a.org) ? ' live-biz' : ''}" style="${a.is_amazon ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
+                        <div class="live-item${liveItemClass(a)}" style="${a.is_amazon ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
                             <div class="live-dot" style="${a.is_amazon ? 'background:#ff9900;' : ''}"></div>
                             <div class="live-info">
                                 <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${a.is_amazon ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}</div>
@@ -2341,7 +2374,7 @@
                 const liveFullEl = el('liveActivityFull');
                 if (data.live_activity && data.live_activity.length > 0) {
                     liveFullEl.innerHTML = data.live_activity.map(a => `
-                        <div class="live-item${!a.is_amazon && isBizOrg(a.org) ? ' live-biz' : ''}" style="${a.is_amazon ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
+                        <div class="live-item${liveItemClass(a)}" style="${a.is_amazon ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
                             <div class="live-dot" style="${a.is_amazon ? 'background:#ff9900;' : ''}"></div>
                             <div class="live-info">
                                 <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${a.is_amazon ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}</div>
