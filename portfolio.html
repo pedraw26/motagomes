@@ -523,6 +523,19 @@
             font-variant-numeric: tabular-nums;
             line-height: 1;
             text-transform: none;
+            display: inline-flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+        #navClock .nav-location {
+            font-family: var(--sf-pro);
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: -0.005em;
+        }
+        #navClock .nav-clock-separator {
+            font-family: var(--sf-pro);
+            font-size: 12px;
         }
 
         .header-contact {
@@ -4572,7 +4585,7 @@ margin-top: 3px;
          ======================================== -->
     <header class="header" id="header">
         <div class="header-content">
-            <div class="header-left" id="navClock">00:00</div>
+            <div class="header-left" id="navClock"><span class="nav-location">London</span><span class="nav-clock-separator" aria-hidden="true">·</span><span class="nav-clock-time">00:00</span></div>
             <div class="header-center">
                 <a href="javascript:void(0)" class="header-logo" onclick="scrollToTop()" aria-label="Mota Gomes"><span class="mg-word">M<span class="mg-seg mg-ota">OTA</span><span class="mg-g">Ⓖ</span><span class="mg-seg mg-omes">OMES</span></span></a>
             </div>
@@ -6162,7 +6175,8 @@ margin-top: 3px;
                 hour: '2-digit', minute: '2-digit',
                 hour12: false
             });
-            el.textContent = `London · ${fmt.format(new Date())}`;
+            const time = el.querySelector('.nav-clock-time');
+            if (time) time.textContent = fmt.format(new Date());
         }
         updateNavClock();
         setInterval(updateNavClock, 1000);

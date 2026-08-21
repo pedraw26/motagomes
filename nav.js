@@ -23,7 +23,9 @@
     "-webkit-mask-image:linear-gradient(to bottom,#000 55%,rgba(0,0,0,0) 100%);" +
     "mask-image:linear-gradient(to bottom,#000 55%,rgba(0,0,0,0) 100%);}" +
     ".mg-nav .mg-nav-content{width:100%;padding:28px 32px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;box-sizing:border-box;}" +
-    ".mg-nav #navClock{font-family:'EB Garamond',Georgia,'Times New Roman',serif;font-style:normal;font-weight:500;font-size:17px;letter-spacing:.02em;color:rgba(255,255,255,.6);font-variant-numeric:tabular-nums;line-height:1;justify-self:start;}" +
+    ".mg-nav #navClock{font-family:'EB Garamond',Georgia,'Times New Roman',serif;font-style:normal;font-weight:500;font-size:17px;letter-spacing:.02em;color:rgba(255,255,255,.6);font-variant-numeric:tabular-nums;line-height:1;justify-self:start;display:inline-flex;align-items:baseline;gap:6px;}" +
+    ".mg-nav .mg-nav-location{font-family:var(--sf-pro,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif);font-size:14px;font-weight:400;letter-spacing:-.005em;}" +
+    ".mg-nav .mg-nav-clock-separator{font-family:var(--sf-pro,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif);font-size:12px;}" +
     ".mg-nav .mg-nav-logo{justify-self:center;font-size:14.4px;font-weight:400;letter-spacing:.04em;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:6px;opacity:.92;transition:opacity .2s ease;}" +
     ".mg-nav .mg-nav-logo:hover{opacity:1;}" +
     ".mg-nav .mg-nav-logo .mg-g{font-size:1.22em;line-height:1;vertical-align:-.08em;}" +
@@ -82,7 +84,7 @@
     header.className = "mg-nav";
     header.innerHTML =
       '<div class="mg-nav-content">' +
-      '<div id="navClock">00:00</div>' +
+      '<div id="navClock"><span class="mg-nav-location">London</span><span class="mg-nav-clock-separator" aria-hidden="true">·</span><span class="mg-nav-time">00:00</span></div>' +
       '<a class="mg-nav-logo" href="/portfolio" aria-label="Mota Gomes — Home"><span class="mg-word">M<span class="mg-seg mg-ota">OTA</span><span class="mg-g">Ⓖ</span><span class="mg-seg mg-omes">OMES</span></span></a>' +
       '<nav class="mg-nav-links" aria-label="Primary">' + navHTML + "</nav>" +
       "</div>";
@@ -97,7 +99,8 @@
         minute: "2-digit",
         hour12: false,
       }).format(new Date());
-      el.textContent = "London · " + londonTime;
+      var time = el.querySelector(".mg-nav-time");
+      if (time) time.textContent = londonTime;
     }
     tick();
     setInterval(tick, 15000);
