@@ -657,6 +657,17 @@
         .admin-tag { display: inline-block; margin-left: 6px; font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: #fff; background: #8b5cf6; padding: 2px 7px; border-radius: 5px; vertical-align: middle; }
         .live-item.live-admin { border-left: 3px solid #8b5cf6; padding-left: 9px; background: rgba(139,92,246,0.08); }
         .visit-count { display: inline-block; margin-left: 6px; font-size: 9px; font-weight: 800; letter-spacing: .04em; color: #1d4ed8; background: rgba(59,130,246,0.16); padding: 2px 7px; border-radius: 5px; vertical-align: middle; }
+        .new-tag { display: inline-block; margin-left: 6px; font-size: 8.5px; font-weight: 800; letter-spacing: .08em; color: #0e7490; background: rgba(6,182,212,0.16); padding: 2px 7px; border-radius: 5px; vertical-align: middle; }
+        /* Live Activity filter chips */
+        .live-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+        .live-filter button { border: 1px solid var(--border, rgba(120,120,130,0.25)); background: transparent; color: var(--text-muted); font: 700 10px/1 -apple-system, system-ui, sans-serif; letter-spacing: .06em; text-transform: uppercase; padding: 6px 11px; border-radius: 999px; cursor: pointer; transition: all .15s ease; }
+        .live-filter button:hover { color: var(--text-primary); }
+        .live-filter button.on { background: var(--text-primary); color: var(--bg-primary, #fff); border-color: var(--text-primary); }
+        #liveActivity.f-new .live-item:not(.live-new){ display: none; }
+        #liveActivity.f-returning .live-item:not(.live-returning){ display: none; }
+        #liveActivity.f-interested .live-item:not(.live-interested){ display: none; }
+        #liveActivity.f-business .live-item:not(.live-biz){ display: none; }
+        #liveActivity.f-admin .live-item:not(.live-admin){ display: none; }
         .live-time { font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
 
         .live-ip { font-size: 11px; color: var(--text-muted); font-family: monospace; margin-top: 2px; }
@@ -1445,6 +1456,14 @@
                                 </svg>
                             </div>
                         </div>
+                        <div class="live-filter" id="liveFilter">
+                            <button class="on" data-f="all">All</button>
+                            <button data-f="new">New</button>
+                            <button data-f="returning">Returning</button>
+                            <button data-f="interested">Interested</button>
+                            <button data-f="business">Business</button>
+                            <button data-f="admin">Admin</button>
+                        </div>
                         <div class="live-activity" id="liveActivity">
                             <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading live data...</div>
                         </div>
@@ -2050,18 +2069,22 @@
         // How many times this exact IP has visited (within the loaded window)
         function visitCountBadge(ip){
             var n = ip && window.__ipCounts ? window.__ipCounts[ip] : 0;
-            if(!n || n < 2) return '';
-            return '<span class="visit-count" title="'+n+' visits from this IP">'+n+'×</span>';
+            if(n >= 2) return '<span class="visit-count" title="'+n+' visits from this IP">'+n+'×</span>';
+            if(n === 1) return '<span class="new-tag">NEW</span>';
+            return '';
         }
         // Your own visits (admin) — mobile subnet, dynamic last octet
         var ADMIN_IP_PREFIXES = ['92.40.216.'];
         function isAdminIP(ip){ return !!ip && ADMIN_IP_PREFIXES.some(function(p){ return ip.indexOf(p) === 0; }); }
         function liveItemClass(a){
-            if(isAdminIP(a.ip)) return ' live-admin';
-            if(a.is_amazon) return '';
-            if(isInterested(a.org)) return ' live-biz live-interested';
-            if(isBizOrg(a.org)) return ' live-biz';
-            return '';
+            var c = [];
+            if(isAdminIP(a.ip)) c.push('live-admin');
+            else if(a.is_amazon) { /* amazon styled inline */ }
+            else if(isInterested(a.org)) c.push('live-biz','live-interested');
+            else if(isBizOrg(a.org)) c.push('live-biz');
+            var n = a.ip && window.__ipCounts ? window.__ipCounts[a.ip] : 0;
+            if(n >= 2) c.push('live-returning'); else if(n === 1) c.push('live-new');
+            return c.length ? ' ' + c.join(' ') : '';
         }
         function orgLine(org){
             if(!org) return '';
@@ -2427,6 +2450,19 @@
                 console.error('Failed to load analytics:', err);
             }
         }
+
+        // Live Activity filter chips
+        (function(){
+            var bar = document.getElementById('liveFilter');
+            if(!bar) return;
+            bar.addEventListener('click', function(e){
+                var b = e.target.closest('button'); if(!b) return;
+                bar.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); });
+                var f = b.dataset.f;
+                var la = document.getElementById('liveActivity');
+                if(la) la.className = 'live-activity' + (f !== 'all' ? ' f-' + f : '');
+            });
+        })();
 
         // Initial load + apply saved settings
         applySettings();
