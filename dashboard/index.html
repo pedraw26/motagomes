@@ -2076,10 +2076,12 @@
         // Your own visits (admin) — mobile subnet, dynamic last octet
         var ADMIN_IP_PREFIXES = ['92.40.216.'];
         function isAdminIP(ip){ return !!ip && ADMIN_IP_PREFIXES.some(function(p){ return ip.indexOf(p) === 0; }); }
+        // Treat New York City visits as Amazon (manual label) in addition to real Amazon/AWS networks
+        function isAmazonRow(a){ return !!(a && (a.is_amazon || /new york/i.test(a.city || ''))); }
         function liveItemClass(a){
             var c = [];
             if(isAdminIP(a.ip)) c.push('live-admin');
-            else if(a.is_amazon) { /* amazon styled inline */ }
+            else if(isAmazonRow(a)) { /* amazon styled inline */ }
             else if(isInterested(a.org)) c.push('live-biz','live-interested');
             else if(isBizOrg(a.org)) c.push('live-biz');
             var n = a.ip && window.__ipCounts ? window.__ipCounts[a.ip] : 0;
@@ -2175,10 +2177,10 @@
                 const liveEl = el('liveActivity');
                 if (data.live_activity && data.live_activity.length > 0) {
                     liveEl.innerHTML = data.live_activity.map(a => `
-                        <div class="live-item${liveItemClass(a)}" style="${a.is_amazon ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
-                            <div class="live-dot" style="${a.is_amazon ? 'background:#ff9900;' : ''}"></div>
+                        <div class="live-item${liveItemClass(a)}" style="${isAmazonRow(a) ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
+                            <div class="live-dot" style="${isAmazonRow(a) ? 'background:#ff9900;' : ''}"></div>
                             <div class="live-info">
-                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${a.is_amazon ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}${isAdminIP(a.ip) ? '<span class="admin-tag">ADMIN</span>' : ''}${visitCountBadge(a.ip)}</div>
+                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${isAmazonRow(a) ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}${isAdminIP(a.ip) ? '<span class="admin-tag">ADMIN</span>' : ''}${visitCountBadge(a.ip)}</div>
                                 <div class="live-page">${a.page || 'home'}</div>
                                 ${orgLine(a.org)}
                                 ${a.ip ? `<div class="live-ip"><a href="https://ipinfo.io/${a.ip}" target="_blank" rel="noopener">${a.ip}</a></div>` : ''}
@@ -2412,10 +2414,10 @@
                 const liveFullEl = el('liveActivityFull');
                 if (data.live_activity && data.live_activity.length > 0) {
                     liveFullEl.innerHTML = data.live_activity.map(a => `
-                        <div class="live-item${liveItemClass(a)}" style="${a.is_amazon ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
-                            <div class="live-dot" style="${a.is_amazon ? 'background:#ff9900;' : ''}"></div>
+                        <div class="live-item${liveItemClass(a)}" style="${isAmazonRow(a) ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
+                            <div class="live-dot" style="${isAmazonRow(a) ? 'background:#ff9900;' : ''}"></div>
                             <div class="live-info">
-                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${a.is_amazon ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}${isAdminIP(a.ip) ? '<span class="admin-tag">ADMIN</span>' : ''}${visitCountBadge(a.ip)}</div>
+                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${isAmazonRow(a) ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}${isAdminIP(a.ip) ? '<span class="admin-tag">ADMIN</span>' : ''}${visitCountBadge(a.ip)}</div>
                                 <div class="live-page">${a.page || 'home'}</div>
                                 ${orgLine(a.org)}
                                 ${a.ip ? `<div class="live-ip"><a href="https://ipinfo.io/${a.ip}" target="_blank" rel="noopener">${a.ip}</a></div>` : ''}
