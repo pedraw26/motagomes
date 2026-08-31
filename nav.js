@@ -41,6 +41,8 @@
     ".mg-nav .mg-nav-links a::before{content:'';position:absolute;bottom:-6px;left:0;right:0;height:1px;background:currentColor;transform:scaleX(0);transform-origin:center;transition:transform .35s cubic-bezier(.22,1,.36,1);}" +
     ".mg-nav .mg-nav-links a:hover::before,.mg-nav .mg-nav-links a.is-current::before{transform:scaleX(1);}" +
     ".mg-nav .mg-nav-links a.is-current{color:#fff;}" +
+    ".mg-nav .mg-nav-links .mg-nav-soon{font-size:.95rem;color:rgba(255,255,255,.32);font-weight:400;letter-spacing:-.005em;line-height:1;display:inline-flex;align-items:center;cursor:not-allowed;user-select:none;transition:color .3s ease;}" +
+    ".mg-nav .mg-nav-links .mg-nav-soon:hover{color:rgba(255,255,255,.5);}" +
     ".mg-nav .mg-nav-links a.nav-gen{background-image:linear-gradient(90deg,#ff7a7a,#ffb347,#ffe66d,#6ee7b7,#67c8ff,#c084fc,#ff7a7a);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:mg-aislop 6s linear infinite;}" +
     "@keyframes mg-aislop{from{background-position:0% 50%}to{background-position:-200% 50%}}" +
     "@media (max-width:640px){.mg-nav #navClock{display:none}.mg-nav .mg-nav-links{gap:16px}.mg-nav .mg-nav-links a{font-size:.8rem}.mg-nav .mg-nav-content{padding:20px}}" +
@@ -68,10 +70,14 @@
       { label: "Work", href: "/portfolio#work", match: "/portfolio" },
       { label: "About", href: "/portfolio#about" },
       { label: "Gen Studies", href: "/gen-studio", match: "/gen-studio", cls: "nav-gen" },
+      { label: "Archive", soon: true },
     ];
 
     var navHTML = links
       .map(function (l) {
+        if (l.soon) {
+          return '<span class="mg-nav-soon" title="Coming soon" aria-disabled="true">' + l.label + "</span>";
+        }
         var classes = [];
         if (l.cls) classes.push(l.cls);
         if (path === l.match) classes.push("is-current");
