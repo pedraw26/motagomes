@@ -42,7 +42,15 @@
     if (h) return h;
     var p = location.pathname;
     if (p === "/" || p === "/index.html") return "home";
-    return p.replace(/^\/|\/$/g, "") || "home";
+    p = p.replace(/^\/|\/$/g, "") || "home";
+    // include the project slug so each case study is tracked distinctly
+    if (p === "project" || p === "project.html") {
+      try {
+        var sp = new URLSearchParams(location.search).get("p");
+        if (sp) return "project/" + sp;
+      } catch (e) {}
+    }
+    return p;
   }
 
   var visitor = vid(), session = sid(), dev = device(), br = browser();
