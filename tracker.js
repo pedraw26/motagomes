@@ -161,4 +161,47 @@
     },
     true
   );
+
+  // Engagement: max scroll depth + dwell time, sent once when the page is hidden/closed.
+  var startT = Date.now(), maxScroll = 0, sentEngage = false;
+  function scrollPct() {
+    var doc = document.documentElement, b = document.body || doc;
+    var st = window.pageYOffset || doc.scrollTop || 0;
+    var vh = window.innerHeight || doc.clientHeight || 0;
+    var dh = Math.max(b.scrollHeight, doc.scrollHeight, b.offsetHeight, doc.offsetHeight, vh);
+    if (dh <= vh) return 100;
+    return Math.min(100, Math.round(((st + vh) / dh) * 100));
+  }
+  window.addEventListener(
+    "scroll",
+    function () { var p = scrollPct(); if (p > maxScroll) maxScroll = p; },
+    { passive: true }
+  );
+  function sendEngage() {
+    if (sentEngage) return;
+    sentEngage = true;
+    var dur = Math.round((Date.now() - startT) / 1000);
+    if (maxScroll === 0) maxScroll = scrollPct();
+    try {
+      fetch(SUPABASE_URL + "/rest/v1/rpc/log_engagement", {
+        method: "POST",
+        keepalive: true,
+        headers: {
+          apikey: ANON,
+          Authorization: "Bearer " + ANON,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          p_session: session,
+          p_page: page(),
+          p_duration: dur,
+          p_scroll: maxScroll,
+        }),
+      });
+    } catch (e) {}
+  }
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "hidden") sendEngage();
+  });
+  window.addEventListener("pagehide", sendEngage);
 })();

@@ -2109,6 +2109,19 @@
                 const s = await res.json();
                 if (!s || s.code || s.message) { console.error('Analytics error:', s); return; }
 
+                // Engagement metrics (avg session, scroll depth, bounce, time-per-page).
+                // Separate additive RPC; absent until the SQL is applied, handled gracefully.
+                let eng = {};
+                try {
+                    const eres = await fetch(SB_URL + '/rest/v1/rpc/get_engagement', {
+                        method: 'POST',
+                        headers: { apikey: SB_ANON, Authorization: 'Bearer ' + SB_ANON, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ p_pwd: pwd, p_range: parseInt(currentRange) || 7 })
+                    });
+                    const ej = await eres.json();
+                    if (ej && !ej.error && !ej.code && !ej.message) eng = ej;
+                } catch (e) {}
+
                 // Derive project + conversion breakdowns from page-level counts (get_stats.by_page).
                 // Project views log as "project/<slug>"; CTA clicks log as "cta/<type>".
                 const _byPage = s.by_page || [];
@@ -2135,7 +2148,7 @@
 
                 // Adapt get_stats() payload → dashboard data shape
                 const data = {
-                    overview: { total_views: s.total_views || 0, unique_visitors: s.unique_visitors || 0, avg_session_duration: s.avg_duration || 0, contact_rate: _contactRate, bounce_rate: 0, avg_scroll_depth: s.avg_scroll || 0 },
+                    overview: { total_views: s.total_views || 0, unique_visitors: s.unique_visitors || 0, avg_session_duration: eng.avg_duration || 0, contact_rate: _contactRate, bounce_rate: eng.bounce_rate || 0, avg_scroll_depth: eng.avg_scroll || 0 },
                     trends: null,
                     chart: { labels: (s.chart && s.chart.labels) || [], views: (s.chart && s.chart.views) || [], unique: (s.chart && s.chart.unique) || [] },
                     visitors: { new: s.new_visitors || 0, returning: s.returning_visitors || 0 },
@@ -2145,7 +2158,7 @@
                     regions: (s.by_country || []).map(r => ({ country: r.country, count: r.c })),
                     top_pages: _topPages.map(r => ({ page: r.page, views: r.c })),
                     hourly: s.hourly || [],
-                    time_per_page: [],
+                    time_per_page: eng.time_per_page || [],
                     funnel: null,
                     referrers: (s.by_referrer || []).map(r => ({ source: r.source, count: r.c })),
                     devices: s.by_device || {},
