@@ -2109,17 +2109,41 @@
                 const s = await res.json();
                 if (!s || s.code || s.message) { console.error('Analytics error:', s); return; }
 
+                // Derive project + conversion breakdowns from page-level counts (get_stats.by_page).
+                // Project views log as "project/<slug>"; CTA clicks log as "cta/<type>".
+                const _byPage = s.by_page || [];
+                const _projects = {}, _conversions = {};
+                let _ctaTotal = 0, _projTotal = 0;
+                const _ctaMap = { email: 'email_click', cv: 'contact_click', linkedin: 'social_click', whatsapp: 'social_click', phone: 'contact_click' };
+                _byPage.forEach(r => {
+                    const pg = r.page || '', c = r.c || 0;
+                    if (pg.indexOf('project/') === 0) {
+                        const slug = pg.slice(8);
+                        _projects[slug] = { views: ((_projects[slug] && _projects[slug].views) || 0) + c };
+                        _projTotal += c;
+                    } else if (pg.indexOf('cta/') === 0) {
+                        const k = _ctaMap[pg.slice(4)] || pg.slice(4);
+                        _conversions[k] = (_conversions[k] || 0) + c;
+                        _ctaTotal += c;
+                    }
+                });
+                if (_projTotal > 0) _conversions.project_view = _projTotal;
+                const _totalViews = s.total_views || 0;
+                const _contactRate = _totalViews > 0 ? Math.round((_ctaTotal / _totalViews) * 100) : 0;
+                // Keep project/cta rows out of the generic "top pages" list.
+                const _topPages = _byPage.filter(r => (r.page || '').indexOf('cta/') !== 0);
+
                 // Adapt get_stats() payload → dashboard data shape
                 const data = {
-                    overview: { total_views: s.total_views || 0, unique_visitors: s.unique_visitors || 0, avg_session_duration: 0, contact_rate: 0, bounce_rate: 0, avg_scroll_depth: 0 },
+                    overview: { total_views: s.total_views || 0, unique_visitors: s.unique_visitors || 0, avg_session_duration: s.avg_duration || 0, contact_rate: _contactRate, bounce_rate: 0, avg_scroll_depth: s.avg_scroll || 0 },
                     trends: null,
                     chart: { labels: (s.chart && s.chart.labels) || [], views: (s.chart && s.chart.views) || [], unique: (s.chart && s.chart.unique) || [] },
                     visitors: { new: s.new_visitors || 0, returning: s.returning_visitors || 0 },
                     live_activity: (s.recent || []).slice(0, 200).map(r => ({ city: r.city, country: r.country, page: r.page, time: r.created_at, org: r.org, is_amazon: r.is_amazon, ip: r.ip })),
-                    projects: {},
-                    conversions: {},
+                    projects: _projects,
+                    conversions: _conversions,
                     regions: (s.by_country || []).map(r => ({ country: r.country, count: r.c })),
-                    top_pages: (s.by_page || []).map(r => ({ page: r.page, views: r.c })),
+                    top_pages: _topPages.map(r => ({ page: r.page, views: r.c })),
                     hourly: s.hourly || [],
                     time_per_page: [],
                     funnel: null,

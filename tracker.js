@@ -123,4 +123,42 @@
 
   track();
   window.addEventListener("hashchange", track);
+
+  // Conversion events: log CTA clicks as hits with page "cta/<type>".
+  // These flow into the same table and surface in get_stats by_page / recent.
+  function ctaLabel(href) {
+    if (/^mailto:/i.test(href)) return "email";
+    if (/cv\.pdf/i.test(href)) return "cv";
+    if (/linkedin\.com/i.test(href)) return "linkedin";
+    if (/wa\.me|whatsapp|api\.whatsapp/i.test(href)) return "whatsapp";
+    if (/^tel:/i.test(href)) return "phone";
+    return null;
+  }
+  document.addEventListener(
+    "click",
+    function (e) {
+      var a = e.target && e.target.closest ? e.target.closest("a") : null;
+      if (!a) return;
+      var label = ctaLabel(a.getAttribute("href") || "");
+      if (!label) return;
+      var src = page();
+      getNet(function (net) {
+        insert({
+          visitor_id: visitor,
+          session_id: session,
+          page: "cta/" + label,
+          referrer: src,
+          device: dev,
+          browser: br,
+          ip: net.ip,
+          city: net.city,
+          region: net.region,
+          country: net.country,
+          org: net.org,
+          is_amazon: isAmazon(net),
+        });
+      });
+    },
+    true
+  );
 })();
