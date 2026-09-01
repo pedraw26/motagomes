@@ -1040,6 +1040,176 @@
             .date-range-group { display: none; }
             .export-btn span { display: none; }
         }
+        /* ============================================================
+           REFERENCE REDESIGN — dark, purple bento (overrides above)
+           ============================================================ */
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        :root[data-theme="dark"] {
+            --bg-base: #0a0a0d;
+            --bg-surface: #131318;
+            --bg-elevated: #1b1b21;
+            --bg-hover: #212129;
+            --text-primary: #f4f4f6;
+            --text-secondary: #a1a1ab;
+            --text-muted: #6c6c78;
+            --border-subtle: rgba(255,255,255,0.07);
+            --border-default: rgba(255,255,255,0.12);
+            --accent-violet: #a78bfa;
+            --accent-violet-dim: rgba(167,139,250,0.15);
+            --accent-cyan: #67e8f9;
+            --accent-cyan-dim: rgba(103,232,249,0.12);
+            --accent-gold: #fcd34d;
+            --accent-gold-dim: rgba(252,211,77,0.12);
+            --accent-emerald: #6ee7b7;
+            --accent-rose: #fda4af;
+            --pi-purple: #a78bfa;
+            --pi-purple2: #8b5cf6;
+        }
+
+        body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; }
+        :root[data-theme="dark"] body {
+            background: var(--bg-base);
+            background-image: radial-gradient(1100px 560px at 82% -12%, rgba(139,92,246,0.12), transparent 60%);
+        }
+
+        /* ---- Layout: left icon rail + content ---- */
+        .dashboard { display: flex; min-height: 100vh; }
+        .topnav {
+            position: sticky; top: 0; align-self: flex-start;
+            height: 100vh; width: 88px; flex-direction: column; align-items: center;
+            gap: 6px; padding: 22px 0; background: var(--bg-surface);
+            border: 0; border-right: 1px solid var(--border-subtle); box-shadow: none;
+        }
+        .topnav-brand { flex-direction: column; gap: 0; margin-bottom: 22px; }
+        .topnav-brand .logo {
+            width: 46px; height: 46px; border-radius: 14px; overflow: hidden;
+            background: linear-gradient(150deg, var(--pi-purple), var(--pi-purple2));
+            display: flex; align-items: center; justify-content: center; color: #fff;
+        }
+        .topnav-brand .logo-text { display: none; }
+        .topnav-items { flex-direction: column; gap: 8px; width: 100%; align-items: center; }
+        .topnav-right { margin-top: auto; }
+        .nav-item {
+            position: relative; width: 48px; height: 48px; padding: 0; border-radius: 14px;
+            justify-content: center; color: var(--text-muted); border: 0; background: transparent;
+        }
+        .nav-item span { display: none; }
+        .nav-item svg { width: 22px; height: 22px; }
+        .nav-item:hover { color: var(--text-primary); background: var(--bg-hover); }
+        .nav-item.active { color: #fff; background: var(--accent-violet-dim); }
+        .nav-item.active::before {
+            content: ''; position: absolute; left: -22px; top: 50%; transform: translateY(-50%);
+            width: 3px; height: 22px; border-radius: 2px; background: var(--pi-purple);
+        }
+
+        /* ---- Top bar ---- */
+        .main { flex: 1; min-width: 0; }
+        .main-header { padding: 26px 34px 20px; gap: 16px; border: 0; background: transparent; position: static; }
+        .page-title { font-size: 27px; font-weight: 700; letter-spacing: -0.02em; }
+        .header-actions { gap: 10px; align-items: center; }
+        .pi-search {
+            display: flex; align-items: center; gap: 10px; width: 340px; max-width: 30vw;
+            background: var(--bg-surface); border: 1px solid var(--border-subtle);
+            border-radius: 999px; padding: 11px 18px; color: var(--text-muted);
+        }
+        .pi-search svg { width: 18px; height: 18px; flex: none; }
+        .pi-search input { flex: 1; background: none; border: 0; outline: 0; color: var(--text-primary); font: inherit; font-size: 14px; }
+        .pi-iconbtn {
+            width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            background: var(--bg-surface); border: 1px solid var(--border-subtle); color: var(--text-secondary); cursor: pointer;
+        }
+        .pi-iconbtn svg { width: 20px; height: 20px; }
+        .pi-iconbtn:hover { color: var(--text-primary); background: var(--bg-hover); }
+        .pi-avatar { width: 46px; height: 46px; border-radius: 50%; overflow: hidden; border: 1px solid var(--border-subtle); }
+        .pi-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .theme-toggle, .export-btn, .time-filter { border-radius: 999px; }
+
+        /* ---- Page + cards ---- */
+        .page { padding: 0 34px 44px; }
+        .widget, .preview-card, .pi-panel, .pi-hero, .live-section {
+            background: var(--bg-surface); border: 1px solid var(--border-subtle);
+            border-radius: 22px; box-shadow: none;
+        }
+        .widget { padding: 22px; position: relative; }
+        .preview-card { position: relative; }
+        .metric-value { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; }
+        .preview-card-value { font-size: 32px; font-weight: 700; }
+        .widget-title, .preview-card-title { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+
+        /* ---- Hero ---- */
+        .pi-hero {
+            position: relative; overflow: hidden; display: flex; min-height: 300px;
+            padding: 40px; margin-bottom: 22px;
+            background: linear-gradient(120deg, #101015, #0b0b0f);
+        }
+        .pi-hero-body { position: relative; z-index: 2; max-width: 58%; display: flex; flex-direction: column; }
+        .pi-chip {
+            align-self: flex-start; background: var(--accent-violet-dim); color: #c4b5fd;
+            padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; margin-bottom: 24px;
+        }
+        .pi-hero-title { font-size: clamp(30px, 4.2vw, 54px); font-weight: 600; line-height: 1.04; letter-spacing: -0.02em; color: #fff; margin: 0; }
+        .pi-hero-cta {
+            margin-top: auto; padding-top: 30px; display: inline-flex; align-items: center; gap: 14px;
+            color: #fff; text-decoration: none; font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em;
+        }
+        .pi-hero-cta .pi-play {
+            width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            background: var(--pi-purple); color: #12071f; transition: transform 0.2s ease;
+        }
+        .pi-hero-cta:hover .pi-play { transform: scale(1.08); }
+        .pi-hero-visual {
+            position: absolute; inset: 0; z-index: 1; pointer-events: none;
+            background:
+                radial-gradient(340px 340px at 78% 58%, rgba(167,139,250,0.38), transparent 62%),
+                radial-gradient(220px 220px at 90% 32%, rgba(255,255,255,0.20), transparent 60%),
+                conic-gradient(from 200deg at 82% 60%, rgba(185,195,215,0.28), rgba(90,80,140,0.04), rgba(185,195,215,0.24));
+            -webkit-mask: linear-gradient(90deg, transparent 32%, #000 64%);
+            mask: linear-gradient(90deg, transparent 32%, #000 64%);
+        }
+        .pi-hero-visual::after {
+            content: ''; position: absolute; inset: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            -webkit-mask: radial-gradient(420px 320px at 80% 72%, #000, transparent 70%);
+            mask: radial-gradient(420px 320px at 80% 72%, #000, transparent 70%);
+        }
+
+        /* ---- Two-column overview ---- */
+        .pi-cols { display: grid; grid-template-columns: 1fr 1.12fr; gap: 22px; align-items: start; }
+        .pi-panel { padding: 22px; }
+        .pi-panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px; }
+        .pi-panel-title { font-size: 17px; font-weight: 700; color: var(--text-primary); margin: 0; }
+        .live-section { margin: 0; }
+
+        /* ---- Bento ---- */
+        .pi-bento { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .pi-bento > * { margin: 0; }
+        .pi-bento-tall { grid-row: span 2; display: flex; flex-direction: column; }
+        .pi-badge {
+            position: absolute; top: 16px; right: 16px; width: 24px; height: 24px; border-radius: 50%;
+            background: var(--bg-elevated); border: 1px solid var(--border-subtle); color: var(--text-secondary);
+            display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; z-index: 3;
+        }
+
+        /* purple filled tiles */
+        .pi-fill { background: linear-gradient(155deg, var(--pi-purple), var(--pi-purple2)) !important; border-color: transparent !important; }
+        .pi-fill .widget-title, .pi-fill .preview-card-title, .pi-fill .preview-card-subtitle, .pi-fill .metric-change { color: rgba(255,255,255,0.85) !important; }
+        .pi-fill .metric-value, .pi-fill .preview-card-value { color: #fff !important; }
+        .pi-fill .pi-badge { background: rgba(0,0,0,0.28); border-color: transparent; color: #fff; }
+        .pi-fill .widget-icon { background: rgba(255,255,255,0.18) !important; color: #fff !important; }
+
+        @media (max-width: 1080px) {
+            .pi-cols { grid-template-columns: 1fr; }
+            .pi-hero-body { max-width: 100%; }
+        }
+        @media (max-width: 720px) {
+            .topnav { width: 64px; }
+            .page, .main-header { padding-left: 16px; padding-right: 16px; }
+            .pi-search { display: none; }
+            .pi-bento { grid-template-columns: 1fr; }
+            .pi-bento-tall { grid-row: auto; }
+        }
     </style>
 </head>
 <body>
@@ -1247,8 +1417,8 @@
         <!-- TOP NAV -->
         <header class="topnav" id="topnav">
             <div class="topnav-brand">
-                <div class="logo">
-                    <img src="/assets/v1772425940_Layer_21_qw0mad.png" alt="Pedro Gomes" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                <div class="logo" title="Portfolio Intelligence">
+                    <svg viewBox="0 0 24 24" fill="currentColor" style="width:24px;height:24px;"><path d="M12 2c.4 3.6 2.4 5.6 6 6-3.6.4-5.6 2.4-6 6-.4-3.6-2.4-5.6-6-6 3.6-.4 5.6-2.4 6-6z"/></svg>
                 </div>
                 <span class="logo-text">Intelligence</span>
             </div>
@@ -1331,6 +1501,16 @@
                     <h1 class="page-title" id="pageTitle">Overview</h1>
                 </div>
                 <div class="header-actions">
+                    <div class="pi-search">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="piSearch" placeholder="Search visitors, pages, IPs...">
+                    </div>
+                    <button class="pi-iconbtn" id="piBell" title="Notifications">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    </button>
+                    <div class="pi-avatar" title="Pedro Mota Gomes">
+                        <img src="/assets/v1772425940_Layer_21_qw0mad.png" alt="Pedro Mota Gomes">
+                    </div>
                     <button class="theme-toggle" id="themeToggle" title="Toggle theme">
                         <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="5"/>
@@ -1364,96 +1544,27 @@
 
             <!-- OVERVIEW PAGE -->
             <div class="page active" id="page-overview">
-                <div class="dashboard-grid">
-                    <div class="widget">
-                        <div class="widget-header">
-                            <span class="widget-title">Visitors Today</span>
-                            <div class="widget-icon violet">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                    <circle cx="12" cy="12" r="3"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="metric-value" id="metricVisitors">--</div>
-                        <div class="metric-change" id="metricVisitorsChange"></div>
-                        <div class="sparkline"><canvas id="sparkline1"></canvas></div>
+                <!-- HERO -->
+                <div class="pi-hero">
+                    <div class="pi-hero-body">
+                        <span class="pi-chip">Live site</span>
+                        <h1 class="pi-hero-title">Design that moves<br>the metrics.</h1>
+                        <a class="pi-hero-cta" href="/" target="_blank" rel="noopener">
+                            <span class="pi-play"><svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px;margin-left:2px;"><polygon points="6 4 20 12 6 20 6 4"/></svg></span>
+                            VIEW LIVE SITE
+                        </a>
                     </div>
+                    <div class="pi-hero-visual" aria-hidden="true"></div>
+                </div>
 
-                    <div class="widget">
-                        <div class="widget-header">
-                            <span class="widget-title">Unique Visitors</span>
-                            <div class="widget-icon cyan">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                                    <circle cx="9" cy="7" r="4"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="metric-value" id="metricUnique">--</div>
-                        <div class="metric-change" id="metricUniqueChange"></div>
-                        <div class="sparkline"><canvas id="sparkline2"></canvas></div>
-                    </div>
-
-                    <div class="widget">
-                        <div class="widget-header">
-                            <span class="widget-title">Avg. Session</span>
-                            <div class="widget-icon gold">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <polyline points="12 6 12 12 16 14"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="metric-value" id="metricSession">--</div>
-                        <div class="metric-change" id="metricSessionChange"></div>
-                        <div class="sparkline"><canvas id="sparkline3"></canvas></div>
-                    </div>
-
-                    <div class="widget">
-                        <div class="widget-header">
-                            <span class="widget-title">Contact Rate</span>
-                            <div class="widget-icon emerald">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="metric-value" id="metricContact">--</div>
-                        <div class="metric-change" id="metricContactChange"></div>
-                        <div class="sparkline"><canvas id="sparkline4"></canvas></div>
-                    </div>
-
-                    <div class="widget bounce-widget">
-                        <div class="widget-header">
-                            <span class="widget-title">Bounce Rate</span>
-                            <div class="widget-icon" style="background:rgba(251,113,133,0.15);color:var(--accent-rose);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                                    <polyline points="17 6 23 6 23 12"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="metric-value" id="metricBounce">--</div>
-                        <div class="metric-change" id="metricBounceChange"></div>
-                    </div>
-
-                    <div class="widget widget-large">
-                        <div class="widget-header">
-                            <span class="widget-title">Portfolio Performance</span>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="mainChart"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="widget live-section">
-                        <div class="widget-header">
-                            <span class="widget-title">Live Activity</span>
-                            <div class="widget-icon emerald">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                                </svg>
+                <!-- TWO COLUMNS -->
+                <div class="pi-cols">
+                    <!-- LEFT: live activity list -->
+                    <section class="pi-panel pi-live-panel live-section">
+                        <div class="pi-panel-head">
+                            <h3 class="pi-panel-title">Live activity</h3>
+                            <div class="widget-icon emerald" style="width:34px;height:34px;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                             </div>
                         </div>
                         <div class="live-filter" id="liveFilter">
@@ -1467,36 +1578,99 @@
                         <div class="live-activity" id="liveActivity">
                             <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading live data...</div>
                         </div>
+                    </section>
+
+                    <!-- RIGHT: progress bento -->
+                    <section class="pi-panel">
+                        <div class="pi-panel-head">
+                            <h3 class="pi-panel-title">My progress</h3>
+                        </div>
+                        <div class="pi-bento">
+                            <div class="widget widget-large pi-bento-tall">
+                                <span class="pi-badge">1</span>
+                                <div class="widget-header"><span class="widget-title">Portfolio Performance</span></div>
+                                <div class="chart-container" style="flex:1;min-height:170px;"><canvas id="mainChart"></canvas></div>
+                            </div>
+
+                            <div class="widget pi-fill">
+                                <span class="pi-badge">2</span>
+                                <div class="widget-header">
+                                    <span class="widget-title">Unique Visitors</span>
+                                    <div class="widget-icon cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+                                </div>
+                                <div class="metric-value" id="metricUnique">--</div>
+                                <div class="metric-change" id="metricUniqueChange"></div>
+                                <div class="sparkline"><canvas id="sparkline2"></canvas></div>
+                            </div>
+
+                            <div class="preview-card pi-fill" data-page="conversions">
+                                <span class="pi-badge">3</span>
+                                <div class="preview-card-header">
+                                    <span class="preview-card-title">Conversions</span>
+                                    <svg class="preview-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                                </div>
+                                <div class="preview-card-value" id="previewConversions">--</div>
+                                <div class="preview-card-subtitle">total actions</div>
+                            </div>
+
+                            <div class="widget">
+                                <span class="pi-badge">4</span>
+                                <div class="widget-header">
+                                    <span class="widget-title">Contact Rate</span>
+                                    <div class="widget-icon emerald"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/></svg></div>
+                                </div>
+                                <div class="metric-value" id="metricContact">--</div>
+                                <div class="metric-change" id="metricContactChange"></div>
+                                <div class="sparkline"><canvas id="sparkline4"></canvas></div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- KPI STRIP -->
+                <div class="dashboard-grid" style="margin-top:22px;">
+                    <div class="widget">
+                        <div class="widget-header">
+                            <span class="widget-title">Visitors Today</span>
+                            <div class="widget-icon violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+                        </div>
+                        <div class="metric-value" id="metricVisitors">--</div>
+                        <div class="metric-change" id="metricVisitorsChange"></div>
+                        <div class="sparkline"><canvas id="sparkline1"></canvas></div>
+                    </div>
+
+                    <div class="widget">
+                        <div class="widget-header">
+                            <span class="widget-title">Avg. Session</span>
+                            <div class="widget-icon gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                        </div>
+                        <div class="metric-value" id="metricSession">--</div>
+                        <div class="metric-change" id="metricSessionChange"></div>
+                        <div class="sparkline"><canvas id="sparkline3"></canvas></div>
+                    </div>
+
+                    <div class="widget bounce-widget">
+                        <div class="widget-header">
+                            <span class="widget-title">Bounce Rate</span>
+                            <div class="widget-icon" style="background:rgba(251,113,133,0.15);color:var(--accent-rose);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+                        </div>
+                        <div class="metric-value" id="metricBounce">--</div>
+                        <div class="metric-change" id="metricBounceChange"></div>
                     </div>
 
                     <div class="preview-card" data-page="projects">
                         <div class="preview-card-header">
                             <span class="preview-card-title">Top Projects</span>
-                            <svg class="preview-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="9 18 15 12 9 6"/>
-                            </svg>
+                            <svg class="preview-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
                         </div>
                         <div class="preview-card-value" id="previewProjects">--</div>
                         <div class="preview-card-subtitle">projects tracked</div>
                     </div>
 
-                    <div class="preview-card" data-page="conversions">
-                        <div class="preview-card-header">
-                            <span class="preview-card-title">Conversions</span>
-                            <svg class="preview-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="9 18 15 12 9 6"/>
-                            </svg>
-                        </div>
-                        <div class="preview-card-value" id="previewConversions">--</div>
-                        <div class="preview-card-subtitle">total actions</div>
-                    </div>
-
                     <div class="preview-card" data-page="audience">
                         <div class="preview-card-header">
                             <span class="preview-card-title">Top Region</span>
-                            <svg class="preview-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="9 18 15 12 9 6"/>
-                            </svg>
+                            <svg class="preview-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
                         </div>
                         <div class="preview-card-value" id="previewRegion">--</div>
                         <div class="preview-card-subtitle" id="previewRegionSub">top region</div>
@@ -1505,9 +1679,7 @@
                     <div class="preview-card" data-page="engagement">
                         <div class="preview-card-header">
                             <span class="preview-card-title">Avg. Scroll Depth</span>
-                            <svg class="preview-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="9 18 15 12 9 6"/>
-                            </svg>
+                            <svg class="preview-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
                         </div>
                         <div class="preview-card-value" id="previewScroll">--</div>
                         <div class="preview-card-subtitle">avg scroll depth</div>
@@ -1796,7 +1968,7 @@
             try { return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {}; } catch { return {}; }
         }
         function saveSettings(s) { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); }
-        const settings = Object.assign({ darkMode: false, compactSidebar: false, autoRefresh: true, showLive: true, emailNotif: false }, loadSettings());
+        const settings = Object.assign({ darkMode: true, compactSidebar: false, autoRefresh: true, showLive: true, emailNotif: false }, loadSettings());
 
         function applySettings() {
             // Dark mode
