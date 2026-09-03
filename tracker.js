@@ -55,6 +55,16 @@
 
   var visitor = vid(), session = sid(), dev = device(), br = browser();
 
+  // Admin device flag — open any page with ?admin=1 once to mark THIS device/browser as yours
+  // (reliable even on shared carrier/mobile IPs). ?admin=0 clears it.
+  var IS_ADMIN = false;
+  try {
+    if (/[?&]admin=1(?:&|$)/.test(location.search)) localStorage.setItem("_pa_admin", "1");
+    if (/[?&]admin=0(?:&|$)/.test(location.search)) localStorage.removeItem("_pa_admin");
+    IS_ADMIN = localStorage.getItem("_pa_admin") === "1";
+  } catch (e) {}
+  function orgOut(org) { return IS_ADMIN ? ((org || "") + " [MG-ADMIN]") : org; }
+
   function insert(row) {
     try {
       fetch(ENDPOINT, {
@@ -115,7 +125,7 @@
         city: net.city,
         region: net.region,
         country: net.country,
-        org: net.org,
+        org: orgOut(net.org),
         is_amazon: isAmazon(net),
       });
     });
