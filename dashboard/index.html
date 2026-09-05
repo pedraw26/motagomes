@@ -663,17 +663,17 @@
         .live-filter button { border: 1px solid var(--border, rgba(120,120,130,0.25)); background: transparent; color: var(--text-muted); font: 700 10px/1 -apple-system, system-ui, sans-serif; letter-spacing: .06em; text-transform: uppercase; padding: 6px 11px; border-radius: 999px; cursor: pointer; transition: all .15s ease; }
         .live-filter button:hover { color: var(--text-primary); }
         .live-filter button.on { background: var(--text-primary); color: var(--bg-primary, #fff); border-color: var(--text-primary); }
-        #liveActivity.f-new .live-item:not(.live-new){ display: none; }
-        #liveActivity.f-returning .live-item:not(.live-returning){ display: none; }
-        #liveActivity.f-interested .live-item:not(.live-interested){ display: none; }
-        #liveActivity.f-business .live-item:not(.live-biz){ display: none; }
-        #liveActivity.f-admin .live-item:not(.live-admin){ display: none; }
-        #liveActivity.f-bot .live-item:not(.live-bot){ display: none; }
+        .live-activity.f-new .live-item:not(.live-new){ display: none; }
+        .live-activity.f-returning .live-item:not(.live-returning){ display: none; }
+        .live-activity.f-interested .live-item:not(.live-interested){ display: none; }
+        .live-activity.f-business .live-item:not(.live-biz){ display: none; }
+        .live-activity.f-admin .live-item:not(.live-admin){ display: none; }
+        .live-activity.f-bot .live-item:not(.live-bot){ display: none; }
         .live-item.live-bot { opacity: 0.5; }
         .bot-tag { display: inline-block; margin-left: 6px; font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: var(--text-secondary); background: rgba(160,160,171,0.16); padding: 2px 7px; border-radius: 5px; vertical-align: middle; }
         .name-tag { display: inline-block; margin-left: 6px; font-size: 9px; font-weight: 800; letter-spacing: .06em; color: #fff; background: #ec4899; padding: 2px 8px; border-radius: 5px; vertical-align: middle; }
         .live-item.live-person { border-left: 3px solid #ec4899; padding-left: 9px; background: rgba(236,72,153,0.07); }
-        #liveActivity.f-person .live-item:not(.live-person){ display: none; }
+        .live-activity.f-person .live-item:not(.live-person){ display: none; }
         /* Leads page */
         .lead-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 13px 4px; border-bottom: 1px solid var(--border-subtle); }
         .lead-row:last-child { border-bottom: 0; }
@@ -1903,6 +1903,15 @@
                         <div class="widget-header">
                             <span class="widget-title">Live Activity</span>
                         </div>
+                        <div class="live-filter" id="liveFilterFull">
+                            <button class="on" data-f="all">All</button>
+                            <button data-f="new">New</button>
+                            <button data-f="returning">Returning</button>
+                            <button data-f="interested">Interested</button>
+                            <button data-f="business">Business</button>
+                            <button data-f="admin">Admin</button>
+                            <button data-f="bot">Bots</button>
+                        </div>
                         <div class="live-activity" id="liveActivityFull" style="max-height: none;">
                             <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading live data...</div>
                         </div>
@@ -2850,18 +2859,20 @@
             }
         }
 
-        // Live Activity filter chips
-        (function(){
-            var bar = document.getElementById('liveFilter');
-            if(!bar) return;
+        // Live Activity filter chips (overview #liveFilter -> #liveActivity, live page #liveFilterFull -> #liveActivityFull)
+        function wireLiveFilter(barId, feedId){
+            var bar = document.getElementById(barId);
+            var feed = document.getElementById(feedId);
+            if(!bar || !feed) return;
             bar.addEventListener('click', function(e){
                 var b = e.target.closest('button'); if(!b) return;
                 bar.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); });
                 var f = b.dataset.f;
-                var la = document.getElementById('liveActivity');
-                if(la) la.className = 'live-activity' + (f !== 'all' ? ' f-' + f : '');
+                feed.className = 'live-activity' + (f !== 'all' ? ' f-' + f : '');
             });
-        })();
+        }
+        wireLiveFilter('liveFilter', 'liveActivity');
+        wireLiveFilter('liveFilterFull', 'liveActivityFull');
 
         // Initial load + apply saved settings
         applySettings();
