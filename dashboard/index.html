@@ -674,6 +674,20 @@
         .name-tag { display: inline-block; margin-left: 6px; font-size: 9px; font-weight: 800; letter-spacing: .06em; color: #fff; background: #ec4899; padding: 2px 8px; border-radius: 5px; vertical-align: middle; }
         .live-item.live-person { border-left: 3px solid #ec4899; padding-left: 9px; background: rgba(236,72,153,0.07); }
         #liveActivity.f-person .live-item:not(.live-person){ display: none; }
+        /* Leads page */
+        .lead-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 13px 4px; border-bottom: 1px solid var(--border-subtle); }
+        .lead-row:last-child { border-bottom: 0; }
+        .lead-main { min-width: 0; }
+        .lead-org { font-size: 14px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .lead-sub { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+        .lead-stats { display: flex; align-items: center; gap: 18px; flex: none; }
+        .lead-visits { font-size: 18px; font-weight: 700; color: var(--text-primary); text-align: right; }
+        .lead-visits span { display: block; font-size: 10px; font-weight: 600; color: var(--text-muted); letter-spacing: .04em; text-transform: uppercase; }
+        .lead-seen { font-size: 12px; color: var(--text-secondary); min-width: 64px; text-align: right; }
+        .cs-scroll { display: flex; align-items: center; gap: 10px; flex: none; width: 200px; }
+        .cs-scroll-bar { flex: 1; height: 8px; border-radius: 999px; background: var(--bg-hover); overflow: hidden; }
+        .cs-scroll-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--pi-purple2), var(--pi-purple)); }
+        .cs-scroll-pct { font-size: 12px; font-weight: 600; color: var(--text-secondary); min-width: 66px; text-align: right; }
         .live-time { font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
 
         .live-ip { font-size: 11px; color: var(--text-muted); font-family: monospace; margin-top: 2px; }
@@ -1446,6 +1460,10 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                     <span>Conversions</span>
                 </button>
+                <button class="nav-item" data-page="leads">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/><path d="M20 8l1.5 1.5L20 11"/></svg>
+                    <span>Leads</span>
+                </button>
                 <button class="nav-item" data-page="audience">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     <span>Audience</span>
@@ -1691,6 +1709,24 @@
                         <div class="preview-card-value" id="previewScroll">--</div>
                         <div class="preview-card-subtitle">avg scroll depth</div>
                     </div>
+
+                    <div class="preview-card" data-page="leads">
+                        <div class="preview-card-header">
+                            <span class="preview-card-title">Pages / Session</span>
+                            <svg class="preview-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </div>
+                        <div class="preview-card-value" id="previewDepth">--</div>
+                        <div class="preview-card-subtitle">avg pages per visit</div>
+                    </div>
+
+                    <div class="preview-card" data-page="leads">
+                        <div class="preview-card-header">
+                            <span class="preview-card-title">Engaged Rate</span>
+                            <svg class="preview-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </div>
+                        <div class="preview-card-value" id="previewEngaged">--</div>
+                        <div class="preview-card-subtitle">2+ pages, scrolled or stayed</div>
+                    </div>
                 </div>
             </div>
 
@@ -1782,6 +1818,30 @@
                         <div class="funnel-container" id="funnelContainer">
                             <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading funnel...</div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LEADS PAGE -->
+            <div class="page" id="page-leads">
+                <div class="dashboard-grid">
+                    <div class="widget widget-wide">
+                        <div class="widget-header">
+                            <span class="widget-title">Lead Board — businesses &amp; networks that visited</span>
+                        </div>
+                        <div id="leadBoard"><div style="color:var(--text-muted);padding:16px;text-align:center;">Loading leads...</div></div>
+                    </div>
+                    <div class="widget widget-large">
+                        <div class="widget-header">
+                            <span class="widget-title">Path to Contact — page before an email/LinkedIn click</span>
+                        </div>
+                        <div id="pathToContact"><div style="color:var(--text-muted);padding:16px;text-align:center;">Loading...</div></div>
+                    </div>
+                    <div class="widget widget-large">
+                        <div class="widget-header">
+                            <span class="widget-title">Case Study Read-through — views, scroll depth, dwell</span>
+                        </div>
+                        <div id="caseStudies"><div style="color:var(--text-muted);padding:16px;text-align:center;">Loading...</div></div>
                     </div>
                 </div>
             </div>
@@ -1955,7 +2015,7 @@
             const tn = document.querySelector('[data-page="' + pageName + '"]');
             if (tp) tp.classList.add('active');
             if (tn) tn.classList.add('active');
-            const titles = { overview:'Overview', projects:'Projects', engagement:'Engagement', conversions:'Conversions', audience:'Audience', live:'Live Activity', settings:'Settings' };
+            const titles = { overview:'Overview', projects:'Projects', engagement:'Engagement', conversions:'Conversions', leads:'Leads', audience:'Audience', live:'Live Activity', settings:'Settings' };
             pageTitle.textContent = titles[pageName] || 'Overview';
             closeMobileMenu();
         }
@@ -2329,6 +2389,19 @@
                     if (ej && !ej.error && !ej.code && !ej.message) eng = ej;
                 } catch (e) {}
 
+                // Insights RPC: lead board, path-to-contact, case-study read-through, session depth.
+                let ins = {};
+                try {
+                    const ires = await fetch(SB_URL + '/rest/v1/rpc/get_insights', {
+                        method: 'POST',
+                        headers: { apikey: SB_ANON, Authorization: 'Bearer ' + SB_ANON, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ p_pwd: pwd, p_range: parseInt(currentRange) || 7 })
+                    });
+                    const ij = await ires.json();
+                    if (ij && !ij.error && !ij.code && !ij.message) ins = ij;
+                } catch (e) {}
+                window.__insights = ins;
+
                 // Derive project + conversion breakdowns from page-level counts (get_stats.by_page).
                 // Project views log as "project/<slug>"; CTA clicks log as "cta/<type>".
                 const _byPage = s.by_page || [];
@@ -2448,6 +2521,8 @@
                     el('previewRegionSub').textContent = fmt(data.regions[0].count) + ' visitors';
                 }
                 el('previewScroll').textContent = data.overview.avg_scroll_depth == null ? '—' : (data.overview.avg_scroll_depth || 0) + '%';
+                const _pd = el('previewDepth'); if (_pd) _pd.textContent = (ins && ins.pages_per_session != null) ? ins.pages_per_session : '—';
+                const _pe = el('previewEngaged'); if (_pe) _pe.textContent = (ins && ins.engaged_rate != null) ? ins.engaged_rate + '%' : '—';
 
                 // ===== PROJECTS PAGE =====
                 const gradients = ['linear-gradient(135deg,#667eea,#764ba2)','linear-gradient(135deg,#f093fb,#f5576c)','linear-gradient(135deg,#4facfe,#00f2fe)','linear-gradient(135deg,#43e97b,#38f9d7)','linear-gradient(135deg,#fa709a,#fee140)','linear-gradient(135deg,#a78bfa,#6366f1)'];
@@ -2694,8 +2769,84 @@
                     }
                 })();
 
+                // ===== LEADS PAGE =====
+                renderLeads(ins);
+
             } catch (err) {
                 console.error('Failed to load analytics:', err);
+            }
+        }
+
+        function renderLeads(ins) {
+            const el = id => document.getElementById(id);
+            const setupMsg = '<div style="color:var(--text-muted);padding:20px;text-align:center;">Run <code>insights.sql</code> in Supabase to enable this.</div>';
+            const hasIns = ins && Object.keys(ins).length > 0;
+
+            // Lead board — businesses only (consumer ISPs + your own EE filtered out)
+            const lbEl = el('leadBoard');
+            if (lbEl) {
+                if (!hasIns) { lbEl.innerHTML = setupMsg; }
+                else {
+                    const leads = (ins.leads || []).filter(l => l.org && isBizOrg(cleanOrg(l.org)) && !isAdminRow({ org: l.org, ip: '' }));
+                    if (!leads.length) { lbEl.innerHTML = '<div style="color:var(--text-muted);padding:20px;text-align:center;">No business visitors yet.</div>'; }
+                    else {
+                        lbEl.innerHTML = leads.slice(0, 40).map(l => `
+                            <div class="lead-row">
+                                <div class="lead-main">
+                                    <div class="lead-org">${cleanOrg(l.org)}${l.is_amazon ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;margin-left:6px;">AMAZON</span>' : ''}${isInterested(l.org) ? '<span class="interest-tag">INTERESTED</span>' : ''}</div>
+                                    <div class="lead-sub">${l.city || 'Unknown'} · ${l.people} visitor${l.people > 1 ? 's' : ''} · ${l.pages} page${l.pages > 1 ? 's' : ''}</div>
+                                </div>
+                                <div class="lead-stats">
+                                    <div class="lead-visits">${fmt(l.visits)}<span>visits</span></div>
+                                    <div class="lead-seen">${timeAgo(l.last_seen)}</div>
+                                </div>
+                            </div>`).join('');
+                    }
+                }
+            }
+
+            // Path to contact
+            const ptc = el('pathToContact');
+            if (ptc) {
+                if (!hasIns) { ptc.innerHTML = setupMsg; }
+                else {
+                    const rows = ins.path_to_contact || [];
+                    if (!rows.length) { ptc.innerHTML = '<div style="color:var(--text-muted);padding:20px;text-align:center;">No contact clicks yet.</div>'; }
+                    else {
+                        const mx = Math.max(...rows.map(r => r.c)) || 1;
+                        ptc.innerHTML = rows.map(r => `
+                            <div class="project-item">
+                                <div class="project-info">
+                                    <div class="project-name">${r.source}</div>
+                                    <div class="project-meta">${fmt(r.c)} click${r.c > 1 ? 's' : ''} to contact</div>
+                                </div>
+                                <div class="project-bar-container"><div class="project-bar-bg"><div class="project-bar" style="width:${Math.round(r.c / mx * 100)}%"></div></div></div>
+                            </div>`).join('');
+                    }
+                }
+            }
+
+            // Case study read-through
+            const cs = el('caseStudies');
+            if (cs) {
+                if (!hasIns) { cs.innerHTML = setupMsg; }
+                else {
+                    const rows = ins.case_studies || [];
+                    if (!rows.length) { cs.innerHTML = '<div style="color:var(--text-muted);padding:20px;text-align:center;">No case-study views tracked yet.</div>'; }
+                    else {
+                        cs.innerHTML = rows.map(r => `
+                            <div class="lead-row">
+                                <div class="lead-main">
+                                    <div class="lead-org">${r.slug}</div>
+                                    <div class="lead-sub">${fmt(r.views)} view${r.views > 1 ? 's' : ''} · ${r.avg_time == null ? '—' : fmtDuration(r.avg_time)} avg</div>
+                                </div>
+                                <div class="cs-scroll">
+                                    <div class="cs-scroll-bar"><div class="cs-scroll-fill" style="width:${r.avg_scroll || 0}%"></div></div>
+                                    <div class="cs-scroll-pct">${r.avg_scroll == null ? '—' : r.avg_scroll + '%'} read</div>
+                                </div>
+                            </div>`).join('');
+                    }
+                }
             }
         }
 
