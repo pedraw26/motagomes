@@ -2353,9 +2353,11 @@
                 // Keep project/cta rows out of the generic "top pages" list.
                 const _topPages = _byPage.filter(r => (r.page || '').indexOf('cta/') !== 0);
 
+                // engagement RPC present? (null metrics render as "—" instead of a misleading 0)
+                const engOK = eng && Object.keys(eng).length > 0;
                 // Adapt get_stats() payload → dashboard data shape
                 const data = {
-                    overview: { total_views: s.total_views || 0, unique_visitors: s.unique_visitors || 0, avg_session_duration: eng.avg_duration || 0, contact_rate: _contactRate, bounce_rate: eng.bounce_rate || 0, avg_scroll_depth: eng.avg_scroll || 0 },
+                    overview: { total_views: s.total_views || 0, unique_visitors: s.unique_visitors || 0, avg_session_duration: engOK ? (eng.avg_duration || 0) : null, contact_rate: _contactRate, bounce_rate: engOK ? (eng.bounce_rate || 0) : null, avg_scroll_depth: engOK ? (eng.avg_scroll || 0) : null },
                     trends: null,
                     chart: { labels: (s.chart && s.chart.labels) || [], views: (s.chart && s.chart.views) || [], unique: (s.chart && s.chart.unique) || [] },
                     visitors: { new: s.new_visitors || 0, returning: s.returning_visitors || 0 },
@@ -2366,7 +2368,7 @@
                     top_pages: _topPages.map(r => ({ page: r.page, views: r.c })),
                     hourly: s.hourly || [],
                     time_per_page: eng.time_per_page || [],
-                    funnel: null,
+                    funnel: { visits: s.total_views || 0, scrolled: (eng && typeof eng.scrolled === 'number') ? eng.scrolled : null, project_views: _projTotal, contacted: _ctaTotal },
                     referrers: (s.by_referrer || []).map(r => ({ source: r.source, count: r.c })),
                     devices: s.by_device || {},
                     browsers: s.by_browser || {},
@@ -2383,9 +2385,9 @@
                 // ===== OVERVIEW METRICS =====
                 el('metricVisitors').textContent = fmt(data.overview.total_views);
                 el('metricUnique').textContent = fmt(data.overview.unique_visitors);
-                el('metricSession').textContent = fmtDuration(data.overview.avg_session_duration);
+                el('metricSession').textContent = data.overview.avg_session_duration == null ? '—' : fmtDuration(data.overview.avg_session_duration);
                 el('metricContact').textContent = data.overview.contact_rate + '%';
-                el('metricBounce').textContent = data.overview.bounce_rate + '%';
+                el('metricBounce').textContent = data.overview.bounce_rate == null ? '—' : data.overview.bounce_rate + '%';
 
                 // Trend indicators
                 if (data.trends) {
@@ -2445,7 +2447,7 @@
                     el('previewRegion').textContent = data.regions[0].country;
                     el('previewRegionSub').textContent = fmt(data.regions[0].count) + ' visitors';
                 }
-                el('previewScroll').textContent = (data.overview.avg_scroll_depth || 0) + '%';
+                el('previewScroll').textContent = data.overview.avg_scroll_depth == null ? '—' : (data.overview.avg_scroll_depth || 0) + '%';
 
                 // ===== PROJECTS PAGE =====
                 const gradients = ['linear-gradient(135deg,#667eea,#764ba2)','linear-gradient(135deg,#f093fb,#f5576c)','linear-gradient(135deg,#4facfe,#00f2fe)','linear-gradient(135deg,#43e97b,#38f9d7)','linear-gradient(135deg,#fa709a,#fee140)','linear-gradient(135deg,#a78bfa,#6366f1)'];
@@ -2499,7 +2501,7 @@
                                 <path d="M18 2.0845a15.9155 15.9155 0 0 1 0 31.831a15.9155 15.9155 0 0 1 0-31.831" fill="none" stroke="var(--border-subtle)" stroke-width="3"/>
                                 <path d="M18 2.0845a15.9155 15.9155 0 0 1 0 31.831a15.9155 15.9155 0 0 1 0-31.831" fill="none" stroke="var(--accent-violet)" stroke-width="3" stroke-dasharray="${avgS},100"/>
                             </svg>
-                            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:var(--text-primary);">${avgS}%</div>
+                            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:var(--text-primary);">${data.overview.avg_scroll_depth == null ? '—' : avgS + '%'}</div>
                         </div>
                         <div style="text-align:left;">
                             <div style="font-size:14px;color:var(--text-primary);font-weight:600;">Average Scroll Depth</div>
@@ -2592,7 +2594,7 @@
                         { label: 'Scrolled Content', count: f.scrolled, color: 'var(--accent-cyan)', bg: 'var(--accent-cyan-dim)', icon: '<polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/>' },
                         { label: 'Viewed Project', count: f.project_views, color: 'var(--accent-gold)', bg: 'var(--accent-gold-dim)', icon: '<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>' },
                         { label: 'Made Contact', count: f.contacted, color: 'var(--accent-emerald)', bg: 'rgba(52,211,153,0.15)', icon: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/>' }
-                    ];
+                    ].filter(x => x.count != null);
                     funnelEl.innerHTML = steps.map(s => {
                         const pct = maxF > 0 ? Math.round((s.count / maxF) * 100) : 0;
                         return `<div class="funnel-step">
