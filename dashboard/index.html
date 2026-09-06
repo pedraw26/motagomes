@@ -2333,7 +2333,7 @@
             return '';
         }
         // Manually confirmed Amazon IPs / prefixes (in addition to AWS orgs + NYC label)
-        var MANUAL_AMAZON_IPS = [];
+        var MANUAL_AMAZON_IPS = ['9.169.121.'];
         function isManualAmazon(ip){ return !!ip && MANUAL_AMAZON_IPS.some(function(p){ return ip.indexOf(p) === 0; }); }
         function isAdminIP(ip){ return !!ip && ADMIN_IP_PREFIXES.some(function(p){ return ip.indexOf(p) === 0; }); }
         // Device-flag admin: visits from a device that opened ?admin=1 carry an org marker (reliable regardless of shared carrier IPs)
