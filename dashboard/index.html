@@ -2330,12 +2330,19 @@
         // Your own visits (admin) — mobile subnet, dynamic last octet
         var ADMIN_IP_PREFIXES = ['92.40.216.', '92.40.217.'];
         // Manual people labels: IP or IP-prefix (e.g. an IPv6 /64) -> display name
-        var CUSTOM_LABELS = { '2a00:23cc:ec04:f501:': 'Oliver' };
-        function customLabel(ip){
-            if(!ip) return '';
+        // Manual people labels: IP or IP-prefix (e.g. an IPv6 /64) -> { name, color? }
+        var CUSTOM_LABELS = {
+            '2a00:23cc:ec04:f501:': { name: 'Oliver' },
+            '2a0e:1d47:c689:800:':  { name: 'Jim · Eden Marsh', color: '#ff1493' }
+        };
+        function customLabelObj(ip){
+            if(!ip) return null;
             for(var k in CUSTOM_LABELS){ if(ip.indexOf(k) === 0) return CUSTOM_LABELS[k]; }
-            return '';
+            return null;
         }
+        function customLabel(ip){ var o = customLabelObj(ip); return o ? o.name : ''; }
+        function customLabelColor(ip){ var o = customLabelObj(ip); return (o && o.color) ? o.color : ''; }
+        function customNameTag(ip){ var o = customLabelObj(ip); if(!o) return ''; return '<span class="name-tag"' + (o.color ? ' style="background:' + o.color + '"' : '') + '>' + o.name + '</span>'; }
         // Manually confirmed Amazon IPs / prefixes (in addition to AWS orgs + NYC label)
         var MANUAL_AMAZON_IPS = ['9.169.121.'];
         function isManualAmazon(ip){ return !!ip && MANUAL_AMAZON_IPS.some(function(p){ return ip.indexOf(p) === 0; }); }
@@ -2521,7 +2528,7 @@
                         <div class="live-item${liveItemClass(a)}" style="${isAmazonRow(a) ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
                             <div class="live-dot" style="${isAmazonRow(a) ? 'background:#ff9900;' : ''}"></div>
                             <div class="live-info">
-                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${customLabel(a.ip) ? '<span class="name-tag">'+customLabel(a.ip)+'</span>' : ''}${isAmazonRow(a) ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}${isBotRow(a) ? '<span class="bot-tag">BOT</span>' : ''}${isInterestedRow(a) ? '<span class="interest-tag">INTERESTED</span>' : ''}${isAdminRow(a) ? '<span class="admin-tag">ADMIN</span>' : ''}${visitCountBadge(a.ip)}</div>
+                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${customNameTag(a.ip)}${isAmazonRow(a) ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}${isBotRow(a) ? '<span class="bot-tag">BOT</span>' : ''}${isInterestedRow(a) ? '<span class="interest-tag">INTERESTED</span>' : ''}${isAdminRow(a) ? '<span class="admin-tag">ADMIN</span>' : ''}${visitCountBadge(a.ip)}</div>
                                 <div class="live-page">${a.page || 'home'}</div>
                                 ${orgLine(a.org)}
                                 ${a.ip ? `<div class="live-ip"><a href="https://ipinfo.io/${a.ip}" target="_blank" rel="noopener">${a.ip}</a></div>` : ''}
@@ -2760,7 +2767,7 @@
                         <div class="live-item${liveItemClass(a)}" style="${isAmazonRow(a) ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
                             <div class="live-dot" style="${isAmazonRow(a) ? 'background:#ff9900;' : ''}"></div>
                             <div class="live-info">
-                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${customLabel(a.ip) ? '<span class="name-tag">'+customLabel(a.ip)+'</span>' : ''}${isAmazonRow(a) ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}${isBotRow(a) ? '<span class="bot-tag">BOT</span>' : ''}${isInterestedRow(a) ? '<span class="interest-tag">INTERESTED</span>' : ''}${isAdminRow(a) ? '<span class="admin-tag">ADMIN</span>' : ''}${visitCountBadge(a.ip)}</div>
+                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${customNameTag(a.ip)}${isAmazonRow(a) ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}${isBotRow(a) ? '<span class="bot-tag">BOT</span>' : ''}${isInterestedRow(a) ? '<span class="interest-tag">INTERESTED</span>' : ''}${isAdminRow(a) ? '<span class="admin-tag">ADMIN</span>' : ''}${visitCountBadge(a.ip)}</div>
                                 <div class="live-page">${a.page || 'home'}</div>
                                 ${orgLine(a.org)}
                                 ${a.ip ? `<div class="live-ip"><a href="https://ipinfo.io/${a.ip}" target="_blank" rel="noopener">${a.ip}</a></div>` : ''}
