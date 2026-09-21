@@ -652,6 +652,7 @@
         .live-org.biz { color: var(--text-primary); }
         .live-org .biz-tag { font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: #0a7d3c; background: rgba(52,211,153,.16); padding: 2px 6px; border-radius: 5px; white-space: nowrap; }
         .live-item.live-biz { border-left: 3px solid #34d399; padding-left: 9px; background: rgba(52,211,153,0.06); }
+        .live-item.live-interested { border-left: 3px solid #34d399; padding-left: 9px; background: rgba(52,211,153,0.06); }
         .live-org .interest-tag { font-size: 8.5px; font-weight: 800; letter-spacing: .08em; color: #fff; background: #10b981; padding: 2px 7px; border-radius: 5px; white-space: nowrap; }
         .live-item.live-interested { border-left-width: 4px; border-left-color: #10b981; background: rgba(16,185,129,0.10); }
         .admin-tag { display: inline-block; margin-left: 6px; font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: #fff; background: #8b5cf6; padding: 2px 7px; border-radius: 5px; vertical-align: middle; }
@@ -2316,6 +2317,9 @@
             return set;
         }
         function isInterested(org){ return !!(org && window.__orgInterest && window.__orgInterest[org.toLowerCase()]); }
+        function ipInterested(ip){ return !!(ip && window.__ipInterest && window.__ipInterest[ip]); }
+        // Interested = any engaged visitor (business org OR an individual who returned / viewed a lot), excluding you and bots
+        function isInterestedRow(a){ if(!a) return false; if(isAdminRow(a) || isBotRow(a)) return false; return isInterested(a.org) || ipInterested(a.ip); }
         // How many times this exact IP has visited (within the loaded window)
         function visitCountBadge(ip){
             var n = ip && window.__ipCounts ? window.__ipCounts[ip] : 0;
@@ -2357,7 +2361,7 @@
             var c = [];
             if(isAdminRow(a)) c.push('live-admin');
             else if(isAmazonRow(a)) { /* amazon styled inline */ }
-            else if(isInterested(a.org)) c.push('live-biz','live-interested');
+            else if(isInterestedRow(a)) c.push('live-interested', ...(isBizOrg(a.org) ? ['live-biz'] : []));
             else if(isBizOrg(a.org)) c.push('live-biz');
             var n = a.ip && window.__ipCounts ? window.__ipCounts[a.ip] : 0;
             if(n >= 2) c.push('live-returning'); else if(n === 1) c.push('live-new');
@@ -2366,9 +2370,9 @@
         function orgLine(org){
             org = cleanOrg(org);
             if(!org) return '';
-            var b = isBizOrg(org), it = isInterested(org);
-            var badges = (b ? '<span class="biz-tag">BUSINESS</span>' : '') + (it ? '<span class="interest-tag">INTERESTED</span>' : '');
-            return '<div class="live-org'+(b?' biz':'')+(it?' interested':'')+'">'+badges+'<span>'+org+'</span></div>';
+            var b = isBizOrg(org);
+            var badges = (b ? '<span class="biz-tag">BUSINESS</span>' : '');
+            return '<div class="live-org'+(b?' biz':'')+'">'+badges+'<span>'+org+'</span></div>';
         }
 
         async function loadDashboard() {
@@ -2460,7 +2464,16 @@
                 lastData = data;
                 window.__orgInterest = buildInterest(data.live_activity);
                 window.__ipCounts = {};
-                (data.live_activity || []).forEach(function(a){ if(a.ip) window.__ipCounts[a.ip] = (window.__ipCounts[a.ip] || 0) + 1; });
+                var __ipTimes = {};
+                (data.live_activity || []).forEach(function(a){ if(a.ip){ window.__ipCounts[a.ip] = (window.__ipCounts[a.ip] || 0) + 1; (__ipTimes[a.ip] = __ipTimes[a.ip] || []).push(a.time ? new Date(a.time).getTime() : 0); } });
+                // Per-visitor interest: any IP with 2+ sessions (30min gap) or 5+ views counts as interested
+                window.__ipInterest = {};
+                Object.keys(__ipTimes).forEach(function(ip){
+                    var t = __ipTimes[ip].sort(function(x,y){ return x - y; });
+                    var sess = t.length ? 1 : 0;
+                    for(var i=1;i<t.length;i++){ if(t[i]-t[i-1] > 30*60*1000) sess++; }
+                    if(sess >= 2 || window.__ipCounts[ip] >= 5) window.__ipInterest[ip] = 1;
+                });
 
                 const el = id => document.getElementById(id);
 
@@ -2508,7 +2521,7 @@
                         <div class="live-item${liveItemClass(a)}" style="${isAmazonRow(a) ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
                             <div class="live-dot" style="${isAmazonRow(a) ? 'background:#ff9900;' : ''}"></div>
                             <div class="live-info">
-                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${customLabel(a.ip) ? '<span class="name-tag">'+customLabel(a.ip)+'</span>' : ''}${isAmazonRow(a) ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}${isBotRow(a) ? '<span class="bot-tag">BOT</span>' : ''}${isAdminRow(a) ? '<span class="admin-tag">ADMIN</span>' : ''}${visitCountBadge(a.ip)}</div>
+                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${customLabel(a.ip) ? '<span class="name-tag">'+customLabel(a.ip)+'</span>' : ''}${isAmazonRow(a) ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}${isBotRow(a) ? '<span class="bot-tag">BOT</span>' : ''}${isInterestedRow(a) ? '<span class="interest-tag">INTERESTED</span>' : ''}${isAdminRow(a) ? '<span class="admin-tag">ADMIN</span>' : ''}${visitCountBadge(a.ip)}</div>
                                 <div class="live-page">${a.page || 'home'}</div>
                                 ${orgLine(a.org)}
                                 ${a.ip ? `<div class="live-ip"><a href="https://ipinfo.io/${a.ip}" target="_blank" rel="noopener">${a.ip}</a></div>` : ''}
@@ -2747,7 +2760,7 @@
                         <div class="live-item${liveItemClass(a)}" style="${isAmazonRow(a) ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
                             <div class="live-dot" style="${isAmazonRow(a) ? 'background:#ff9900;' : ''}"></div>
                             <div class="live-info">
-                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${customLabel(a.ip) ? '<span class="name-tag">'+customLabel(a.ip)+'</span>' : ''}${isAmazonRow(a) ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}${isBotRow(a) ? '<span class="bot-tag">BOT</span>' : ''}${isAdminRow(a) ? '<span class="admin-tag">ADMIN</span>' : ''}${visitCountBadge(a.ip)}</div>
+                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${customLabel(a.ip) ? '<span class="name-tag">'+customLabel(a.ip)+'</span>' : ''}${isAmazonRow(a) ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}${isBotRow(a) ? '<span class="bot-tag">BOT</span>' : ''}${isInterestedRow(a) ? '<span class="interest-tag">INTERESTED</span>' : ''}${isAdminRow(a) ? '<span class="admin-tag">ADMIN</span>' : ''}${visitCountBadge(a.ip)}</div>
                                 <div class="live-page">${a.page || 'home'}</div>
                                 ${orgLine(a.org)}
                                 ${a.ip ? `<div class="live-ip"><a href="https://ipinfo.io/${a.ip}" target="_blank" rel="noopener">${a.ip}</a></div>` : ''}
