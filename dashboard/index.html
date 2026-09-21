@@ -653,6 +653,10 @@
         .live-org .biz-tag { font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: #0a7d3c; background: rgba(52,211,153,.16); padding: 2px 6px; border-radius: 5px; white-space: nowrap; }
         .live-item.live-biz { border-left: 3px solid #34d399; padding-left: 9px; background: rgba(52,211,153,0.06); }
         .live-item.live-interested { border-left: 3px solid #34d399; padding-left: 9px; background: rgba(52,211,153,0.06); }
+        /* Hide my own (admin) visits when toggled */
+        .hide-mine .live-item.live-admin { display: none !important; }
+        .live-filter .mine-toggle { margin-left: auto; }
+        .live-filter .mine-toggle.on { background: #8b5cf6; color: #fff; border-color: #8b5cf6; }
         .live-org .interest-tag { font-size: 8.5px; font-weight: 800; letter-spacing: .08em; color: #fff; background: #10b981; padding: 2px 7px; border-radius: 5px; white-space: nowrap; }
         .live-item.live-interested { border-left-width: 4px; border-left-color: #10b981; background: rgba(16,185,129,0.10); }
         .admin-tag { display: inline-block; margin-left: 6px; font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: #fff; background: #8b5cf6; padding: 2px 7px; border-radius: 5px; vertical-align: middle; }
@@ -1599,7 +1603,7 @@
                             <button data-f="interested">Interested</button>
                             <button data-f="business">Business</button>
                             <button data-f="admin">Admin</button>
-                            <button data-f="bot">Bots</button>
+                            <button data-f="bot">Bots</button><button data-mine class="mine-toggle" type="button">Hide me</button>
                         </div>
                         <div class="live-activity" id="liveActivity">
                             <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading live data...</div>
@@ -1911,7 +1915,7 @@
                             <button data-f="interested">Interested</button>
                             <button data-f="business">Business</button>
                             <button data-f="admin">Admin</button>
-                            <button data-f="bot">Bots</button>
+                            <button data-f="bot">Bots</button><button data-mine class="mine-toggle" type="button">Hide me</button>
                         </div>
                         <div class="live-activity" id="liveActivityFull" style="max-height: none;">
                             <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading live data...</div>
@@ -2886,13 +2890,29 @@
             if(!bar || !feed) return;
             bar.addEventListener('click', function(e){
                 var b = e.target.closest('button'); if(!b) return;
-                bar.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); });
+                // "Hide me" toggle — hides your own (admin) visits everywhere; state saved
+                if(b.hasAttribute('data-mine')){
+                    var hidden = document.documentElement.classList.toggle('hide-mine');
+                    try{ localStorage.setItem('_pi_hidemine', hidden ? '1' : '0'); }catch(e){}
+                    document.querySelectorAll('[data-mine]').forEach(function(x){ x.textContent = hidden ? 'Show me' : 'Hide me'; x.classList.toggle('on', hidden); });
+                    return;
+                }
+                var chips = bar.querySelectorAll('button:not([data-mine])');
+                chips.forEach(function(x){ x.classList.toggle('on', x === b); });
                 var f = b.dataset.f;
+                // keep the "Hide me" state by preserving the class name
                 feed.className = 'live-activity' + (f !== 'all' ? ' f-' + f : '');
             });
         }
         wireLiveFilter('liveFilter', 'liveActivity');
         wireLiveFilter('liveFilterFull', 'liveActivityFull');
+        // Default: hide your own visits (toggle with "Hide me" / "Show me")
+        (function(){
+            var v; try{ v = localStorage.getItem('_pi_hidemine'); }catch(e){}
+            var on = (v === null || v === undefined) ? true : (v === '1');
+            document.documentElement.classList.toggle('hide-mine', on);
+            document.querySelectorAll('[data-mine]').forEach(function(x){ x.textContent = on ? 'Show me' : 'Hide me'; x.classList.toggle('on', on); });
+        })();
 
         // Initial load + apply saved settings
         applySettings();
