@@ -144,12 +144,52 @@
     if (/^tel:/i.test(href)) return "phone";
     return null;
   }
+  // Project navigation intent: distinguish an INTENTIONAL open (clicking a
+  // project card / "View Case" from the grid) from ARROW flipping (prev/next
+  // links at the foot of a case study). Both land on /project?p=<slug> and
+  // otherwise log an identical "project/<slug>" view, so we stamp the intent
+  // as its own event: "open/<slug>" vs "arrow/<slug>".
+  function projectSlug(href) {
+    if (!href || href.indexOf("/project") === -1) return null;
+    try {
+      var q = href.split("?")[1] || "";
+      var m = new URLSearchParams(q).get("p");
+      return m || null;
+    } catch (e) { return null; }
+  }
   document.addEventListener(
     "click",
     function (e) {
       var a = e.target && e.target.closest ? e.target.closest("a") : null;
       if (!a) return;
-      var label = ctaLabel(a.getAttribute("href") || "");
+      var href = a.getAttribute("href") || "";
+
+      // Project open vs arrow-flip
+      var slug = projectSlug(href);
+      if (slug) {
+        var isArrow = !!(a.closest && a.closest(".footer-nav-link, .gallery-stacked-nav-arrows"))
+          || /footer-nav-link/.test(a.className || "");
+        var src0 = page();
+        getNet(function (net) {
+          insert({
+            visitor_id: visitor,
+            session_id: session,
+            page: (isArrow ? "arrow/" : "open/") + slug,
+            referrer: src0,
+            device: dev,
+            browser: br,
+            ip: net.ip,
+            city: net.city,
+            region: net.region,
+            country: net.country,
+            org: orgOut(net.org),
+            is_amazon: isAmazon(net),
+          });
+        });
+        // fall through in case this link is also a CTA (it won't be, but safe)
+      }
+
+      var label = ctaLabel(href);
       if (!label) return;
       var src = page();
       getNet(function (net) {

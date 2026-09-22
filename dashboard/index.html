@@ -2340,14 +2340,24 @@
             '2a00:23cc:ec04:f501:': { name: 'Oliver' },
             '2a0e:1d47:c689:800:':  { name: 'Jim · Eden Marsh', color: '#ff1493' }
         };
-        function customLabelObj(ip){
-            if(!ip) return null;
+        // Org/city-based labels: match on ISP org + location when we don't have a fixed IP.
+        // COLT Technology Services is a London business fibre ISP → Sam Izzet.
+        var CUSTOM_ORG_LABELS = [
+            { test: function(a){ return a && /colt technology/i.test((a.org||'') + ' ' + (a.isp||'')) && /london/i.test(a.city||''); },
+              label: { name: 'Sam Izzet', color: '#00b3ff' } }
+        ];
+        function customLabelObj(x){
+            if(!x) return null;
+            var ip = (typeof x === 'string') ? x : (x.ip || '');
             for(var k in CUSTOM_LABELS){ if(ip.indexOf(k) === 0) return CUSTOM_LABELS[k]; }
+            if(typeof x === 'object'){
+                for(var i=0;i<CUSTOM_ORG_LABELS.length;i++){ if(CUSTOM_ORG_LABELS[i].test(x)) return CUSTOM_ORG_LABELS[i].label; }
+            }
             return null;
         }
-        function customLabel(ip){ var o = customLabelObj(ip); return o ? o.name : ''; }
-        function customLabelColor(ip){ var o = customLabelObj(ip); return (o && o.color) ? o.color : ''; }
-        function customNameTag(ip){ var o = customLabelObj(ip); if(!o) return ''; return '<span class="name-tag"' + (o.color ? ' style="background:' + o.color + '"' : '') + '>' + o.name + '</span>'; }
+        function customLabel(x){ var o = customLabelObj(x); return o ? o.name : ''; }
+        function customLabelColor(x){ var o = customLabelObj(x); return (o && o.color) ? o.color : ''; }
+        function customNameTag(x){ var o = customLabelObj(x); if(!o) return ''; return '<span class="name-tag"' + (o.color ? ' style="background:' + o.color + '"' : '') + '>' + o.name + '</span>'; }
         // Manually confirmed Amazon IPs / prefixes (in addition to AWS orgs + NYC label)
         var MANUAL_AMAZON_IPS = ['9.169.121.'];
         function isManualAmazon(ip){ return !!ip && MANUAL_AMAZON_IPS.some(function(p){ return ip.indexOf(p) === 0; }); }
@@ -2369,7 +2379,7 @@
         }
         function liveItemClass(a){
             if(isBotRow(a)) return ' live-bot';
-            if(customLabel(a.ip)) return ' live-person';
+            if(customLabel(a)) return ' live-person';
             var c = [];
             if(isAdminRow(a)) c.push('live-admin');
             else if(isAmazonRow(a)) { /* amazon styled inline */ }
@@ -2433,12 +2443,18 @@
                 const _projects = {}, _conversions = {};
                 let _ctaTotal = 0, _projTotal = 0;
                 const _ctaMap = { email: 'email_click', cv: 'contact_click', linkedin: 'social_click', whatsapp: 'social_click', phone: 'contact_click' };
+                function _proj(slug){ return (_projects[slug] = _projects[slug] || { views:0, opens:0, arrows:0 }); }
                 _byPage.forEach(r => {
                     const pg = r.page || '', c = r.c || 0;
                     if (pg.indexOf('project/') === 0) {
-                        const slug = pg.slice(8);
-                        _projects[slug] = { views: ((_projects[slug] && _projects[slug].views) || 0) + c };
+                        _proj(pg.slice(8)).views += c;
                         _projTotal += c;
+                    } else if (pg.indexOf('open/') === 0) {
+                        // Intentional open from the portfolio grid ("View Case")
+                        _proj(pg.slice(5)).opens += c;
+                    } else if (pg.indexOf('arrow/') === 0) {
+                        // Reached via prev/next arrows at the foot of a case study
+                        _proj(pg.slice(6)).arrows += c;
                     } else if (pg.indexOf('cta/') === 0) {
                         const k = _ctaMap[pg.slice(4)] || pg.slice(4);
                         _conversions[k] = (_conversions[k] || 0) + c;
@@ -2449,7 +2465,7 @@
                 const _totalViews = s.total_views || 0;
                 const _contactRate = _totalViews > 0 ? Math.round((_ctaTotal / _totalViews) * 100) : 0;
                 // Keep project/cta rows out of the generic "top pages" list.
-                const _topPages = _byPage.filter(r => (r.page || '').indexOf('cta/') !== 0);
+                const _topPages = _byPage.filter(r => { const p = r.page || ''; return p.indexOf('cta/') !== 0 && p.indexOf('open/') !== 0 && p.indexOf('arrow/') !== 0; });
 
                 // engagement RPC present? (null metrics render as "—" instead of a misleading 0)
                 const engOK = eng && Object.keys(eng).length > 0;
@@ -2533,7 +2549,7 @@
                         <div class="live-item${liveItemClass(a)}" style="${isAmazonRow(a) ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
                             <div class="live-dot" style="${isAmazonRow(a) ? 'background:#ff9900;' : ''}"></div>
                             <div class="live-info">
-                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${customNameTag(a.ip)}${isAmazonRow(a) ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}${isBotRow(a) ? '<span class="bot-tag">BOT</span>' : ''}${isInterestedRow(a) ? '<span class="interest-tag">INTERESTED</span>' : ''}${isAdminRow(a) ? '<span class="admin-tag">ADMIN</span>' : ''}${visitCountBadge(a.ip)}</div>
+                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${customNameTag(a)}${isAmazonRow(a) ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}${isBotRow(a) ? '<span class="bot-tag">BOT</span>' : ''}${isInterestedRow(a) ? '<span class="interest-tag">INTERESTED</span>' : ''}${isAdminRow(a) ? '<span class="admin-tag">ADMIN</span>' : ''}${visitCountBadge(a.ip)}</div>
                                 <div class="live-page">${a.page || 'home'}</div>
                                 ${orgLine(a.org)}
                                 ${a.ip ? `<div class="live-ip"><a href="https://ipinfo.io/${a.ip}" target="_blank" rel="noopener">${a.ip}</a></div>` : ''}
@@ -2570,7 +2586,7 @@
                             <div class="project-thumb" style="background:${gradients[i % gradients.length]}"></div>
                             <div class="project-info">
                                 <div class="project-name">${name}</div>
-                                <div class="project-meta">${fmt(d.views)} views</div>
+                                <div class="project-meta">${fmt(d.views)} views · <span title="Opened intentionally from the portfolio grid">${fmt(d.opens||0)} opens</span> · <span title="Reached via prev/next arrows in a case study">${fmt(d.arrows||0)} via arrows</span></div>
                             </div>
                             <div class="project-bar-container">
                                 <div class="project-bar-bg"><div class="project-bar" style="width:${Math.round(d.views/maxV*100)}%"></div></div>
@@ -2772,7 +2788,7 @@
                         <div class="live-item${liveItemClass(a)}" style="${isAmazonRow(a) ? 'background:rgba(255,153,0,0.12);border-left:3px solid #ff9900;padding-left:9px;' : ''}">
                             <div class="live-dot" style="${isAmazonRow(a) ? 'background:#ff9900;' : ''}"></div>
                             <div class="live-info">
-                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${customNameTag(a.ip)}${isAmazonRow(a) ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}${isBotRow(a) ? '<span class="bot-tag">BOT</span>' : ''}${isInterestedRow(a) ? '<span class="interest-tag">INTERESTED</span>' : ''}${isAdminRow(a) ? '<span class="admin-tag">ADMIN</span>' : ''}${visitCountBadge(a.ip)}</div>
+                                <div class="live-location">${a.city || 'Unknown'}, ${a.country || ''} ${customNameTag(a)}${isAmazonRow(a) ? '<span style="color:#ff9900;font-weight:700;font-size:9px;letter-spacing:.1em;">AMAZON/AWS</span>' : ''}${isBotRow(a) ? '<span class="bot-tag">BOT</span>' : ''}${isInterestedRow(a) ? '<span class="interest-tag">INTERESTED</span>' : ''}${isAdminRow(a) ? '<span class="admin-tag">ADMIN</span>' : ''}${visitCountBadge(a.ip)}</div>
                                 <div class="live-page">${a.page || 'home'}</div>
                                 ${orgLine(a.org)}
                                 ${a.ip ? `<div class="live-ip"><a href="https://ipinfo.io/${a.ip}" target="_blank" rel="noopener">${a.ip}</a></div>` : ''}
