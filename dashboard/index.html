@@ -1603,8 +1603,7 @@
                             <button data-f="returning">Returning</button>
                             <button data-f="interested">Interested</button>
                             <button data-f="business">Business</button>
-                            <button data-f="admin">Admin</button>
-                            <button data-f="bot">Bots</button><button data-mine class="mine-toggle" type="button">Hide me</button>
+                            <button data-f="bot">Bots</button>
                         </div>
                         <div class="live-activity" id="liveActivity">
                             <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading live data...</div>
@@ -1915,8 +1914,7 @@
                             <button data-f="returning">Returning</button>
                             <button data-f="interested">Interested</button>
                             <button data-f="business">Business</button>
-                            <button data-f="admin">Admin</button>
-                            <button data-f="bot">Bots</button><button data-mine class="mine-toggle" type="button">Hide me</button>
+                            <button data-f="bot">Bots</button>
                         </div>
                         <div class="live-activity" id="liveActivityFull" style="max-height: none;">
                             <div style="color:var(--text-muted);padding:16px;text-align:center;">Loading live data...</div>
@@ -2475,7 +2473,7 @@
                     trends: null,
                     chart: { labels: (s.chart && s.chart.labels) || [], views: (s.chart && s.chart.views) || [], unique: (s.chart && s.chart.unique) || [] },
                     visitors: { new: s.new_visitors || 0, returning: s.returning_visitors || 0 },
-                    live_activity: (s.recent || []).slice(0, 200).map(r => ({ city: r.city, country: r.country, page: r.page, time: r.created_at, org: r.org, is_amazon: r.is_amazon, ip: r.ip })),
+                    live_activity: (s.recent || []).slice(0, 200).map(r => ({ city: r.city, country: r.country, page: r.page, time: r.created_at, org: r.org, is_amazon: r.is_amazon, ip: r.ip })).filter(a => !isAdminRow(a)),
                     projects: _projects,
                     conversions: _conversions,
                     regions: (s.by_country || []).map(r => ({ country: r.country, count: r.c })),
@@ -2487,7 +2485,7 @@
                     devices: s.by_device || {},
                     browsers: s.by_browser || {},
                     _amazon_hits: s.amazon_hits || 0,
-                    _amazon_recent: s.amazon_recent || []
+                    _amazon_recent: (s.amazon_recent || []).filter(a => !isAdminRow(a))
                 };
                 lastData = data;
                 window.__orgInterest = buildInterest(data.live_activity);

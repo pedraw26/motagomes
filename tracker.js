@@ -63,6 +63,11 @@
     if (/[?&]admin=0(?:&|$)/.test(location.search)) localStorage.removeItem("_pa_admin");
     IS_ADMIN = localStorage.getItem("_pa_admin") === "1";
   } catch (e) {}
+  // Admin device: record NOTHING (no page views, clicks or engagement) so the
+  // dashboard only ever shows real visitors.
+  if (IS_ADMIN) return;
+  // Local previews (localhost / file) are never real visitors either.
+  if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === "file:") return;
   function orgOut(org) { return IS_ADMIN ? ((org || "") + " [MG-ADMIN]") : org; }
 
   function insert(row) {
